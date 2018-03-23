@@ -33,7 +33,7 @@
                                                                     <li><a href="#">gbp</a></li>
                                                                 </ul>
                                                             </li>
-                                                            -->
+                                                            
                             <li class="language">
                                 <a href="#">
                                     Español
@@ -42,15 +42,15 @@
                                 <ul class="language_selection">
                                     <li><a href="#">Inglés</a></li>
                                 </ul>
-                            </li>
+                            </li>-->
                             <li class="account">
                                 <a href="#">
-                                    Nombre de usuario
+                                    @ViewBag.usuario
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="account_selection">
                                     <li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i>Configuración</a></li>
-                                    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Cerrar sesión</a></li>
+                                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Cerrar sesión</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -71,7 +71,7 @@
                     </div>
                     <nav class="navbar">
                         <ul class="navbar_menu">
-                            <li><a href="@Url.Action("Index", "Home")">Inicio</a></li>
+                            <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
                             <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
 
                         </ul>
@@ -108,8 +108,9 @@
             </ul>
         </li>
         -->
-            <li class="menu_item"><a href="@Url.Action("Index", "Home")">Inicio</a></li>
+            <li class="menu_item"><a href="@Url.Action("Main", "Home")">Inicio</a></li>
             <li class="menu_item"><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+            <!--
             <li class="menu_item has-children">
                 <a href="#">
                     Español
@@ -119,14 +120,15 @@
                     <li><a href="#">Inglés</a></li>
                 </ul>
             </li>
+                -->
             <li class="menu_item has-children">
                 <a href="#">
-                    Nombre de usuario
+                    @ViewBag.usuario
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="menu_selection">
                     <li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Configuración</a></li>
-                    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Cerrar sesión</a></li>
+                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Cerrar sesión</a></li>
                 </ul>
             </li>
 

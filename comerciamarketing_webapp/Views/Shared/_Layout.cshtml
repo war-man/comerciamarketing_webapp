@@ -94,5 +94,50 @@
     function blockError() {
         window.location.reload(true);
         return true;
-    } 
+    }
 </script>
+
+
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Error",
+                text: "@(TempData["error"])",
+                type: "error"
+            })
+        };
+    </script>
+}
+
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Advertencia",
+                text: "@(TempData["advertencia"])",
+                type: "notice"
+            })
+        };
+    </script>
+}
+
+
+@if (TempData["exito"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "exito",
+                text: "@(TempData["exito"])",
+                type: "notice"
+            })
+        };
+    </script>
+}

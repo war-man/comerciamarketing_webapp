@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -53,6 +59,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -146,16 +154,42 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\dbComercia.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbComercia.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbComercia.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbComercia.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbComercia.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Recursos_usuario.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_membresia.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Usuarios.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\css\pnotify.custom.min.css" />
     <Content Include="Content\css\bootstrap4\popper.js" />
     <Content Include="Content\css\categories_responsive.css" />
     <Content Include="Content\css\categories_styles.css" />
     <Content Include="Content\css\contact_responsive.css" />
     <Content Include="Content\css\contact_styles.css" />
+    <Content Include="Content\css\login.css" />
     <Content Include="Content\css\main_styles.css" />
     <Content Include="Content\css\responsive.css" />
     <Content Include="Content\css\single_responsive.css" />
@@ -204,6 +238,7 @@
     <Content Include="Content\js\contact_custom.js" />
     <Content Include="Content\js\custom.js" />
     <Content Include="Content\js\jquery-3.2.1.min.js" />
+    <Content Include="Content\js\pnotify.custom.min.js" />
     <Content Include="Content\js\single_custom.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
@@ -295,7 +330,24 @@
     <Content Include="Content\plugins\themify-icons\fonts\themify.eot" />
     <Content Include="Content\plugins\themify-icons\fonts\themify.ttf" />
     <Content Include="Content\plugins\themify-icons\fonts\themify.woff" />
+    <EntityDeploy Include="Models\dbComercia.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbComercia.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\dbComercia.edmx.diagram">
+      <DependentUpon>dbComercia.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
+    <Content Include="Models\dbComercia.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbComercia.edmx</DependentUpon>
+      <LastGenOutput>dbComercia.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\dbComercia.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbComercia.edmx</DependentUpon>
+      <LastGenOutput>dbComercia.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -306,21 +358,23 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\Menu.cshtml" />
     <Content Include="Views\Shared\Scripts.cshtml" />
     <Content Include="Views\Shared\Styles.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Main.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

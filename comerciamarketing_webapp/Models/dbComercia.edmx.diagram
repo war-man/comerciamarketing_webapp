@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="efff9b8a0afe48ada14eccccabd0dcaf" Name="Diagram1">
+        <EntityTypeShape EntityType="dbComerciaModel.Recursos_usuario" Width="1.5" PointX="7.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbComerciaModel.Tipo_membresia" Width="1.5" PointX="7.625" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbComerciaModel.Usuarios" Width="1.5" PointX="3.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector ManuallyRouted="false" Association="dbComerciaModel.FK__Usuarios__ID_tip__4D94879B" />
+        <AssociationConnector Association="dbComerciaModel.FK__Recursos___ID_us__5441852A" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
