@@ -181,6 +181,7 @@
     <Content Include="Content\images\icon\mstile-310x150.png" />
     <Content Include="Content\images\icon\mstile-310x310.png" />
     <Content Include="Content\images\icon\mstile-70x70.png" />
+    <Content Include="Content\images\iframefooter.png" />
     <Content Include="Content\images\logoIcon.png" />
     <Content Include="Content\images\LogoPNG-1.png" />
     <Content Include="Content\images\map_marker.png" />
