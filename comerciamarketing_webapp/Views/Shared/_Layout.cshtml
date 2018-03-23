@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Comercia Marketing App">
+    <title>@ViewData["Title"] - comercia_webapp</title>
+
+    @Html.Partial("~/Views/Shared/Styles.cshtml");
+
+
+</head>
+<body>
+    <div class="super_container">
+        @Html.Partial("~/Views/Shared/Menu.cshtml");
+        @RenderBody()
+        @Html.Partial("~/Views/Shared/Footer.cshtml");
+
+    </div>
+
+        @Html.Partial("~/Views/Shared/Scripts.cshtml");
+</body>
+</html>
+
+
