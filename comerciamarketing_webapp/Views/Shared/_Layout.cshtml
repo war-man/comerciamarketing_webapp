@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Comercia Marketing App">
-    <title>@ViewData["Title"] - comercia_webapp</title>
+    <title>@ViewData["Title"]</title>
 
     @Html.Partial("~/Views/Shared/Styles.cshtml")
 
@@ -21,81 +21,88 @@
 </body>
 </html>
 
-
-<script type="text/javascript" language="javascript">
-    $(function () //right click disabled
+@{if (ViewBag.bloquearcontenido != null)
     {
-        $(this).bind('contextmenu', function () {
-            //alert("Function disabled");
-            return false;
-        })
-    });
 
-    function copyToClipboard() {
-        var aux = document.createElement("input");
-        aux.setAttribute("value", "Function Disabled.....");
-        document.body.appendChild(aux);
-        aux.select();
-        document.execCommand("copy");
-        document.body.removeChild(aux);
-        //alert("Print screen disabled.");
-
-
-
-    }
-
-    function blockPrint() {
-        //alert("Print is not allowed...");
-    }
-
-    function PreSaveAction() {
-        //alert("saving..");
-    }
-
-    $(function () {
-        $(this).keyup(function (e) {
-            if (e.keyCode == 44 || e.keyCode == 137 || e.KeyCode == 93)
-            //100 Save 137 SHift F10 93 RightClick 44 PrintScreen
-            {
-                copyToClipboard();
+        if (ViewBag.bloquearcontenido.ToString() == "si")
+        {
+    <script type="text/javascript" language="javascript">
+        $(function () //right click disabled
+        {
+            $(this).bind('contextmenu', function () {
+                //alert("Function disabled");
                 return false;
-            }
-        })
-    });
+            })
+        });
 
-    //disable Ctrl + keys
-    document.onkeydown = function (e) {
-        e = e || window.event;//Get event
-        if (e.ctrlKey) {
-            var c = e.which || e.keyCode;//Get key code
-            switch (c) {
-                case 83://Block Ctrl+S
-                case 80: //block Ctrl+P
-                case 17: //block Ctrl
-                case 16: //block Shift
-                    e.preventDefault();
-                    e.stopPropagation();
-                    alert("Esta función han sido bloqueada");
-                    break;
+        function copyToClipboard() {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", "Function Disabled.....");
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            //alert("Print screen disabled.");
+
+
+
+        }
+
+        function blockPrint() {
+            //alert("Print is not allowed...");
+        }
+
+        function PreSaveAction() {
+            //alert("saving..");
+        }
+
+        $(function () {
+            $(this).keyup(function (e) {
+                if (e.keyCode == 44 || e.keyCode == 137 || e.KeyCode == 93)
+                //100 Save 137 SHift F10 93 RightClick 44 PrintScreen
+                {
+                    copyToClipboard();
+                    return false;
+                }
+            })
+        });
+
+        //disable Ctrl + keys
+        document.onkeydown = function (e) {
+            e = e || window.event;//Get event
+            if (e.ctrlKey) {
+                var c = e.which || e.keyCode;//Get key code
+                switch (c) {
+                    case 83://Block Ctrl+S
+                    case 80: //block Ctrl+P
+                    case 17: //block Ctrl
+                    case 16: //block Shift
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert("Esta función han sido bloqueada");
+                        break;
+                }
+            }
+        };
+
+
+        $(window).focus(function () {
+            $("body").show();
+        }).blur(function () {
+            $("body").show();
+        });
+
+        function setClipBoardData() { //override system function - make clipBoard null always
+            setInterval("window.clipboardData.setData('text','')", 20);
+        }
+        function blockError() {
+            window.location.reload(true);
+            return true;
+        }
+    </script>
             }
         }
-    };
-
-
-    $(window).focus(function () {
-        $("body").show();
-    }).blur(function () {
-        $("body").show();
-    });
-
-    function setClipBoardData() { //override system function - make clipBoard null always
-        setInterval("window.clipboardData.setData('text','')", 20);
     }
-    function blockError() {
-        window.location.reload(true);
-        return true;
-    }
-</script>
 
 
 @if (TempData["error"] != null)
@@ -136,7 +143,7 @@
             new PNotify({
                 title: "exito",
                 text: "@(TempData["exito"])",
-                type: "notice"
+                type: "success"
             })
         };
     </script>

@@ -1,0 +1,95 @@
+﻿@model comerciamarketing_webapp.Models.Usuarios
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Usuarios</a></li>
+
+                </ul>
+            </div>
+
+            <h3>¿Está seguro de eliminar el siguiente registro?</h3>
+            <div>
+                
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        Usuario
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.usuario)
+                    </dd>
+                    <dt>
+                        Correo
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.correo)
+                    </dd>
+
+                    <dt>
+                        ID de Cliente en SAP
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ID_clienteSAP)
+                    </dd>
+
+                    <dt>
+                        Nombre de Cliente en SAP
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.NOM_clienteSAP)
+                    </dd>
+
+                    <dt>
+                        Numero total de visitas
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.contador_visitas)
+                    </dd>
+
+                    <dt>
+                       Última visita
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.fultima_visita)
+                    </dd>
+
+                    <dt>
+                        Usuario desde
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.fcreacion_usuario)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Eliminar" class="btn btn-default" /> |
+                        @Html.ActionLink("Volver", "Index")
+                    </div>
+                }
+            </div>
+            </div>
+</div>
+</div>

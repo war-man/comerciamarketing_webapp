@@ -1,6 +1,7 @@
 ﻿using comerciamarketing_webapp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +23,19 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.usuario;
                 ViewBag.nomusuarioSAP = datosUsuario.NOM_clienteSAP;
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
+                ViewBag.bloquearcontenido = "si";
 
+                //Actualizamos datos del usuario
+                Usuarios actualizardatosUsuario = new Usuarios();
+
+                actualizardatosUsuario = (from u in db.Usuarios where (u.ID_usuario == ID) select u).FirstOrDefault();
+
+                actualizardatosUsuario.contador_visitas = actualizardatosUsuario.contador_visitas + 1;
+                actualizardatosUsuario.fultima_visita = DateTime.Now;
+
+                db.Entry(actualizardatosUsuario).State = EntityState.Modified;
+                db.SaveChanges();
+                //**************************
 
                 return View();
             }
@@ -54,7 +67,7 @@ namespace comerciamarketing_webapp.Controllers
                 if (recursos != null)
                 {
                     ViewBag.url = recursos.url;
-
+                    ViewBag.bloquearcontenido = "si";
                     return View();
                 }
                 else {
@@ -78,9 +91,11 @@ namespace comerciamarketing_webapp.Controllers
                 if (obj != null)
                 {
 
-                    Session["IDusuario"] = obj.ID_usuario.ToString();
+                        Session["IDusuario"] = obj.ID_usuario.ToString();
+                        Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+                        return RedirectToAction("Main");
                     
-                    return RedirectToAction("Main");
+
                 }
                 else
                 {

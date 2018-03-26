@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Comercia Marketing";
 }
 
 <!-- Slider -->
@@ -17,49 +17,44 @@
         </div>
     </div>
 </div>
+@if(Session["tipousuario"].ToString() != "1"){
+
+
 <div class="row">
     <div class="col-lg-12">
         <div class="benefit">
             <div class="container">
                 <div class="row benefit_row">
-                    <div class="col-lg-3 benefit_col">
+                    <div class="col-lg-4 benefit_col">
                         <div class="benefit_item d-flex flex-row align-items-center">
-                            <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                            <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
                             <div class="benefit_content">
                                 <h6>Tipo de membresía</h6>
-                                <p>Membresia clase A</p>
+                                <p>Membresia Básica</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 benefit_col">
-                        <div class="benefit_item d-flex flex-row align-items-center">
-                            <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-                            <div class="benefit_content">
-                                <h6>Opcion 2</h6>
-                                <p>Descripcion</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 benefit_col">
+                    <div class="col-lg-4 benefit_col">
                         <div class="benefit_item d-flex flex-row align-items-center">
                             <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                             <div class="benefit_content">
-                                <h6>Última actualización</h6>
-                                <p>Hace 00:45:00 minutos</p>
+                                <h6>Última visita</h6>
+                                <p>A las </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 benefit_col">
+                    <div class="col-lg-4 benefit_col">
                         <div class="benefit_item d-flex flex-row align-items-center">
                             <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
                             <div class="benefit_content">
-                                <h6>Opcion 4</h6>
-                                <p>Descripcion</p>
+                                <h6>Tipo de actualización de datos</h6>
+                                <p>Diaria</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </div>
+</div>
+}

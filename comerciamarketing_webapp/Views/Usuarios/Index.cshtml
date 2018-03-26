@@ -1,0 +1,97 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Usuarios>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Usuarios</a></li>
+
+                </ul>
+            </div>
+            <p>
+                @Html.ActionLink("Registrar nuevo usuario", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Usuario
+                    </th>
+                    <th>
+                        Nombre en SAP
+                    </th>
+                    <th>
+                        Total de visitas
+                    </th>
+                    <th>
+                        Última visita
+                    </th>
+                    <th>
+                        Creación
+                    </th>
+
+                    <th>
+                        Tipo de membresía
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.usuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NOM_clienteSAP)
+                        </td>
+                        <td>
+                            @if (item.ID_tipomembresia == 1)
+                            {
+
+                            }
+                            else {
+                                @Html.DisplayFor(modelItem => item.contador_visitas)
+                            }
+                           
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fultima_visita)
+                        </td>
+                        <td>
+                            @if (item.ID_tipomembresia == 1)
+                            {
+
+                            }
+                            else {
+                                @Html.DisplayFor(modelItem => item.fcreacion_usuario)
+                            }
+
+                           
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tipo_membresia.descripcion)
+                        </td>
+                        <td>
+                            @if (item.ID_tipomembresia != 1)
+    {
+                        @Html.ActionLink("Editar", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.ID_usuario })
+}
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
