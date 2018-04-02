@@ -49,8 +49,8 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="account_selection">
-                                    <!--<li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i>Configuración</a></li>-->
-                                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Cerrar sesión</a></li>
+                                    <li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i>Settings</a></li>
+                                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Log out</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -73,14 +73,14 @@
                         @if (Session["tipousuario"].ToString() == "1")
                         {
                             <ul class="navbar_menu">
-                            <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
-                            <li><a href="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
+                            <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Index", "Usuarios")">Users</a></li>
 
                         </ul>
                         }
                         else {
                             <ul class="navbar_menu">
-                            <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
+                            <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                             <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
 
                         </ul>
@@ -120,13 +120,13 @@
         -->
                        @if (Session["tipousuario"].ToString() == "1")
                         {
-                            <li class="menu_item"><a href="@Url.Action("Main", "Home")">Inicio</a></li>
-                            <li class="menu_item"><a href="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
+                            <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li class="menu_item"><a href="@Url.Action("Index", "Usuarios")">Users</a></li>
 
 
                         }
                         else {
-                        <li class="menu_item"><a href="@Url.Action("Main", "Home")">Inicio</a></li>
+                        <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
                         <li class="menu_item"><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
                         }
 
@@ -147,8 +147,8 @@
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="menu_selection">
-                    <!--<li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Configuración</a></li>-->
-                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Cerrar sesión</a></li>
+                    <li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Settings</a></li>
+                    <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Log out</a></li>
                 </ul>
             </li>
 

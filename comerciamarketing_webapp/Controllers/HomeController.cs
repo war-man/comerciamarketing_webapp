@@ -23,6 +23,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.usuario;
                 ViewBag.nomusuarioSAP = datosUsuario.NOM_clienteSAP;
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
+                ViewBag.ultimavisita = datosUsuario.fultima_visita.ToString();
                 ViewBag.bloquearcontenido = "si";
 
                 //Actualizamos datos del usuario
@@ -71,7 +72,7 @@ namespace comerciamarketing_webapp.Controllers
                     return View();
                 }
                 else {
-                    TempData["advertencia"] = "Aún no han asignado un recurso para mostrar.";
+                    TempData["advertencia"] = "No resources to show.";
                     return RedirectToAction("Main");
                 }
 
@@ -100,13 +101,13 @@ namespace comerciamarketing_webapp.Controllers
                 else
                 {
                     //Si ingreso mal la contraseña o el usuario no existe
-                    TempData["advertencia"] = "Correo o contraseña incorrecta.";
+                    TempData["advertencia"] = "Wrong email or password.";
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception exception)
             {
-                TempData["error"] = "Ocurrió un error." + exception;
+                TempData["error"] = "An error was handled ." + exception;
                 return RedirectToAction("Index");
             }
 

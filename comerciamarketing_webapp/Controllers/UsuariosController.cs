@@ -107,10 +107,10 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Usuarios.Add(usuarios);
                 db.SaveChanges();
-                TempData["exito"] = "Usuario registrado correctamente.";
+                TempData["exito"] = "User created successfully.";
                 return RedirectToAction("Index");
             }
-            TempData["advertencia"] = "Los datos ingresados no son válidos, vuelve a intentarlo.";
+            TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Index");
         }
 
@@ -159,10 +159,10 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Entry(usuarios).State = EntityState.Modified;
                 db.SaveChanges();
-                TempData["exito"] = "Usuario modificado correctamente.";
+                TempData["exito"] = "User saved successfully.";
                 return RedirectToAction("Index");
             }
-            TempData["advertencia"] = "Los datos ingresados no son válidos, vuelve a intentarlo.";
+            TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Index");
         }
 
@@ -203,11 +203,11 @@ namespace comerciamarketing_webapp.Controllers
                 Usuarios usuarios = db.Usuarios.Find(id);
                 db.Usuarios.Remove(usuarios);
                 db.SaveChanges();
-                TempData["exito"] = "Usuario eliminado correctamente.";
+                TempData["exito"] = "User deleted successfully.";
                 return RedirectToAction("Index");
             }
             catch (Exception ex) {
-                TempData["error"] = "Ocurrió el siguiente error: " + ex.Message;
+                TempData["error"] = "An error was handled.  " + ex.Message;
                 return RedirectToAction("Index");
             }
 

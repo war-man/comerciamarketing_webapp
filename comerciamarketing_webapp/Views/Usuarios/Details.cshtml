@@ -12,18 +12,18 @@
 
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
-                    <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
-                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Usuarios</a></li>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
             </div>
 
     
-                <h4>Detalles</h4>
+                <h4>Details</h4>
                 <hr />
                 <dl class="dl-horizontal">
                     <dt>
-                       Correo
+                      Email
                     </dt>
 
                     <dd>
@@ -31,7 +31,7 @@
                     </dd>
 
                     <dt>
-                        Usuario
+                        User
                     </dt>
 
                     <dd>
@@ -39,7 +39,7 @@
                     </dd>
 
                     <dt>
-                        Contraseña
+                        Password
                     </dt>
 
                     <dd>
@@ -47,7 +47,7 @@
                     </dd>
 
                     <dt>
-                        ID de Cliente en SAP
+                        SAP customer ID
                     </dt>
 
                     <dd>
@@ -55,7 +55,7 @@
                     </dd>
 
                     <dt>
-                        Nombre de Cliente en SAP
+                        SAP customer name
                     </dt>
 
                     <dd>
@@ -63,7 +63,7 @@
                     </dd>
 
                     <dt>
-                        Visitas totales
+                        Total number of visits
                     </dt>
 
                     <dd>
@@ -71,7 +71,7 @@
                     </dd>
 
                     <dt>
-                       Última visita
+                       Last Visit
                     </dt>
 
                     <dd>
@@ -79,7 +79,7 @@
                     </dd>
 
                     <dt>
-                        Usuario desde
+                        User registration date
                     </dt>
 
                     <dd>
@@ -87,7 +87,7 @@
                     </dd>
 
                     <dt>
-                       Tipo de membresía
+                       Membership
                     </dt>
 
                     <dd>
@@ -97,8 +97,8 @@
                 </dl>
            
             <p>
-                @Html.ActionLink("Editar", "Edit", new { id = Model.ID_usuario }) |
-                @Html.ActionLink("Volver", "Index")
+                @Html.ActionLink("Edit", "Edit", new { id = Model.ID_usuario }) |
+                @Html.ActionLink("Back", "Index")
             </p>
             </div>
 </div>

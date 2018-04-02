@@ -12,26 +12,26 @@
 
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
-                    <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
-                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Usuarios</a></li>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
             </div>
 
-            <h3>¿Está seguro de eliminar el siguiente registro?</h3>
+            <h3>¿Are you sure you want to delete this user?</h3>
             <div>
                 
                 <hr />
                 <dl class="dl-horizontal">
                     <dt>
-                        Usuario
+                        User
                     </dt>
 
                     <dd>
                         @Html.DisplayFor(model => model.usuario)
                     </dd>
                     <dt>
-                        Correo
+                        Email
                     </dt>
 
                     <dd>
@@ -39,7 +39,7 @@
                     </dd>
 
                     <dt>
-                        ID de Cliente en SAP
+                        SAP customer ID
                     </dt>
 
                     <dd>
@@ -47,7 +47,7 @@
                     </dd>
 
                     <dt>
-                        Nombre de Cliente en SAP
+                        SAP customer name
                     </dt>
 
                     <dd>
@@ -55,7 +55,7 @@
                     </dd>
 
                     <dt>
-                        Numero total de visitas
+                        Total number of visits
                     </dt>
 
                     <dd>
@@ -63,7 +63,7 @@
                     </dd>
 
                     <dt>
-                       Última visita
+                       Last visit
                     </dt>
 
                     <dd>
@@ -71,7 +71,7 @@
                     </dd>
 
                     <dt>
-                        Usuario desde
+                        User registration date
                     </dt>
 
                     <dd>
@@ -85,8 +85,8 @@
                     @Html.AntiForgeryToken()
 
                     <div class="form-actions no-color">
-                        <input type="submit" value="Eliminar" class="btn btn-default" /> |
-                        @Html.ActionLink("Volver", "Index")
+                        <input type="submit" value="Delete" class="btn btn-default" /> |
+                        @Html.ActionLink("Back", "Index")
                     </div>
                 }
             </div>

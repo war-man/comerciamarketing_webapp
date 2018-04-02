@@ -49,7 +49,7 @@
                             </div>
                             <nav class="navbar">
                                 <ul class="navbar_menu">
-                                    <li><a href="http://comerciamarketing.com/">Volver</a></li>
+                                    <li><a href="http://comerciamarketing.com/">Back to home page</a></li>
 
 
                                 </ul>
@@ -86,7 +86,7 @@
                         </ul>
                     </li>
                     -->
-                    <li class="menu_item"><a href="@Url.Action("Index", "Home")">Volver</a></li>
+                    <li class="menu_item"><a href="http://comerciamarketing.com/">Back to home page</a></li>
 
 
 
@@ -98,7 +98,7 @@
         <br /><br /><br /><br /><br /><br /><br /><br />
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="text-center login-title">Introduce tus credenciales para continuar.</h1>
+                <h1 class="text-center login-title">To log in, enter your credentials below.</h1>
                 <div class="account-wall">
                     <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                          alt="">
@@ -107,10 +107,10 @@
     {
                 @Html.AntiForgeryToken();
                 @Html.ValidationSummary();
-                <input type="text" class="form-control" placeholder="usuario" name="usuariocorreo" id="usuariocorreo" required autofocus>
-                <input type="password" class="form-control" placeholder="Contraseña" name="password" id="password" required>
+                <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
+                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Iniciar
+                    Log in
                 </button>
 
                 <!--
@@ -148,7 +148,7 @@
         window.onload = function () {
 
             new PNotify({
-                title: "Advertencia",
+                title: "Warning",
                 text: "@(TempData["advertencia"])",
                 type: "notice"
             })

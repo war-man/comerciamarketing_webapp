@@ -11,34 +11,34 @@
 
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
-                    <li><a href="@Url.Action("Main", "Home")">Inicio</a></li>
-                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Usuarios</a></li>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
             </div>
             <p>
-                @Html.ActionLink("Registrar nuevo usuario", "Create")
+                @Html.ActionLink("Add new user", "Create")
             </p>
             <table class="table">
                 <tr>
                     <th>
-                        Usuario
+                        User
                     </th>
                     <th>
-                        Nombre en SAP
+                        SAP customer name
                     </th>
                     <th>
-                        Total de visitas
+                        Total number of visits
                     </th>
                     <th>
-                        Última visita
+                        Last visit
                     </th>
                     <th>
-                        Creación
+                        Registration date
                     </th>
 
                     <th>
-                        Tipo de membresía
+                        Membership
                     </th>
                     <th></th>
                 </tr>
@@ -82,9 +82,10 @@
                         <td>
                             @if (item.ID_tipomembresia != 1)
     {
-                        @Html.ActionLink("Editar", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
-                        @Html.ActionLink("Eliminar", "Delete", new { id = item.ID_usuario })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Resources", "Resources", new { id = item.ID_usuario })
 }
 
                         </td>
