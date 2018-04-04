@@ -14,7 +14,7 @@
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                     <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Waiting List</a></li>
 
                 </ul>
             </div>
@@ -54,7 +54,7 @@
 
                     <div class="form-actions no-color">
                         <input type="submit" value="Delete" class="btn btn-default" /> |
-                        @Html.ActionLink("Back", "Index", new { ID_Empresa = ViewBag.ID_empresaback })
+                        @Html.ActionLink("Back", "Waiting_list")
                     </div>
                 }
             </div>

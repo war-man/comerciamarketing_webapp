@@ -13,13 +13,11 @@
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                     <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Waiting list</a></li>
 
                 </ul>
             </div>
-            <p>
-                @Html.ActionLink("Add new user", "Create", new { ID_empresa = ViewBag.ID_Empresa })
-            </p>
+
             <table class="table">
                 <tr>
                     <th>
@@ -29,21 +27,15 @@
                         Name
                     </th>
                     <th>
-                        Total number of visits
+                        Position
                     </th>
                     <th>
-                        Last visit
+                        Telephone number
                     </th>
                     <th>
                         Registration date
                     </th>
 
-                    <th>
-                        Membership
-                    </th>
-                    <th>
-                        User role
-                    </th>
                     <th>
                         User activate
                     </th>
@@ -52,6 +44,12 @@
 
                 @foreach (var item in Model)
                 {
+                    if (item.ID_tipomembresia == 1)
+                    {
+
+                    }
+                    else
+                    {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.correo)
@@ -60,57 +58,35 @@
                         @Html.DisplayFor(modelItem => item.nombre) @Html.DisplayFor(modelItem => item.apellido)
                     </td>
                     <td>
-                        @if (item.ID_tipomembresia == 1)
-        {
-
-        }
-        else
-        {
-                <!--Aqui va contador de visitas-->
-}
-
+                        @Html.DisplayFor(modelItem => item.cargo)
                     </td>
                     <td>
-                        <!--Aqui va ultima visita-->
+                        @Html.DisplayFor(modelItem => item.telefono)
                     </td>
                     <td>
-                        @if (item.ID_tipomembresia == 1)
-        {
-
-        }
-        else
-        {
-                @Html.DisplayFor(modelItem => item.fcreacion_usuario)
-}
-
-
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tipo_membresia.descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Roles.descripcion)
+                        @Html.DisplayFor(modelItem => item.fcreacion_usuario)
+                    
                     </td>
                     <td>
                         @if (item.activo == true)
                         {
-                             @Html.Label("Yes")
+                @Html.Label("Yes")
                         }
-                        else {
-                            @Html.Label("No")
-                        }</td>
+                        else
+                        {
+                @Html.Label("No")
+                        }
+                    </td>
                     <td>
                         @if (item.ID_tipomembresia != 1)
-        {
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
-                @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
-                <a href="@Url.Action("Index", "Recursos_usuario",new { id=item.ID_usuario })">Resources</a> @Html.Label(" | ")
-                <a href="@Url.Action("Index", "Historial",new { id=item.ID_usuario })">Logging history</a>
-}
+                        {
+                @Html.ActionLink("Edit", "Edit_waiting", new { id = item.ID_usuario }) @Html.Label(" | ")
+                @Html.ActionLink("Delete", "Delete_waiting", new { id = item.ID_usuario })
+                        }
 
                     </td>
                 </tr>
+                    }
                 }
 
             </table>

@@ -20,22 +20,22 @@ namespace comerciamarketing_webapp.Controllers
                 int ID = Convert.ToInt32(Session["IDusuario"]);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.usuario;
-                ViewBag.nomusuarioSAP = datosUsuario.NOM_clienteSAP;
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
-                ViewBag.ultimavisita = datosUsuario.fultima_visita.ToString();
+                ViewBag.ultimavisita = "01/01/2018";//datosUsuario.fultima_visita.ToString();
                 ViewBag.bloquearcontenido = "si";
 
                 //Actualizamos datos del usuario
-                Usuarios actualizardatosUsuario = new Usuarios();
+                //Usuarios actualizardatosUsuario = new Usuarios();
 
-                actualizardatosUsuario = (from u in db.Usuarios where (u.ID_usuario == ID) select u).FirstOrDefault();
+                //actualizardatosUsuario = (from u in db.Usuarios where (u.ID_usuario == ID) select u).FirstOrDefault();
 
-                actualizardatosUsuario.contador_visitas = actualizardatosUsuario.contador_visitas + 1;
-                actualizardatosUsuario.fultima_visita = DateTime.Now;
+                //actualizardatosUsuario.contador_visitas = actualizardatosUsuario.contador_visitas + 1;
+                //actualizardatosUsuario.fultima_visita = DateTime.Now;
 
-                db.Entry(actualizardatosUsuario).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(actualizardatosUsuario).State = EntityState.Modified;
+                //db.SaveChanges();
                 //**************************
 
                 return View();
@@ -58,12 +58,12 @@ namespace comerciamarketing_webapp.Controllers
                 int ID = Convert.ToInt32(Session["IDusuario"]);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.usuario;
-                ViewBag.nomusuarioSAP = datosUsuario.NOM_clienteSAP;
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //Consultamos los recursos
 
-                var recursos = (from b in db.Recursos_usuario where (b.ID_usuario == ID && b.tipo_recurso == 1) select b).FirstOrDefault();
+                var recursos = (from b in db.Recursos_usuario where (b.ID_usuario == ID && b.ID_tiporecurso == 1) select b).FirstOrDefault();
 
                 if (recursos != null)
                 {
@@ -88,7 +88,7 @@ namespace comerciamarketing_webapp.Controllers
             //Validamos del lado del cliente que ambos parametros no vengan vacios
             try
             {
-                var obj = (from c in db.Usuarios where (c.usuario == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
+                var obj = (from c in db.Usuarios where (c.correo == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
                 if (obj != null)
                 {
 

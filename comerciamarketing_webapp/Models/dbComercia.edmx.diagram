@@ -5,11 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="efff9b8a0afe48ada14eccccabd0dcaf" Name="Diagram1">
-        <EntityTypeShape EntityType="dbComerciaModel.Recursos_usuario" Width="1.5" PointX="7.125" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbComerciaModel.Tipo_membresia" Width="1.5" PointX="7.625" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbComerciaModel.Recursos_usuario" Width="1.5" PointX="7.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbComerciaModel.Tipo_membresia" Width="1.5" PointX="7.25" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="dbComerciaModel.Usuarios" Width="1.5" PointX="3.25" PointY="0.75" IsExpanded="true" />
         <AssociationConnector ManuallyRouted="false" Association="dbComerciaModel.FK__Usuarios__ID_tip__4D94879B" />
         <AssociationConnector Association="dbComerciaModel.FK__Recursos___ID_us__5441852A" />
+        <EntityTypeShape EntityType="dbComerciaModel.Roles" Width="1.5" PointX="0.75" PointY="5.875" />
+        <AssociationConnector Association="dbComerciaModel.FK__Usuarios__ID_rol__5FB337D6" />
+        <EntityTypeShape EntityType="dbComerciaModel.tipo_recurso" Width="1.5" PointX="11.375" PointY="5.25" />
+        <AssociationConnector Association="dbComerciaModel.FK__Recursos___ID_ti__656C112C" />
+        <EntityTypeShape EntityType="dbComerciaModel.Empresas" Width="1.5" PointX="1" PointY="2.375" />
+        <AssociationConnector Association="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

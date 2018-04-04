@@ -14,7 +14,7 @@
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                     <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Waiting list</a></li>
 
                 </ul>
             </div>
@@ -28,6 +28,15 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.ID_usuario)
+
+
+                <div class="form-group">
+                    <p class="control-label col-md-6">Customer</p>
+                    <div class="col-md-10">
+                        @Html.DropDownList("ID_empresa", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ID_empresa, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <p class="control-label col-md-2">Email</p>
@@ -80,13 +89,10 @@
                 <div class="form-group">
                     <p class="control-label col-md-2">Influence states</p>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.estados_influencia, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.EditorFor(model => model.estados_influencia, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.estados_influencia, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
-
 
 
                 <div class="form-group">
@@ -123,12 +129,12 @@
                     </div>
                 </div>
 
-                @Html.HiddenFor(model => model.ID_empresa, new { htmlAttributes = new { @class = "form-control" } })
+
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-default" />|
-                        @Html.ActionLink("Back", "Index", new { ID_Empresa = ViewBag.ID_empresaback })
+                        @Html.ActionLink("Back", "Waiting_list")
                     </div>
                 </div>
             </div>

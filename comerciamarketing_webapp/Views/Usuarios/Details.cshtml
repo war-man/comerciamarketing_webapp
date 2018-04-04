@@ -13,7 +13,8 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+                    <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
             </div>
@@ -23,19 +24,11 @@
                 <hr />
                 <dl class="dl-horizontal">
                     <dt>
-                      Email
+                        Email
                     </dt>
 
                     <dd>
                         @Html.DisplayFor(model => model.correo)
-                    </dd>
-
-                    <dt>
-                        User
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.usuario)
                     </dd>
 
                     <dt>
@@ -45,38 +38,7 @@
                     <dd>
                         @Html.DisplayFor(model => model.contrasena)
                     </dd>
-
-                    <dt>
-                        SAP customer ID
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.ID_clienteSAP)
-                    </dd>
-
-                    <dt>
-                        SAP customer name
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.NOM_clienteSAP)
-                    </dd>
-
-                    <dt>
-                        Total number of visits
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.contador_visitas)
-                    </dd>
-
-                    <dt>
-                       Last Visit
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.fultima_visita)
-                    </dd>
+                  
 
                     <dt>
                         User registration date
@@ -87,18 +49,24 @@
                     </dd>
 
                     <dt>
-                       Membership
+                        Membership
                     </dt>
 
                     <dd>
                         @Html.DisplayFor(model => model.Tipo_membresia.descripcion)
                     </dd>
+                    <dt>
+                        User role
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.Roles.descripcion)
+                    </dd>
                 </dl>
            
             <p>
                 @Html.ActionLink("Edit", "Edit", new { id = Model.ID_usuario }) |
-                @Html.ActionLink("Back", "Index")
+                @Html.ActionLink("Back", "Index", new { ID_Empresa = ViewBag.ID_empresaback })
             </p>
             </div>
 </div>

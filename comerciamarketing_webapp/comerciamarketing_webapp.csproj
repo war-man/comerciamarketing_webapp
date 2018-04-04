@@ -150,6 +150,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Recursos_usuarioController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
@@ -171,10 +172,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbComercia.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Empresas.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Recursos_usuario.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Roles.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tipo_membresia.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tipo_recurso.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuarios.cs">
@@ -442,10 +452,22 @@
     <Content Include="Views\Usuarios\Details.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Recursos_usuario\Create.cshtml" />
+    <Content Include="Views\Recursos_usuario\Delete.cshtml" />
+    <Content Include="Views\Recursos_usuario\Edit.cshtml" />
+    <Content Include="Views\Recursos_usuario\Index.cshtml" />
+    <Content Include="Views\Empresas\Index.cshtml" />
+    <Content Include="Views\Usuarios\User_registrationform.cshtml" />
+    <Content Include="Views\Usuarios\User_success.cshtml" />
+    <Content Include="Views\Usuarios\Waiting_list.cshtml" />
+    <Content Include="Views\Usuarios\Delete_waiting.cshtml" />
+    <Content Include="Views\Usuarios\Edit_waiting.cshtml" />
+    <Content Include="Views\Empresas\Create.cshtml" />
+    <Content Include="Views\Empresas\Edit.cshtml" />
+    <Content Include="Views\Empresas\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Recursos_usuario\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

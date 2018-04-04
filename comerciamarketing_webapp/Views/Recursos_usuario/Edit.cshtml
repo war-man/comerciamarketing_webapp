@@ -1,0 +1,68 @@
+﻿@model comerciamarketing_webapp.Models.Recursos_usuario
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Usuarios")"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+
+                </ul>
+            </div>
+
+            @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("ID_usuario", (int)ViewBag.id_customer)
+        <div class="form-horizontal">
+            <h6>Edit</h6>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID_recursousuario)
+
+            <div class="form-group">
+                <p class="control-label col-md-2">Description</p>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <p class="control-label col-md-2">Url</p>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.url, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <p class="control-label col-md-6">Resource</p>
+                <div class="col-md-10">
+                    @Html.DropDownList("ID_tiporecurso", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.tipo_recurso, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+}
+        </div>
+</div>
+</div>

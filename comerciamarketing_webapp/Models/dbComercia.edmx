@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dbComerciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Empresas">
+          <Key>
+            <PropertyRef Name="ID_empresa" />
+          </Key>
+          <Property Name="ID_empresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="500" />
+          <Property Name="giro" Type="varchar" MaxLength="500" />
+          <Property Name="ID_SAP" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
             <PropertyRef Name="ID_recursousuario" />
@@ -14,7 +23,14 @@
           <Property Name="url" Type="text" />
           <Property Name="fultima_actualizacion" Type="datetime" />
           <Property Name="ID_usuario" Type="int" />
-          <Property Name="tipo_recurso" Type="int" />
+          <Property Name="ID_tiporecurso" Type="int" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="ID_rol" />
+          </Key>
+          <Property Name="ID_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
@@ -23,22 +39,43 @@
           <Property Name="ID_tipomembresia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="tipo_recurso">
+          <Key>
+            <PropertyRef Name="ID_tiporecurso" />
+          </Key>
+          <Property Name="ID_tiporecurso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
         <EntityType Name="Usuarios">
           <Key>
             <PropertyRef Name="ID_usuario" />
           </Key>
           <Property Name="ID_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="correo" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="usuario" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="contrasena" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ID_clienteSAP" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="NOM_clienteSAP" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="ID_tipomembresia" Type="int" Nullable="false" />
-          <Property Name="contador_visitas" Type="int" />
-          <Property Name="fultima_visita" Type="datetime" />
           <Property Name="fcreacion_usuario" Type="datetime" />
           <Property Name="activo" Type="bit" />
+          <Property Name="ID_rol" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" />
+          <Property Name="apellido" Type="varchar" MaxLength="200" />
+          <Property Name="cargo" Type="varchar" MaxLength="100" />
+          <Property Name="telefono" Type="varchar" MaxLength="50" />
+          <Property Name="estados_influencia" Type="varchar" MaxLength="500" />
+          <Property Name="ID_empresa" Type="int" />
         </EntityType>
+        <Association Name="FK__Recursos___ID_ti__656C112C">
+          <End Role="tipo_recurso" Type="Self.tipo_recurso" Multiplicity="0..1" />
+          <End Role="Recursos_usuario" Type="Self.Recursos_usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_recurso">
+              <PropertyRef Name="ID_tiporecurso" />
+            </Principal>
+            <Dependent Role="Recursos_usuario">
+              <PropertyRef Name="ID_tiporecurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Recursos___ID_us__5AEE82B9">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
           <End Role="Recursos_usuario" Type="Self.Recursos_usuario" Multiplicity="*" />
@@ -48,6 +85,30 @@
             </Principal>
             <Dependent Role="Recursos_usuario">
               <PropertyRef Name="ID_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuarios__ID_emp__6FE99F9F">
+          <End Role="Empresas" Type="Self.Empresas" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="ID_empresa" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ID_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuarios__ID_rol__5FB337D6">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID_rol" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ID_rol" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -64,12 +125,27 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dbComerciaModelStoreContainer">
+          <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Recursos___ID_ti__656C112C" Association="Self.FK__Recursos___ID_ti__656C112C">
+            <End Role="tipo_recurso" EntitySet="tipo_recurso" />
+            <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
+          </AssociationSet>
           <AssociationSet Name="FK__Recursos___ID_us__5AEE82B9" Association="Self.FK__Recursos___ID_us__5AEE82B9">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuarios__ID_emp__6FE99F9F" Association="Self.FK__Usuarios__ID_emp__6FE99F9F">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuarios__ID_rol__5FB337D6" Association="Self.FK__Usuarios__ID_rol__5FB337D6">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
           <AssociationSet Name="FK__Usuarios__ID_tip__5BE2A6F2" Association="Self.FK__Usuarios__ID_tip__5BE2A6F2">
             <End Role="Tipo_membresia" EntitySet="Tipo_membresia" />
@@ -89,8 +165,9 @@
           <Property Name="url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fultima_actualizacion" Type="DateTime" Precision="3" />
           <Property Name="ID_usuario" Type="Int32" />
-          <Property Name="tipo_recurso" Type="Int32" />
           <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Recursos___ID_us__5441852A" FromRole="Recursos_usuario" ToRole="Usuarios" />
+          <Property Name="ID_tiporecurso" Type="Int32" />
+          <NavigationProperty Name="tipo_recurso" Relationship="dbComerciaModel.FK__Recursos___ID_ti__656C112C" FromRole="Recursos_usuario" ToRole="tipo_recurso" />
         </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
@@ -106,17 +183,21 @@
           </Key>
           <Property Name="ID_usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ID_clienteSAP" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NOM_clienteSAP" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ID_tipomembresia" Type="Int32" Nullable="false" />
-          <Property Name="contador_visitas" Type="Int32" />
-          <Property Name="fultima_visita" Type="DateTime" Precision="3" />
           <Property Name="fcreacion_usuario" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Tipo_membresia" Relationship="Self.FK__Usuarios__ID_tip__4D94879B" FromRole="Usuarios" ToRole="Tipo_membresia" />
           <Property Name="activo" Type="Boolean" />
           <NavigationProperty Name="Recursos_usuario" Relationship="dbComerciaModel.FK__Recursos___ID_us__5441852A" FromRole="Usuarios" ToRole="Recursos_usuario" />
+          <Property Name="ID_rol" Type="Int32" />
+          <NavigationProperty Name="Roles" Relationship="dbComerciaModel.FK__Usuarios__ID_rol__5FB337D6" FromRole="Usuarios" ToRole="Roles" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="apellido" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="cargo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estados_influencia" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" />
+          <NavigationProperty Name="Empresas" Relationship="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" FromRole="Usuarios" ToRole="Empresas" />
         </EntityType>
         <Association Name="FK__Usuarios__ID_tip__4D94879B">
           <End Type="Self.Tipo_membresia" Multiplicity="1" Role="Tipo_membresia" />
@@ -142,6 +223,21 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
           </AssociationSet>
+          <EntitySet Name="Roles" EntityType="dbComerciaModel.Roles" />
+          <AssociationSet Name="FK__Usuarios__ID_rol__5FB337D6" Association="dbComerciaModel.FK__Usuarios__ID_rol__5FB337D6">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <EntitySet Name="tipo_recurso" EntityType="dbComerciaModel.tipo_recurso" />
+          <AssociationSet Name="FK__Recursos___ID_ti__656C112C" Association="dbComerciaModel.FK__Recursos___ID_ti__656C112C">
+            <End Role="tipo_recurso" EntitySet="tipo_recurso" />
+            <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
+          </AssociationSet>
+          <EntitySet Name="Empresas" EntityType="dbComerciaModel.Empresas" />
+          <AssociationSet Name="FK__Usuarios__ID_emp__6FE99F9F" Association="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -155,6 +251,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="ID_rol" />
+          </Key>
+          <Property Name="ID_rol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Usuarios__ID_rol__5FB337D6" FromRole="Roles" ToRole="Usuarios" />
+        </EntityType>
+        <Association Name="FK__Usuarios__ID_rol__5FB337D6">
+          <End Type="dbComerciaModel.Roles" Role="Roles" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ID_rol" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ID_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tipo_recurso">
+          <Key>
+            <PropertyRef Name="ID_tiporecurso" />
+          </Key>
+          <Property Name="ID_tiporecurso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recursos_usuario" Relationship="dbComerciaModel.FK__Recursos___ID_ti__656C112C" FromRole="tipo_recurso" ToRole="Recursos_usuario" />
+        </EntityType>
+        <Association Name="FK__Recursos___ID_ti__656C112C">
+          <End Type="dbComerciaModel.tipo_recurso" Role="tipo_recurso" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Recursos_usuario" Role="Recursos_usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_recurso">
+              <PropertyRef Name="ID_tiporecurso" />
+            </Principal>
+            <Dependent Role="Recursos_usuario">
+              <PropertyRef Name="ID_tiporecurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Empresas">
+          <Key>
+            <PropertyRef Name="ID_empresa" />
+          </Key>
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="giro" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_SAP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" FromRole="Empresas" ToRole="Usuarios" />
+        </EntityType>
+        <Association Name="FK__Usuarios__ID_emp__6FE99F9F">
+          <End Type="dbComerciaModel.Empresas" Role="Empresas" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="ID_empresa" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="ID_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -164,12 +322,12 @@
           <EntitySetMapping Name="Recursos_usuario">
             <EntityTypeMapping TypeName="dbComerciaModel.Recursos_usuario">
               <MappingFragment StoreEntitySet="Recursos_usuario">
+                <ScalarProperty Name="ID_tiporecurso" ColumnName="ID_tiporecurso" />
                 <ScalarProperty Name="ID_recursousuario" ColumnName="ID_recursousuario" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="url" ColumnName="url" />
                 <ScalarProperty Name="fultima_actualizacion" ColumnName="fultima_actualizacion" />
                 <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
-                <ScalarProperty Name="tipo_recurso" ColumnName="tipo_recurso" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -184,17 +342,45 @@
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="dbComerciaModel.Usuarios">
               <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="estados_influencia" ColumnName="estados_influencia" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ID_rol" ColumnName="ID_rol" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
                 <ScalarProperty Name="correo" ColumnName="correo" />
-                <ScalarProperty Name="usuario" ColumnName="usuario" />
                 <ScalarProperty Name="contrasena" ColumnName="contrasena" />
-                <ScalarProperty Name="ID_clienteSAP" ColumnName="ID_clienteSAP" />
-                <ScalarProperty Name="NOM_clienteSAP" ColumnName="NOM_clienteSAP" />
                 <ScalarProperty Name="ID_tipomembresia" ColumnName="ID_tipomembresia" />
-                <ScalarProperty Name="contador_visitas" ColumnName="contador_visitas" />
-                <ScalarProperty Name="fultima_visita" ColumnName="fultima_visita" />
                 <ScalarProperty Name="fcreacion_usuario" ColumnName="fcreacion_usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="dbComerciaModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ID_rol" ColumnName="ID_rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo_recurso">
+            <EntityTypeMapping TypeName="dbComerciaModel.tipo_recurso">
+              <MappingFragment StoreEntitySet="tipo_recurso">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ID_tiporecurso" ColumnName="ID_tiporecurso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empresas">
+            <EntityTypeMapping TypeName="dbComerciaModel.Empresas">
+              <MappingFragment StoreEntitySet="Empresas">
+                <ScalarProperty Name="ID_SAP" ColumnName="ID_SAP" />
+                <ScalarProperty Name="giro" ColumnName="giro" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

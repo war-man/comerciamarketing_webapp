@@ -12,32 +12,18 @@ namespace comerciamarketing_webapp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Usuarios
+    public partial class tipo_recurso
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Usuarios()
+        public tipo_recurso()
         {
             this.Recursos_usuario = new HashSet<Recursos_usuario>();
         }
     
-        public int ID_usuario { get; set; }
-        public string correo { get; set; }
-        public string contrasena { get; set; }
-        public int ID_tipomembresia { get; set; }
-        public Nullable<System.DateTime> fcreacion_usuario { get; set; }
-        public Nullable<bool> activo { get; set; }
-        public Nullable<int> ID_rol { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
-        public string cargo { get; set; }
-        public string telefono { get; set; }
-        public string estados_influencia { get; set; }
-        public Nullable<int> ID_empresa { get; set; }
+        public int ID_tiporecurso { get; set; }
+        public string descripcion { get; set; }
     
-        public virtual Tipo_membresia Tipo_membresia { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recursos_usuario> Recursos_usuario { get; set; }
-        public virtual Roles Roles { get; set; }
-        public virtual Empresas Empresas { get; set; }
     }
 }

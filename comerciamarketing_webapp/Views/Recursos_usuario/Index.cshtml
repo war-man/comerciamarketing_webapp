@@ -1,0 +1,66 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Recursos_usuario>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+
+                </ul>
+            </div>
+            <p>
+                @Html.ActionLink("Add new resource", "Create", new { id = ViewBag.id_customer })
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Last update
+                    </th>
+                    <th>
+                        Resource
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fultima_actualizacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipo_recurso.descripcion)
+                    </td>
+                    <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID_recursousuario }) @Html.Label(" | ")
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID_recursousuario }) 
+
+
+                    </td>
+                </tr>
+                }
+
+            </table>
+                          <p>
+                <a href="@Url.Action("Index", "Usuarios", new { ID_Empresa = ViewBag.ID_empresaback })">Back</a>
+            </p>
+        </div>
+
+    </div>
+</div>
