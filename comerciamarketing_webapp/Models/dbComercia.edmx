@@ -14,6 +14,25 @@
           <Property Name="giro" Type="varchar" MaxLength="500" />
           <Property Name="ID_SAP" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="historial_conexiones">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_usuario" Type="int" />
+          <Property Name="ip" Type="varchar" MaxLength="50" />
+          <Property Name="hostname" Type="varchar" MaxLength="50" />
+          <Property Name="typeh" Type="varchar" MaxLength="50" />
+          <Property Name="continent_name" Type="varchar" MaxLength="100" />
+          <Property Name="country_code" Type="varchar" MaxLength="10" />
+          <Property Name="country_name" Type="varchar" MaxLength="100" />
+          <Property Name="region_code" Type="varchar" MaxLength="10" />
+          <Property Name="region_name" Type="varchar" MaxLength="150" />
+          <Property Name="city" Type="varchar" MaxLength="150" />
+          <Property Name="latitude" Type="varchar" MaxLength="50" />
+          <Property Name="longitude" Type="varchar" MaxLength="50" />
+          <Property Name="fecha_conexion" Type="datetime" />
+        </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
             <PropertyRef Name="ID_recursousuario" />
@@ -126,6 +145,7 @@
         </Association>
         <EntityContainer Name="dbComerciaModelStoreContainer">
           <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
@@ -238,6 +258,7 @@
             <End Role="Empresas" EntitySet="Empresas" />
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
+          <EntitySet Name="historial_conexiones" EntityType="dbComerciaModel.historial_conexiones" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -313,6 +334,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="historial_conexiones">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_usuario" Type="Int32" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hostname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="typeh" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="continent_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="country_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="country_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="region_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="region_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_conexion" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -381,6 +421,26 @@
                 <ScalarProperty Name="giro" ColumnName="giro" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="historial_conexiones">
+            <EntityTypeMapping TypeName="dbComerciaModel.historial_conexiones">
+              <MappingFragment StoreEntitySet="historial_conexiones">
+                <ScalarProperty Name="fecha_conexion" ColumnName="fecha_conexion" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="region_name" ColumnName="region_name" />
+                <ScalarProperty Name="region_code" ColumnName="region_code" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+                <ScalarProperty Name="country_code" ColumnName="country_code" />
+                <ScalarProperty Name="continent_name" ColumnName="continent_name" />
+                <ScalarProperty Name="typeh" ColumnName="typeh" />
+                <ScalarProperty Name="hostname" ColumnName="hostname" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
+                <ScalarProperty Name="ID_historial" ColumnName="ID_historial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

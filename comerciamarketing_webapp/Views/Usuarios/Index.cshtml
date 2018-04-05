@@ -106,7 +106,7 @@
                 @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
                 <a href="@Url.Action("Index", "Recursos_usuario",new { id=item.ID_usuario })">Resources</a> @Html.Label(" | ")
-                <a href="@Url.Action("Index", "Historial",new { id=item.ID_usuario })">Logging history</a>
+                <a href="@Url.Action("Login_history", "Usuarios",new { id=item.ID_usuario })">Login history</a>
 }
 
                     </td>

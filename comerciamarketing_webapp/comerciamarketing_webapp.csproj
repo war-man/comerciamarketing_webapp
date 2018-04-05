@@ -56,6 +56,12 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Postal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=45719375b8b4d528, processorArchitecture=MSIL">
+      <HintPath>..\packages\Postal.Mvc5.1.2.0\lib\net45\Postal.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.4.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -175,6 +181,9 @@
     <Compile Include="Models\Empresas.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\historial_conexiones.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Recursos_usuario.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -196,6 +205,7 @@
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
     <Content Include="Content\css\main.css" />
+    <Content Include="Content\css\multiple-select.css" />
     <Content Include="Content\css\pnotify.custom.min.css" />
     <Content Include="Content\css\bootstrap4\popper.js" />
     <Content Include="Content\css\categories_responsive.css" />
@@ -257,6 +267,7 @@
     <Content Include="Content\js\custom.js" />
     <Content Include="Content\js\jquery-3.2.1.min.js" />
     <Content Include="Content\js\main.js" />
+    <Content Include="Content\js\multiple-select.js" />
     <Content Include="Content\js\pnotify.custom.min.js" />
     <Content Include="Content\js\single_custom.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css" />
@@ -465,6 +476,13 @@
     <Content Include="Views\Empresas\Create.cshtml" />
     <Content Include="Views\Empresas\Edit.cshtml" />
     <Content Include="Views\Empresas\Delete.cshtml" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Emails\email_userregistration.cshtml" />
+    <Content Include="Views\Usuarios\Login_history.cshtml" />
+    <Content Include="Views\Emails\email_confirmation.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Emails\email_changepassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

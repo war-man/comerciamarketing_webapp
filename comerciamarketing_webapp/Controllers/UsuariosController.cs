@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using comerciamarketing_webapp.Models;
+using Postal;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -260,7 +261,7 @@ namespace comerciamarketing_webapp.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult User_registrationform([Bind(Include = "ID_usuario,correo,contrasena,fcreacion_usuario,activo,nombre,apellido,cargo,telefono,estados_influencia")] Usuarios usuarios)
+        public ActionResult User_registrationform([Bind(Include = "ID_usuario,correo,contrasena,fcreacion_usuario,activo,nombre,apellido,cargo,telefono,estados_influencia")] Usuarios usuarios, string customer)
         {
             if (usuarios.cargo == null)
             {
@@ -287,7 +288,27 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Usuarios.Add(usuarios);
                 db.SaveChanges();
+
                 TempData["exito"] = "Data was saved successfully.";
+
+                try
+                {
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("email_userregistration");
+                    email.To = "f.velasquez@limenainc.net";
+                    email.From = "customercare@comerciamarketing.com";
+                    email.CorreoActivar = usuarios.correo.ToString();
+                    email.Empresa = customer;
+                    email.NombreCliente = usuarios.nombre + " " + usuarios.apellido;
+
+                    email.Send();
+
+                    //FIN email
+                }
+                catch {
+
+                }
+
                 return RedirectToAction("User_success", "Usuarios");
             }
             TempData["advertencia"] = "Something wrong happened, try again.";
@@ -374,7 +395,29 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Entry(usuarios).State = EntityState.Modified;
                 db.SaveChanges();
-                TempData["exito"] = "User saved successfully.";
+                TempData["exito"] = "User activated successfully.";
+
+
+                try
+                {
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("email_confirmation");
+                    email.To = usuarios.correo.ToString();
+                    email.From = "customercare@comerciamarketing.com";
+                    email.Nombrecliente = usuarios.nombre + " " + usuarios.apellido;
+                    email.Correocliente = usuarios.correo;
+                    email.Passwordcliente = usuarios.contrasena;
+                    
+                    email.Send();
+
+                    //FIN email
+                }
+                catch
+                {
+
+                }
+
+
                 return RedirectToAction("Waiting_list", "Usuarios");
             }
             TempData["advertencia"] = "Something wrong happened, try again.";
@@ -432,6 +475,23 @@ namespace comerciamarketing_webapp.Controllers
                 TempData["error"] = "An error was handled.  " + ex.Message;
                 return RedirectToAction("Waiting_list", "Usuarios");
             }
+
+        }
+
+        public ActionResult Login_history(int? id)
+        {
+
+            int ID = Convert.ToInt32(Session["IDusuario"]);
+            var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+            ViewBag.usuario = datosUsuario.correo;
+
+            var usuarios = (from e in db.Usuarios where (e.ID_usuario == id) select e).FirstOrDefault();
+            ViewBag.CorreoUsuario = usuarios.correo;
+            ViewBag.ID_empresaback = usuarios.ID_empresa;
+
+            return View(db.historial_conexiones.Where(c => c.ID_usuario == id).OrderByDescending(c=>c.fecha_conexion).ToList());
+
 
         }
     }

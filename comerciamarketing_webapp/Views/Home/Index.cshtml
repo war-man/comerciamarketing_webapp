@@ -103,23 +103,24 @@
                     <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                          alt="">
 
-                    @using (Html.BeginForm("Iniciar_sesion", "Home", FormMethod.Post, new { @class = "form-signin" }))
+                    @*@using (Html.BeginForm("Iniciar_sesion", "Home", FormMethod.Post, new { @class = "form-signin" }))
     {
                 @Html.AntiForgeryToken();
-                @Html.ValidationSummary();
-                <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Log in
-                </button>
-
+                @Html.ValidationSummary();*@
+                    <form class="form-signin" method="post" id="form">
+                        <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">
+                            Log in
+                        </button>
+                    </form>
                 <!--
 <label class="checkbox pull-left">
     <input type="checkbox" value="remember-me">
     Recuerdame
 </label>
 <a href="#" class="pull-right need-help">Necesitas ayuda? </a><span class="clearfix"></span>-->
-}
+@*}*@
                 </div>
             </div>
 
@@ -141,6 +142,93 @@
     @Html.Partial("~/Views/Shared/Scripts.cshtml")
 </body>
 </html>
+
+<script type="text/javascript">
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        //PRIMERO LLAMAMOS LA FUNCION LOGIN
+        var email = $('#usuariocorreo').val();
+        var password = $('#password').val();
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Iniciar_sesion", "Home")',
+            contentType: "application/json; charset=utf-8",
+            data: { usuariocorreo: email, password: password },
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    //Si todo salió bien, entonces devolvemos ip y datos de registro y luego enviamos a pagina Home
+                    // set endpoint and your access key
+                    var ip = "@ViewBag.IPLOCAL";
+                    var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+
+                    // get the API result via jQuery.ajax
+                    $.ajax({
+                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        dataType: 'json',
+                        success: function (jsondatos) {
+                            console.log("funciona")
+                            console.log(jsondatos.country_name);
+
+                            var datosusuario = {
+                                ip : jsondatos.ip,
+                                hostname : jsondatos.hostname,                         
+                                typeh : jsondatos.type,
+                                continent_name  : jsondatos.continent_name,
+                                country_code : jsondatos.country_code, 
+                                country_name : jsondatos.country_name, 
+                                region_code : jsondatos.region_code, 
+                                region_name : jsondatos.region_name,
+                                city : jsondatos.city,
+                                latitude : jsondatos.latitude, 
+                                longitude : jsondatos.longitude
+
+
+                            };
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Historial_conexiones", "Home")',
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(datosusuario),
+                                success: function (model) {
+                                    if (model.success) {
+
+                                        console.log("funciona hasta con ip")
+                                    window.location.href = '@Url.Action("Main", "Home")';
+                                    } else {
+                                        console.log("Error")
+                                        window.location.href = '@Url.Action("Main", "Home")';
+                                    }
+
+
+
+                             }
+                            });
+
+                        }
+                    });
+                } else {
+                    new PNotify({
+                        title: "Warning",
+                        text: "Wrong email or password",
+                        type: "notice"
+                    });
+
+                    $('#usuariocorreo').val("");
+                    $('#usuariocorreo').focus();
+                    $('#password').val("");
+
+                }
+            }
+
+
+
+        });
+    });
+</script>
 
 @if (TempData["advertencia"] != null)
 {

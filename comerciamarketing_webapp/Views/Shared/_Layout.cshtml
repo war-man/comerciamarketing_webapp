@@ -148,3 +148,13 @@
         };
     </script>
 }
+    <script type="text/javascript">
+        $('#newpassword, #retrypassword').on('keyup', function () {
+            if ($('#newpassword').val() == $('#retrypassword').val()) {
+                $('#message').html('Matching').css('color', 'green');
+                
+            } else
+                $('#message').html('Not Matching').css('color', 'red');
+        });
+
+    </script>

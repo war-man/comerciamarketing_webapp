@@ -31,5 +31,6 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<tipo_recurso> tipo_recurso { get; set; }
         public virtual DbSet<Empresas> Empresas { get; set; }
+        public virtual DbSet<historial_conexiones> historial_conexiones { get; set; }
     }
 }
