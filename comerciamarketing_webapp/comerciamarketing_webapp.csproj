@@ -483,6 +483,10 @@
     <Content Include="Views\Emails\email_confirmation.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Emails\email_changepassword.cshtml" />
+    <Content Include="Views\Recursos_usuario\Preview.cshtml" />
+    <Content Include="Views\Usuarios\Details_loginhistory.cshtml" />
+    <Content Include="Views\Home\Demos.cshtml" />
+    <Content Include="Views\Usuarios\Demo_users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

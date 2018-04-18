@@ -26,7 +26,26 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.ID_empresa = ID_Empresa;
 
+               
+
+
                 var usuarios = db.Usuarios.Where(c=>c.ID_empresa == ID_Empresa).Include(u => u.Tipo_membresia).Include(u => u.Recursos_usuario).Include(u => u.Roles);
+
+                foreach (var item in usuarios) {
+                    var registros_login = (from a in db.historial_conexiones where (a.ID_usuario == item.ID_usuario) select a).OrderByDescending(a => a.fecha_conexion);
+                    if (registros_login.Count() > 0)
+                    {
+                        item.telefono = Convert.ToString(registros_login.Count());
+                        item.contrasena = registros_login.FirstOrDefault().fecha_conexion.ToString();
+                    }
+                    else {
+                        item.telefono = "0";
+                        item.contrasena = "";
+
+                    }
+
+                }
+
                 //var usuarios= (from c in db.Usuarios where(c.ID_empresa == ID_Empresa))
                 return View(usuarios.ToList());
             }
@@ -490,9 +509,80 @@ namespace comerciamarketing_webapp.Controllers
             ViewBag.CorreoUsuario = usuarios.correo;
             ViewBag.ID_empresaback = usuarios.ID_empresa;
 
-            return View(db.historial_conexiones.Where(c => c.ID_usuario == id).OrderByDescending(c=>c.fecha_conexion).ToList());
+            return View(db.historial_conexiones.Where(c => c.ID_usuario == id).OrderByDescending(c=>c.fecha_conexion).Take(20).ToList());
 
 
         }
+
+        public ActionResult Details_loginhistory(int? id)
+        {
+
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                historial_conexiones historial = db.historial_conexiones.Find(id);
+                if (historial == null)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.ID_usuarioback = historial.ID_usuario;
+                return View(historial);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+
+        }
+
+        //DEMOS ***************************
+        public ActionResult Demo_users()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+
+
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia ==6 && c.ID_rol == 7).Include(u => u.Tipo_membresia).Include(u => u.Recursos_usuario).Include(u => u.Roles);
+
+                foreach (var item in usuarios)
+                {
+                    var registros_login = (from a in db.historial_conexiones where (a.ID_usuario == item.ID_usuario) select a).OrderByDescending(a => a.fecha_conexion);
+                    if (registros_login.Count() > 0)
+                    {
+                        item.telefono = Convert.ToString(registros_login.Count());
+                        item.contrasena = registros_login.FirstOrDefault().fecha_conexion.ToString();
+                    }
+                    else
+                    {
+                        item.telefono = "0";
+                        item.contrasena = "";
+
+                    }
+
+                }
+              
+                return View(usuarios.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+        }
+
     }
 }

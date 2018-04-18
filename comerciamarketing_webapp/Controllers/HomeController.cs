@@ -308,5 +308,27 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        //DEMOS *************************************
+        public ActionResult Demos()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                return View();
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+          
+        }
     }
 }

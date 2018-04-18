@@ -78,10 +78,17 @@
 
                         </ul>
                         }
-                        else {
-                            <ul class="navbar_menu">
+                        else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                        {
+                        <ul class="navbar_menu">
                             <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                             <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+                        </ul>
+                        }
+                        else {
+                         <ul class="navbar_menu">
+                            <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Demos", "Home")">Demos</a></li>
 
                         </ul>
                         }
@@ -119,16 +126,21 @@
         </li>
         -->
                        @if (Session["tipousuario"].ToString() == "1")
-                        {
+                       {
                             <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
                             <li class="menu_item"><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
 
 
-                        }
-                        else {
+                       }
+                       else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                       {
                         <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
                         <li class="menu_item"><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
-                        }
+                       }
+                       else {
+                           <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
+                        <li class="menu_item"><a href="@Url.Action("Demos", "Home")">Demos</a></li>
+                       }
 
             <!--
             <li class="menu_item has-children">

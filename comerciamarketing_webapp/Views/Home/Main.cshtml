@@ -13,7 +13,11 @@
                 <div class="main_slider_content">
                     <h2>
                         Welcome
-                    </h2><br /> <h5>  @ViewBag.nomusuarioSAP</h5>
+                    </h2><br />
+                    @if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3")
+                    {
+                <h5>  @ViewBag.nomusuarioSAP</h5>
+                    }
                 </div>
             </div>
         </div>

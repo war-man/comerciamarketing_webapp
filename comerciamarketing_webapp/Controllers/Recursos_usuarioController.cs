@@ -189,5 +189,25 @@ namespace comerciamarketing_webapp.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Preview(int? id)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+
+                var recursos = (from d in db.Recursos_usuario where (d.ID_recursousuario == id) select d).FirstOrDefault();
+
+                ViewBag.url = recursos.url;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }

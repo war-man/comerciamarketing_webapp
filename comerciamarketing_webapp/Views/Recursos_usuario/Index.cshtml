@@ -20,7 +20,7 @@
             <p>
                 @Html.ActionLink("Add new resource", "Create", new { id = ViewBag.id_customer })
             </p>
-            <table class="table">
+            <table class="table" style="overflow-x:auto;">
                 <tr>
                     <th>
                         Description
@@ -48,9 +48,9 @@
                     </td>
                     <td>
 
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID_recursousuario }) @Html.Label(" | ")
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID_recursousuario }) 
-
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_recursousuario }) @Html.Label(" | ")
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID_recursousuario })  @Html.Label(" | ")
+                        @Html.ActionLink("Preview", "Preview", new { id = item.ID_recursousuario }, new { target = "_blank" })  
 
                     </td>
                 </tr>

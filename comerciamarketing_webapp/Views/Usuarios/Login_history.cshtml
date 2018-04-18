@@ -19,7 +19,7 @@
             </div>
             <h4>User: @ViewBag.CorreoUsuario</h4>
             <hr />
-            <table class="table">
+            <table class="table" style="overflow-x:auto;">
                 <tr>
                     <th>
                         IP
@@ -69,9 +69,7 @@
                     </td>
                     <td>
 
-                        @Html.ActionLink("More details", "Details_loginhistory", new { id = item.ID_usuario }) 
-
-
+                        @Html.ActionLink("More details", "Details_loginhistory", new { id = item.ID_historial }) 
                     </td>
                 </tr>
                 }

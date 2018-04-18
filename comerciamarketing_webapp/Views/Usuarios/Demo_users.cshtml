@@ -12,13 +12,13 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    <li><a href="@Url.Action("Demos", "Home")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
             </div>
             <p>
-                @Html.ActionLink("Add new user", "Create", new { ID_empresa = ViewBag.ID_Empresa })
+                @Html.ActionLink("Add new user", "Create")
             </p>
             <table class="table" style="overflow-x:auto;">
                 <tr>
@@ -36,13 +36,6 @@
                     </th>
                     <th>
                         Registration date
-                    </th>
-
-                    <th>
-                        Membership
-                    </th>
-                    <th>
-                        User role
                     </th>
                     <th>
                         User activate
@@ -88,12 +81,6 @@
 
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Tipo_membresia.descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Roles.descripcion)
-                    </td>
-                    <td>
                         @if (item.activo == true)
                         {
                              @Html.Label("Yes")
@@ -107,7 +94,6 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
-                <a href="@Url.Action("Index", "Recursos_usuario",new { id=item.ID_usuario })">Resources</a> @Html.Label(" | ")
                 <a href="@Url.Action("Login_history", "Usuarios",new { id=item.ID_usuario })">Login history</a>
 }
 
@@ -117,7 +103,7 @@
 
             </table>
               <p>
-                <a href="@Url.Action("Index", "Empresas")">Back</a>
+                <a href="@Url.Action("Demos", "Home")">Back</a>
             </p>
         </div>
     </div>
