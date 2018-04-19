@@ -12,16 +12,21 @@ namespace comerciamarketing_webapp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Recursos_usuario
+    public partial class Demos
     {
-        public int ID_recursousuario { get; set; }
-        public string descripcion { get; set; }
-        public string url { get; set; }
-        public Nullable<System.DateTime> fultima_actualizacion { get; set; }
+        public int ID_demo { get; set; }
+        public string ID_Vendor { get; set; }
+        public string vendor { get; set; }
+        public string ID_Store { get; set; }
+        public string store { get; set; }
+        public Nullable<System.DateTime> visit_date { get; set; }
         public Nullable<int> ID_usuario { get; set; }
-        public Nullable<int> ID_tiporecurso { get; set; }
+        public Nullable<int> ID_demostate { get; set; }
+        public string comments { get; set; }
+        public Nullable<int> ID_form { get; set; }
     
+        public virtual Demo_state Demo_state { get; set; }
+        public virtual Forms Forms { get; set; }
         public virtual Usuarios Usuarios { get; set; }
-        public virtual tipo_recurso tipo_recurso { get; set; }
     }
 }

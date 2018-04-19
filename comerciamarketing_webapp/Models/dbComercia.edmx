@@ -5,6 +5,28 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dbComerciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Demo_state">
+          <Key>
+            <PropertyRef Name="ID_demostate" />
+          </Key>
+          <Property Name="ID_demostate" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sdescription" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Demos">
+          <Key>
+            <PropertyRef Name="ID_demo" />
+          </Key>
+          <Property Name="ID_demo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Vendor" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="vendor" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_Store" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="store" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="visit_date" Type="datetime" />
+          <Property Name="ID_usuario" Type="int" />
+          <Property Name="ID_demostate" Type="int" />
+          <Property Name="comments" Type="text" />
+          <Property Name="ID_form" Type="int" />
+        </EntityType>
         <EntityType Name="Empresas">
           <Key>
             <PropertyRef Name="ID_empresa" />
@@ -13,6 +35,33 @@
           <Property Name="nombre" Type="varchar" MaxLength="500" />
           <Property Name="giro" Type="varchar" MaxLength="500" />
           <Property Name="ID_SAP" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="form_resource_type">
+          <Key>
+            <PropertyRef Name="ID_formresourcetype" />
+          </Key>
+          <Property Name="ID_formresourcetype" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fdescription" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Forms">
+          <Key>
+            <PropertyRef Name="ID_form" />
+          </Key>
+          <Property Name="ID_form" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fdescription" Type="text" />
+        </EntityType>
+        <EntityType Name="Forms_details">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_formresourcetype" Type="int" />
+          <Property Name="fsource" Type="text" />
+          <Property Name="fdescription" Type="text" />
+          <Property Name="fvalue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ID_form" Type="int" />
+          <Property Name="ID_demo" Type="int" />
+          <Property Name="original" Type="bit" />
         </EntityType>
         <EntityType Name="historial_conexiones">
           <Key>
@@ -83,6 +132,68 @@
           <Property Name="estados_influencia" Type="varchar" MaxLength="500" />
           <Property Name="ID_empresa" Type="int" />
         </EntityType>
+        <Association Name="FK__Demos__ID_demost__04E4BC85">
+          <End Role="Demo_state" Type="Self.Demo_state" Multiplicity="0..1" />
+          <End Role="Demos" Type="Self.Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Demo_state">
+              <PropertyRef Name="ID_demostate" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_demostate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Demos__ID_form__08B54D69">
+          <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
+          <End Role="Demos" Type="Self.Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forms">
+              <PropertyRef Name="ID_form" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Demos__ID_usuari__07C12930">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Demos" Type="Self.Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID_usuario" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Forms_det__ID_fo__0D7A0286">
+          <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
+          <End Role="Forms_details" Type="Self.Forms_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forms">
+              <PropertyRef Name="ID_form" />
+            </Principal>
+            <Dependent Role="Forms_details">
+              <PropertyRef Name="ID_form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Forms_det__ID_fo__0E6E26BF">
+          <End Role="form_resource_type" Type="Self.form_resource_type" Multiplicity="0..1" />
+          <End Role="Forms_details" Type="Self.Forms_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="form_resource_type">
+              <PropertyRef Name="ID_formresourcetype" />
+            </Principal>
+            <Dependent Role="Forms_details">
+              <PropertyRef Name="ID_formresourcetype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Recursos___ID_ti__656C112C">
           <End Role="tipo_recurso" Type="Self.tipo_recurso" Multiplicity="0..1" />
           <End Role="Recursos_usuario" Type="Self.Recursos_usuario" Multiplicity="*" />
@@ -144,13 +255,38 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dbComerciaModelStoreContainer">
+          <EntitySet Name="Demo_state" EntityType="Self.Demo_state" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Demos" EntityType="Self.Demos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="form_resource_type" EntityType="Self.form_resource_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Forms" EntityType="Self.Forms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Forms_details" EntityType="Self.Forms_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="Self.FK__Demos__ID_demost__04E4BC85">
+            <End Role="Demo_state" EntitySet="Demo_state" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Demos__ID_form__08B54D69" Association="Self.FK__Demos__ID_form__08B54D69">
+            <End Role="Forms" EntitySet="Forms" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Demos__ID_usuari__07C12930" Association="Self.FK__Demos__ID_usuari__07C12930">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Forms_det__ID_fo__0D7A0286" Association="Self.FK__Forms_det__ID_fo__0D7A0286">
+            <End Role="Forms" EntitySet="Forms" />
+            <End Role="Forms_details" EntitySet="Forms_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Forms_det__ID_fo__0E6E26BF" Association="Self.FK__Forms_det__ID_fo__0E6E26BF">
+            <End Role="form_resource_type" EntitySet="form_resource_type" />
+            <End Role="Forms_details" EntitySet="Forms_details" />
+          </AssociationSet>
           <AssociationSet Name="FK__Recursos___ID_ti__656C112C" Association="Self.FK__Recursos___ID_ti__656C112C">
             <End Role="tipo_recurso" EntitySet="tipo_recurso" />
             <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
@@ -218,6 +354,7 @@
           <Property Name="estados_influencia" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ID_empresa" Type="Int32" />
           <NavigationProperty Name="Empresas" Relationship="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" FromRole="Usuarios" ToRole="Empresas" />
+          <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_usuari__07C12930" FromRole="Usuarios" ToRole="Demos" />
         </EntityType>
         <Association Name="FK__Usuarios__ID_tip__4D94879B">
           <End Type="Self.Tipo_membresia" Multiplicity="1" Role="Tipo_membresia" />
@@ -259,6 +396,31 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
           <EntitySet Name="historial_conexiones" EntityType="dbComerciaModel.historial_conexiones" />
+          <EntitySet Name="Demo_state" EntityType="dbComerciaModel.Demo_state" />
+          <EntitySet Name="Demos" EntityType="dbComerciaModel.Demos" />
+          <EntitySet Name="form_resource_type" EntityType="dbComerciaModel.form_resource_type" />
+          <EntitySet Name="Forms" EntityType="dbComerciaModel.Forms" />
+          <EntitySet Name="Forms_details" EntityType="dbComerciaModel.Forms_details" />
+          <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="dbComerciaModel.FK__Demos__ID_demost__04E4BC85">
+            <End Role="Demo_state" EntitySet="Demo_state" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Demos__ID_form__08B54D69" Association="dbComerciaModel.FK__Demos__ID_form__08B54D69">
+            <End Role="Forms" EntitySet="Forms" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Demos__ID_usuari__07C12930" Association="dbComerciaModel.FK__Demos__ID_usuari__07C12930">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Forms_det__ID_fo__0E6E26BF" Association="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF">
+            <End Role="form_resource_type" EntitySet="form_resource_type" />
+            <End Role="Forms_details" EntitySet="Forms_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Forms_det__ID_fo__0D7A0286" Association="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286">
+            <End Role="Forms" EntitySet="Forms" />
+            <End Role="Forms_details" EntitySet="Forms_details" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -353,6 +515,126 @@
           <Property Name="longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fecha_conexion" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Demo_state">
+          <Key>
+            <PropertyRef Name="ID_demostate" />
+          </Key>
+          <Property Name="ID_demostate" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sdescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demo_state" ToRole="Demos" />
+        </EntityType>
+        <EntityType Name="Demos">
+          <Key>
+            <PropertyRef Name="ID_demo" />
+          </Key>
+          <Property Name="ID_demo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Vendor" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="vendor" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="visit_date" Type="DateTime" Precision="3" />
+          <Property Name="ID_usuario" Type="Int32" />
+          <Property Name="ID_demostate" Type="Int32" />
+          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_form" Type="Int32" />
+          <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
+          <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Demos" ToRole="Forms" />
+          <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Demos__ID_usuari__07C12930" FromRole="Demos" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="form_resource_type">
+          <Key>
+            <PropertyRef Name="ID_formresourcetype" />
+          </Key>
+          <Property Name="ID_formresourcetype" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fdescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Forms_details" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF" FromRole="form_resource_type" ToRole="Forms_details" />
+        </EntityType>
+        <EntityType Name="Forms">
+          <Key>
+            <PropertyRef Name="ID_form" />
+          </Key>
+          <Property Name="ID_form" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Forms" ToRole="Demos" />
+          <NavigationProperty Name="Forms_details" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" FromRole="Forms" ToRole="Forms_details" />
+        </EntityType>
+        <EntityType Name="Forms_details">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_formresourcetype" Type="Int32" />
+          <Property Name="fsource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fvalue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ID_form" Type="Int32" />
+          <Property Name="ID_demo" Type="Int32" />
+          <Property Name="original" Type="Boolean" />
+          <NavigationProperty Name="form_resource_type" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF" FromRole="Forms_details" ToRole="form_resource_type" />
+          <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" FromRole="Forms_details" ToRole="Forms" />
+        </EntityType>
+        <Association Name="FK__Demos__ID_demost__04E4BC85">
+          <End Type="dbComerciaModel.Demo_state" Role="Demo_state" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Demo_state">
+              <PropertyRef Name="ID_demostate" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_demostate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Demos__ID_form__08B54D69">
+          <End Type="dbComerciaModel.Forms" Role="Forms" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forms">
+              <PropertyRef Name="ID_form" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Demos__ID_usuari__07C12930">
+          <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="ID_usuario" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Forms_det__ID_fo__0E6E26BF">
+          <End Type="dbComerciaModel.form_resource_type" Role="form_resource_type" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Forms_details" Role="Forms_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="form_resource_type">
+              <PropertyRef Name="ID_formresourcetype" />
+            </Principal>
+            <Dependent Role="Forms_details">
+              <PropertyRef Name="ID_formresourcetype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Forms_det__ID_fo__0D7A0286">
+          <End Type="dbComerciaModel.Forms" Role="Forms" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Forms_details" Role="Forms_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forms">
+              <PropertyRef Name="ID_form" />
+            </Principal>
+            <Dependent Role="Forms_details">
+              <PropertyRef Name="ID_form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -441,6 +723,60 @@
                 <ScalarProperty Name="ip" ColumnName="ip" />
                 <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
                 <ScalarProperty Name="ID_historial" ColumnName="ID_historial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demo_state">
+            <EntityTypeMapping TypeName="dbComerciaModel.Demo_state">
+              <MappingFragment StoreEntitySet="Demo_state">
+                <ScalarProperty Name="sdescription" ColumnName="sdescription" />
+                <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demos">
+            <EntityTypeMapping TypeName="dbComerciaModel.Demos">
+              <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
+                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
+                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+                <ScalarProperty Name="store" ColumnName="store" />
+                <ScalarProperty Name="ID_Store" ColumnName="ID_Store" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="ID_Vendor" ColumnName="ID_Vendor" />
+                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="form_resource_type">
+            <EntityTypeMapping TypeName="dbComerciaModel.form_resource_type">
+              <MappingFragment StoreEntitySet="form_resource_type">
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Forms">
+            <EntityTypeMapping TypeName="dbComerciaModel.Forms">
+              <MappingFragment StoreEntitySet="Forms">
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Forms_details">
+            <EntityTypeMapping TypeName="dbComerciaModel.Forms_details">
+              <MappingFragment StoreEntitySet="Forms_details">
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
+                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+                <ScalarProperty Name="fvalue" ColumnName="fvalue" />
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="fsource" ColumnName="fsource" />
+                <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
+                <ScalarProperty Name="ID_details" ColumnName="ID_details" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

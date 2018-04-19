@@ -156,6 +156,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DemosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Recursos_usuarioController.cs" />
@@ -178,7 +179,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbComercia.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Demos.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Demo_state.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Empresas.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Forms.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Forms_details.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\form_resource_type.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\historial_conexiones.cs">
@@ -487,12 +503,16 @@
     <Content Include="Views\Emails\email_changepassword.cshtml" />
     <Content Include="Views\Recursos_usuario\Preview.cshtml" />
     <Content Include="Views\Usuarios\Details_loginhistory.cshtml" />
-    <Content Include="Views\Home\Demos.cshtml" />
     <Content Include="Views\Usuarios\Demo_users.cshtml" />
     <Content Include="Views\Usuarios\Create_demoU.cshtml" />
     <Content Include="Views\Usuarios\Delete_demoU.cshtml" />
     <Content Include="Views\Usuarios\Details_demoU.cshtml" />
     <Content Include="Views\Usuarios\Edit_demoU.cshtml" />
+    <Content Include="Views\Demos\Create.cshtml" />
+    <Content Include="Views\Demos\Delete.cshtml" />
+    <Content Include="Views\Demos\Details.cshtml" />
+    <Content Include="Views\Demos\Edit.cshtml" />
+    <Content Include="Views\Demos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

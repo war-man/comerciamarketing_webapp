@@ -5,7 +5,7 @@
 }
 <div class="container single_product_container">
     <div class="row">
-        <div class="col">
+        <div class="col"  style="overflow-x:auto;">
 
             <!-- Breadcrumbs -->
 
@@ -17,7 +17,7 @@
                         <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
                     }
                     else {
-                        <li><a href="@Url.Action("Demo_users", "Home")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                        <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
                     }
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Login History</a></li>
 
@@ -25,7 +25,7 @@
             </div>
             <h4>User: @ViewBag.CorreoUsuario</h4>
             <hr />
-            <table class="table" style="overflow-x:auto;">
+            <table class="table">
                 <tr>
                     <th>
                         IP

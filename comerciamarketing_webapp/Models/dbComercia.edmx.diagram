@@ -17,6 +17,16 @@
         <EntityTypeShape EntityType="dbComerciaModel.Empresas" Width="1.5" PointX="1" PointY="2.375" />
         <AssociationConnector Association="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" />
         <EntityTypeShape EntityType="dbComerciaModel.historial_conexiones" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.Demo_state" Width="1.5" PointX="5.125" PointY="13.25" />
+        <EntityTypeShape EntityType="dbComerciaModel.Demos" Width="1.5" PointX="10.625" PointY="7.875" />
+        <EntityTypeShape EntityType="dbComerciaModel.form_resource_type" Width="1.5" PointX="5.125" PointY="15.875" />
+        <EntityTypeShape EntityType="dbComerciaModel.Forms" Width="1.5" PointX="6" PointY="9.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.Forms_details" Width="2.375" PointX="1.875" PointY="11.75" />
+        <AssociationConnector Association="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" />
+        <AssociationConnector Association="dbComerciaModel.FK__Demos__ID_form__08B54D69" />
+        <AssociationConnector Association="dbComerciaModel.FK__Demos__ID_usuari__07C12930" />
+        <AssociationConnector Association="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF" />
+        <AssociationConnector Association="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

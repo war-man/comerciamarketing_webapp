@@ -5,7 +5,7 @@
 }
 <div class="container single_product_container">
     <div class="row">
-        <div class="col">
+        <div class="col"  style="overflow-x:auto;">
 
             <!-- Breadcrumbs -->
 
@@ -20,7 +20,7 @@
             <p>
                 @Html.ActionLink("Add new user", "Create", new { ID_empresa = ViewBag.ID_Empresa })
             </p>
-            <table class="table" style="overflow-x:auto;">
+            <table class="table">
                 <tr>
                     <th>
                         Email
@@ -108,7 +108,7 @@
                 @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
                 <a href="@Url.Action("Index", "Recursos_usuario",new { id=item.ID_usuario })">Resources</a> @Html.Label(" | ")
-                <a href="@Url.Action("Login_history", "Usuarios",new { id=item.ID_usuario })">Login history</a>
+                <a href="@Url.Action("Login_history", "Usuarios",new { id=item.ID_usuario, modulo="customers" })">Login history</a>
 }
 
                     </td>

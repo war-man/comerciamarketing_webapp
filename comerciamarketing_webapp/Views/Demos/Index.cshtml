@@ -1,11 +1,10 @@
-﻿
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Demos>
 @{
     ViewBag.Title = "Demos";
 }
-<div class="fs_menu_overlay"></div>
 <div class="container product_section_container">
     <div class="row">
-        <div class="col product_section clearfix">
+        <div class="col">
 
             <!-- Breadcrumbs -->
 
@@ -25,12 +24,13 @@
                         <h5>General</h5>
                     </div>
                     <ul class="sidebar_categories">
+                        <!--
                         <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total users: </a></li>
-                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total demos: </a></li>
-                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Pending demos: </a></li>
+                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total demos: </a></li>-->
+                        <li><a href="@Url.Action("Create", "Demos")"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i> New Demo</span> </a></li>
 
                     </ul>
-                    
+
                 </div>
                 <div class="sidebar_section">
 
@@ -61,7 +61,7 @@
                                         <ul class="sorting_type">
                                             <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
                                             <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Last 10 </span></li>
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Pending demos</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Waiting demos</span></li>
                                             <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Demos finished</span></li>
                                         </ul>
                                     </li>
@@ -83,7 +83,7 @@
 
                             <div class="product-grid">
                                 <h4>Last demos</h4>
-                                <table class="table" style="overflow-x:auto;">
+                                <table class="table">
                                     <tr>
                                         <th>
                                             Vendor
@@ -97,14 +97,54 @@
                                         <th>
                                             User assigned
                                         </th>
+                                        <th>
+                                            State
+                                        </th>
                                         <th></th>
                                     </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.vendor)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.store)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.visit_date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Usuarios.nombre) @Html.DisplayFor(modelItem => item.Usuarios.apellido)
+                                            </td>
+                                            <td>
+                                                @if (item.ID_demostate == 3)
+                                                {
+                                            <p style="color:orange;">On Hold</p>
+                                                }
+                                                else if (item.ID_demostate == 1)
+                                                {
+                                                    <p style="color:red;">Canceled</p>
+                                                }
+                                                else if (item.ID_demostate == 2)
+                                                {
+                                                    <p style="color:green;">In progress</p>
+                                                }
+                                                else {
+                                                    <p style="color:dodgerblue;">Finished</p>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.ID_demostate == 4) {
+                                                    @Html.ActionLink("Details", "Details", new { id = item.ID_demo });
+                                                } else {
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
+                                                @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
                                 </table>
 
                             </div>
@@ -115,6 +155,7 @@
         </div>
     </div>
 </div>
+
 
 
 
@@ -132,22 +173,22 @@
             {
                 @Html.AntiForgeryToken()
 
-        <div class="modal-body">
-            <p>Enter password</p>
-            <input type="password" name="password" id="password" required oncopy="return false;"/>
-            <hr />
-            <div>
-                <p>Enter new password</p>
-                <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;"/>
-                <p>Enter new password again</p>
-                <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;"/>
-                <span id='message'></span>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
-        </div>
+                <div class="modal-body">
+                    <p>Enter password</p>
+                    <input type="password" name="password" id="password" required oncopy="return false;" />
+                    <hr />
+                    <div>
+                        <p>Enter new password</p>
+                        <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;" />
+                        <p>Enter new password again</p>
+                        <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;" />
+                        <span id='message'></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
+                </div>
             }
         </div>
     </div>
