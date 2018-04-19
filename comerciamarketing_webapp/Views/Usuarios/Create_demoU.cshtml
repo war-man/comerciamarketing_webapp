@@ -13,7 +13,7 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    <li><a href="@Url.Action("Demos", "Home")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
 
                 </ul>
@@ -63,14 +63,6 @@
         </div>
 
         <div class="form-group">
-            <p class="control-label col-md-2">Position</p>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.cargo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.cargo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <p class="control-label col-md-2">Telephone number</p>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
@@ -78,30 +70,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <p class="control-label col-md-2">Influence states</p>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.estados_influencia, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.estados_influencia, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <p class="control-label col-md-4">Membership</p>
-            <div class="col-md-10">
-                @Html.DropDownList("ID_tipomembresia", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ID_tipomembresia, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <p class="control-label col-md-4">User role</p>
-            <div class="col-md-10">
-                @Html.DropDownList("ID_rol", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ID_rol, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @Html.Hidden("ID_empresa", (int)ViewBag.ID_empresa)
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

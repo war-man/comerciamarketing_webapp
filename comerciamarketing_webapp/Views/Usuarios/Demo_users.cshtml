@@ -18,7 +18,7 @@
                 </ul>
             </div>
             <p>
-                @Html.ActionLink("Add new user", "Create")
+                @Html.ActionLink("Add new user", "Create_demoU")
             </p>
             <table class="table" style="overflow-x:auto;">
                 <tr>
@@ -89,13 +89,18 @@
                             @Html.Label("No")
                         }</td>
                     <td>
-                        @if (item.ID_tipomembresia != 1)
-        {
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
-                @Html.ActionLink("Details", "Details", new { id = item.ID_usuario }) @Html.Label(" | ")
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario }) @Html.Label(" | ")
-                <a href="@Url.Action("Login_history", "Usuarios",new { id=item.ID_usuario })">Login history</a>
-}
+                        @if (item.ID_rol != 6)
+                        {
+                @Html.ActionLink("Edit", "Edit_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
+                @Html.ActionLink("Details", "Details_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
+                @Html.ActionLink("Delete", "Delete_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
+                <a href="@Url.Action("Login_history", "Usuarios", new { id = item.ID_usuario })">Login history</a>
+                        }
+                        else {
+                            @Html.ActionLink("Edit", "Edit_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
+                            <a href="@Url.Action("Login_history", "Usuarios", new { id = item.ID_usuario, modulo="demos" })">Login history</a>
+
+                        }
 
                     </td>
                 </tr>

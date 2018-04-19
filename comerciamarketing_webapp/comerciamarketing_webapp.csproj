@@ -440,7 +440,9 @@
       <DependentUpon>dbComercia.edmx</DependentUpon>
       <LastGenOutput>dbComercia.cs</LastGenOutput>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -487,6 +489,10 @@
     <Content Include="Views\Usuarios\Details_loginhistory.cshtml" />
     <Content Include="Views\Home\Demos.cshtml" />
     <Content Include="Views\Usuarios\Demo_users.cshtml" />
+    <Content Include="Views\Usuarios\Create_demoU.cshtml" />
+    <Content Include="Views\Usuarios\Delete_demoU.cshtml" />
+    <Content Include="Views\Usuarios\Details_demoU.cshtml" />
+    <Content Include="Views\Usuarios\Edit_demoU.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

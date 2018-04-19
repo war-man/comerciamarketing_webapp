@@ -1,0 +1,73 @@
+﻿@model comerciamarketing_webapp.Models.Usuarios
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Demos", "Home")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Users</a></li>
+
+                </ul>
+            </div>
+
+    
+                <h4>Details</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        Email
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.correo)
+                    </dd>
+
+                    <dt>
+                        Password
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.contrasena)
+                    </dd>
+                  
+
+                    <dt>
+                        User registration date
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.fcreacion_usuario)
+                    </dd>
+
+                    <dt>
+                        Membership
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Tipo_membresia.descripcion)
+                    </dd>
+                    <dt>
+                        User role
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Roles.descripcion)
+                    </dd>
+                </dl>
+           
+            <p>
+                @Html.ActionLink("Edit", "Edit_demoU", new { id = Model.ID_usuario }) |
+                @Html.ActionLink("Back", "Demo_users")
+            </p>
+            </div>
+</div>
+</div>

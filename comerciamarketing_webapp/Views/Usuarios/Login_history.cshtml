@@ -12,7 +12,13 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    @if (ViewBag.modulo == "customers")
+                    {
+                        <li><a href="@Url.Action("Index", "Empresas")"><i class="fa fa-angle-right" aria-hidden="true"></i>Customers</a></li>
+                    }
+                    else {
+                        <li><a href="@Url.Action("Demo_users", "Home")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    }
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Login History</a></li>
 
                 </ul>
@@ -68,8 +74,13 @@
 
                     </td>
                     <td>
-
-                        @Html.ActionLink("More details", "Details_loginhistory", new { id = item.ID_historial }) 
+                        @if (ViewBag.modulo == "customers")
+                        {
+                            @Html.ActionLink("More details", "Details_loginhistory", new { id = item.ID_historial, modulo= "customers" }) 
+                        }
+                        else {
+                            @Html.ActionLink("More details", "Details_loginhistory", new { id = item.ID_historial, modulo= "demos" }) 
+                        }
                     </td>
                 </tr>
                 }
@@ -77,7 +88,13 @@
 
             </table>
             <p>
-                @Html.ActionLink("Back", "Index", new { ID_Empresa = ViewBag.ID_empresaback })
+                @if (ViewBag.modulo == "customers")
+                {
+                    @Html.ActionLink("Back", "Index", new { ID_Empresa = ViewBag.ID_empresaback })
+                }
+                else {
+                    @Html.ActionLink("Back", "Demo_users")
+                }
             </p>
         </div>
     </div>
