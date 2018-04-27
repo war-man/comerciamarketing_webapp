@@ -298,3 +298,133 @@
         });
 
     </script>
+
+<!--FORM TEMPLATE FINISH-->
+    <script>
+        $(function () {
+            $("#finish_formtemplate").click(function () {
+
+                var objects = [];
+                $('#loadingmessage').show();
+                $.each($('input.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+                $.each($('textarea.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+
+                $.each($('img.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).attr('src')
+                    });
+                });
+
+                //var canvas = document.getElementById("sig-canvas");
+                $.each($('canvas'), function () {
+                    var canvas = document.getElementById($(this).attr("id"));
+                    var dataUrl = canvas.toDataURL();
+                    //alert(dataUrl);
+
+                    objects.push({
+                        id: $(this).attr("data-id"),
+                        text: dataUrl
+                    });
+                });
+
+                $.each(objects, function (propName, propVal) {
+                    console.log(propName, propVal);
+                });
+
+
+                $.ajax({
+                    url: '/Forms/Finish_templateformdata',
+                    type: 'POST',
+                    data: JSON.stringify(objects),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+
+                        // Checking whether FormData is available in browser
+                        if (window.FormData !== undefined) {
+                            $.each($('input[type="file"]'), function () {
+
+                                var ID = $(this).attr('id');
+
+                                var fileUpload = $("#" + ID).get(0);
+
+                                var files = fileUpload.files;
+
+                                // Create FormData object
+                                var fileData = new FormData();
+
+                                // Looping over all files and add it to FormData object
+                                for (var i = 0; i < files.length; i++) {
+                                    fileData.append(files[i].name, files[i]);
+                                }
+
+                                // Adding one more key to FormData object
+                                fileData.append('id', ID);
+                                $.ajax({
+                                    url: '/Forms/UploadFiles',
+                                    type: "POST",
+                                    contentType: false, // Not to set any content header
+                                    processData: false, // Not to process data
+                                    data: fileData,
+                                    success: function (result) {
+
+                                    },
+                                    error: function (err) {
+                                        alert(err.statusText);
+                                    }
+                                });
+                            });
+                            window.location.href = '@Url.Action("Index","Demos")';
+                            $('#loadingmessage').hide();
+                            new PNotify({
+                                title: "Success",
+                                text: "Form saved successfully.",
+                                type: "success"
+                            })
+                        }
+                        //Redireccionamos
+
+                        else {
+                            alert("FormData is not supported.");
+                        }
+
+                    },
+                    error: function (request) {
+                        $('#loadingmessage').hide();
+                        new PNotify({
+                            title: "Warning",
+                            text: "Something wrong happened, try again.",
+                            type: "notice"
+                        })
+                    }
+                });
+
+            }
+            );
+        });
+
+    </script>

@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <p class="control-label col-md-10">@objeto.fdescription</P>
                     <div class="col-md-12">
-                            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details" required/>
+                            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details" readonly/>
                     </div>
                 </div>
                 }
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <p class="control-label col-md-10">@objeto.fdescription</P>
                     <div class="col-md-12">
-                            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details"  required/>
+                            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details"  readonly/>
                     </div>
                 </div>
                 }
@@ -61,8 +61,8 @@
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
                         {
-                            <input type="file" class="form-control" id="@objeto.ID_details">
-                        <img src="@Url.Content(objeto.fsource)" alt="@objeto.fdescription" height="250" width="340" id="@objeto.ID_details" />
+                            <input type="file" class="form-control" id="@objeto.ID_details" disabled>
+                        <img src="@Url.Content(objeto.fsource)" alt="@objeto.fdescription" height="180" width="240" id="@objeto.ID_details"/>
                         }
                         else {
                         <input type="file" class="form-control" id="@objeto.ID_details">
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <p class="control-label col-md-10">@objeto.fdescription</P>
                     <div class="col-md-12">
-                        <textarea id="@objeto.ID_details" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
+                        <textarea id="@objeto.ID_details" readonly class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
                         
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                         <div class="row">
                             <div class="col-md-12 text-center">
                                 <button class="btn btn-primary" id="sig-submitBtn" hidden>Submit Signature</button>
-                                <a href="#" class="btn btn-default" id="sig-clearBtn" onclick="return false">Clear Signature</a>
+                                <a href="#" class="btn btn-default" id="sig-clearBtn" onclick="return false" hidden>Clear Signature</a>
                             </div>
                         </div>
 
@@ -141,8 +141,7 @@
     </div><br />
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10 text-right">
-            <input type="submit" value="Save" class="btn btn-info" id="save_formtemplate" />
-            <input type="submit" value="Finish" class="btn btn-success" id="finish_formtemplate"/>
+
             <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back</a>
         </div>
     </div>

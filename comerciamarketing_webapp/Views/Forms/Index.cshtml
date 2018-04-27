@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.ID_form }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID_form }) |
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_form = item.ID_form }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.ID_form })
                         </td>
                     </tr>

@@ -265,6 +265,7 @@
     <Content Include="Content\images\iframefooter.png" />
     <Content Include="Content\images\logoIcon.png" />
     <Content Include="Content\images\LogoPNG-1.png" />
+    <Content Include="Content\images\Logo_watermark.png" />
     <Content Include="Content\images\map_marker.png" />
     <Content Include="Content\images\marcas\arbolfrutal-300x300.png" />
     <Content Include="Content\images\marcas\cremimex-300x300.png" />
@@ -461,6 +462,7 @@
       <DependentUpon>dbComercia.edmx</DependentUpon>
       <LastGenOutput>dbComercia.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Demos\Form_templatepreview.cshtml" />
     <None Include="Views\Forms\Create.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -525,6 +527,7 @@
     <Content Include="Views\Forms\Edit.cshtml" />
     <Content Include="Views\Forms\Index.cshtml" />
     <Content Include="Views\Shared\nestable_style.cshtml" />
+    <Content Include="Views\Forms\Form_templatepreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

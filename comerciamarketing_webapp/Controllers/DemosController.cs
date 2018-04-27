@@ -341,7 +341,31 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        public ActionResult Form_templatepreview(int? id_demo, int? id_form)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                var Forms_details = db.Forms_details.Where(c => c.ID_demo == id_demo && c.ID_form == id_form).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
+
+                var vendor = (from b in db.Demos where (b.ID_demo == id_demo) select b).FirstOrDefault();
+                ViewBag.vendor = vendor.vendor.ToString();
+
+
+                return View(Forms_details.ToList());
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
 
     }
 }

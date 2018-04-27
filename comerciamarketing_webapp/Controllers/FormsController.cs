@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -425,20 +428,27 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else if (detail.form_resource_type.fdescription == "Picture")
                         {
-
-                            var image_name = detail.fsource;
-                   
-                            detail.fsource = "";
-
-                            db.Entry(detail).State = EntityState.Modified;
-                            db.SaveChanges();
-
-                            //luego, eliminamos la url
-                            string fullPath = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), image_name.Replace("~/Content/images/ftp_demo/", ""));
-                            if (System.IO.File.Exists(fullPath))
+                            if (item.text == null || item.text == "")
                             {
-                                System.IO.File.Delete(fullPath);
+
+
                             }
+                            else {
+                                var image_name = detail.fsource;
+
+                                detail.fsource = "";
+
+                                db.Entry(detail).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                                //luego, eliminamos la url
+                                string fullPath = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), image_name.Replace("~/Content/images/ftp_demo/", ""));
+                                if (System.IO.File.Exists(fullPath))
+                                {
+                                    System.IO.File.Delete(fullPath);
+                                }
+                            }
+
 
                         }
                         else if (detail.form_resource_type.fdescription == "Input_text" || detail.form_resource_type.fdescription == "Electronic_signature") {
@@ -458,6 +468,94 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 }
+
+                return Json(new { Result = "Success" });
+            }
+            return Json(new { Result = "Warning" });
+
+        }
+        public JsonResult Finish_templateformdata(List<MyObj_formtemplate> values)
+        {
+
+            if (values.Count > 0)
+            {
+
+                foreach (var item in values)
+                {
+                    Forms_details detail = db.Forms_details.Find(Convert.ToInt32(item.id));
+                    if (detail == null)
+                    {
+
+                    }
+                    else
+                    {
+                        if (detail.form_resource_type.fdescription == "Product" || detail.form_resource_type.fdescription == "Product_sample")
+                        {
+                            if (item.text == "" || item.text == null) { item.text = "0"; }
+                            detail.fvalue = Convert.ToInt32(item.text);
+
+                            db.Entry(detail).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                        }
+                        else if (detail.form_resource_type.fdescription == "Picture")
+                        {
+
+                            if (item.text == null || item.text == "")
+                            {
+
+
+                            }
+                            else
+                            {
+                                var image_name = detail.fsource;
+
+                                detail.fsource = "";
+
+                                db.Entry(detail).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                                //luego, eliminamos la url
+                                string fullPath = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), image_name.Replace("~/Content/images/ftp_demo/", ""));
+                                if (System.IO.File.Exists(fullPath))
+                                {
+                                    System.IO.File.Delete(fullPath);
+                                }
+                            }
+
+                        }
+                        else if (detail.form_resource_type.fdescription == "Input_text" || detail.form_resource_type.fdescription == "Electronic_signature")
+                        {
+
+                            if (item.text == "" || item.text == null) { item.text = ""; }
+
+                            detail.fsource = item.text;
+
+                            db.Entry(detail).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            //No hacemos nada porque no esta registrado
+                        }
+
+                    }
+
+
+                }
+
+                //Cambiamos  el estado del demo
+                var id_detailform = (from a in values select a).FirstOrDefault();
+                Forms_details detail_id = db.Forms_details.Find(Convert.ToInt32(id_detailform.id));
+
+                var id_demo = detail_id.ID_demo;
+
+                Demos demo = db.Demos.Find(Convert.ToInt32(id_demo));
+                demo.ID_demostate = 4;
+                db.Entry(demo).State = EntityState.Modified;
+                db.SaveChanges();
+
+
 
                 return Json(new { Result = "Success" });
             }
@@ -494,9 +592,45 @@ namespace comerciamarketing_webapp.Controllers
                             fname = file.FileName;
                         }
 
-                        // Get the complete folder path and store the file inside it.  
-                        fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
-                        file.SaveAs(fname);
+
+                        // Adding watermark to the image and saving it into the specified folder!!!!
+
+                        //Image image = Image.FromStream(file.InputStream, true, true);
+
+
+                        using (Image TargetImg = Image.FromStream(file.InputStream, true, true))
+                        using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
+                        using (Graphics g = Graphics.FromImage(TargetImg))
+                        {
+
+                            Image thumb = watermark.GetThumbnailImage((TargetImg.Width), (TargetImg.Height/2), null, IntPtr.Zero);
+
+                            var destX = (TargetImg.Width / 2 - thumb.Width / 2);
+                            var destY = (TargetImg.Height / 2 - thumb.Height / 2);
+
+                            g.DrawImage(thumb, new Rectangle(destX,
+                                        destY,
+                                        thumb.Width,
+                                        thumb.Height));
+
+
+                            // display a clone for demo purposes
+                            //pb2.Image = (Image)TargetImg.Clone();
+                            Image imagenfinal = (Image)TargetImg.Clone();
+                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
+                            imagenfinal.Save(path, ImageFormat.Jpeg);
+
+                        }
+                        
+
+                        //fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
+                        //file.SaveAs(fname);
+
+      
+
+
+
+
 
                         //Luego guardamos la url en la db
                         Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
@@ -518,6 +652,31 @@ namespace comerciamarketing_webapp.Controllers
             else
             {
                 return Json("No files selected.");
+            }
+        }
+
+        public ActionResult Form_templatepreview(int? id_form)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                var Forms_details = db.Forms_details.Where(c => c.ID_form == id_form && c.original==true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
+
+
+
+
+                return View(Forms_details.ToList());
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
         }
     }

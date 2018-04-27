@@ -130,15 +130,18 @@
                                                 <td>
                                                     @if (item.ID_demostate == 4)
                                                     {
-                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });
+                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) 
                                                     }   else if (item.ID_demostate == 2) {<!--In progress-->
-                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });
+                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) 
 
                                                     }
                                                     else
                                                     {
                                                         @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
                                                         @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
                                                         @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
                                                     }
                                                 </td>
@@ -259,11 +262,11 @@ else
                                                 <td><!--finished-->
                                                     @if (item.ID_demostate == 4)
                                                     {
-                                                        @Html.ActionLink("Preview", "Details", new { id = item.ID_demo })
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
                                                         
                                                     } else if (item.ID_demostate == 2) {<!--In progress-->
                                                         @Html.ActionLink("Continue demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Details", new { id = item.ID_demo })
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
 
                                                     } else if (item.ID_demostate == 1) {<!--Canceled-->
                                                         
@@ -271,8 +274,8 @@ else
                                                     else
                                                     {
                                                         @Html.ActionLink("Start demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                    @Html.ActionLink("Preview", "Details", new { id = item.ID_demo }) @Html.Label(" | ")
-                                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
+                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
                                                     }
                                                 </td>
                                             </tr>
