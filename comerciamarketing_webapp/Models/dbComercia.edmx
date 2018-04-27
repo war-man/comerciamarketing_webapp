@@ -58,10 +58,12 @@
           <Property Name="ID_formresourcetype" Type="int" />
           <Property Name="fsource" Type="text" />
           <Property Name="fdescription" Type="text" />
-          <Property Name="fvalue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="fvalue" Type="int" />
           <Property Name="ID_form" Type="int" />
           <Property Name="ID_demo" Type="int" />
           <Property Name="original" Type="bit" />
+          <Property Name="obj_order" Type="int" />
+          <Property Name="obj_group" Type="int" />
         </EntityType>
         <EntityType Name="historial_conexiones">
           <Key>
@@ -566,12 +568,14 @@
           <Property Name="ID_formresourcetype" Type="Int32" />
           <Property Name="fsource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="fvalue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="fvalue" Type="Int32" />
           <Property Name="ID_form" Type="Int32" />
           <Property Name="ID_demo" Type="Int32" />
           <Property Name="original" Type="Boolean" />
           <NavigationProperty Name="form_resource_type" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF" FromRole="Forms_details" ToRole="form_resource_type" />
           <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" FromRole="Forms_details" ToRole="Forms" />
+          <Property Name="obj_order" Type="Int32" />
+          <Property Name="obj_group" Type="Int32" />
         </EntityType>
         <Association Name="FK__Demos__ID_demost__04E4BC85">
           <End Type="dbComerciaModel.Demo_state" Role="Demo_state" Multiplicity="0..1" />
@@ -769,6 +773,8 @@
           <EntitySetMapping Name="Forms_details">
             <EntityTypeMapping TypeName="dbComerciaModel.Forms_details">
               <MappingFragment StoreEntitySet="Forms_details">
+                <ScalarProperty Name="obj_group" ColumnName="obj_group" />
+                <ScalarProperty Name="obj_order" ColumnName="obj_order" />
                 <ScalarProperty Name="original" ColumnName="original" />
                 <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
                 <ScalarProperty Name="ID_form" ColumnName="ID_form" />

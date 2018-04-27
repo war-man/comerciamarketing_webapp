@@ -1,0 +1,48 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Forms>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col" style="overflow-x:auto;">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Forms</a></li>
+
+                </ul>
+            </div>
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        Form name
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fdescription)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID_form }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID_form }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID_form })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+</div>
+        </div>
+    </div>

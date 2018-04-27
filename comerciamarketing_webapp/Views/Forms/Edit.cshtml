@@ -1,0 +1,797 @@
+﻿@model comerciamarketing_webapp.Models.Forms
+@{
+    ViewBag.Title = "Comercia Marketing";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en" class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html lang="en" class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html lang="en" class="lt-ie9"> <![endif]-->
+<!--[if IE 9]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Comercia Marketing App">
+    <title>@ViewData["Title"]</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    @Html.Partial("~/Views/Shared/Styles.cshtml")
+    <style>
+
+        .cf:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        * html .cf {
+            zoom: 1;
+        }
+
+        *:first-child + html .cf {
+            zoom: 1;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /**
+        * Nestable
+        */
+
+        .dd {
+            position: relative;
+            display: inline;
+            margin: 0;
+            padding: 0;
+            max-width: 600px;
+            list-style: none;
+            font-size: 13px;
+            line-height: 20px;
+        }
+
+        .dd-list {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            .dd-list .dd-list {
+                padding-left: 30px;
+            }
+
+        .dd-collapsed .dd-list {
+            display: none;
+        }
+
+        .dd-item,
+        .dd-empty,
+        .dd-placeholder {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 20px;
+            font-size: 13px;
+            line-height: 20px;
+        }
+
+        .dd-handle {
+            display: block;
+            height: 30px;
+            margin: 5px 0;
+            padding: 5px 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            background: #fafafa;
+            background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+            background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+            background: linear-gradient(top, #fafafa 0%, #eee 100%);
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+            .dd-handle:hover {
+                color: #2ea8e5;
+                background: #fff;
+            }
+
+        .dd-item > button {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            float: left;
+            width: 25px;
+            height: 20px;
+            margin: 5px 0;
+            padding: 0;
+            text-indent: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 0;
+            background: transparent;
+            font-size: 12px;
+            line-height: 1;
+            text-align: center;
+            font-weight: bold;
+        }
+
+            .dd-item > button:before {
+                content: '+';
+                display: block;
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                text-indent: 0;
+            }
+
+            .dd-item > button[data-action="collapse"]:before {
+                content: '-';
+            }
+
+        .dd-placeholder,
+        .dd-empty {
+            margin: 5px 0;
+            padding: 0;
+            min-height: 30px;
+            background: #f2fbff;
+            border: 1px dashed #b6bcbf;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .dd-empty {
+            border: 1px dashed #bbb;
+            min-height: 100px;
+            background-color: #e5e5e5;
+            background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        .dd-dragel {
+            position: absolute;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+            .dd-dragel > .dd-item .dd-handle {
+                margin-top: 0;
+            }
+
+            .dd-dragel .dd-handle {
+                -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+                box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+            }
+
+        /**
+        * Nestable Extras
+        */
+
+        .nestable-lists {
+            display: block;
+            clear: both;
+            padding: 30px 0;
+            width: 100%;
+            border: 0;
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+        }
+
+        #nestable-menu {
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        #nestable-output,
+        #nestable2-output {
+            width: 100%;
+            height: 7em;
+            font-size: 0.75em;
+            line-height: 1.333333em;
+            font-family: Consolas, monospace;
+            padding: 5px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        #nestable2 .dd-handle {
+            color: #fff;
+            border: 1px solid #999;
+            background: #bbb;
+            background: -webkit-linear-gradient(top, #bbb 0%, #999 100%);
+            background: -moz-linear-gradient(top, #bbb 0%, #999 100%);
+            background: linear-gradient(top, #bbb 0%, #999 100%);
+        }
+
+            #nestable2 .dd-handle:hover {
+                background: #bbb;
+            }
+
+        #nestable2 .dd-item > button:before {
+            color: #fff;
+        }
+
+        .dd-hover > .dd-handle {
+            background: #2ea8e5 !important;
+        }
+
+        /**
+        * Nestable Draggable Handles
+        */
+
+        .dd3-content {
+            display: block;
+            height: 30px;
+            margin: 5px 0;
+            padding: 5px 10px 5px 40px;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            background: #fafafa;
+            background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+            background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+            background: linear-gradient(top, #fafafa 0%, #eee 100%);
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+            .dd3-content:hover {
+                color: #2ea8e5;
+                background: #fff;
+            }
+
+        .dd-dragel > .dd3-item > .dd3-content {
+            margin: 0;
+        }
+
+        .dd3-item > button {
+            margin-left: 30px;
+        }
+
+        .dd3-handle {
+            position: absolute;
+            margin: 0;
+            left: 0;
+            top: 0;
+            cursor: pointer;
+            width: 30px;
+            text-indent: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 1px solid #aaa;
+            background: #ddd;
+            background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
+            background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
+            background: linear-gradient(top, #ddd 0%, #bbb 100%);
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+            .dd3-handle:before {
+                content: '≡';
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 3px;
+                width: 100%;
+                text-align: center;
+                text-indent: 0;
+                color: #fff;
+                font-size: 20px;
+                font-weight: normal;
+            }
+
+            .dd3-handle:hover {
+                background: #ddd;
+            }
+
+        /**
+        * Socialite
+        */
+
+        .socialite {
+            display: block;
+            float: left;
+            height: 35px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#btn_agregarObjeto").click(function () {
+
+                var dropdownlist = document.getElementById("formresourcetype");
+                var ID_tipo_recurso = dropdownlist.options[dropdownlist.selectedIndex].value;
+                var descripciontp = dropdownlist.options[dropdownlist.selectedIndex].text;
+                var label = $("#label_toshow").val();
+
+                if (descripciontp == "Title") {
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                } else if (descripciontp == "Subtitle") {
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                } else if (descripciontp == "Input_text") {
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='"+ label +"'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                } else if (descripciontp == "Picture") {
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                } else if (descripciontp == "Electronic_signature") {
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                }
+
+
+                $("#label_toshow").val("");
+
+                var updateOutput = function (e) {
+                    var list = e.length ? e : $(e.target),
+                        output = list.data('output');
+                    if (window.JSON) {
+                        output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                    } else {
+                        output.val('JSON browser support required for this demo.');
+                    }
+                };
+
+
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            });
+
+            $("#btn_agregarProducto").click(function () {
+
+                var dropdownlist = document.getElementById("formresourcetype");
+                var ID_tipo_recurso = dropdownlist.options[dropdownlist.selectedIndex].value;
+                var descripciontp = dropdownlist.options[dropdownlist.selectedIndex].text;
+
+
+                var products = [];
+                $('#products :selected').each(function (i, selected) {
+                    var $itm = $(this);
+                    products.push({
+                        'ID': $(selected).val(),
+                        'Description': $(selected).text()
+                    });
+
+
+                    //textvalues[i] = $(selected).text();
+                });
+
+                products.forEach(function (element, e) {
+
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + element.ID + "' data-fdescription='" + element.Description + "'><div class='dd-handle'> " + descripciontp + " - " + element.Description + "</li>");
+
+                });
+
+
+
+                var updateOutput = function (e) {
+                    var list = e.length ? e : $(e.target),
+                        output = list.data('output');
+                    if (window.JSON) {
+                        output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                    } else {
+                        output.val('JSON browser support required for this demo.');
+                    }
+                };
+
+
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div class="super_container">
+        <!-- Header -->
+
+        <header class="header trans_300">
+
+            <!-- Top Navigation -->
+
+            <div class="top_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!--<div class="top_nav_left">Representación y desarrollo de marcas</div>-->
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top_nav_right">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+
+            <div class="main_nav_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <img src="~/Content/images/LogoPNG-1.png" height="60" width="190">
+                            </div>
+                            <nav class="navbar">
+                                @if (Session["tipousuario"].ToString() == "1")
+                                {
+                                    <ul class="navbar_menu">
+                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                                        <li><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
+                                        <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
+                                    </ul>
+                                }
+                                else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                                {
+                                    <ul class="navbar_menu">
+                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                                        <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul class="navbar_menu">
+                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                                        <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
+
+                                    </ul>
+                                }
+                                <div class="hamburger_container">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="fs_menu_overlay"></div>
+
+        <!-- Hamburger Menu -->
+
+        <div class="hamburger_menu">
+            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger_menu_content text-right">
+                <ul class="menu_top_nav">
+                    <!--
+                    <li class="menu_item has-children">
+                        <a href="#">
+                            usd
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#">cad</a></li>
+                            <li><a href="#">aud</a></li>
+                            <li><a href="#">eur</a></li>
+                            <li><a href="#">gbp</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li class="menu_item"><a href="http://comerciamarketing.com/">Back to home page</a></li>
+
+
+
+
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="container single_product_container">
+            <div class="row">
+                <div class="col">
+
+                    <!-- Breadcrumbs -->
+
+                    <div class="breadcrumbs d-flex flex-row align-items-center">
+                        <ul>
+                            <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Forms</a></li>
+                        </ul>
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal" style="overflow-x:auto;">
+                            <h4>New form</h4>
+                            <hr />
+                            @Html.HiddenFor(model => model.ID_form)
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <p class="control-label col-md-6">Form name*</p>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.fdescription, new { htmlAttributes = new { @class = "form-control", @required = "required", @id = "txt_title" } })
+                                    @Html.ValidationMessageFor(model => model.fdescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <p class="control-label col-md-12">Resource type</p>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("ID_formresourcetype", null, htmlAttributes: new { @class = "form-control", @id = "formresourcetype" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_label">
+                                <p class="control-label col-md-12">Text to show</p>
+                                <div class="col-md-12">
+                                    <input type="text" id="label_toshow" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_products" style="display:none">
+                                <div class="col-md-offset-2 col-md-12 text-right">
+                                    <input type="button" value="Find products" class="btn btn-primary" id="myBtn">
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_btnadd">
+                                <div class="col-md-offset-2 col-md-12 text-right">
+                                    <input type="button" value="Add" id="btn_agregarObjeto" class="btn btn-primary">
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-horizontal col-md-12">
+                                <div class="cf nestable-lists">
+
+                                    <div class="dd" id="nestable">
+                                        <ol class="dd-list" id="main_list">
+
+                                            @foreach (var item in ViewBag.lista_objetos) {
+                                                 if (item.form_resource_type.fdescription == "Title") {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="@item.fsource" data-fdescription=""><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fsource</div></li>
+                                                } else if (item.form_resource_type.fdescription == "Subtitle") {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="@item.fsource" data-fdescription=""><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fsource</div></li>
+                                                } else if (item.form_resource_type.fdescription == "Input_text") {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="" data-fdescription="@item.fdescription"><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fdescription</div></li>
+                                                } else if (item.form_resource_type.fdescription == "Picture") {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="" data-fdescription="@item.fdescription"><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fdescription</div></li>
+                                                } else if (item.form_resource_type.fdescription == "Electronic_signature") {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="" data-fdescription="@item.fdescription"><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fdescription</div></li>
+                                                }else if (item.form_resource_type.fdescription == "Product" || item.form_resource_type.fdescription == "Product_sample")
+                                                {
+                                                    <li class="dd-item" data-id_resource="@item.ID_formresourcetype" data-fsource="@item.fsource" data-fdescription="@item.fdescription"><div class="dd-handle"> @item.form_resource_type.fdescription - @item.fdescription</div></li>
+                                                }
+                                            }
+
+
+                                        </ol>
+
+
+
+
+                                    </div>
+                                </div>
+                                <a id="clear_list" href="#" class="close" data-dismiss="alert" aria-label="close">Clear list</a>
+                                <textarea id="nestable-output" name="nestable_output" hidden></textarea>
+                                <br /><br /><br />
+                                <div class="form-group">
+                                    <div class="col-md-12 text-right">
+                                        <input type="submit" value="Save" class="btn btn-info" />
+                                        @Html.ActionLink("Back", "Index")
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer_nav_container">
+                            <div class="cr">Comercia Marketing (c) 2017. All rights reserved.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-left">Select products</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p class="control-label col-md-6">Vendor</p>
+                        <div class="col-md-12">
+                            @Html.DropDownList("ID_empresa", null, htmlAttributes: new { @class = "form-control", @id = "Vendor" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label col-md-8">Products</p>
+                        <div class="col-md-12">
+                            <select multiple="multiple" id="products">
+                                <option value="AL">TACOS</option>
+                                <option value="AK">QUESITOS</option>
+                                <option value="EF">NACHOS</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Add" id="btn_agregarProducto" class="btn btn-primary" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @Html.Partial("~/Views/Shared/Scripts.cshtml")
+
+
+
+    <script src="~/Content/js/jquery.nestable.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+
+            // activate Nestable for list 1
+            $('#nestable').nestable({
+                group: 1
+            })
+                .on('change', updateOutput);
+
+            /* activate Nestable for list 2
+            $('#nestable2').nestable({
+                group: 1
+            })
+                .on('change', updateOutput);
+                */
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
+            //updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+
+            //$('#nestable-menu').on('click', function (e) {
+            //    var target = $(e.target),
+            //        action = target.data('action');
+            //    if (action === 'expand-all') {
+            //        $('.dd').nestable('expandAll');
+            //    }
+            //    if (action === 'collapse-all') {
+            //        $('.dd').nestable('collapseAll');
+            //    }
+            //});
+
+            //$('#nestable3').nestable();
+
+        });
+    </script>
+    @*<script>
+
+
+            $('#txt_title').on('input', function (e) {
+                if ($(this).data("lastval") != $(this).val()) {
+                    $(this).data("lastval", $(this).val());
+                    //change action
+                    //alert($(this).val());
+                    $("#form_title").text("Title - " + $(this).val());
+
+                };
+
+
+
+
+
+            });
+
+        </script>*@
+    <script type="text/javascript">
+        $(function () {
+            $("#formresourcetype").change(function () {
+                var txt = $("#formresourcetype option:selected").text()
+                console.log(txt)
+
+                if (txt == "Product" || txt == "Product_sample") {
+                    var x = document.getElementById("div_label");
+                    x.style.display = "none";
+
+                    var p = document.getElementById("div_products");
+                    p.style.display = "block";
+
+                    var b = document.getElementById("div_btnadd");
+                    b.style.display = "none";
+                } else {
+                    var x = document.getElementById("div_label");
+                    x.style.display = "block";
+
+                    var p = document.getElementById("div_products");
+                    p.style.display = "none";
+
+                    var b = document.getElementById("div_btnadd");
+                    b.style.display = "block";
+                }
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#myBtn").click(function () {
+                $("#myModal").modal();
+            });
+        });
+    </script>
+    <script>
+        $('#products').multipleSelect();
+
+
+    </script>
+    <script>
+        $("#clear_list").on("click", function (e) {
+            e.preventDefault();
+            $(".dd-item").remove();
+
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ﻿@model comerciamarketing_webapp.Models.Demos
 @{
-    ViewBag.Title = "Demos";
+    ViewBag.Title = "Comercia Marketing";
 }
 <div class="fs_menu_overlay"></div>
 <div class="container single_product_container">
@@ -72,21 +72,11 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ID_usuario, "Assigned User", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ID_usuario", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ID_usuario, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ID_form, "Form template", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ID_form", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ID_form, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.ID_usuario)
+
+        @Html.HiddenFor(model => model.ID_form)
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.ID_demostate, "State", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -97,7 +87,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.comments,"Comment", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.comments, "Comment", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.comments, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.comments, "", new { @class = "text-danger" })

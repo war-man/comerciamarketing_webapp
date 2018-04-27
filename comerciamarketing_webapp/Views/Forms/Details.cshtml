@@ -1,0 +1,42 @@
+﻿@model comerciamarketing_webapp.Models.Forms
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="fs_menu_overlay"></div>
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Forms</a></li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <h4>Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fdescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fdescription)
+        </dd>
+
+    </dl>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID_form }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+</div>
+

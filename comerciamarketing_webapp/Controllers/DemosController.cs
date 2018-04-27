@@ -25,8 +25,20 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                var demos = db.Demos.Include(d => d.Demo_state).Include(d => d.Forms).Include(d => d.Usuarios);
-                return View(demos.ToList());
+                if (datosUsuario.ID_rol == 6 || datosUsuario.ID_rol==1)
+                {
+                    var demos = db.Demos.Include(d => d.Demo_state).Include(d => d.Forms).Include(d => d.Usuarios);
+                    ViewBag.rol = 6;
+                    return View(demos.ToList());
+
+                }
+                else {
+                    var demos = db.Demos.Where(c=>c.ID_usuario == ID).Include(d => d.Demo_state).Include(d => d.Forms).Include(d => d.Usuarios);
+                    ViewBag.rol = 7;
+                    return View(demos.ToList());
+                }
+
+                
 
             }
             else
@@ -115,6 +127,21 @@ namespace comerciamarketing_webapp.Controllers
                 db.Demos.Add(demos);
                 db.SaveChanges();
 
+                //Guardamos el detalle
+                var detalles_acopiar = (from a in db.Forms_details where (a.ID_form == demos.ID_form && a.original == true) select a).ToList();
+
+                foreach (var item in detalles_acopiar) {
+                    Forms_details nuevodetalle = new Forms_details();
+                    nuevodetalle = item;
+                    nuevodetalle.original = false;
+                    nuevodetalle.ID_demo = demos.ID_demo;
+
+                    db.Forms_details.Add(nuevodetalle);
+                    db.SaveChanges();
+                }
+
+
+
                 TempData["exito"] = "Demo created successfully.";
                 return RedirectToAction("Index");
             }
@@ -149,7 +176,7 @@ namespace comerciamarketing_webapp.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.ID_demostate = new SelectList(db.Demo_state, "ID_demostate", "sdescription", demos.ID_demostate);
-                ViewBag.ID_form = new SelectList(db.Forms, "ID_form", "fdescription", demos.ID_form);
+                //ViewBag.ID_form = new SelectList(db.Forms, "ID_form", "fdescription", demos.ID_form);
 
                 var usuarios = db.Usuarios.Where(s => s.ID_tipomembresia == 6 && s.ID_rol == 7).ToList();
                 IEnumerable<SelectListItem> selectList = from s in usuarios
@@ -159,8 +186,8 @@ namespace comerciamarketing_webapp.Controllers
                                                              Text = s.nombre.ToString() + " " + s.apellido.ToString() + " - " + s.correo.ToString()
                                                          };
 
-
-                ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text", demos.ID_usuario);
+             
+                //ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text", demos.ID_usuario);
                 return View(demos);
 
             }
@@ -180,6 +207,9 @@ namespace comerciamarketing_webapp.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (demos.comments == "" || demos.comments == null) {
+                    demos.comments = "";
+                }
                 db.Entry(demos).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["exito"] = "Demo saved successfully.";
@@ -210,6 +240,12 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                if (demos.ID_demostate == 4)
+                {
+                    TempData["advertencia"] = "This demo is finished, you can't delete it.";
+                    return RedirectToAction("Index");
+                }
                 return View(demos);
 
             }
@@ -227,9 +263,21 @@ namespace comerciamarketing_webapp.Controllers
         {
             try
             {
+        
                 Demos demos = db.Demos.Find(id);
                 db.Demos.Remove(demos);
                 db.SaveChanges();
+
+                //Eliminamos el detalle que genero el demo en Forms_details
+                var lista_eliminar = (from c in db.Forms_details where (c.ID_demo == id && c.original ==false) select c).ToList();
+
+                foreach (var item in lista_eliminar) {
+                    Forms_details detailstodelete = db.Forms_details.Find(item.ID_details);
+                    db.Forms_details.Remove(detailstodelete);
+                    db.SaveChanges();
+
+                }
+
                 TempData["exito"] = "Demo deleted successfully.";
                 return RedirectToAction("Index");
             }
@@ -248,5 +296,52 @@ namespace comerciamarketing_webapp.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Form_template(int? id_demo, int? id_form)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                var Forms_details = db.Forms_details.Where(c => c.ID_demo == id_demo && c.ID_form ==id_form).OrderBy(c=>c.obj_group).ThenBy(c=> c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
+
+                var vendor = (from b in db.Demos where (b.ID_demo == id_demo) select b).FirstOrDefault();
+                ViewBag.vendor = vendor.vendor.ToString();
+
+                Demos demos = db.Demos.Find(id_demo);
+                if (demos == null)
+                {
+                    return HttpNotFound();
+                }
+                //Finalizado  o cancelado
+                if (demos.ID_demostate == 4 || demos.ID_demostate == 1)
+                {
+                    TempData["advertencia"] = "This demo is finished.";
+                    return RedirectToAction("Index");
+                }
+
+                if (demos.ID_demostate == 3)
+                {
+                    demos.ID_demostate = 2;
+                    db.Entry(demos).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+
+                return View(Forms_details.ToList());
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
     }
 }

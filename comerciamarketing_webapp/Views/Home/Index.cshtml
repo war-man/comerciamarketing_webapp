@@ -107,12 +107,15 @@
     {
                 @Html.AntiForgeryToken();
                 @Html.ValidationSummary();*@
+
                     <form class="form-signin" method="post" id="form">
                         <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
                         <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+
                         <button class="btn btn-lg btn-primary btn-block" type="submit">
                             Log in
                         </button>
+
                     </form>
                 <!--
 <label class="checkbox pull-left">
@@ -168,8 +171,6 @@
                         url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
                         dataType: 'json',
                         success: function (jsondatos) {
-                            console.log("funciona")
-                            console.log(jsondatos.country_name);
 
                             var datosusuario = {
                                 ip : jsondatos.ip,

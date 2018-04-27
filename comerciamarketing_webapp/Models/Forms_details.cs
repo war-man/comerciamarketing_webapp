@@ -18,10 +18,12 @@ namespace comerciamarketing_webapp.Models
         public Nullable<int> ID_formresourcetype { get; set; }
         public string fsource { get; set; }
         public string fdescription { get; set; }
-        public Nullable<decimal> fvalue { get; set; }
+        public Nullable<int> fvalue { get; set; }
         public Nullable<int> ID_form { get; set; }
         public Nullable<int> ID_demo { get; set; }
         public Nullable<bool> original { get; set; }
+        public Nullable<int> obj_order { get; set; }
+        public Nullable<int> obj_group { get; set; }
     
         public virtual form_resource_type form_resource_type { get; set; }
         public virtual Forms Forms { get; set; }
