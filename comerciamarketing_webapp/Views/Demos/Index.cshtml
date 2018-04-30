@@ -6,7 +6,7 @@
 {
     <div class="container product_section_container">
         <div class="row">
-            <div class="col">
+            <div class="col" style="overflow-x:auto;">
 
                 <!-- Breadcrumbs -->
 
@@ -53,118 +53,120 @@
                     <div class="products_iso">
                         <div class="row">
                             <div class="col">
-                                <!-- Product Sorting -->
+                                <!-- Product Sorting
 
-                                <div class="product_sorting_container product_sorting_container_top">
-                                    <ul class="product_sorting">
-                                        <li>
-                                            <span class="type_sorting_text">Default Sorting</span>
-                                            <i class="fa fa-angle-down"></i>
-                                            <ul class="sorting_type">
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Last 10 </span></li>
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Waiting demos</span></li>
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Demos finished</span></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                    <div class="product_sorting_container product_sorting_container_top">
+                                        <ul class="product_sorting">
+                                            <li>
+                                                <span class="type_sorting_text">Default Sorting</span>
+                                                <i class="fa fa-angle-down"></i>
+                                                <ul class="sorting_type">
+                                                    <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
+                                                    <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Last 10 </span></li>
+                                                    <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Waiting demos</span></li>
+                                                    <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Demos finished</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
 
-                                </div>
-
+                                    </div>
+    -->
                                 <!-- Product Grid -->
 
-                                <div class="product-grid">
-                                    <h4>Last demos</h4>
-                                    <table class="table">
-                                        <tr>
-                                            <th>
-                                                Vendor
-                                            </th>
-                                            <th>
-                                                Store
-                                            </th>
-                                            <th>
-                                                Visit date
-                                            </th>
-                                            <th>
-                                                User assigned
-                                            </th>
-                                            <th>
-                                                State
-                                            </th>
-                                            <th>
-                                                Finished
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.vendor)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.store)
-                                                </td>
-                                                <td>
-                                                    @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Usuarios.nombre) @Html.DisplayFor(modelItem => item.Usuarios.apellido)
-                                                </td>
-                                                <td>
-                                                    @if (item.ID_demostate == 3)
-                                                    {
-                                                        <p style="color:orange;">On Hold</p>
-                                                    }
-                                                    else if (item.ID_demostate == 1)
-                                                    {
-                                                        <p style="color:red;">Canceled</p>
-                                                    }
-                                                    else if (item.ID_demostate == 2)
-                                                    {
-                                                        <p style="color:green;">In progress</p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <p style="color:dodgerblue;">Finished</p>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @if (item.ID_demostate==3 || item.ID_demostate == 1 || item.ID_demostate == 2)
-                                                    {
 
-                                                    }
-                                                    else
-                                                    {
-                                                         @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @if (item.ID_demostate == 4)
-                                                    {
-                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
-                                                        @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo }) 
-                                                    }   else if (item.ID_demostate == 2) {<!--In progress-->
-                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
-                                                        @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo }) 
+                                <h4>Last demos</h4>
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            Vendor
+                                        </th>
+                                        <th>
+                                            Store
+                                        </th>
+                                        <th>
+                                            Visit date
+                                        </th>
+                                        <th>
+                                            User assigned
+                                        </th>
+                                        <th>
+                                            State
+                                        </th>
+                                        <th>
+                                            Finished
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    @foreach (var item in Model)
+        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.vendor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.store)
+                                </td>
+                                <td>
+                                    @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Usuarios.nombre) @Html.DisplayFor(modelItem => item.Usuarios.apellido)
+                                </td>
+                                <td>
+                                    @if (item.ID_demostate == 3)
+        {
+                            <p style="color:orange;">On Hold</p>
+}
+else if (item.ID_demostate == 1)
+{
+                            <p style="color:red;">Canceled</p>
+}
+else if (item.ID_demostate == 2)
+{
+                            <p style="color:green;">In progress</p>
+}
+else
+{
+                            <p style="color:dodgerblue;">Finished</p>
+}
+                                </td>
+                                <td>
+                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
+        {
 
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
-                                                        @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                        @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
-                                                    }
-                                                </td>
-                                            </tr>
-                                        }
-                                    </table>
+        }
+        else
+        {
+                            @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
+}
+                                </td>
+                                <td>
+                                    @if (item.ID_demostate == 4)
+        {
+                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
+                            @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })
+}
+else if (item.ID_demostate == 2)
+{<!--In progress-->
+                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
+                            @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })
 
-                                </div>
+}
+else
+{
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
+                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
+}
+                                </td>
+                            </tr>
+}
+                                </table>
+
+
                             </div>
                         </div>
                     </div>
@@ -210,6 +212,7 @@
             </div>
         </div>
     </div>
+
 }
 else
 {
@@ -241,59 +244,78 @@ else
                         <th>
                             State
                         </th>
+                        <th>
+                            Finished
+                        </th>
                         <th></th>
                     </tr>
 
                     @foreach (var item in Model)
                     {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.vendor)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.store)
-                                                </td>
-                                                <td>
-                                                    @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
-                                                </td>
-                                                <td>
-                                                    @if (item.ID_demostate == 3)
-                                                    {
-                                                        <p style="color:orange;">On Hold</p>
-                                                    }
-                                                    else if (item.ID_demostate == 1)
-                                                    {
-                                                        <p style="color:red;">Canceled</p>
-                                                    }
-                                                    else if (item.ID_demostate == 2)
-                                                    {
-                                                        <p style="color:green;">In progress</p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <p style="color:dodgerblue;">Finished</p>
-                                                    }
-                                                </td>
-                                                <td><!--finished-->
-                                                    @if (item.ID_demostate == 4)
-                                                    {
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
-                                                        
-                                                    } else if (item.ID_demostate == 2) {<!--In progress-->
-                                                        @Html.ActionLink("Continue demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.vendor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.store)
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
+                            </td>
+                            <td>
+                                @if (item.ID_demostate == 3)
+                                {
+                                    <p style="color:orange;">On Hold</p>
+                                }
+                                else if (item.ID_demostate == 1)
+                                {
+                                    <p style="color:red;">Canceled</p>
+                                }
+                                else if (item.ID_demostate == 2)
+                                {
+                                    <p style="color:green;">In progress</p>
+                                }
+                                else
+                                {
+                                    <p style="color:dodgerblue;">Finished</p>
+                                }
+                            </td>
+                            <td>
+                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
+                                {
 
-                                                    } else if (item.ID_demostate == 1) {<!--Canceled-->
-                                                        
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.ActionLink("Start demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                        @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
-                                                    }
-                                                </td>
-                                            </tr>
+                                }
+                                else
+                                {
+                            @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
+                                }
+                                </td>
+
+                            <td>
+                                <!--finished-->
+                                @if (item.ID_demostate == 4)
+                                {
+                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+
+                                }
+                                else if (item.ID_demostate == 2)
+                                {<!--In progress-->
+                                    @Html.ActionLink("Continue demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+
+                                }
+                                else if (item.ID_demostate == 1)
+                                {<!--Canceled-->
+
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Start demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
+                                }
+                            </td>
+                        </tr>
                     }
 
                 </table>

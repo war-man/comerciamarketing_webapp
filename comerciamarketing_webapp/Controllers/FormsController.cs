@@ -552,7 +552,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 Demos demo = db.Demos.Find(Convert.ToInt32(id_demo));
                 demo.ID_demostate = 4;
-                demo.end_date = DateTime.Now;
+                demo.end_date = DateTime.UtcNow;
                 db.Entry(demo).State = EntityState.Modified;
                 db.SaveChanges();
 

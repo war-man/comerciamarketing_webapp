@@ -187,12 +187,9 @@
 <script>
         $(function () {
             $("#save_formtemplate").click(function () {
-                var ip = "";
+                var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
-                $.getJSON('http://jsonip.com/?callback=?', function (r) {
-                    ip = r.ip;
-                    console.log(ip);
-                });
+
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
 
@@ -375,12 +372,9 @@
 <script>
         $(function () {
             $("#finish_formtemplate").click(function () {
-                var ip = "";
+                var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
-                $.getJSON('http://jsonip.com/?callback=?', function (r) {
-                    ip = r.ip;
-                    console.log(ip);
-                });
+
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
 

@@ -58,6 +58,7 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Index()
         {
             ViewBag.IPLOCAL = GetExternalIp();
+            Session["ip_user"] = GetExternalIp();
             return View();
         }
 
@@ -135,6 +136,9 @@ namespace comerciamarketing_webapp.Controllers
             }
 
         }
+
+
+
 
         public ActionResult Cerrar_sesion()
         {
