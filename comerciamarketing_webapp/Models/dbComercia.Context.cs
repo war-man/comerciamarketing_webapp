@@ -37,5 +37,6 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<form_resource_type> form_resource_type { get; set; }
         public virtual DbSet<Forms> Forms { get; set; }
         public virtual DbSet<Forms_details> Forms_details { get; set; }
+        public virtual DbSet<demo_log> demo_log { get; set; }
     }
 }

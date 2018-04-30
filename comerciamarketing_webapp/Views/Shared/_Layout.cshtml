@@ -8,7 +8,21 @@
     <title>@ViewData["Title"]</title>
 
     @Html.Partial("~/Views/Shared/Styles.cshtml")
-   
+    <!-- This css is to ensure that the google map contols (zoom bar etc) show and size correctly. -->
+    <style>
+        #map_canvas img {
+            max-width: none
+        }
+    </style>
+    <!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
+    <style>
+        .infoDiv {
+            height: 200px;
+            width: 300px;
+            -webkit-user-select: none;
+            background-color: white;
+        }
+    </style>
     <style>
         #sig-canvas {
             border: 2px dotted #CCCCCC;
@@ -20,7 +34,7 @@
             width: 100%;
         }
     </style>
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g"></script>
 </head>
 <body>
     <div class="super_container">
@@ -37,83 +51,83 @@
 
         if (ViewBag.bloquearcontenido.ToString() == "si")
         {
-    <script type="text/javascript" language="javascript">
-        $(function () //right click disabled
-        {
-            $(this).bind('contextmenu', function () {
-                //alert("Function disabled");
-                return false;
-            })
-        });
-
-        function copyToClipboard() {
-            var aux = document.createElement("input");
-            aux.setAttribute("value", "Function Disabled.....");
-            document.body.appendChild(aux);
-            aux.select();
-            document.execCommand("copy");
-            document.body.removeChild(aux);
-            //alert("Print screen disabled.");
-
-
-
-        }
-
-        function blockPrint() {
-            //alert("Print is not allowed...");
-        }
-
-        function PreSaveAction() {
-            //alert("saving..");
-        }
-
-        $(function () {
-            $(this).keyup(function (e) {
-                if (e.keyCode == 44 || e.keyCode == 137 || e.KeyCode == 93)
-                //100 Save 137 SHift F10 93 RightClick 44 PrintScreen
+            <script type="text/javascript" language="javascript">
+                $(function () //right click disabled
                 {
-                    copyToClipboard();
-                    return false;
+                    $(this).bind('contextmenu', function () {
+                        //alert("Function disabled");
+                        return false;
+                    })
+                });
+
+                function copyToClipboard() {
+                    var aux = document.createElement("input");
+                    aux.setAttribute("value", "Function Disabled.....");
+                    document.body.appendChild(aux);
+                    aux.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(aux);
+                    //alert("Print screen disabled.");
+
+
+
                 }
-            })
-        });
 
-        //disable Ctrl + keys
-        document.onkeydown = function (e) {
-            e = e || window.event;//Get event
-            if (e.ctrlKey) {
-                var c = e.which || e.keyCode;//Get key code
-                switch (c) {
-                    case 83://Block Ctrl+S
-                    case 80: //block Ctrl+P
-                    case 17: //block Ctrl
-                    case 16: //block Shift
-                        e.preventDefault();
-                        e.stopPropagation();
-                        alert("Esta función han sido bloqueada");
-                        break;
+                function blockPrint() {
+                    //alert("Print is not allowed...");
                 }
-            }
-        };
+
+                function PreSaveAction() {
+                    //alert("saving..");
+                }
+
+                $(function () {
+                    $(this).keyup(function (e) {
+                        if (e.keyCode == 44 || e.keyCode == 137 || e.KeyCode == 93)
+                        //100 Save 137 SHift F10 93 RightClick 44 PrintScreen
+                        {
+                            copyToClipboard();
+                            return false;
+                        }
+                    })
+                });
+
+                //disable Ctrl + keys
+                document.onkeydown = function (e) {
+                    e = e || window.event;//Get event
+                    if (e.ctrlKey) {
+                        var c = e.which || e.keyCode;//Get key code
+                        switch (c) {
+                            case 83://Block Ctrl+S
+                            case 80: //block Ctrl+P
+                            case 17: //block Ctrl
+                            case 16: //block Shift
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("Esta función han sido bloqueada");
+                                break;
+                        }
+                    }
+                };
 
 
-        $(window).focus(function () {
-            $("body").show();
-        }).blur(function () {
-            $("body").show();
-        });
+                $(window).focus(function () {
+                    $("body").show();
+                }).blur(function () {
+                    $("body").show();
+                });
 
-        function setClipBoardData() { //override system function - make clipBoard null always
-            setInterval("window.clipboardData.setData('text','')", 20);
-        }
-        function blockError() {
-            window.location.reload(true);
-            return true;
-        }
-    </script>
-            }
+                function setClipBoardData() { //override system function - make clipBoard null always
+                    setInterval("window.clipboardData.setData('text','')", 20);
+                }
+                function blockError() {
+                    window.location.reload(true);
+                    return true;
+                }
+            </script>
         }
     }
+}
 
 
 @if (TempData["error"] != null)
@@ -159,27 +173,35 @@
         };
     </script>
 }
-    <script type="text/javascript">
-        $('#newpassword, #retrypassword').on('keyup', function () {
-            if ($('#newpassword').val() == $('#retrypassword').val()) {
-                $('#message').html('Matching').css('color', 'green');
-                
-            } else
-                $('#message').html('Not Matching').css('color', 'red');
-        });
+<script type="text/javascript">
+    $('#newpassword, #retrypassword').on('keyup', function () {
+        if ($('#newpassword').val() == $('#retrypassword').val()) {
+            $('#message').html('Matching').css('color', 'green');
 
-    </script>
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+
+</script>
 <!--SCRIPT FORM_TEMPLATE SAVE-->
-    <script>
+<script>
         $(function () {
             $("#save_formtemplate").click(function () {
+                var ip = "";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+                $.getJSON('http://jsonip.com/?callback=?', function (r) {
+                    ip = r.ip;
+                    console.log(ip);
+                });
+                var id_demo = "";
+                id_demo = document.getElementById('id_demo').value;
 
                 var objects = [];
                 $('#loadingmessage').show();
                 $.each($('input.form-control'), function () {
 
                     //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-                    
+
                     objects.push({
                         id: $(this).attr('id'),
                         text: $(this).val()
@@ -234,7 +256,7 @@
                     contentType: 'application/json; charset=utf-8',
                     success: function (result) {
 
-                        // Checking whether FormData is available in browser  
+                        // Checking whether FormData is available in browser
                         if (window.FormData !== undefined) {
                             $.each($('input[type="file"]'), function () {
 
@@ -244,21 +266,21 @@
 
                                 var files = fileUpload.files;
 
-                                // Create FormData object  
+                                // Create FormData object
                                 var fileData = new FormData();
 
-                                // Looping over all files and add it to FormData object  
+                                // Looping over all files and add it to FormData object
                                 for (var i = 0; i < files.length; i++) {
                                     fileData.append(files[i].name, files[i]);
                                 }
 
-                                // Adding one more key to FormData object  
-                                fileData.append('id', ID); 
+                                // Adding one more key to FormData object
+                                fileData.append('id', ID);
                                 $.ajax({
                                     url: '/Forms/UploadFiles',
                                     type: "POST",
-                                    contentType: false, // Not to set any content header  
-                                    processData: false, // Not to process data  
+                                    contentType: false, // Not to set any content header
+                                    processData: false, // Not to process data
                                     data: fileData,
                                     success: function (result) {
 
@@ -268,6 +290,56 @@
                                     }
                                 });
                             });
+
+
+
+                    // get the API result via jQuery.ajax
+                    $.ajax({
+                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        dataType: 'json',
+                        success: function (jsondatos) {
+
+                            var datosusuario = {
+                                ip: jsondatos.ip,
+                                ID_demo: id_demo,
+                                hostname : jsondatos.hostname,
+                                typeh : jsondatos.type,
+                                continent_name  : jsondatos.continent_name,
+                                country_code : jsondatos.country_code,
+                                country_name : jsondatos.country_name,
+                                region_code : jsondatos.region_code,
+                                region_name : jsondatos.region_name,
+                                city : jsondatos.city,
+                                latitude : jsondatos.latitude,
+                                longitude : jsondatos.longitude,
+                                action: "Save"
+
+                            };
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("demo_logsave", "Demos")',
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(datosusuario),
+                                success: function (model) {
+                                    if (model.success) {
+                                        console.log("Demo log success")
+                                    } else {
+                                        console.log("Demo log error")
+
+                                    }
+
+
+
+                             }
+                            });
+
+                        }
+                    });
+
+
+
 
                             $('#loadingmessage').hide();
                             new PNotify({
@@ -280,7 +352,7 @@
 
                         else {
                             alert("FormData is not supported.");
-                        }  
+                        }
 
                     },
                     error: function (request) {
@@ -297,12 +369,21 @@
             );
         });
 
-    </script>
+</script>
 
 <!--FORM TEMPLATE FINISH-->
-    <script>
+<script>
         $(function () {
             $("#finish_formtemplate").click(function () {
+                var ip = "";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+                $.getJSON('http://jsonip.com/?callback=?', function (r) {
+                    ip = r.ip;
+                    console.log(ip);
+                });
+                var id_demo = "";
+                id_demo = document.getElementById('id_demo').value;
+
 
                 var objects = [];
                 $('#loadingmessage').show();
@@ -398,6 +479,55 @@
                                     }
                                 });
                             });
+
+
+                            // get the API result via jQuery.ajax
+                    $.ajax({
+                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        dataType: 'json',
+                        success: function (jsondatos) {
+
+                            var datosusuario = {
+                                ip: jsondatos.ip,
+                                ID_demo: id_demo,
+                                hostname : jsondatos.hostname,
+                                typeh : jsondatos.type,
+                                continent_name  : jsondatos.continent_name,
+                                country_code : jsondatos.country_code,
+                                country_name : jsondatos.country_name,
+                                region_code : jsondatos.region_code,
+                                region_name : jsondatos.region_name,
+                                city : jsondatos.city,
+                                latitude : jsondatos.latitude,
+                                longitude : jsondatos.longitude,
+                                action: "Finish demo"
+
+                            };
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("demo_logsave", "Demos")',
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(datosusuario),
+                                success: function (model) {
+                                    if (model.success) {
+                                        console.log("Demo log success")
+                                    } else {
+                                        console.log("Demo log error")
+
+                                    }
+
+
+
+                             }
+                            });
+
+                        }
+                    });
+
+
+
                             window.location.href = '@Url.Action("Index","Demos")';
                             $('#loadingmessage').hide();
                             new PNotify({
@@ -427,4 +557,79 @@
             );
         });
 
+</script>
+
+@if (ViewBag.Title == "Comercia Marketing - Demo Log")
+{
+    <script type="text/javascript">
+
+        // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+        $(document).ready(function () {
+            Initialize();
+        });
+
+        // Where all the fun happens
+        function Initialize() {
+
+            // Google has tweaked their interface somewhat - this tells the api to use that new UI
+            google.maps.visualRefresh = true;
+            var Liverpool = new google.maps.LatLng(@ViewBag.latitude, @ViewBag.longitude);
+
+            // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+            var mapOptions = {
+                zoom: 12,
+                center: Liverpool,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+            // This makes the div with id "map_canvas" a google map
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+            // This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
+            var myLatlng = new google.maps.LatLng(@ViewBag.latitude, @ViewBag.longitude);
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: 'Tate Gallery'
+            });
+
+            // You can make markers different colors...  google it up!
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+            // a sample list of JSON encoded data of places to visit in Liverpool, UK
+            /* you can either make up a JSON list server side, or call it from a controller using JSONResult
+            var data = [
+                { "Id": 1, "PlaceName": "Liverpool Museum", "OpeningHours": "9-5, M-F", "GeoLong": "53.410146", "GeoLat": "-2.979919" },
+                { "Id": 2, "PlaceName": "Merseyside Maritime Museum ", "OpeningHours": "9-1,2-5, M-F", "GeoLong": "53.401217", "GeoLat": "-2.993052" },
+                { "Id": 3, "PlaceName": "Walker Art Gallery", "OpeningHours": "9-7, M-F", "GeoLong": "53.409839", "GeoLat": "-2.979447" },
+                { "Id": 4, "PlaceName": "National Conservation Centre", "OpeningHours": "10-6, M-F", "GeoLong": "53.407511", "GeoLat": "-2.984683" }
+            ];
+            */
+            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+            $.each(data, function (i, item) {
+                var marker = new google.maps.Marker({
+                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'map': map,
+                    'title': item.PlaceName
+                });
+
+                // Make the marker-pin blue!
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                // put in some information about each json object - in this case, the opening hours.
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='infoDiv'><h2>" + item.PlaceName + "</h2>" + "<div><h4>Opening hours: " + item.OpeningHours + "</h4></div></div>"
+                });
+
+                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+
+            })
+        }
+
+
     </script>
+}

@@ -1,0 +1,81 @@
+﻿@model comerciamarketing_webapp.Models.demo_log
+
+@{
+    ViewBag.Title = "Comercia Marketing - Demo Log";
+}
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Demo log</a></li>
+                </ul>
+            </div>
+
+    
+                <h4>Details</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        Date: @Html.DisplayFor(model => model.fecha_conexion)
+                    </dt>
+                    <dt>
+                        IP: @Html.DisplayFor(model => model.ip)
+                    </dt>
+
+                    <dt>
+                        Hostname: @Html.DisplayFor(model => model.hostname)
+                    </dt>
+                    <dt>
+                        Type: @Html.DisplayFor(model => model.typeh)
+                    </dt>
+                    <dt>
+                        Continent: @Html.DisplayFor(model => model.continent_name)
+                    </dt>
+                    <dt>
+                        Country code: @Html.DisplayFor(model => model.country_code)
+                    </dt>
+                    <dt>
+                        Country name: @Html.DisplayFor(model => model.country_name)
+                    </dt>
+                    <dt>
+                        Region code: @Html.DisplayFor(model => model.region_code)
+                    </dt>
+                    <dt>
+                        Region name: @Html.DisplayFor(model => model.region_name)
+                    </dt>
+                    <dt>
+                        City: @Html.DisplayFor(model => model.city)
+                    <dt>
+                        Latitude: @Html.DisplayFor(model => model.latitude)
+                    </dt>
+                    <dt>
+                        Longitude: @Html.DisplayFor(model => model.longitude)
+
+                    </dt>
+                    <dt>
+                        Action: @Html.DisplayFor(model => model.longitude)
+
+                    </dt>
+                    <dt>
+                        Geo-Location:
+
+                    </dt>
+
+                </dl>
+           <!-- This is the div that will contain the Google Map -->
+<div id="map_canvas" style="height: 600px;"></div>
+            <p>
+                @Html.ActionLink("Back", "Demo_log", new { id_demo = Model.ID_demo })
+            </p>
+            </div>
+</div>
+</div>

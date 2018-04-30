@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using comerciamarketing_webapp.Models;
+using Postal;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -123,7 +124,7 @@ namespace comerciamarketing_webapp.Controllers
             {
                 demos.ID_demostate = 3;
                 demos.comments = "";
-
+                demos.end_date = demos.visit_date;
                 db.Demos.Add(demos);
                 db.SaveChanges();
 
@@ -140,6 +141,26 @@ namespace comerciamarketing_webapp.Controllers
                     db.SaveChanges();
                 }
 
+                try
+                {
+                    var usuario = (from a in db.Usuarios where (a.ID_usuario == demos.ID_usuario) select a).FirstOrDefault();
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("newdemo_alert");
+                    email.To = usuario.correo;
+                    email.From = "customercare@comerciamarketing.com";
+                    email.Vendor = demos.vendor;
+                    email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
+                    email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
+                    email.Place = "example: 1188 Antioch Pike, Nashville, TN 37211";
+
+                    email.Send();
+
+                    //FIN email
+                }
+                catch
+                {
+
+                }
 
 
                 TempData["exito"] = "Demo created successfully.";
@@ -210,8 +231,33 @@ namespace comerciamarketing_webapp.Controllers
                 if (demos.comments == "" || demos.comments == null) {
                     demos.comments = "";
                 }
+                demos.end_date = demos.visit_date;
                 db.Entry(demos).State = EntityState.Modified;
                 db.SaveChanges();
+
+
+                try
+                {
+                    var usuario = (from a in db.Usuarios where (a.ID_usuario == demos.ID_usuario) select a).FirstOrDefault();
+
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("editdemo_alert");
+                    email.To = usuario.correo;
+                    email.From = "customercare@comerciamarketing.com";
+                    email.Vendor = demos.vendor;
+                    email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
+                    email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
+                    email.Place = "example: 1188 Antioch Pike, Nashville, TN 37211";
+
+                    email.Send();
+
+                    //FIN email
+                }
+                catch
+                {
+
+                }
+
                 TempData["exito"] = "Demo saved successfully.";
                 return RedirectToAction("Index");
             }
@@ -327,11 +373,12 @@ namespace comerciamarketing_webapp.Controllers
                 if (demos.ID_demostate == 3)
                 {
                     demos.ID_demostate = 2;
+                    
                     db.Entry(demos).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
-
+                ViewBag.id_demo = demos.ID_demo;
                 return View(Forms_details.ToList());
 
 
@@ -365,6 +412,134 @@ namespace comerciamarketing_webapp.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpPost]
+        public ActionResult demo_logsave(demo_log datosusuario)
+        {
+            if (datosusuario != null)
+            {
+                try
+                {
+                    if (datosusuario.ip == null)
+                    {
+                        datosusuario.ip = "";
+                    }
+                    if (datosusuario.hostname == null)
+                    {
+                        datosusuario.hostname = "";
+                    }
+                    if (datosusuario.typeh == null)
+                    {
+                        datosusuario.typeh = "";
+                    }
+                    if (datosusuario.continent_name == null)
+                    {
+                        datosusuario.continent_name = "";
+                    }
+                    if (datosusuario.country_code == null)
+                    {
+                        datosusuario.country_code = "";
+                    }
+                    if (datosusuario.country_name == null)
+                    {
+                        datosusuario.country_name = "";
+                    }
+                    if (datosusuario.region_code == null)
+                    {
+                        datosusuario.region_code = "";
+                    }
+                    if (datosusuario.region_name == null)
+                    {
+                        datosusuario.region_name = "";
+                    }
+                    if (datosusuario.city == null)
+                    {
+                        datosusuario.city = "";
+                    }
+                    if (datosusuario.latitude == null)
+                    {
+                        datosusuario.latitude = "";
+                    }
+                    if (datosusuario.longitude == null)
+                    {
+                        datosusuario.longitude = "";
+                    }
+
+                    datosusuario.fecha_conexion = DateTime.Now;
+
+                    db.demo_log.Add(datosusuario);
+                    db.SaveChanges();
+
+                }
+                catch
+                {
+
+                }
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+        public ActionResult Demo_log(int? id_demo)
+        {
+
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                return View(db.demo_log.Where(c => c.ID_demo == id_demo).OrderByDescending(c => c.fecha_conexion).ToList());
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+        }
+        public ActionResult Details_demolog(int? id)
+        {
+
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+               demo_log historial = db.demo_log.Find(id);
+                if (historial == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.latitude = historial.latitude;
+                ViewBag.longitude = historial.longitude;
+
+                return View(historial);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+
         }
 
     }

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.demo_log>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col"  style="overflow-x:auto;">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                     <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>          
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Demo Log</a></li>
+
+                </ul>
+            </div>
+            <hr />
+            <table class="table">
+                <tr>
+                    <th>
+                        IP
+                    </th>
+                    <th>
+                        Continent Name
+                    </th>
+                    <th>
+                        Country Name
+                    </th>
+                    <th>
+                        Region Name
+                    </th>
+                    <th>
+                        City
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.continent_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.country_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.region_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.city)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_conexion)
+
+                    </td>
+                    <td>
+                            @Html.ActionLink("More details", "Details_demolog", new { id = item.ID_historial }) 
+
+                    </td>
+                </tr>
+                }
+
+
+            </table>
+            <p>
+
+                    @Html.ActionLink("Back", "Index")
+                
+            </p>
+        </div>
+    </div>
+</div>

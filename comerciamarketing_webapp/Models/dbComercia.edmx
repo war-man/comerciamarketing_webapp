@@ -5,6 +5,26 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dbComerciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="demo_log">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_demo" Type="int" />
+          <Property Name="ip" Type="varchar" MaxLength="50" />
+          <Property Name="hostname" Type="varchar" MaxLength="50" />
+          <Property Name="typeh" Type="varchar" MaxLength="50" />
+          <Property Name="continent_name" Type="varchar" MaxLength="100" />
+          <Property Name="country_code" Type="varchar" MaxLength="10" />
+          <Property Name="country_name" Type="varchar" MaxLength="100" />
+          <Property Name="region_code" Type="varchar" MaxLength="10" />
+          <Property Name="region_name" Type="varchar" MaxLength="150" />
+          <Property Name="city" Type="varchar" MaxLength="150" />
+          <Property Name="latitude" Type="varchar" MaxLength="50" />
+          <Property Name="longitude" Type="varchar" MaxLength="50" />
+          <Property Name="fecha_conexion" Type="datetime" />
+          <Property Name="action" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Demo_state">
           <Key>
             <PropertyRef Name="ID_demostate" />
@@ -26,6 +46,7 @@
           <Property Name="ID_demostate" Type="int" />
           <Property Name="comments" Type="text" />
           <Property Name="ID_form" Type="int" />
+          <Property Name="end_date" Type="datetime" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -257,6 +278,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dbComerciaModelStoreContainer">
+          <EntitySet Name="demo_log" EntityType="Self.demo_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demo_state" EntityType="Self.Demo_state" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demos" EntityType="Self.Demos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
@@ -423,6 +445,7 @@
             <End Role="Forms" EntitySet="Forms" />
             <End Role="Forms_details" EntitySet="Forms_details" />
           </AssociationSet>
+          <EntitySet Name="demo_log" EntityType="dbComerciaModel.demo_log" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -542,6 +565,7 @@
           <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
           <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Demos" ToRole="Forms" />
           <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Demos__ID_usuari__07C12930" FromRole="Demos" ToRole="Usuarios" />
+          <Property Name="end_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="form_resource_type">
           <Key>
@@ -639,6 +663,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="demo_log">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_demo" Type="Int32" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hostname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="typeh" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="continent_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="country_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="country_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="region_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="region_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_conexion" Type="DateTime" Precision="3" />
+          <Property Name="action" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -741,6 +785,7 @@
           <EntitySetMapping Name="Demos">
             <EntityTypeMapping TypeName="dbComerciaModel.Demos">
               <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
                 <ScalarProperty Name="ID_form" ColumnName="ID_form" />
                 <ScalarProperty Name="comments" ColumnName="comments" />
                 <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
@@ -783,6 +828,27 @@
                 <ScalarProperty Name="fsource" ColumnName="fsource" />
                 <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
                 <ScalarProperty Name="ID_details" ColumnName="ID_details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="demo_log">
+            <EntityTypeMapping TypeName="dbComerciaModel.demo_log">
+              <MappingFragment StoreEntitySet="demo_log">
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="fecha_conexion" ColumnName="fecha_conexion" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="region_name" ColumnName="region_name" />
+                <ScalarProperty Name="region_code" ColumnName="region_code" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+                <ScalarProperty Name="country_code" ColumnName="country_code" />
+                <ScalarProperty Name="continent_name" ColumnName="continent_name" />
+                <ScalarProperty Name="typeh" ColumnName="typeh" />
+                <ScalarProperty Name="hostname" ColumnName="hostname" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
+                <ScalarProperty Name="ID_historial" ColumnName="ID_historial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

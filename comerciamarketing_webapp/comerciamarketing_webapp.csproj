@@ -183,6 +183,9 @@
     <Compile Include="Models\Demos.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\demo_log.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Demo_state.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -463,7 +466,7 @@
       <LastGenOutput>dbComercia.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Demos\Form_templatepreview.cshtml" />
-    <None Include="Views\Forms\Create.cshtml" />
+    <Content Include="Views\Forms\Create.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -528,6 +531,10 @@
     <Content Include="Views\Forms\Index.cshtml" />
     <Content Include="Views\Shared\nestable_style.cshtml" />
     <Content Include="Views\Forms\Form_templatepreview.cshtml" />
+    <Content Include="Views\Emails\newdemo_alert.cshtml" />
+    <Content Include="Views\Emails\editdemo_alert.cshtml" />
+    <Content Include="Views\Demos\Demo_log.cshtml" />
+    <Content Include="Views\Demos\Details_demolog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
