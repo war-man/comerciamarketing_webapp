@@ -75,7 +75,7 @@
 
 
                                 <h4>Last demos</h4>
-                                <table class="table">
+                                <table class="table" id="change_formattime">
                                     <tr>
                                         <th>
                                             Vendor
@@ -106,7 +106,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.store)
                                 </td>
-                                <td>
+                                <td >
                                     @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
                                 </td>
                                 <td>
@@ -130,14 +130,14 @@ else
                             <p style="color:dodgerblue;">Finished</p>
 }
                                 </td>
-                                <td>
+                                <td class="customerIDCell">
                                     @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
         {
 
         }
         else
         {
-                            @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
+                            @Convert.ToDateTime(item.end_date).ToLocalTime().ToString("yyyy/MM/dd HH:mm")
 }
                                 </td>
                                 <td>

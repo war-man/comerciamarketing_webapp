@@ -30,7 +30,7 @@
                 <hr />
                 <dl class="dl-horizontal">
                     <dt>
-                        Date: @Html.DisplayFor(model => model.fecha_conexion)
+                        Date:  @(Convert.ToDateTime(Model.fecha_conexion).ToLocalTime())
                     </dt>
                     <dt>
                         IP: @Html.DisplayFor(model => model.ip)

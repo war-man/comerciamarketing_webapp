@@ -18,7 +18,7 @@
                 </ul>
             </div>
             <hr />
-            <table class="table">
+            <table class="table" id="change_formattime">
                 <tr>
                     <th>
                         IP
@@ -62,8 +62,8 @@
                         @Html.DisplayFor(modelItem => item.city)
 
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.fecha_conexion)
+                    <td class="customerIDCell">
+                        @(Convert.ToDateTime(item.fecha_conexion).ToLocalTime())
 
                     </td>
                     <td>

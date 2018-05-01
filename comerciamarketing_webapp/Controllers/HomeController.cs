@@ -112,7 +112,7 @@ namespace comerciamarketing_webapp.Controllers
                         return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                     }
                     else {
-                        Session["ultimaconexion"] = ultimaconexion.fecha_conexion.ToString();
+                        Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
                         return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                     }
 

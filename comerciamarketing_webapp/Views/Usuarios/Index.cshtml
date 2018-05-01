@@ -20,7 +20,7 @@
             <p>
                 @Html.ActionLink("Add new user", "Create", new { ID_empresa = ViewBag.ID_Empresa })
             </p>
-            <table class="table">
+            <table class="table" id="change_formattime">
                 <tr>
                     <th>
                         Email
@@ -71,11 +71,13 @@
 }
 
                     </td>
-                    <td>
+                    <td class="customerIDCell">
                         <!--Aqui va ultima visita-->
-                        @Html.DisplayFor(modelItem => item.contrasena)
+                        @if (item.contrasena == null || item.contrasena=="") { }
+                        else
+                        {@(Convert.ToDateTime(item.contrasena).ToLocalTime())}
                     </td>
-                    <td>
+                    <td class="customerIDCell">
                         @if (item.ID_tipomembresia == 1)
         {
 

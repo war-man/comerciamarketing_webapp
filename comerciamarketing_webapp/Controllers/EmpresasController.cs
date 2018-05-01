@@ -23,7 +23,19 @@ namespace comerciamarketing_webapp.Controllers
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
                 ViewBag.usuario = datosUsuario.correo;
-                return View(db.Empresas.ToList());
+
+                var empresas = (from a in db.Empresas where(a.nombre != "SISTEMA")select a).ToList();
+
+                foreach (var item in empresas) {
+                    item.giro = (from b in db.Usuarios where (b.ID_empresa == item.ID_empresa) select b).Count().ToString();
+
+                    if (item.giro == "" || item.giro == null){
+                        item.giro = "0";
+                    }
+                }
+
+
+                return View(empresas);
             }
             else
             {
@@ -76,6 +88,7 @@ namespace comerciamarketing_webapp.Controllers
         {
             if (ModelState.IsValid)
             {
+                empresas.giro = "";
                 db.Empresas.Add(empresas);
                 db.SaveChanges();
                 TempData["exito"] = "Customer created successfully.";
@@ -126,6 +139,7 @@ namespace comerciamarketing_webapp.Controllers
         {
             if (ModelState.IsValid)
             {
+                empresas.giro = "";
                 db.Entry(empresas).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["exito"] = "Customer saved successfully.";

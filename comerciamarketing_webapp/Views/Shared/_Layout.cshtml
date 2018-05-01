@@ -553,6 +553,32 @@
 
 </script>
 
+
+<script>
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+
+        newDate.setHours(hours - offset);
+
+        return newDate;
+    }
+
+    $('#change_formattime .customerIDCell').each(function () {
+        var date = convertUTCDateToLocalDate(new Date($(this).html()));
+        //var localDate = new Date($(this).html());
+        $(this).html(date.toLocaleString());
+    });
+
+    $('#last_visitmain').each(function () {
+        var date = convertUTCDateToLocalDate(new Date($(this).html()));
+        //var localDate = new Date($(this).html());
+        $(this).html(date.toLocaleString());
+    });
+</script>
+
 @if (ViewBag.Title == "Comercia Marketing - Demo Log")
 {
     <script type="text/javascript">
