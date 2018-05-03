@@ -11,7 +11,8 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Demos
     {
         public int ID_demo { get; set; }
@@ -19,11 +20,15 @@ namespace comerciamarketing_webapp.Models
         public string vendor { get; set; }
         public string ID_Store { get; set; }
         public string store { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
         public Nullable<System.DateTime> visit_date { get; set; }
         public Nullable<int> ID_usuario { get; set; }
         public Nullable<int> ID_demostate { get; set; }
         public string comments { get; set; }
         public Nullable<int> ID_form { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
         public Nullable<System.DateTime> end_date { get; set; }
     
         public virtual Demo_state Demo_state { get; set; }

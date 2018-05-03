@@ -130,16 +130,18 @@ else
                             <p style="color:dodgerblue;">Finished</p>
 }
                                 </td>
-                                <td class="customerIDCell">
+                              
                                     @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
         {
-
+                                  <td></td>
         }
         else
         {
-                            @Convert.ToDateTime(item.end_date).ToLocalTime().ToString("yyyy/MM/dd HH:mm")
+                                      <td class="customerIDCell">
+                                          @Convert.ToDateTime(item.end_date).ToLocalTime().ToString("yyyy/MM/dd HH:mm")
+                                      </td>
 }
-                                </td>
+                                
                                 <td>
                                     @if (item.ID_demostate == 4)
         {

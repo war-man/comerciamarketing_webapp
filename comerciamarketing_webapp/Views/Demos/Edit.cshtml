@@ -32,23 +32,33 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID_demo)
 
-        @Html.HiddenFor(model => model.ID_Vendor)
-
         <div class="form-group">
-            @Html.LabelFor(model => model.vendor, "Vendor name(SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ID_Vendor, "Vendor (SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.vendor, new { htmlAttributes = new { @class = "form-control", @required = "required", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.vendor, "", new { @class = "text-danger" })
+                @Html.DropDownList("ID_Vendor", null, htmlAttributes: new { @class = "form-control", @id = "dropdown_idvendor_E", @onchange = "getVendorname_demoE()" })
+                @Html.ValidationMessageFor(model => model.ID_Vendor, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @Html.HiddenFor(model => model.ID_Store)
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.vendor, new { htmlAttributes = new { @class = "form-control", @id = "vendor_nameDemoE", @hidden = "hidden" } })
+            </div>
+        </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.store, "Store name(SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ID_Store, "Store (SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.store, new { htmlAttributes = new { @class = "form-control", @required = "required", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.store, "", new { @class = "text-danger" })
+                @Html.DropDownList("ID_Store", null, htmlAttributes: new { @class = "form-control", @id = "dropdown_idstore_E", @onchange = "getStorename_demoE()" })
+                @Html.ValidationMessageFor(model => model.ID_Store, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.store, new { htmlAttributes = new { @class = "form-control", @id = "store_nameDemoE", @hidden = "hidden" } })
             </div>
         </div>
 

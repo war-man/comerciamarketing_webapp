@@ -163,7 +163,7 @@
                 if (data.success) {
                     //Si todo salió bien, entonces devolvemos ip y datos de registro y luego enviamos a pagina Home
                     // set endpoint and your access key
-                    var ip = "@ViewBag.IPLOCAL";
+                    var ip = "@Session["ip_user"]";
                     var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
 
                     // get the API result via jQuery.ajax
@@ -211,6 +211,8 @@
 
                         }
                     });
+                    window.location.href = '@Url.Action("Main", "Home")';
+
                 } else {
                     new PNotify({
                         title: "Warning",

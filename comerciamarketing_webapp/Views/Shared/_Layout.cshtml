@@ -22,6 +22,25 @@
             -webkit-user-select: none;
             background-color: white;
         }
+
+
+        .bootstrap-select .dropdown-menu > li > a small.muted {
+            display: none;
+        }
+
+        .bootstrap-select .dropdown-toggle .filter-option {
+            position: relative;
+            padding-left: 38px;
+        }
+
+            .bootstrap-select .dropdown-toggle .filter-option:before {
+                content: "Size:";
+                font-size: 14px;
+                font-weight: 700;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
     </style>
     <style>
         #sig-canvas {
@@ -577,6 +596,42 @@
         //var localDate = new Date($(this).html());
         $(this).html(date.toLocaleString());
     });
+</script>
+
+<script>
+    function getStorename_demoC() {
+        var vendorId = $("#dropdown_idstore_c").val();
+        var vendortext = $("#dropdown_idstore_c option:selected").text();
+
+
+        $("#store_nameDemoC").val(vendortext);
+    };
+
+    function getVendorname_demoC() {
+        var vendorId = $("#dropdown_idvendor_c").val();
+        var vendortext = $("#dropdown_idvendor_c option:selected").text();
+
+
+        $("#vendor_nameDemoC").val(vendortext);
+    };
+</script>
+
+<script>
+    function getStorename_demoE() {
+        var vendorId = $("#dropdown_idstore_E").val();
+        var vendortext = $("#dropdown_idstore_E option:selected").text();
+
+
+        $("#store_nameDemoE").val(vendortext);
+    };
+
+    function getVendorname_demoE() {
+        var vendorId = $("#dropdown_idvendor_E").val();
+        var vendortext = $("#dropdown_idvendor_E option:selected").text();
+
+
+        $("#vendor_nameDemoE").val(vendortext);
+    };
 </script>
 
 @if (ViewBag.Title == "Comercia Marketing - Demo Log")

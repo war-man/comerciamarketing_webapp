@@ -366,7 +366,7 @@
 
 
                 var products = [];
-                $('#products :selected').each(function (i, selected) {
+                $('#products_list :selected').each(function (i, selected) {
                     var $itm = $(this);
                     products.push({
                         'ID': $(selected).val(),
@@ -383,7 +383,7 @@
 
                 });
                 
-
+       
 
                 var updateOutput = function (e) {
                     var list = e.length ? e : $(e.target),
@@ -397,6 +397,7 @@
 
 
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
+                
             });
 
         });
@@ -564,13 +565,12 @@
                                 <div class="cf nestable-lists">
 
                                     <div class="dd" id="nestable">
-                                        <ol class="dd-list" id="main_list">
-                                        </ol>
+                                        <ol class="dd-list" id="main_list"></ol>
 
                                     </div>
                                 </div>
                                 <a id="clear_list" href="#" class="close" data-dismiss="alert" aria-label="close">Clear list</a>
-                                <textarea id="nestable-output"name="nestable_output" hidden></textarea>
+                                <textarea id="nestable-output" name="nestable_output" hidden></textarea>
                                 <br /><br /><br />
                                 <div class="form-group">
                                     <div class="col-md-12 text-right">
@@ -615,17 +615,22 @@
                     <div class="form-group">
                         <p class="control-label col-md-6">Vendor</p>
                         <div class="col-md-12">
-                            @Html.DropDownList("ID_empresa", null, htmlAttributes: new { @class = "form-control", @id = "Vendor" })
+                            <select class="form-control selectpicker show-tick" id="vendors_list" onChange='getProducts()'>
+                                <option data-hidden="true">Select vendor</option>
+                                @foreach (var item in ViewBag.vendors)
+                                {
+                                    <option value="@item.CardCode">@item.CardName</option>
+                                }
+
+
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <p class="control-label col-md-8">Products</p>
                         <div class="col-md-12">
-                            <select multiple="multiple" id="products">
-                                <option value="AL">TACOS</option>
-                                <option value="AK">QUESITOS</option>
-                                <option value="EF">NACHOS</option>
+                            <select id="products_list" multiple="multiple">
 
                             </select>
 
@@ -694,22 +699,22 @@
     @*<script>
 
 
-        $('#txt_title').on('input', function (e) {
-            if ($(this).data("lastval") != $(this).val()) {
-                $(this).data("lastval", $(this).val());
-                //change action
-                //alert($(this).val());
-                $("#form_title").text("Title - " + $(this).val());
+            $('#txt_title').on('input', function (e) {
+                if ($(this).data("lastval") != $(this).val()) {
+                    $(this).data("lastval", $(this).val());
+                    //change action
+                    //alert($(this).val());
+                    $("#form_title").text("Title - " + $(this).val());
 
-            };
-
-
+                };
 
 
 
-        });
 
-    </script>*@
+
+            });
+
+        </script>*@
     <script type="text/javascript">
         $(function () {
             $("#formresourcetype").change(function () {
@@ -747,9 +752,19 @@
             });
         });
     </script>
-    <script>
-        $('#products').multipleSelect();
+    <!--<script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
+        });
 
+    </script>
+        -->
+    <script>
+
+        $('#products_list').multipleSelect();
 
     </script>
     <script>
@@ -769,6 +784,36 @@
 
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         });
+    </script>
+
+    <script>
+        function getProducts() {
+            var vendorId = $("#vendors_list").val();
+            $.ajax
+                ({
+                    url: '/Forms/Getproducts',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        vendorID: vendorId
+                    }),
+                    success: function (result) {
+
+                        $("#products_list").html("");
+                        $.each($.parseJSON(result), function (i, product) {
+                            $("#products_list").append
+                                ($('<option></option>').val(product.ItemCode).html(product.ItemName))
+                            
+                        }
+                        )
+                        $('#products_list').multipleSelect();
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+        }
     </script>
 </body>
 </html>

@@ -165,6 +165,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\COM_MK.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>COM_MK.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COM_MK.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COM_MK.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>COM_MK.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\dbComercia.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -204,6 +219,12 @@
     <Compile Include="Models\historial_conexiones.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OCRD.cs">
+      <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OITM.cs">
+      <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Recursos_usuario.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -226,6 +247,7 @@
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\multiple-select.css" />
+    <Content Include="Content\css\multiple-select.png" />
     <Content Include="Content\css\pnotify.custom.min.css" />
     <Content Include="Content\css\bootstrap4\popper.js" />
     <Content Include="Content\css\categories_responsive.css" />
@@ -389,6 +411,16 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>dbComercia.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Models\COM_MK.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>COM_MK.edmx</DependentUpon>
+      <LastGenOutput>COM_MK.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\COM_MK.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>COM_MK.edmx</DependentUpon>
+      <LastGenOutput>COM_MK.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\dbComercia.edmx.diagram">
       <DependentUpon>dbComercia.edmx</DependentUpon>
     </Content>
@@ -454,6 +486,13 @@
     <Content Include="Content\fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="Content\fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="Content\fonts\poppins\Poppins-ThinItalic.ttf" />
+    <EntityDeploy Include="Models\COM_MK.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>COM_MK.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\COM_MK.edmx.diagram">
+      <DependentUpon>COM_MK.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
     <Content Include="Models\dbComercia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -535,6 +574,7 @@
     <Content Include="Views\Emails\editdemo_alert.cshtml" />
     <Content Include="Views\Demos\Demo_log.cshtml" />
     <Content Include="Views\Demos\Details_demolog.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

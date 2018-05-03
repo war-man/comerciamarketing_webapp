@@ -14,6 +14,7 @@ namespace comerciamarketing_webapp.Controllers
     public class DemosController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
+        private COM_MKEntities CMKdb = new COM_MKEntities();
 
         // GET: Demos
         public ActionResult Index()
@@ -102,6 +103,20 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text");
+                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                
+
+
+                var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+                IEnumerable<SelectListItem> selectList_stores = from st in store
+                                                         select new SelectListItem
+                                                         {
+                                                             Value = Convert.ToString(st.CardCode),
+                                                             Text = st.CardName.ToString() + ", " + st.MailAddres.ToString() + ", " + st.MailCity.ToString() + ", " + st.MailZipCod.ToString()
+                                                         };
+
+                ViewBag.ID_Store = new SelectList(selectList_stores, "Value", "Text");
+
                 return View();
 
             }
@@ -151,7 +166,7 @@ namespace comerciamarketing_webapp.Controllers
                     email.Vendor = demos.vendor;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
-                    email.Place = "example: 1188 Antioch Pike, Nashville, TN 37211";
+                    email.Place = demos.store;
 
                     email.Send();
 
@@ -207,8 +222,20 @@ namespace comerciamarketing_webapp.Controllers
                                                              Text = s.nombre.ToString() + " " + s.apellido.ToString() + " - " + s.correo.ToString()
                                                          };
 
-             
+
                 //ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text", demos.ID_usuario);
+                var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+                IEnumerable<SelectListItem> selectList_stores = from st in store
+                                                                select new SelectListItem
+                                                                {
+                                                                    Value = Convert.ToString(st.CardCode),
+                                                                    Text = st.CardName.ToString() + ", " + st.MailAddres.ToString() + ", " + st.MailCity.ToString() + ", " + st.MailZipCod.ToString()
+                                                                };
+
+                ViewBag.ID_Store = new SelectList(selectList_stores, "Value", "Text", demos.ID_Store);
+
+                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",demos.ID_Vendor);
+
                 return View(demos);
 
             }
@@ -247,7 +274,7 @@ namespace comerciamarketing_webapp.Controllers
                     email.Vendor = demos.vendor;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
-                    email.Place = "example: 1188 Antioch Pike, Nashville, TN 37211";
+                    email.Place = demos.store;
 
                     email.Send();
 

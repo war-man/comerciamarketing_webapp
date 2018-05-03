@@ -20,7 +20,7 @@ namespace comerciamarketing_webapp.Controllers
     public class FormsController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
-
+        private COM_MKEntities COM_MKdb = new COM_MKEntities();
         // GET: Forms
         public ActionResult Index()
         {
@@ -87,7 +87,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                ViewBag.ID_empresa = new SelectList(db.Empresas.Where(c => c.nombre != "SISTEMA"), "ID_empresa", "nombre");
+                //ViewBag.ID_empresa = new SelectList(COM_MKdb.OCRDs.Where(c => c.Series == 2 || c.CardName != null), "CardCode", "CardName");
+                ViewBag.vendors = (from b in COM_MKdb.OCRDs where (b.Series == 2 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type, "ID_formresourcetype", "fdescription");
 
                 return View();
@@ -196,7 +197,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                ViewBag.ID_empresa = new SelectList(db.Empresas.Where(b => b.nombre != "SISTEMA"), "ID_empresa", "nombre");
+                //ViewBag.ID_empresa = new SelectList(COM_MKdb.OCRDs.Where(b => b.Series == 2 || b.CardName != null).OrderBy(b=> b.CardName), "CardCode", "CardName");
+                ViewBag.vendors = (from b in COM_MKdb.OCRDs where (b.Series == 2 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type, "ID_formresourcetype", "fdescription");
 
                 
@@ -681,6 +683,17 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-        
+        public ActionResult Getproducts(string vendorID)
+        {
+            List<OITM> lstproduct = new List<OITM>();
+            string vendoriD = vendorID;
+            using (COM_MKEntities dbmk = new COM_MKEntities())
+            {
+                lstproduct = (dbmk.OITMs.Where(x => x.CardCode == vendoriD)).ToList<OITM>();
+            }
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result = javaScriptSerializer.Serialize(lstproduct);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }
