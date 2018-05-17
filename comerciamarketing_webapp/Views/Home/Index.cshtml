@@ -165,53 +165,60 @@
                     // set endpoint and your access key
                     var ip = "@Session["ip_user"]";
                     var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
-
+ 
                     // get the API result via jQuery.ajax
                     $.ajax({
                         url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
                         dataType: 'json',
+                        error: function () {
+                            console.log("Geolocation error");
+                        },
                         success: function (jsondatos) {
 
-                            var datosusuario = {
-                                ip : jsondatos.ip,
-                                hostname : jsondatos.hostname,                         
-                                typeh : jsondatos.type,
-                                continent_name  : jsondatos.continent_name,
-                                country_code : jsondatos.country_code, 
-                                country_name : jsondatos.country_name, 
-                                region_code : jsondatos.region_code, 
-                                region_name : jsondatos.region_name,
-                                city : jsondatos.city,
-                                latitude : jsondatos.latitude, 
-                                longitude : jsondatos.longitude
+                                var datosusuario = {
+                                    ip: jsondatos.ip,
+                                    hostname: jsondatos.hostname,
+                                    typeh: jsondatos.type,
+                                    continent_name: jsondatos.continent_name,
+                                    country_code: jsondatos.country_code,
+                                    country_name: jsondatos.country_name,
+                                    region_code: jsondatos.region_code,
+                                    region_name: jsondatos.region_name,
+                                    city: jsondatos.city,
+                                    latitude: jsondatos.latitude,
+                                    longitude: jsondatos.longitude
 
 
-                            };
+                                };
 
-                            $.ajax({
-                                type: 'POST',
-                                url: '@Url.Action("Historial_conexiones", "Home")',
-                                dataType: 'json',
-                                contentType: "application/json; charset=utf-8",
-                                data: JSON.stringify(datosusuario),
-                                success: function (model) {
-                                    if (model.success) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Url.Action("Historial_conexiones", "Home")',
+                                    dataType: 'json',
+                                    async: false,
+                                    contentType: "application/json; charset=utf-8",
+                                    data: JSON.stringify(datosusuario),
+                                    success: function (model) {
+                                        if (model.success) {
 
-                                        console.log("funciona hasta con ip")
-                                    window.location.href = '@Url.Action("Main", "Home")';
-                                    } else {
-                                        console.log("Error")
-                                        window.location.href = '@Url.Action("Main", "Home")';
+                                            console.log("Login success")
+                                            window.location.href = '@Url.Action("Main", "Home")';
+                                        } else {
+                                            console.log("Error")
+                                            window.location.href = '@Url.Action("Main", "Home")';
+                                        }
+
+
+
                                     }
+                                });
 
-
-
-                             }
-                            });
-
-                        }
+                 
+                        } 
+                        
                     });
-                    window.location.href = '@Url.Action("Main", "Home")';
+                  
+                   //window.location.href = 'Url.Action("Main", "Home")';
 
                 } else {
                     new PNotify({

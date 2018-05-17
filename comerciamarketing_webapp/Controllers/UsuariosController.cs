@@ -674,6 +674,32 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Usuarios.Add(usuarios);
                 db.SaveChanges();
+
+
+
+
+                try
+                {
+                    var usuario = (from a in db.Usuarios where (a.ID_usuario == usuarios.ID_usuario) select a).FirstOrDefault();
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("newdemo_alert");
+                    email.To = usuario.correo;
+                    email.From = "customercare@comerciamarketing.com";
+                    email.email = usuario.correo;
+                    email.password = usuario.contrasena;
+
+
+                    email.Send();
+
+                    //FIN email
+                }
+                catch
+                {
+
+                }
+
+
+
                 TempData["exito"] = "User created successfully.";
                 return RedirectToAction("Demo_users", "Usuarios");
             }

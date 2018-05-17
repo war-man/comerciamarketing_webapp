@@ -103,23 +103,36 @@ namespace comerciamarketing_webapp.Controllers
                 var obj = (from c in db.Usuarios where (c.correo == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
                 if (obj != null)
                 {
+                    //PARA DASHBOARD
+                    //(obj.Tipo_membresia.descripcion == "Demo")
 
-                    Session["IDusuario"] = obj.ID_usuario.ToString();
-                    Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-                    var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
-                    if (ultimaconexion == null) {
-                        Session["ultimaconexion"] = "";
-                        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                    //PARA DEMOS
+                    //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                    if (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                    {
+                        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
-                    else {
-                        Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
-                        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                    else
+                    {
+                        Session["IDusuario"] = obj.ID_usuario.ToString();
+                        Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+                        var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
+                        if (ultimaconexion == null)
+                        {
+                            Session["ultimaconexion"] = "";
+                            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
+                            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                        }
+                        
                     }
+                    }
+
 
                     //return RedirectToAction("Main");
-
-
-                }
                 else
                 {
                     //Si ingreso mal la contraseña o el usuario no existe
@@ -204,12 +217,13 @@ namespace comerciamarketing_webapp.Controllers
                     db.historial_conexiones.Add(datosusuario);
                     db.SaveChanges();
 
+                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                 }
                 catch {
-
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                 }
 
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+               
             }
             else {
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);

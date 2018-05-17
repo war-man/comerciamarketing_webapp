@@ -575,6 +575,7 @@
     <Content Include="Views\Demos\Demo_log.cshtml" />
     <Content Include="Views\Demos\Details_demolog.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Emails\newuser_alert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
