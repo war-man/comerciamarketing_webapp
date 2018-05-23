@@ -1,73 +1,185 @@
 ﻿@{
-                /**/
+    /**/
 
-                ViewBag.Title = "Comercia Marketing";
+    ViewBag.Title = "Comercia Marketing";
 }
+<div class="container single_product_container">
+    @if (Session["tipousuario"].ToString() != "1" && Session["tipousuario"].ToString() != "6")
+    {
+        <!-- Slider -->
 
-<!-- Slider -->
-<br /><br /><br /><br /><br /><br /><br />
-<div class="main_slider" style="background-image:url(../Content/images/MechandiserWeb.jpg)">
-    <div class="container fill_height">
-        <div class="row align-items-center fill_height">
-            <div class="col">
-                <div class="main_slider_content">
-                    <h2>
-                        Welcome
-                    </h2><br />
-                    @if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3")
-                    {
-                <h5>  @ViewBag.nomusuarioSAP</h5>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@if (Session["tipousuario"].ToString() != "1")
-{
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="benefit">
-                <div class="container">
-                    <div class="row benefit_row">
-                        <div class="col-lg-6 benefit_col">
-                            <div class="benefit_item d-flex flex-row align-items-center">
-                                <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
-                                <div class="benefit_content">
-                                    <h6>Membership</h6>
-                                    <p>@ViewBag.tipomembresia </p>
-                                </div>
-                            </div>
+        <div class="main_slider" style="background-image:url(../Content/images/MechandiserWeb.jpg)">
+            <div class="container fill_height">
+                <div class="row align-items-center fill_height">
+                    <div class="col">
+                        <div class="main_slider_content">
+                            <h2>
+                                Welcome
+                            </h2><br />
+                            @if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                            {
+                                <h5>  @ViewBag.nomusuarioSAP</h5>
+                            }
                         </div>
-                        <div class="col-lg-6 benefit_col">
-                            <div class="benefit_item d-flex flex-row align-items-center">
-                                <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-                                <div class="benefit_content">
-                                    <h6>Last visit</h6>
-                                    <p id="last_visitmain">@ViewBag.ultimavisita </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!--
-                        <div class="col-lg-4 benefit_col">
-                            <div class="benefit_item d-flex flex-row align-items-center">
-                                <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                                <div class="benefit_content">
-                                    <h6>Last update</h6>
-                                    <p>Today, 03:05:00 am (server time)</p>
-                                </div>
-                            </div>
-                        </div>
-                            -->
                     </div>
                 </div>
             </div>
         </div>
+    }
+    @if (Session["tipousuario"].ToString() != "1" && Session["tipousuario"].ToString() != "6")
+    {
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="benefit">
+                    <div class="container">
+                        <div class="row benefit_row">
+                            <div class="col-lg-6 benefit_col">
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Membership</h6>
+                                        <p>@ViewBag.tipomembresia </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 benefit_col">
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Last visit</h6>
+                                        <p id="last_visitmain">@ViewBag.ultimavisita </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-lg-4 benefit_col">
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Last update</h6>
+                                        <p>Today, 03:05:00 am (server time)</p>
+                                    </div>
+                                </div>
+                            </div>
+                                -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Session["tipousuario"].ToString() == "6")
+    {
+
+
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="benefit">
+                    <div class="container">
+                        <div class="row benefit_row">
+                            <p> Welcome!</p>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header" data-background-color="gray">
+                                        <h4 class="title">Demos Stats</h4>
+                                        <p class="category">This week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="orange">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">On Holding Demos</p>
+                                        <h3 class="title">@ViewBag.onhold_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="green">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">In progress Demos</p>
+                                        <h3 class="title">@ViewBag.inprogress_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="red">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Canceled Demos</p>
+                                        <h3 class="title">@ViewBag.canceled_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="blue">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Finished Demos</p>
+                                        <h3 class="title">@ViewBag.finished_demos</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Membership</h6>
+                                        <p>@ViewBag.tipomembresia </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Last visit</h6>
+                                        <p id="last_visitmain">@ViewBag.ultimavisita </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-lg-4 benefit_col">
+                                <div class="benefit_item d-flex flex-row align-items-center">
+                                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                                    <div class="benefit_content">
+                                        <h6>Last update</h6>
+                                        <p>Today, 03:05:00 am (server time)</p>
+                                    </div>
+                                </div>
+                            </div>
+                                -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    }
+
+
     </div>
-}
-
-
-
-

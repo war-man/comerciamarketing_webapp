@@ -146,14 +146,14 @@ else
                                     @if (item.ID_demostate == 4)
         {
                             @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
-                            @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })<!--Html.Label(" | ")
+                            Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
 }
 else if (item.ID_demostate == 2)
 {<!--In progress-->
                             @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })@Html.Label(" | ")
-                            @Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })
+                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })<!--Html.Label(" | ")
+                            Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
 
 }
 else
@@ -168,7 +168,11 @@ else
 }
                                 </table>
 
+    
+                                    <div id="nav">
 
+                                    </div>
+                         
                             </div>
                         </div>
                     </div>

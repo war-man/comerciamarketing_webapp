@@ -4,14 +4,19 @@ Cc: customercare@comerciamarketing.com
 Subject: New demo assigned
 
 Hello,
-You have a new demo assigned in our Comercia Marketing BI platform.  Please check http://customers.comerciamarketing.com/ for more details.
+You have a new demo assigned in our Comercia Marketing BI platform.
 
-Also, we include the following details of the demo:
+We include the following details of the demo:
 
 Vendor: @ViewBag.Vendor
 Date: @ViewBag.Date
 Time: @ViewBag.Time
 Place: @ViewBag.Place
+
+Please check @Html.Raw(ViewBag.link) for start your demo.
+This link will be available from  @ViewBag.Date to @ViewBag.enddate
+
+
 
 This information is confidential, and is not accessible by anyone other than yourself.
 

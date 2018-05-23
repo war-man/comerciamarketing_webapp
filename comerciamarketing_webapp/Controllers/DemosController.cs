@@ -167,7 +167,8 @@ namespace comerciamarketing_webapp.Controllers
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
                     email.Place = demos.store;
-
+                    email.link = "http://internal.comerciamarketing.com/Demos/Form_template?id_demo=" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                    email.enddate = Convert.ToDateTime(demos.visit_date).AddDays(1).ToLongDateString();
                     email.Send();
 
                     //FIN email
@@ -275,7 +276,8 @@ namespace comerciamarketing_webapp.Controllers
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
                     email.Place = demos.store;
-
+                    email.link = "http://internal.comerciamarketing.com/Demos/Form_template?id_demo=" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                    email.enddate = Convert.ToDateTime(demos.visit_date).AddDays(1).ToLongDateString();
                     email.Send();
 
                     //FIN email
@@ -372,18 +374,19 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Form_template(int? id_demo, int? id_form)
         {
-            if (Session["IDusuario"] != null)
-            {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+            //if (Session["IDusuario"] != null)
+            //{
+            //    int ID = Convert.ToInt32(Session["IDusuario"]);
+            //    var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.correo;
-                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+            //    ViewBag.usuario = datosUsuario.correo;
+            //    ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 var Forms_details = db.Forms_details.Where(c => c.ID_demo == id_demo && c.ID_form ==id_form).OrderBy(c=>c.obj_group).ThenBy(c=> c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
 
                 var vendor = (from b in db.Demos where (b.ID_demo == id_demo) select b).FirstOrDefault();
                 ViewBag.vendor = vendor.vendor.ToString();
+                
 
                 Demos demos = db.Demos.Find(id_demo);
                 if (demos == null)
@@ -394,36 +397,54 @@ namespace comerciamarketing_webapp.Controllers
                 if (demos.ID_demostate == 4 || demos.ID_demostate == 1)
                 {
                     TempData["advertencia"] = "This demo is finished.";
-                    return RedirectToAction("Index");
+                int? id_demop = id_demo;
+                int? id_formp = id_form;
+                    return RedirectToAction("Form_templatepreview",new{ id_demo = id_demop, id_form = id_formp });
                 }
 
+            DateTime start = Convert.ToDateTime(demos.visit_date).Date;
+            DateTime end = Convert.ToDateTime(demos.visit_date).AddDays(1).Date;
+
+            DateTime today = DateTime.Today.Date;
+
+            if (today >= start && today <= end)
+            {
                 if (demos.ID_demostate == 3)
                 {
                     demos.ID_demostate = 2;
-                    
+
                     db.Entry(demos).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
                 ViewBag.id_demo = demos.ID_demo;
                 return View(Forms_details.ToList());
+            }
+            else {
+                TempData["advertencia"] = "This demo is not available.";
+                int? id_demop = id_demo;
+                int? id_formp = id_form;
+                return RedirectToAction("Form_templatepreview", new { id_demo = id_demop, id_form = id_formp });
+            }
 
 
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+
+
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
         }
         public ActionResult Form_templatepreview(int? id_demo, int? id_form)
         {
-            if (Session["IDusuario"] != null)
-            {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+            //if (Session["IDusuario"] != null)
+            //{
+            //    int ID = Convert.ToInt32(Session["IDusuario"]);
+            //    var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.correo;
-                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+            //    ViewBag.usuario = datosUsuario.correo;
+            //    ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 var Forms_details = db.Forms_details.Where(c => c.ID_demo == id_demo && c.ID_form == id_form).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
 
@@ -434,11 +455,11 @@ namespace comerciamarketing_webapp.Controllers
                 return View(Forms_details.ToList());
 
 
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
         }
 
         [HttpPost]

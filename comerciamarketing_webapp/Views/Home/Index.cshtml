@@ -161,7 +161,18 @@
             dataType: "json",
             success: function (data) {
                 if (data.success) {
-                    //Si todo salió bien, entonces devolvemos ip y datos de registro y luego enviamos a pagina Home
+                    //SI ES UN USUARIO DEMO
+                    if (data.redireccion != "") {
+                        console.log("Incomplete form")
+
+                        var href = '@Url.Action("Edit", "user_form_w9", new { id = "id" })';
+                        href = href.replace("id", data.redireccion);
+                    
+                
+                        window.location.href = href;
+
+                    } else {
+                    //Si todo salió bien, s devolvemos ip y datos de registro y luego enviamos a pagina Home
                     // set endpoint and your access key
                     var ip = "@Session["ip_user"]";
                     var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
@@ -219,6 +230,10 @@
                     });
                   
                    //window.location.href = 'Url.Action("Main", "Home")';
+
+                    }
+
+
 
                 } else {
                     new PNotify({

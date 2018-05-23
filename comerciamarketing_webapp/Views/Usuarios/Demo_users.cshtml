@@ -38,7 +38,7 @@
                         Registration date
                     </th>
                     <th>
-                        User activate
+                        User state
                     </th>
                     <th></th>
                 </tr>
@@ -81,16 +81,24 @@
 
                     </td>
                     <td>
-                        @if (item.activo == true)
+                        @if (item.cargo == "Waiting for approval")
                         {
-                             @Html.Label("Yes")
+                            @Html.ActionLink("Waiting for approval", "preview_w9form","user_form_w9", new { id = item.ID_usuario }, new { target = "_blank" })
                         }
                         else {
-                            @Html.Label("No")
-                        }</td>
+                             @Html.DisplayFor(modelItem => item.cargo)
+
+                        }
+
+                       
+                    </td>
                     <td>
                         @if (item.ID_rol != 6)
                         {
+                        if (item.cargo == "Waiting for approval")
+                        {
+                            @Html.ActionLink("Confirm user data", "confirm_data","user_form_w9", new { id = item.ID_usuario },null)@Html.Label(" | ")
+                        }
                 @Html.ActionLink("Edit", "Edit_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Details", "Details_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Delete", "Delete_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")

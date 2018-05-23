@@ -28,6 +28,7 @@
         <AssociationConnector Association="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF" />
         <AssociationConnector Association="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" />
         <EntityTypeShape EntityType="dbComerciaModel.demo_log" Width="1.5" PointX="7.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.user_form_w9" Width="1.5" PointX="9.375" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

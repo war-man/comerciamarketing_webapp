@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<comerciamarketing_webapp.Models.Forms_details>
 @{
-    ViewBag.Title = "Demos";
+    ViewBag.Title = "Comercia Marketing - Demo";
 }
 <div class="fs_menu_overlay"></div>
 
@@ -15,7 +15,7 @@
     
     <form method="post">
         <input type="text" id="id_demo" hidden value="@ViewBag.id_demo" />
-        <div class="form-horizontal" style="overflow-x:auto;">
+        <div class="form-horizontal">
             @foreach (var objeto in Model)
             {<!--PARA TITULOS -->
                 if (objeto.form_resource_type.fdescription == "Title")
@@ -143,8 +143,8 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10 text-right">
             <input type="submit" value="Save" class="btn btn-info" id="save_formtemplate" />
-            <input type="submit" value="Finish" class="btn btn-success" id="finish_formtemplate"/>
-            <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back</a>
+            <input type="submit" value="Finish" class="btn btn-success" id="finish_formtemplate" />
+            <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
         </div>
     </div>
     <div id="loadingmessage" style="display:none" class="col-md-offset-2 col-md-10 text-center">

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<comerciamarketing_webapp.Models.Forms_details>
 @{
-    ViewBag.Title = "Demos";
+    ViewBag.Title = "Comercia Marketing - Demo preview";
 }
 <div class="fs_menu_overlay"></div>
 
@@ -14,7 +14,7 @@
         <br />
 
     <form method="post">
-        <div class="form-horizontal" style="overflow-x:auto;">
+        <div class="form-horizontal">
             @foreach (var objeto in Model)
             {<!--PARA TITULOS -->
                 if (objeto.form_resource_type.fdescription == "Title")
@@ -101,26 +101,7 @@
                             </div>
                         </div>
 
-                        <script type="text/javascript">
-                            window.onload = function () {
-                                var canvas = document.getElementsByClassName("@("canvas_" + objeto.ID_details)");
-                                //var canvas = document.getElementById("sig-canvas");
-                                var context = canvas[0].getContext("2d");
 
-                                // load image from data url
-
-                                var imageObj = new Image();
-
-                                imageObj.onload = function () {
-
-                                    context.drawImage(this, 0, 0);
-
-                                };
-
-                                imageObj.src = "@objeto.fsource";
-
-                            };
-                        </script>
                         <div class="row">
                             <div class="col-md-12 text-center">
                                 <button class="btn btn-primary" id="sig-submitBtn" hidden>Submit Signature</button>
@@ -142,7 +123,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10 text-right">
 
-            <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back</a>
+            <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
         </div>
     </div>
     <div id="loadingmessage" style="display:none" class="col-md-offset-2 col-md-10 text-center">

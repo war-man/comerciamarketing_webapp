@@ -206,8 +206,8 @@
 <script>
         $(function () {
             $("#save_formtemplate").click(function () {
-                var ip = "@Session["ip_user"]";
-                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+                @*var ip = "@Session["ip_user"]";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
 
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
@@ -310,7 +310,7 @@
 
 
                     // get the API result via jQuery.ajax
-                    $.ajax({
+                    @*$.ajax({
                         url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
                         dataType: 'json',
                         success: function (jsondatos) {
@@ -352,7 +352,7 @@
                             });
 
                         }
-                    });
+                    });*@
 
 
 
@@ -391,8 +391,8 @@
 <script>
         $(function () {
             $("#finish_formtemplate").click(function () {
-                var ip = "@Session["ip_user"]";
-                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+                @*var ip = "@Session["ip_user"]";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
 
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
@@ -485,17 +485,17 @@
                                     processData: false, // Not to process data
                                     data: fileData,
                                     success: function (result) {
-
+                                        window.location.reload(true);
                                     },
                                     error: function (err) {
-                                        alert(err.statusText);
+                                        console.log(err.statusText);
                                     }
                                 });
                             });
 
 
                             // get the API result via jQuery.ajax
-                    $.ajax({
+                    @*$.ajax({
                         url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
                         dataType: 'json',
                         success: function (jsondatos) {
@@ -537,11 +537,11 @@
                             });
 
                         }
-                    });
+                    });*@
 
 
 
-                            window.location.href = '@Url.Action("Index","Demos")';
+
                             $('#loadingmessage').hide();
                             new PNotify({
                                 title: "Success",
@@ -571,6 +571,26 @@
         });
 
 </script>
+
+
+<script>
+    $(function () {
+        $("#w9-submitBtn").click(function () {
+
+            //var canvas = document.getElementById("sig-canvas");
+            $.each($('canvas'), function () {
+                var canvas = document.getElementById($(this).attr("id"));
+                var dataUrl = canvas.toDataURL();
+
+                $("#signature").val(dataUrl);
+
+            });
+
+        });
+    });
+
+</script>
+
 
 
 <script>
@@ -708,3 +728,77 @@
 
     </script>
 }
+@if (ViewBag.Title == "Comercia Marketing - W9")
+{
+    <script type="text/javascript">
+                    $(document).ready(function () {
+                                var canvas = document.getElementsByClassName("canvas_w9");
+                                //var canvas = document.getElementById("sig-canvas");
+                                var context = canvas[0].getContext("2d");
+
+                                // load image from data url
+
+                                var imageObj = new Image();
+
+                                imageObj.onload = function () {
+
+                                    context.drawImage(this, 0, 0);
+
+                                };
+
+                                imageObj.src = "@Model.signature";
+
+                            });
+    </script>
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Demo preview")
+{
+    foreach (var objeto in Model) {
+    <script type="text/javascript">
+                             $(document).ready(function () {
+                                var canvas = document.getElementsByClassName("@("canvas_" + objeto.ID_details)");
+                                //var canvas = document.getElementById("sig-canvas");
+                                var context = canvas[0].getContext("2d");
+
+                                // load image from data url
+
+                                var imageObj = new Image();
+
+                                imageObj.onload = function () {
+
+                                    context.drawImage(this, 0, 0);
+
+                                };
+
+                                imageObj.src = "@objeto.fsource";
+
+                            });
+    </script>
+    }
+}
+<script>
+    $(document).ready(function(){
+    $('#change_formattime');
+    var rowsShown = 5;
+        var rowsTotal = $('#change_formattime tbody tr').length;
+    var numPages = rowsTotal/rowsShown;
+    for(i = 0;i < numPages;i++) {
+        var pageNum = i + 1;
+        $('#nav').append('<a href="#" rel="'+i+'">'+pageNum+'</a> ');
+    }
+        $('#change_formattime tbody tr').hide();
+        $('#change_formattime tbody tr').slice(0, rowsShown).show();
+    $('#nav a:first').addClass('active');
+    $('#nav a').bind('click', function(){
+
+        $('#nav a').removeClass('active');
+        $(this).addClass('active');
+        var currPage = $(this).attr('rel');
+        var startItem = currPage * rowsShown;
+        var endItem = startItem + rowsShown;
+        $('#change_formattime tbody tr').css('opacity','0.0').hide().slice(startItem, endItem).
+        css('display','table-row').animate({opacity:1}, 300);
+    });
+});
+</script>

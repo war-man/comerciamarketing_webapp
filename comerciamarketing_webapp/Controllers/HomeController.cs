@@ -19,6 +19,10 @@ namespace comerciamarketing_webapp.Controllers
     public class HomeController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
+
+
+
+
         public ActionResult Main()
         {
 
@@ -33,7 +37,19 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
                 ViewBag.ultimavisita = Session["ultimaconexion"].ToString();//datosUsuario.fultima_visita.ToString();
                 ViewBag.bloquearcontenido = "si";
-                
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+
+                ViewBag.onhold_demos = onhold;
+                ViewBag.inprogress_demos = inprogress;
+                ViewBag.canceled_demos = canceled;
+                ViewBag.finished_demos = finished;
                 //Actualizamos datos del usuario
                 //Usuarios actualizardatosUsuario = new Usuarios();
 
@@ -55,6 +71,8 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+
+
         public ActionResult Index()
         {
             ViewBag.IPLOCAL = "";
@@ -116,17 +134,57 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         Session["IDusuario"] = obj.ID_usuario.ToString();
                         Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-                        var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
-                        if (ultimaconexion == null)
-                        {
-                            Session["ultimaconexion"] = "";
-                            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                        Session["ultimaconexion"] = "";
+
+
+                        //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
+                        //6 demos ,rol: 7 demo_user
+                        if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
+                            var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
+
+                            if (formw9 != null)
+                            {
+                                if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
+                                {
+                                    return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
+                                }
+                                else if (formw9.iscomplete = false && formw9.name != "")
+                                {
+                                    return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+
+                                }
+
+
+                            }
+                            else {
+                                return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                            }
+
+
                         }
-                        else
+
+
+
+                        if (obj.activo != false)
                         {
-                            Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
-                            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                            var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
+                            if (ultimaconexion == null)
+                            {
+                                Session["ultimaconexion"] = "";
+                                return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
+                                return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                            }
                         }
+                        else {
+
+                            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                        }
+
+
                         
                     }
                     }
@@ -136,14 +194,14 @@ namespace comerciamarketing_webapp.Controllers
                 else
                 {
                     //Si ingreso mal la contraseña o el usuario no existe
-                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
                     //TempData["advertencia"] = "Wrong email or password.";
                     //return RedirectToAction("Index");
                 }
             }
             catch 
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
                 //TempData["error"] = "An error was handled ." + exception;
                 //return RedirectToAction("Index");
             }

@@ -1,0 +1,251 @@
+﻿@model comerciamarketing_webapp.Models.user_form_w9
+
+@{
+    ViewBag.Title = "Comercia Marketing - W9";
+}
+
+<div class="fs_menu_overlay"></div>
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+
+            </div>
+
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="col-lg-12">
+            <p align="right">FORM W-9</p>
+        </div>
+        <br /><h4>Request for Taxpayer</h4><h4>Identification Number and Certification</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID_form)
+
+        <div class="form-group">
+            <h6 class="control -label col-md-12">1. Name (as shown on your income tax return). Name is required on this line; do not leave this line blank.</h6>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @maxlength = "70", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <h6 class="control -label col-md-12">2. Business name/disregarded entity name, if different from above.</h6>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.business_name, new { htmlAttributes = new { @class = "form-control", @maxlength = "120" } })
+                @Html.ValidationMessageFor(model => model.business_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <h6 class="control -label col-md-12">3. Check appropriate box for federal tax classification of the person whose name is entered on line 1. Check only one of the following seven boxes.</h6><br />
+            @Html.LabelFor(model => model.individual, "Individual/sole proprietor or single-member LLC", htmlAttributes: new { @class = "control -label col-md-6" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.individual)
+                    @Html.ValidationMessageFor(model => model.individual, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ccorporation, "C Corporation", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.ccorporation)
+                    @Html.ValidationMessageFor(model => model.ccorporation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.scorporation, "S Corporation", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.scorporation)
+                    @Html.ValidationMessageFor(model => model.scorporation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.partnership, "Partnership", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.partnership)
+                    @Html.ValidationMessageFor(model => model.partnership, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.trust, "Trust/estate", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.trust)
+                    @Html.ValidationMessageFor(model => model.trust, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.limited, "Limited liability company", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.limited)
+                    @Html.ValidationMessageFor(model => model.limited, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tax_classification, "Enter the tax classification (C=C corporation, S=S corporation, P=Partnership)", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tax_classification, new { htmlAttributes = new { @class = "form-control", @maxlength = "1" } })
+                @Html.ValidationMessageFor(model => model.tax_classification, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <p class="control-label col-md-12"><strong>Note:</strong> Check the appropriate box in the line above for the tax classification of the single-member owner.  Do not check LLC if the LLC is classified as a single-member LLC that is disregarded from the owner unless the owner of the LLC is another LLC that is not disregarded from the owner for U.S. federal tax purposes. Otherwise, a single-member LLC that is disregarded from the owner should check the appropriate box for the tax classification of its owner. </p>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.other, "Other", htmlAttributes: new { @class = "control-label col-md-8" }) <a href="#">(See instructions)</a>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.other)
+                    @Html.ValidationMessageFor(model => model.other, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.other_text, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                @Html.ValidationMessageFor(model => model.other_text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+
+            <h6 class="control -label col-md-12">4. Exemptions (codes apply only to certain entities, not individuals):</h6><br />
+            @Html.LabelFor(model => model.exempt_payeecode, "Exempt payee code (if any)", htmlAttributes: new { @class = "control-label col-md-8" }) <a href="#">(See instructions)</a>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.exempt_payeecode, new { htmlAttributes = new { @class = "form-control", @maxlength = "8" } })
+                @Html.ValidationMessageFor(model => model.exempt_payeecode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.exempt_fatcacode, "Exemption from FATCA reporting code (if any)", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.exempt_fatcacode, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+                @Html.ValidationMessageFor(model => model.exempt_fatcacode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <h6 class="control -label col-md-12">5. Address (number, street, and apt. or suite no.)</h6>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h6 class="control -label col-md-12">6. City, state, and ZIP code</h6>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.city_state_zipcode, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                @Html.ValidationMessageFor(model => model.city_state_zipcode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.requestername_address, "Requester’s name and address (optional)", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.requestername_address, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                @Html.ValidationMessageFor(model => model.requestername_address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <h6 class="control -label col-md-12">7. List account number(s) here (optional)</h6>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.list_account_nummber, new { htmlAttributes = new { @class = "form-control", @maxlength = "100" } })
+                @Html.ValidationMessageFor(model => model.list_account_nummber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <hr />
+
+
+        <div class="form-group">
+
+            <h6 class="control -label col-md-12">Taxpayer Identification Number (TIN)</h6><br />
+            @Html.LabelFor(model => model.social_securitynum, "Social security number", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.social_securitynum, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
+                @Html.ValidationMessageFor(model => model.social_securitynum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h6 class="control -label col-md-12">Or</h6><br />
+            @Html.LabelFor(model => model.employer_idnum, "Employer identification number", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.employer_idnum, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
+                @Html.ValidationMessageFor(model => model.employer_idnum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <input type="text" name="signature" id="signature" hidden>
+        <div class="form-group">
+            <h6 class="control -label col-md-12">Certification</h6><br />
+            @Html.LabelFor(model => model.signature, "Signature of U.S. person", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-12">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <canvas id="sig-canvas" class="canvas_w9" width="230" height="150" data-id="@Model.ID_usuario" ontouchmove="event.preventDefault();">
+                            Get a better browser, bro.
+                        </canvas>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-primary" id="sig-submitBtn" hidden>Submit Signature</button>
+                        <a href="#" class="btn btn-default" id="sig-clearBtn" onclick="return false">Clear Signature</a>
+                    </div>
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.sigdate)
+
+            @Html.HiddenFor(model => model.iscomplete)
+
+
+            @Html.HiddenFor(model => model.ID_usuario)
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Send" class="btn btn-default" id="w9-submitBtn" />
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

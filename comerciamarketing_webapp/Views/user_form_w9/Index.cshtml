@@ -1,0 +1,173 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.user_form_w9>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.business_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.individual)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ccorporation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.scorporation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.partnership)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.trust)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.limited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tax_classification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.other)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.other_text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.exempt_payeecode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.exempt_fatcacode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.city_state_zipcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.list_account_nummber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.requestername_address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.social_securitynum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employer_idnum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.signature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sigdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.iscomplete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ID_usuario)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.business_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.individual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ccorporation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.scorporation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.partnership)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trust)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.limited)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tax_classification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.other)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.other_text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.exempt_payeecode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.exempt_fatcacode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city_state_zipcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.list_account_nummber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requestername_address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.social_securitynum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employer_idnum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.signature)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sigdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.iscomplete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID_usuario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID_form }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ID_form }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID_form })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

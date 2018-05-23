@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 /******************************
@@ -1655,7 +1655,7 @@ section
 
 .footer_nav_container
 {
-	height: 130px;
+	height: 15px;
 }
 .cr
 {
