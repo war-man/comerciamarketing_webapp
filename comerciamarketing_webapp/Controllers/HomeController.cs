@@ -1,6 +1,8 @@
 ﻿using comerciamarketing_webapp.Models;
+using Newtonsoft.Json;
 using Postal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
@@ -12,6 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -45,6 +48,54 @@ namespace comerciamarketing_webapp.Controllers
                 int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
                 int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
                 int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+
+
+                var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).Include(a => a.Usuarios).ToList();
+
+
+                //Asignamos la geoubicacion
+                foreach (var item in demos_map) {
+
+                    string address = item.store;
+                    string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                    WebRequest request = WebRequest.Create(requestUri);
+                    WebResponse response = request.GetResponse();
+                    XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                    XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                    XElement locationElement = result.Element("geometry").Element("location");
+                    XElement lat = locationElement.Element("lat");
+                    XElement lng = locationElement.Element("lng");
+                    //NO SE PORQUE LO TIRA AL REVEZ
+                    item.GeoLat = lng.Value;
+                    item.GeoLong = lat.Value;
+
+                }
+
+
+                // Convertimos la lista a array
+                ArrayList myArrList = new ArrayList();
+                myArrList.AddRange((from p in demos_map
+                                    select new
+                                    {
+                                        id = p.ID_demo,
+                                        nombre = p.Usuarios.nombre + " " + p.Usuarios.apellido,
+                                        PlaceName = p.store,
+                                        GeoLong = p.GeoLong,
+                                        GeoLat = p.GeoLat,
+                                        demo_state = p.Demo_state.sdescription,
+                                        vendor = p.vendor,
+                                        date = p.visit_date,
+                                        comment = p.comments
+                                    }).ToList());
+
+
+                ViewBag.demos_map = JsonConvert.SerializeObject(myArrList);
+
+
+
+
 
                 ViewBag.onhold_demos = onhold;
                 ViewBag.inprogress_demos = inprogress;

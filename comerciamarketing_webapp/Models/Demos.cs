@@ -46,6 +46,8 @@ namespace comerciamarketing_webapp.Models
         public Nullable<System.DateTime> end_date { get; set; }
 
 
+        public string GeoLong { get; set; }
+        public string GeoLat { get; set; }
 
         public virtual Demo_state Demo_state { get; set; }
 

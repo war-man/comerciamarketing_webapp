@@ -269,5 +269,24 @@ namespace comerciamarketing_webapp.Controllers
             TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Demo_users", "Usuarios", null);
         }
+
+        public ActionResult tosharepoint() {
+            //string siteUrl = "http://MyServer/sites/MySiteCollection";
+
+            //ClientContext clientContext = new ClientContext(siteUrl);
+            //SP.List oList = clientContext.Web.Lists.GetByTitle("Announcements");
+
+            //ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            //ListItem oListItem = oList.AddItem(itemCreateInfo);
+            //oListItem["Title"] = "My New Item!";
+            //oListItem["Body"] = "Hello World!";
+
+            //oListItem.Update();
+
+            //clientContext.ExecuteQuery();
+
+            return View();
+
+        }
     }
 }
