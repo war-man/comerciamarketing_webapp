@@ -29,21 +29,21 @@ namespace comerciamarketing_webapp.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
 
-        public Nullable<System.DateTime> visit_date { get; set; }
+        public System.DateTime visit_date { get; set; }
 
-        public Nullable<int> ID_usuario { get; set; }
+        public int ID_usuario { get; set; }
 
-        public Nullable<int> ID_demostate { get; set; }
+        public int ID_demostate { get; set; }
 
         public string comments { get; set; }
 
-        public Nullable<int> ID_form { get; set; }
+        public int ID_form { get; set; }
 
         [DataType(DataType.Date)]
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
 
-        public Nullable<System.DateTime> end_date { get; set; }
+        public System.DateTime end_date { get; set; }
 
 
         public string GeoLong { get; set; }

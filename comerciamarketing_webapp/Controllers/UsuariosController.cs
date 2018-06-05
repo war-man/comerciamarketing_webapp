@@ -580,52 +580,61 @@ namespace comerciamarketing_webapp.Controllers
                         item.contrasena = "";
 
                     }
+
+                    if (item.activo == false)
+                    {
+                        item.cargo = "Inactive";
+                    }
+                    else
+                    {
+                        item.cargo = "Active";
+                    }
                     //Consultamos el estado del usuario DEMO
                     //utilizaremos la columna de cargo para mostrar el estado
-                    var datos_formulariow9 = (from a in db.user_form_w9 where (a.ID_usuario == item.ID_usuario) select a).FirstOrDefault();
-                    if (datos_formulariow9 != null)
-                    {
-                        if (datos_formulariow9.iscomplete == false && datos_formulariow9.name == "")
-                        {
-                            item.cargo = "Waiting user to fill form";
-                        }
-                        else if (datos_formulariow9.iscomplete == false && datos_formulariow9.name != "")
-                        {
-                            item.cargo = "Waiting for approval";
+                    //var datos_formulariow9 = (from a in db.user_form_w9 where (a.ID_usuario == item.ID_usuario) select a).FirstOrDefault();
+                    //if (datos_formulariow9 != null)
+                    //{
+                    //    if (datos_formulariow9.iscomplete == false && datos_formulariow9.name == "")
+                    //    {
+                    //        item.cargo = "Waiting user to fill form";
+                    //    }
+                    //    else if (datos_formulariow9.iscomplete == false && datos_formulariow9.name != "")
+                    //    {
+                    //        item.cargo = "Waiting for approval";
 
-                        }
-                        else if (datos_formulariow9.iscomplete == true)
-                        {
-                            if (item.activo == false)
-                            {
-                                item.cargo = "Inactive";
-                            }
-                            else
-                            {
-                                item.cargo = "Active";
-                            }
+                    //    }
+                    //    else if (datos_formulariow9.iscomplete == true)
+                    //    {
+                    //        if (item.activo == false)
+                    //        {
+                    //            item.cargo = "Inactive";
+                    //        }
+                    //        else
+                    //        {
+                    //            item.cargo = "Active";
+                    //        }
 
-                        }
+                    //    }
 
-                    }
-                    else {
-                        if (item.ID_rol == 6)
-                        {//6 es para Demo admin
+                    //}
+                    //else {
+                    //    if (item.ID_rol == 6)
+                    //    {//6 es para Demo admin
 
-                            if (item.activo == false)
-                            {
-                                item.cargo = "Inactive";
-                            }
-                            else
-                            {
-                                item.cargo = "Active";
-                            }
-                        }
-                        else {
-                            item.cargo = "No W9 form data was found";
-                        }
-                        
-                    }
+                    //        if (item.activo == false)
+                    //        {
+                    //            item.cargo = "Inactive";
+                    //        }
+                    //        else
+                    //        {
+                    //            item.cargo = "Active";
+                    //        }
+                    //    }
+                    //    else {
+                    //        item.cargo = "No W9 form data was found";
+                    //    }
+
+                    //}
                 }
               
                 return View(usuarios.ToList());
@@ -712,7 +721,7 @@ namespace comerciamarketing_webapp.Controllers
             usuarios.fcreacion_usuario = DateTime.Now;
             usuarios.ID_tipomembresia = 6;
             usuarios.ID_rol = 7;
-            usuarios.contrasena = "sinasignar02433";
+            usuarios.contrasena = "sinasignar2018";
             usuarios.activo =false;
 
             if (ModelState.IsValid)
@@ -720,56 +729,56 @@ namespace comerciamarketing_webapp.Controllers
                 db.Usuarios.Add(usuarios);
                 db.SaveChanges();
 
-                user_form_w9 formulariow9 = new user_form_w9();
+                //user_form_w9 formulariow9 = new user_form_w9();
 
-                formulariow9.name = "";
-                formulariow9.business_name = "";
-                formulariow9.individual = false;
-                formulariow9.ccorporation = false;
-                formulariow9.scorporation = false;
-                formulariow9.partnership = false;
-                formulariow9.trust = false;
-                formulariow9.limited = false;
-                formulariow9.tax_classification = "";
-                formulariow9.other = false;
-                formulariow9.other_text = "";
-                formulariow9.exempt_payeecode = "";
-                formulariow9.exempt_fatcacode = "";
-                formulariow9.address = "";
-                formulariow9.city_state_zipcode = "";
-                formulariow9.list_account_nummber = "";
-                formulariow9.requestername_address = "";
-                formulariow9.social_securitynum = "";
-                formulariow9.employer_idnum = "";
-                formulariow9.signature = "";
-                formulariow9.sigdate = DateTime.Today;
-                formulariow9.iscomplete = false;
+                //formulariow9.name = "";
+                //formulariow9.business_name = "";
+                //formulariow9.individual = false;
+                //formulariow9.ccorporation = false;
+                //formulariow9.scorporation = false;
+                //formulariow9.partnership = false;
+                //formulariow9.trust = false;
+                //formulariow9.limited = false;
+                //formulariow9.tax_classification = "";
+                //formulariow9.other = false;
+                //formulariow9.other_text = "";
+                //formulariow9.exempt_payeecode = "";
+                //formulariow9.exempt_fatcacode = "";
+                //formulariow9.address = "";
+                //formulariow9.city_state_zipcode = "";
+                //formulariow9.list_account_nummber = "";
+                //formulariow9.requestername_address = "";
+                //formulariow9.social_securitynum = "";
+                //formulariow9.employer_idnum = "";
+                //formulariow9.signature = "";
+                //formulariow9.sigdate = DateTime.Today;
+                //formulariow9.iscomplete = false;
 
-                formulariow9.ID_usuario = usuarios.ID_usuario;
+                //formulariow9.ID_usuario = usuarios.ID_usuario;
 
-                db.user_form_w9.Add(formulariow9);
-                db.SaveChanges();
+                //db.user_form_w9.Add(formulariow9);
+                //db.SaveChanges();
 
 
-                try
-                {
-                    var usuario = (from a in db.Usuarios where (a.ID_usuario == usuarios.ID_usuario) select a).FirstOrDefault();
-                    //Enviamos correo para notificar
-                    dynamic email = new Email("newuser_alert");
-                    email.To = usuario.correo;
-                    email.From = "customercare@comerciamarketing.com";
-                    email.email = usuario.correo;
-                    email.password = usuario.contrasena;
-                    email.link = "http://internal.comerciamarketing.com/user_form_w9/edit/" + formulariow9.ID_form;
+                //try
+                //{
+                //    var usuario = (from a in db.Usuarios where (a.ID_usuario == usuarios.ID_usuario) select a).FirstOrDefault();
+                //    //Enviamos correo para notificar
+                //    dynamic email = new Email("newuser_alert");
+                //    email.To = usuario.correo;
+                //    email.From = "customercare@comerciamarketing.com";
+                //    email.email = usuario.correo;
+                //    email.password = usuario.contrasena;
+                //    email.link = "http://internal.comerciamarketing.com/user_form_w9/edit/" + formulariow9.ID_form;
                     
-                    email.Send();
+                //    email.Send();
 
-                    //FIN email
-                }
-                catch
-                {
+                //    //FIN email
+                //}
+                //catch
+                //{
 
-                }
+                //}
 
 
 

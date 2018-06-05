@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using comerciamarketing_webapp.Models;
+using CrystalDecisions.CrystalReports.Engine;
 using Postal;
 
 namespace comerciamarketing_webapp.Controllers
@@ -588,6 +590,177 @@ namespace comerciamarketing_webapp.Controllers
             }
 
 
+        }
+
+        public ActionResult SendDemoResume(int? id)
+        {
+
+            var demo_header = (from a in db.Demos where (a.ID_demo == id) select a).ToList();
+
+
+
+            if (demo_header.Count > 0)
+
+            {
+
+                //Existen datos
+                //Buscamos los detalles
+
+                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype ==3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+
+
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
+
+
+
+                rd.SetDataSource(demo_header);
+
+                rd.Subreports[0].SetDataSource(demo_details);
+
+
+                var filePathOriginal = Server.MapPath("/Reports/pdfReports");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+
+                return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+                //PARA ENVIAR POR CORREO
+
+                //try
+
+                //{
+
+
+
+                //    //limpiamos el directorio
+
+                //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+
+
+
+                //    foreach (FileInfo file in di.GetFiles())
+
+                //    {
+
+                //        file.Delete();
+
+                //    }
+
+                //    foreach (DirectoryInfo dir in di.GetDirectories())
+
+                //    {
+
+                //        dir.Delete(true);
+
+                //    }
+
+
+
+                //}
+
+                //catch (Exception e)
+
+                //{
+
+                //    var mensaje = e.ToString();
+
+                //}
+
+
+
+
+
+
+
+                //var filename = "Returns and Allowances Report " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper() + ".pdf";
+
+                //path = Path.Combine(filePathOriginal, filename);
+
+                //rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+
+
+
+                //PdfDocument doc = new PdfDocument();
+
+                //doc.LoadFromFile(path);
+
+                //Image img = doc.SaveAsImage(0);
+
+                //var imagename = "Returns and Allowances Report " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper() + ".jpg";
+
+                //pathimage = Path.Combine(filePathOriginal, imagename);
+
+                //img.Save(pathimage);
+
+                //doc.Close();
+
+
+
+
+
+                ////Para enviar correos
+
+                //try
+
+                //{
+
+                //    dynamic email = new Email("EmailMWRCI");
+
+                //    email.To = seller.Email.ToString();
+
+                //    email.From = Config.Email;
+
+                //    email.Subject = "Returns and Allowances Report | " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper();
+
+                //    email.Cc = destinatariosCC.ToString();
+
+                //    email.CcSupervisor = seller.Supervisor.ToString();
+
+                //    email.Body = imagename;
+
+                //    //return new EmailViewResult(email);
+
+
+
+                //    email.Send();
+
+                //}
+
+
+
+                //    catch (Exception e)
+
+                //    {
+
+                //        Console.WriteLine("{0} Exception caught.", e);
+
+                //    }
+
+
+
+            }
+            else {
+                return RedirectToAction("Index", "Home", null);
+            }
         }
 
     }

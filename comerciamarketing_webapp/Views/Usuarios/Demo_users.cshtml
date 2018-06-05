@@ -98,7 +98,10 @@
                         if (item.cargo == "Waiting for approval")
                         {
                             @Html.ActionLink("Confirm user data", "confirm_data","user_form_w9", new { id = item.ID_usuario },null)@Html.Label(" | ")
-                        }
+                            }
+                            else {
+                                @Html.ActionLink("W9 Form Preview", "preview_w9form","user_form_w9", new { id = item.ID_usuario }, new { target = "_blank" })@Html.Label(" | ")
+                            }
                 @Html.ActionLink("Edit", "Edit_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Details", "Details_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")
                 @Html.ActionLink("Delete", "Delete_demoU", new { id = item.ID_usuario }) @Html.Label(" | ")

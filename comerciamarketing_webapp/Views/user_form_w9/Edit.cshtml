@@ -46,94 +46,145 @@
             </div>
         </div>
         <hr />
-        <div class="form-group">
-            <h6 class="control -label col-md-12">3. Check appropriate box for federal tax classification of the person whose name is entered on line 1. Check only one of the following seven boxes.</h6><br />
-            @Html.LabelFor(model => model.individual, "Individual/sole proprietor or single-member LLC", htmlAttributes: new { @class = "control -label col-md-6" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.individual)
-                    @Html.ValidationMessageFor(model => model.individual, "", new { @class = "text-danger" })
+        <h6 class="control -label col-md-12">3. Check appropriate box for federal tax classification of the person whose name is entered on line 1. Check only one of the following seven boxes.</h6><br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container">
+                    <div class="row benefit_row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.individual, "Individual/sole proprietor or single-member LLC", htmlAttributes: new { @class = "control -label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.individual)
+                                        @Html.ValidationMessageFor(model => model.individual, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ccorporation, "C Corporation", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.ccorporation)
+                                        @Html.ValidationMessageFor(model => model.ccorporation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.scorporation, "S Corporation", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.scorporation)
+                                        @Html.ValidationMessageFor(model => model.scorporation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.partnership, "Partnership", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.partnership)
+                                        @Html.ValidationMessageFor(model => model.partnership, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.trust, "Trust/estate", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.trust)
+                                        @Html.ValidationMessageFor(model => model.trust, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ccorporation, "C Corporation", htmlAttributes: new { @class = "control-label col-md-6" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.ccorporation)
-                    @Html.ValidationMessageFor(model => model.ccorporation, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.scorporation, "S Corporation", htmlAttributes: new { @class = "control-label col-md-6" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.scorporation)
-                    @Html.ValidationMessageFor(model => model.scorporation, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.partnership, "Partnership", htmlAttributes: new { @class = "control-label col-md-6" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.partnership)
-                    @Html.ValidationMessageFor(model => model.partnership, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.trust, "Trust/estate", htmlAttributes: new { @class = "control-label col-md-12" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.trust)
-                    @Html.ValidationMessageFor(model => model.trust, "", new { @class = "text-danger" })
+
+
+
+
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container">
+                    <div class="row benefit_row">
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.limited, "Limited liability company", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.limited)
+                                        @Html.ValidationMessageFor(model => model.limited, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tax_classification, "Enter the tax classification (C=C corporation, S=S corporation, P=Partnership)", htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.tax_classification, new { htmlAttributes = new { @class = "form-control", @maxlength = "1" } })
+                                    @Html.ValidationMessageFor(model => model.tax_classification, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <p class="control-label col-md-12"><strong>Note:</strong> Check the appropriate box in the line above for the tax classification of the single-member owner.  Do not check LLC if the LLC is classified as a single-member LLC that is disregarded from the owner unless the owner of the LLC is another LLC that is not disregarded from the owner for U.S. federal tax purposes. Otherwise, a single-member LLC that is disregarded from the owner should check the appropriate box for the tax classification of its owner. </p>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.limited, "Limited liability company", htmlAttributes: new { @class = "control-label col-md-12" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.limited)
-                    @Html.ValidationMessageFor(model => model.limited, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container">
+                    <div class="row benefit_row">
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.other, "Other", htmlAttributes: new { @class = "control-label col-md-8" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.other)
+                                        @Html.ValidationMessageFor(model => model.other, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <a href="#">(See instructions)</a>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.other_text, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                                    @Html.ValidationMessageFor(model => model.other_text, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.tax_classification, "Enter the tax classification (C=C corporation, S=S corporation, P=Partnership)", htmlAttributes: new { @class = "control-label col-md-12" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.tax_classification, new { htmlAttributes = new { @class = "form-control", @maxlength = "1" } })
-                @Html.ValidationMessageFor(model => model.tax_classification, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <p class="control-label col-md-12"><strong>Note:</strong> Check the appropriate box in the line above for the tax classification of the single-member owner.  Do not check LLC if the LLC is classified as a single-member LLC that is disregarded from the owner unless the owner of the LLC is another LLC that is not disregarded from the owner for U.S. federal tax purposes. Otherwise, a single-member LLC that is disregarded from the owner should check the appropriate box for the tax classification of its owner. </p>
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.other, "Other", htmlAttributes: new { @class = "control-label col-md-8" }) <a href="#">(See instructions)</a>
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.other)
-                    @Html.ValidationMessageFor(model => model.other, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.other_text, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
-                @Html.ValidationMessageFor(model => model.other_text, "", new { @class = "text-danger" })
-            </div>
-        </div>
         <hr />
         <div class="form-group">
 

@@ -5,10 +5,13 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
+using Microsoft.Online.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -86,7 +89,7 @@ namespace comerciamarketing_webapp.Controllers
             {
                 if (user_form_w9.iscomplete == true)
                 {
-                    TempData["advertencia"] = "The data in the form was approved, you can not modify it.";
+                    TempData["advertencia"] = "The data in the form was approved, you cannot edit your personal information.";
                     return RedirectToAction("Edit", new { id = user_form_w9.ID_form });
                 }
                 else {
@@ -271,19 +274,103 @@ namespace comerciamarketing_webapp.Controllers
         }
 
         public ActionResult tosharepoint() {
-            //string siteUrl = "http://MyServer/sites/MySiteCollection";
+            
 
-            //ClientContext clientContext = new ClientContext(siteUrl);
-            //SP.List oList = clientContext.Web.Lists.GetByTitle("Announcements");
+            //FUNCIONA
+            //using (ClientContext clientContext = new ClientContext("https://limenainc.sharepoint.com/sites/comercia"))
+            //{
+            //    var passWord = new SecureString();
 
-            //ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            //ListItem oListItem = oList.AddItem(itemCreateInfo);
-            //oListItem["Title"] = "My New Item!";
-            //oListItem["Body"] = "Hello World!";
+            //    foreach (char c in "Fr@Nc!sC0@2018".ToCharArray()) passWord.AppendChar(c);
 
-            //oListItem.Update();
+            //    clientContext.Credentials = new SharePointOnlineCredentials("f.velasquez@limenainc.net", passWord);
 
-            //clientContext.ExecuteQuery();
+            //    Web web = clientContext.Web;
+
+            //    clientContext.Load(web);
+            //    try
+            //    {
+
+            //        clientContext.ExecuteQuery();
+            //        ViewBag.hola = web.Title;
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e.Message);
+            //        ViewBag.hola = e.Message;
+            //    }
+            //}
+
+            //Nos conectamos al sitio de sharepoint
+
+            using (ClientContext clientContext = new ClientContext("https://limenainc.sharepoint.com/sites/comercia"))
+            {
+                var passWord = new SecureString();
+
+                foreach (char c in "Fr@Nc!sC0@2018".ToCharArray()) passWord.AppendChar(c);
+
+                clientContext.Credentials = new SharePointOnlineCredentials("f.velasquez@limenainc.net", passWord);
+
+                //Web web = clientContext.Web;
+                //ListCollection collList = web.Lists;
+
+                //clientContext.Load(collList);
+
+                try
+                {
+
+
+                    // Seleccionamos la lista especifica. 
+                    List customerdataList = clientContext.Web.Lists.GetByTitle("Customer Data");
+
+                    ////PARA CONSULTAS [SELECT]
+                    //// Luego hacemos una consulta limitando los resultados a 100
+
+
+                    //CamlQuery query = CamlQuery.CreateAllItemsQuery(100);
+                    //ListItemCollection items = customerdataList.GetItems(query);
+
+                    //// Retornamos la lista de items en un  ListItemCollection  hacia un List.GetItems(Query). 
+                    //clientContext.Load(items);
+                    //clientContext.ExecuteQuery();
+                    //foreach (ListItem listItem in items)
+                    //{
+                    //    // We have all the list item data. For example, Title. 
+                    //    ViewBag.hola = ViewBag.hola + ", " + listItem["Title"];
+                    //}
+
+
+                    // We are just creating a regular list item, so we don't need to 
+                    // set any properties. If we wanted to create a new folder, for 
+                    // example, we would have to set properties such as 
+                    // UnderlyingObjectType to FileSystemObjectType.Folder. 
+                    ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                    ListItem newItem = customerdataList.AddItem(itemCreateInfo);
+                    newItem["Title"] = "TIENDA DE PRUEBA FRAN";
+                    newItem.Update();
+
+                    clientContext.ExecuteQuery();
+
+                    ViewBag.hola = "Tienda ingresada correctamente";
+                    //clientContext.ExecuteQuery();
+
+                    //foreach (List oList in collList)
+                    //{
+                    //    if (oList.Title == "Customer Data") {
+                    //        ViewBag.hola = oList.Id + ", " + oList.Title + "" + oList.Created.ToString();
+                    //    }
+
+                    //    //Console.WriteLine("Title: {0} Created: {1}", oList.Title, oList.Created.ToString());
+                    //}
+
+                    //ViewBag.hola = web.Title;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    ViewBag.hola = e.Message;
+                }
+            }
 
             return View();
 
