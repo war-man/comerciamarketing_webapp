@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using comerciamarketing_webapp.Models;
@@ -606,7 +609,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Existen datos
                 //Buscamos los detalles
 
-                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype ==3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
 
 
 
@@ -619,6 +622,102 @@ namespace comerciamarketing_webapp.Controllers
                 rd.SetDataSource(demo_header);
 
                 rd.Subreports[0].SetDataSource(demo_details);
+
+                //Verificamos si existen fotos en el demo (MAX 4 fotos)
+                var fotos = (from c in db.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
+
+                int fotosC = fotos.Count();
+
+
+                if (fotosC == 4)
+                {
+                    rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
+
+                }
+                else if (fotosC == 3)
+                {
+                    rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    rd.SetParameterValue("urlimg4", "");
+
+                }
+                else if (fotosC == 2)
+                {
+                    rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    rd.SetParameterValue("urlimg3", "");
+                    rd.SetParameterValue("urlimg4", "");
+                }
+                else if (fotosC == 1)
+                {
+                    rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    rd.SetParameterValue("urlimg2", "");
+                    rd.SetParameterValue("urlimg3", "");
+                    rd.SetParameterValue("urlimg4", "");
+                }
+                else {
+
+                    rd.SetParameterValue("urlimg1", "");
+                    rd.SetParameterValue("urlimg2", "");
+                    rd.SetParameterValue("urlimg3", "");
+                    rd.SetParameterValue("urlimg4", "");
+                }
+
+
+                //Verificams si existe firma electronica
+                var firma = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
+
+                int firmaC = firma.Count();
+
+
+
+
+                if (firmaC == 1)
+                {
+
+                    string data = firma[0].fsource;
+                    var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+                    var binData = Convert.FromBase64String(base64Data);
+
+                    using (var streamf = new MemoryStream(binData))
+                    {
+
+                        Bitmap myImage = new Bitmap(streamf);
+
+                        // Assumes myImage is the PNG you are converting
+                        using (var b = new Bitmap(myImage.Width, myImage.Height))
+                        {
+                            b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+
+                            using (var g = Graphics.FromImage(b))
+                            {
+                                g.Clear(Color.White);
+                                g.DrawImageUnscaled(myImage, 0, 0);
+                            }
+
+                            // Now save b as a JPEG like you normally would
+
+                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                            b.Save(path, ImageFormat.Jpeg);
+
+
+                            rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+                        }
+
+
+
+                    }
+                }
+                else
+                {
+                    rd.SetParameterValue("urlimgsign", "");
+                }
+
 
 
                 var filePathOriginal = Server.MapPath("/Reports/pdfReports");
