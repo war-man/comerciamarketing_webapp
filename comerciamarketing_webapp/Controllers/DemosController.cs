@@ -862,5 +862,219 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
+        public ActionResult SendDemoResumeByCustomer(string id)
+        {
+            DateTime today_init_hour = DateTime.Today;
+            DateTime today_end_hour = DateTime.Today.AddHours(11).AddMinutes(58);
+
+            var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+
+            if (total_demos.Count > 0)
+            {
+                //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour || f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
+
+                //Existen datos
+                //Buscamos los detalles
+
+                var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+
+
+                if (demo_details_items.Count > 0)
+
+                {
+
+                    //CAMBIAMOS LOS DATOS A LOS QUE NECESITAMOS DESDE SAP COMERCIA
+                    /*
+                     STORE = NOMBRE DE TIENDA
+                     ID_STORE = ESTADO
+                     VENDOR = CIUDAD
+                     ID_VENDOR = UNIDADES VENDIDAS
+                     
+                     */
+
+                    foreach (var item in total_demos) {
+                        var store_details = (from CM in CMKdb.OCRDs where (CM.CardCode == item.ID_Store) select CM).FirstOrDefault();
+
+                        if (store_details == null)
+                        {
+                            item.store = "NOT FOUND";
+                            item.ID_Store = item.ID_Store + ": NOT FOUND" ;
+                            item.vendor = "NOT FOUND";
+
+                            decimal sumLineTotal = (from s in db.Forms_details where (s.ID_demo == item.ID_demo && s.ID_formresourcetype == 3) select s.fvalue).Sum();
+
+                            item.ID_Vendor = Convert.ToString(sumLineTotal);
+                        }
+                        else {
+                            item.store = store_details.CardName;
+                            item.ID_Store = store_details.State2;
+                            item.vendor = store_details.MailCity;
+
+                            decimal sumLineTotal = (from s in db.Forms_details where (s.ID_demo == item.ID_demo && s.ID_formresourcetype == 3) select s.fvalue).Sum();
+
+                            item.ID_Vendor = Convert.ToString(sumLineTotal);
+
+                        }
+
+                    }
+
+                    ReportDocument rd = new ReportDocument();
+
+                    rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemoDailyResume.rpt"));
+
+
+
+                    rd.SetDataSource(total_demos);
+
+                    rd.Subreports[0].SetDataSource(demo_details_items);
+                  // rd.Subreports[1].SetDataSource(total_demos);
+
+
+                    var filePathOriginal = Server.MapPath("/Reports/pdfReports");
+
+                    Response.Buffer = false;
+
+                    Response.ClearContent();
+
+                    Response.ClearHeaders();
+
+
+                    //PARA VISUALIZAR
+                    Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Daily Resume; ");
+
+
+
+                    Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+
+
+                    return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+                    //PARA ENVIAR POR CORREO
+
+                    //try
+
+                    //{
+
+
+
+                    //    //limpiamos el directorio
+
+                    //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+
+
+
+                    //    foreach (FileInfo file in di.GetFiles())
+
+                    //    {
+
+                    //        file.Delete();
+
+                    //    }
+
+                    //    foreach (DirectoryInfo dir in di.GetDirectories())
+
+                    //    {
+
+                    //        dir.Delete(true);
+
+                    //    }
+
+
+
+                    //}
+
+                    //catch (Exception e)
+
+                    //{
+
+                    //    var mensaje = e.ToString();
+
+                    //}
+
+
+
+
+
+
+
+                    //var filename = "Returns and Allowances Report " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper() + ".pdf";
+
+                    //path = Path.Combine(filePathOriginal, filename);
+
+                    //rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
+
+
+
+                    //PdfDocument doc = new PdfDocument();
+
+                    //doc.LoadFromFile(path);
+
+                    //Image img = doc.SaveAsImage(0);
+
+                    //var imagename = "Returns and Allowances Report " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper() + ".jpg";
+
+                    //pathimage = Path.Combine(filePathOriginal, imagename);
+
+                    //img.Save(pathimage);
+
+                    //doc.Close();
+
+
+
+
+
+                    ////Para enviar correos
+
+                    //try
+
+                    //{
+
+                    //    dynamic email = new Email("EmailMWRCI");
+
+                    //    email.To = seller.Email.ToString();
+
+                    //    email.From = Config.Email;
+
+                    //    email.Subject = "Returns and Allowances Report | " + seller.SalesRepresentative + " " + DateTime.Now.ToString("dddd").ToUpper();
+
+                    //    email.Cc = destinatariosCC.ToString();
+
+                    //    email.CcSupervisor = seller.Supervisor.ToString();
+
+                    //    email.Body = imagename;
+
+                    //    //return new EmailViewResult(email);
+
+
+
+                    //    email.Send();
+
+                    //}
+
+
+
+                    //    catch (Exception e)
+
+                    //    {
+
+                    //        Console.WriteLine("{0} Exception caught.", e);
+
+                    //    }
+                }
+                else {
+                    TempData["advertencia"] = "No data to show.";
+                    return RedirectToAction("Index", "Home", null);
+                    }
+                }
+                else
+            {
+                TempData["advertencia"] = "No Demos assigned.";
+                return RedirectToAction("Index", "Home", null);
+            }
+        }
     }
 }
