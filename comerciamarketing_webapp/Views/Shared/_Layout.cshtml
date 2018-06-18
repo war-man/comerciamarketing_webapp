@@ -53,6 +53,84 @@
             width: 100%;
         }
     </style>
+
+    <style>
+
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
+
+
+
+        .responsive {
+            padding: 0 6px 7px;
+            display: inline-block;
+
+            width: 33%;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .3s ease;
+            background-color: transparent;
+        }
+
+        div.gallery:hover .overlay {
+            opacity: 1;
+        }
+
+        .icon {
+            color: white;
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .fa-search-plus:hover {
+            color: #eee;
+        }
+
+                @Html.Raw("@")media only screen and (max-width: 1000px) {
+    .responsive {
+        width: 49%;
+        margin: 6px 0;
+    }
+}
+
+
+        @Html.Raw("@")media only screen and (max-width: 700px) {
+    .responsive {
+        width: 48%;
+        margin: 6px 0;
+    }
+}
+
+        @Html.Raw("@")media only screen and (max-width: 300px) {
+            .responsive {
+                width: 100%;
+            }
+        }
+
+    </style>
+
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g"></script>
 </head>
 <body>
@@ -64,7 +142,13 @@
     @Html.Partial("~/Views/Shared/Scripts.cshtml")
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
 
+</script>
+s
 @{if (ViewBag.bloquearcontenido != null)
     {
 
@@ -389,8 +473,31 @@
 
 <!--FORM TEMPLATE FINISH-->
 <script>
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+
+        newDate.setHours(hours - offset);
+
+        return newDate;
+    };
+
         $(function () {
             $("#finish_formtemplate").click(function () {
+
+                var now = new Date();
+                var MS_PER_MINUTE = 60000;
+                var offset = new Date().getTimezoneOffset();
+
+                var date = new Date(now - offset * MS_PER_MINUTE);
+                //var localDate = new Date($(this).html());
+               
+                console.log(now);
+                console.log(now.toLocaleString());
+                
+
                 @*var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
 
@@ -454,7 +561,7 @@
                 $.ajax({
                     url: '/Forms/Finish_templateformdata',
                     type: 'POST',
-                    data: JSON.stringify(objects),
+                    data: JSON.stringify(objects) ,
                     contentType: 'application/json; charset=utf-8',
                     success: function (result) {
 
@@ -478,12 +585,14 @@
 
                                 // Adding one more key to FormData object
                                 fileData.append('id', ID);
+                                fileData.append('end_date', now.toLocaleString());
                                 $.ajax({
-                                    url: '/Forms/UploadFiles',
+                                    url: '/Forms/UploadFilesF',
                                     type: "POST",
                                     contentType: false, // Not to set any content header
                                     processData: false, // Not to process data
-                                    data: fileData,
+                                    async: false,
+                                    data:  fileData,
                                     success: function (result) {
                                         window.location.reload(true);
                                     },
@@ -807,7 +916,7 @@
 
 @if (ViewBag.Title == "Comercia Marketing - Home")
 {
-<script type="text/javascript">
+    <script type="text/javascript">
 
         // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
         $(document).ready(function () {
@@ -891,5 +1000,5 @@
         }
 
 
-</script>
+    </script>
 }

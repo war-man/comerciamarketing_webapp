@@ -177,6 +177,8 @@ namespace comerciamarketing_webapp.Controllers
 
                     //PARA DEMOS
                     //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+
+
                     if (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
                     {
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
@@ -536,6 +538,109 @@ namespace comerciamarketing_webapp.Controllers
                     TempData["advertencia"] = "Wrong password. Try again";
                     return RedirectToAction("Settings");
                 }
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult Gallery()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                //Consultamos los demos de la empresa
+                var demos = (from a in db.Demos where (a.ID_Vendor == datosUsuario.Empresas.ID_SAP) select a).ToList();
+                //Recuperamos los IDS de las demos del customer especifico
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP) select f.ID_demo).ToArray();
+
+                var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
+
+                for (int i = demo_details_items.Count - 1; i >= 0; i--)
+                {
+                    if (demo_details_items[i].fsource =="") demo_details_items.RemoveAt(i);
+                   }
+
+            if (demo_details_items.Count > 0)
+                {
+                    IEnumerable<SelectListItem> selectList = from s in demos
+                                                             select new SelectListItem
+                                                             {
+                                                                 Value = Convert.ToString(s.ID_demo),
+                                                                 Text = s.visit_date.ToShortDateString()  + " - " + s.store.ToString()
+                                                             };
+
+
+                    ViewBag.ID_demos = new SelectList(selectList, "Value", "Text");
+
+
+                    ViewBag.bloquearcontenido = "no";
+                    ViewBag.imagenes = demo_details_items;
+                    
+                    return View();
+                }
+                else
+                {
+                    TempData["advertencia"] = "No images to show.";
+                    return View();
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        public ActionResult Galleryfilter(int? ID_demos)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                //Consultamos los demos de la empresa
+                var demos = (from a in db.Demos where (a.ID_Vendor == datosUsuario.Empresas.ID_SAP) select a).ToList();
+                //Recuperamos los IDS de las demos del customer especifico
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP && f.ID_demo == ID_demos) select f.ID_demo).ToArray();
+
+                var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
+
+                for (int i = demo_details_items.Count - 1; i >= 0; i--)
+                {
+                    if (demo_details_items[i].fsource == "") demo_details_items.RemoveAt(i);
+                }
+
+                IEnumerable<SelectListItem> selectList = from s in demos
+                                                         select new SelectListItem
+                                                         {
+                                                             Value = Convert.ToString(s.ID_demo),
+                                                             Text = s.visit_date.ToShortDateString() + " - " + s.store.ToString()
+                                                         };
+
+
+                ViewBag.ID_demos = new SelectList(selectList, "Value", "Text", ID_demos);
+                ViewBag.bloquearcontenido = "no";
+                ViewBag.imagenes = demo_details_items;
+
+                if (demo_details_items.Count > 0)
+                {
+                    return View();
+                }
+                else
+                {
+                    TempData["advertencia"] = "No images to show.";
+                    return View();
+                }
+
             }
             else
             {

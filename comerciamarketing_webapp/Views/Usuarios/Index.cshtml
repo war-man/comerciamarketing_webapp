@@ -20,7 +20,72 @@
             <p>
                 @Html.ActionLink("Add new user", "Create", new { ID_empresa = ViewBag.ID_Empresa })
             </p>
-            <table class="table" id="change_formattime">
+
+            @if (Session["tipousuario"].ToString() == "6")
+            {
+                <table class="table" id="change_formattime">
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Registration date
+                    </th>
+                    <th>
+                        Membership
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    if (item.ID_tipomembresia.ToString() == "7")
+                    {
+                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombre) @Html.DisplayFor(modelItem => item.apellido)
+                    </td>
+                    <td class="customerIDCell">
+                        @if (item.ID_tipomembresia == 1)
+                        {
+
+                        }
+                        else
+                        {
+                @Html.DisplayFor(modelItem => item.fcreacion_usuario)
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipo_membresia.descripcion)
+                    </td>
+                    <td>
+                        @if (item.ID_tipomembresia != 1)
+                        {
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID_usuario }) @Html.Label(" | ")
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID_usuario })
+                        }
+
+                    </td>
+                </tr>
+                    }
+
+                    else
+                    {
+                    }
+                }
+
+            </table>
+
+            }
+            else {
+                <table class="table" id="change_formattime">
                 <tr>
                     <th>
                         Email
@@ -118,6 +183,10 @@
                 }
 
             </table>
+
+            }
+
+            
               <p>
                 <a href="@Url.Action("Index", "Empresas")">Back</a>
             </p>

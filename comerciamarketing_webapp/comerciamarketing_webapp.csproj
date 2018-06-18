@@ -368,6 +368,12 @@
       <DependentUpon>rptDemo.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\rptDemoDailyResume_v2.cs">
+      <DependentUpon>rptDemoDailyResume_v2.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reportes\rptDemoDailyResume.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -388,6 +394,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\bootstrap-select.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
     <Content Include="Content\css\main.css" />
@@ -456,6 +463,7 @@
     <Content Include="Content\images\servicios\servicio4-1024x682.jpg" />
     <Content Include="Content\images\servicios\servicio5-1024x682.jpg" />
     <Content Include="Content\images\w9form.png" />
+    <Content Include="Content\js\bootstrap-select.js" />
     <Content Include="Content\js\categories_custom.js" />
     <Content Include="Content\js\chartist.min.js" />
     <Content Include="Content\js\contact_custom.js" />
@@ -735,9 +743,14 @@
     <Content Include="Views\user_form_w9\Edit.cshtml" />
     <Content Include="Views\user_form_w9\Index.cshtml" />
     <Content Include="Views\user_form_w9\tosharepoint.cshtml" />
+    <Content Include="Views\Home\Gallery.cshtml" />
+    <Content Include="Views\Home\Galleryfilter.cshtml" />
+    <Content Include="Views\Emails\DemoResume.cshtml" />
+    <Content Include="Views\Emails\DemoResumeTotal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Reportes\pdf\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -750,6 +763,10 @@
     <EmbeddedResource Include="Reportes\rptDemo.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemo.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptDemoDailyResume_v2.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDemoDailyResume_v2.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptDemoDailyResume.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

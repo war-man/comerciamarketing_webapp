@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ID_Vendor, "Vendor (SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ID_Vendor", null, htmlAttributes: new { @class = "form-control", @id = "dropdown_idvendor_E", @onchange = "getVendorname_demoE()" })
+                @Html.DropDownList("ID_Vendor", null, htmlAttributes: new { @class = "form-control js-example-basic-single", @id = "dropdown_idvendor_E", @onchange = "getVendorname_demoE()" })
                 @Html.ValidationMessageFor(model => model.ID_Vendor, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ID_Store, "Store (SAP) *", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ID_Store", null, htmlAttributes: new { @class = "form-control", @id = "dropdown_idstore_E", @onchange = "getStorename_demoE()" })
+                @Html.DropDownList("ID_Store", null, htmlAttributes: new { @class = "form-control js-example-basic-single", @id = "dropdown_idstore_E", @onchange = "getStorename_demoE()" })
                 @Html.ValidationMessageFor(model => model.ID_Store, "", new { @class = "text-danger" })
             </div>
         </div>

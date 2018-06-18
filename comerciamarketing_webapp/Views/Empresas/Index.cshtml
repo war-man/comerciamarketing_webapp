@@ -16,17 +16,64 @@
 
                 </ul>
             </div>
-            <p>
-                @Html.ActionLink("Add new customer", "Create")
-            <p class="col-md-12 text-right">
-                <a href="@Url.Action("Waiting_list", "Usuarios")">Waiting List</a>
+                        @if (Session["tipousuario"].ToString() == "6")
+                        {
 
-            </p>
-            </p>
+                        }
+                        else {
+                       <p>
+                            @Html.ActionLink("Add new customer", "Create")
+                        <p class="col-md-12 text-right">
+                            <a href="@Url.Action("Waiting_list", "Usuarios")">Waiting List</a>
 
+                        </p>
+                        </p>
 
+                        }
+            
+            @if (Session["tipousuario"].ToString() == "6")
+            {
+              <table class="table">
+                <tr>
+                    <th>
+                        SAP customer name
+                    </th>
+                    <th>
+                        SAP customer ID
+                    </th>
 
-            <table class="table">
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+        {
+            if (item.nombre != "SISTEMA")
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID_SAP)
+                    </td>
+                    <td>
+                        @if (item.nombre != "SISTEMA")
+    {
+                    <a href="@Url.Action("Index", "Usuarios", new { ID_Empresa = item.ID_empresa })">Mail contacts</a> @Html.Label(" | ")
+                    <a href="@Url.Action("SendDemoResumeByCustomer", "Demos", new { id = item.ID_SAP})">Send daily summary</a> @Html.Label(" | ")
+                    <a href="@Url.Action("PreviewDemoResumeByCustomer", "Demos", new { id = item.ID_SAP })">Preview daily summary</a>
+}
+
+                    </td>
+                </tr>
+    }
+}
+
+            </table>
+
+            }
+            else {
+               <table class="table">
                 <tr>
                     <th>
                         SAP customer name
@@ -69,6 +116,11 @@
 }
 
             </table>
+
+            }
+
+
+
         </div>
     </div>
 </div>

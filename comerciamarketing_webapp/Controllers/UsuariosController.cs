@@ -116,6 +116,11 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID_usuario,correo,contrasena,ID_tipomembresia,ID_rol,fcreacion_usuario,activo,nombre,apellido,cargo,telefono,estados_influencia,ID_empresa")] Usuarios usuarios)
         {
+            if (usuarios.contrasena == null)
+            {
+                usuarios.contrasena = "c0m2018";
+            }
+
             if (usuarios.cargo == null)
             {
                 usuarios.cargo = "";

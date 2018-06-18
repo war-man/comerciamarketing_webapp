@@ -611,11 +611,11 @@
                 <div class="modal-header">
                     <h4 class="modal-title text-left">Select products</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body col-md-12">
                     <div class="form-group">
-                        <p class="control-label col-md-6">Vendor</p>
+                        <p class="control-label col-md-12">Vendor</p>
                         <div class="col-md-12">
-                            <select class="form-control selectpicker show-tick" id="vendors_list" onChange='getProducts()'>
+                            <select class="form-control" id="vendors_list" onChange='getProducts()'>
                                 <option data-hidden="true">Select vendor</option>
                                 @foreach (var item in ViewBag.vendors)
                                 {
@@ -630,9 +630,7 @@
                     <div class="form-group">
                         <p class="control-label col-md-8">Products</p>
                         <div class="col-md-12">
-                            <select id="products_list" multiple="multiple">
-
-                            </select>
+                            <select id="products_list" multiple="multiple"></select>
 
                         </div>
                     </div>
@@ -650,7 +648,12 @@
 
 
     <script src="~/Content/js/jquery.nestable.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
 
+    </script>
     <script>
 
         $(document).ready(function () {
@@ -804,7 +807,7 @@
                         $.each($.parseJSON(result), function (i, product) {
                             $("#products_list").append
                                 ($('<option></option>').val(product.ItemCode).html(product.ItemName))
-                            
+
                         }
                         )
                         $('#products_list').multipleSelect();
