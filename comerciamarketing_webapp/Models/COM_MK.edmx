@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="COM_MKModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="COM_MKModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="OCRD">
           <Key>
             <PropertyRef Name="CardCode" />
@@ -701,13 +701,13 @@
           <Property Name="U_HI" Type="numeric" Precision="19" Scale="6" />
           <Property Name="U_PalletCount" Type="numeric" Precision="19" Scale="6" />
           <Property Name="U_SubCategory" Type="nvarchar" MaxLength="30" />
+          <Property Name="U_customerCM" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityContainer Name="COM_MKModelStoreContainer">
           <EntitySet Name="OCRD" EntityType="Self.OCRD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OITM" EntityType="Self.OITM" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="COM_MKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1407,6 +1407,7 @@
           <Property Name="U_HI" Type="Decimal" Precision="19" Scale="6" />
           <Property Name="U_PalletCount" Type="Decimal" Precision="19" Scale="6" />
           <Property Name="U_SubCategory" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="U_customerCM" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="COM_MKEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="OCRDs" EntityType="Self.OCRD" />
@@ -1790,6 +1791,7 @@
           <EntitySetMapping Name="OITMs">
             <EntityTypeMapping TypeName="COM_MKModel.OITM">
               <MappingFragment StoreEntitySet="OITM">
+                <ScalarProperty Name="U_customerCM" ColumnName="U_customerCM" />
                 <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
                 <ScalarProperty Name="FrgnName" ColumnName="FrgnName" />

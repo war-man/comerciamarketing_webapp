@@ -35,18 +35,39 @@ namespace comerciamarketing_webapp.Controllers
 
                 if (datosUsuario.ID_rol == 6 || datosUsuario.ID_rol==1)
                 {
-                    var demos = db.Demos.OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms).Include(d => d.Usuarios);
+                    var demos = db.Demos.OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
                     ViewBag.rol = 6;
+                    if (demos.Count() > 0) {
+
+                        foreach (var item in demos)
+                        {
+                            var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                            if (usuario == null)
+                            {
+
+                            }
+                            else {
+                                item.ID_Vendor = usuario.CardName;
+                            }
+                           
+
+                        }
+
+                    }
+
+
+
                     return View(demos.ToList());
 
                 }
                 else {
-                    var demos = db.Demos.Where(c=>c.ID_usuario == ID).OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms).Include(d => d.Usuarios);
+                    //Esto se iba a utilizar si se les daba usuario y registor 
+                    var demos = db.Demos.Where(c=>c.ID_usuario == "noexisten2018").OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
                     ViewBag.rol = 7;
-                    return View(demos.ToList());
+                    return View();
                 }
 
-                
+
 
             }
             else
@@ -99,16 +120,30 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.ID_demostate = new SelectList(db.Demo_state, "ID_demostate", "sdescription");
                 ViewBag.ID_form = new SelectList(db.Forms, "ID_form", "fdescription");
 
-                var usuarios = db.Usuarios.Where(s => s.ID_tipomembresia == 6 && s.ID_rol == 7).ToList();
-                IEnumerable<SelectListItem> selectList = from s in usuarios
-                                                         select new SelectListItem
-                                                         {
-                                                             Value = Convert.ToString(s.ID_usuario),
-                                                             Text = s.nombre.ToString() + " " + s.apellido.ToString() + " - " + s.correo.ToString()
+                //var usuarios = db.Usuarios.Where(s => s.ID_tipomembresia == 6 && s.ID_rol == 7).ToList();
+                //IEnumerable<SelectListItem> selectList = from s in usuarios
+                //                                         select new SelectListItem
+                //                                         {
+                //                                             Value = Convert.ToString(s.ID_usuario),
+                //                                             Text = s.nombre.ToString() + " " + s.apellido.ToString() + " - " + s.correo.ToString()
+                //                                         };
+
+
+
+//USERS
+                var usuariosdemo = CMKdb.OCRDs.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType=="s").OrderBy(b => b.CardName).ToList();
+
+                IEnumerable<SelectListItem> selectList_usuarios = from st in usuariosdemo
+                                                                  select new SelectListItem
+                                                                  {
+                                                                      Value = Convert.ToString(st.CardCode),
+                                                                      Text = st.CardName.ToString() + " - " + st.E_Mail.ToString()
                                                          };
+                ViewBag.ID_usuario = new SelectList(selectList_usuarios, "Value", "Text");
 
 
-                ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text");
+
+//VENDORS
                 ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
                 
 
@@ -164,10 +199,10 @@ namespace comerciamarketing_webapp.Controllers
 
                 try
                 {
-                    var usuario = (from a in db.Usuarios where (a.ID_usuario == demos.ID_usuario) select a).FirstOrDefault();
+                    var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
                     //Enviamos correo para notificar
                     dynamic email = new Email("newdemo_alert");
-                    email.To = usuario.correo;
+                    email.To = usuario.E_Mail.ToString();
                     email.From = "customercare@comerciamarketing.com";
                     email.Vendor = demos.vendor;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
@@ -272,11 +307,11 @@ namespace comerciamarketing_webapp.Controllers
 
                 try
                 {
-                    var usuario = (from a in db.Usuarios where (a.ID_usuario == demos.ID_usuario) select a).FirstOrDefault();
+                    var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
 
                     //Enviamos correo para notificar
                     dynamic email = new Email("editdemo_alert");
-                    email.To = usuario.correo;
+                    email.To = usuario.E_Mail.ToString();
                     email.From = "customercare@comerciamarketing.com";
                     email.Vendor = demos.vendor;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
@@ -608,7 +643,7 @@ namespace comerciamarketing_webapp.Controllers
             if (total_demos.Count > 0)
             {
                 //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour || f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour && f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
 
                 //Existen datos
                 //Buscamos los detalles
@@ -1051,7 +1086,7 @@ namespace comerciamarketing_webapp.Controllers
                     catch (Exception e)
                     {
                       
-                        TempData["advertenca"] = "Something went wrong, please try again";
+                        TempData["advertenca"] = "Something went wrong, please try again. " + e.Message;
                         return RedirectToAction("Index", "Empresas", null);
                     }
 
@@ -1082,8 +1117,15 @@ namespace comerciamarketing_webapp.Controllers
 
                 foreach (var item in demo_header)
                 {
-                    var usuario = (from u in db.Usuarios where (u.ID_usuario == item.ID_usuario) select u).FirstOrDefault();
-                    item.ID_Vendor = usuario.nombre + " " + usuario.apellido;
+                    var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    if (usuario == null)
+                    {
+
+                    }
+                    else {
+                        item.ID_Vendor = usuario.CardName;
+                    }
+                   
 
                     item.end_date = item.end_date.ToLocalTime();
 

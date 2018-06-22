@@ -12,13 +12,12 @@ namespace comerciamarketing_webapp.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Script.Serialization;
 
     public partial class Demos
     {
         public int ID_demo { get; set; }
-
         public string ID_Vendor { get; set; }
-
         public string vendor { get; set; }
 
         public string ID_Store { get; set; }
@@ -26,12 +25,12 @@ namespace comerciamarketing_webapp.Models
         public string store { get; set; }
 
         [DataType(DataType.Date)]
-
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
 
         public System.DateTime visit_date { get; set; }
 
-        public int ID_usuario { get; set; }
+
+        public string ID_usuario { get; set; }
 
         public int ID_demostate { get; set; }
 
@@ -41,18 +40,20 @@ namespace comerciamarketing_webapp.Models
 
         [DataType(DataType.Date)]
 
+
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
 
         public System.DateTime end_date { get; set; }
 
 
         public string GeoLong { get; set; }
+
         public string GeoLat { get; set; }
 
+
+
         public virtual Demo_state Demo_state { get; set; }
-
         public virtual Forms Forms { get; set; }
-
-        public virtual Usuarios Usuarios { get; set; }
     }
 }

@@ -81,13 +81,17 @@
             <div class="col-lg-12">
                 <div class="benefit">
                     <div class="container">
+                        
                         <div class="row benefit_row">
                             <p> Welcome!</p>
                             <div class="col-lg-12 col-md-12">
                                 <div class="card">
                                     <div class="card-header" data-background-color="gray">
                                         <h4 class="title">Demos Stats</h4>
-                                        <p class="category">This week</p>
+                                        <p class="category">@ViewBag.desdehasta </p> 
+                                        <div class="col-lg-3">
+                                            Change week: <input data-weekpicker="weekpicker" class="form-control" onchange='Demofilter()' id="filterhome"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -140,6 +144,9 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="floating-panel">
+                                    <input type="button" value="Toggle Street View" onclick="toggleStreetView();"></input>
+                                </div>
                                 <div id="map_canvas" style="height: 600px;"></div>
                             </div>
 

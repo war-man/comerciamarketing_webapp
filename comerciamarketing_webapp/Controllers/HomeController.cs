@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Xml.Linq;
 
 namespace comerciamarketing_webapp.Controllers
@@ -22,11 +23,11 @@ namespace comerciamarketing_webapp.Controllers
     public class HomeController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
+        private COM_MKEntities CMKdb = new COM_MKEntities();
 
 
 
-
-        public ActionResult Main()
+        public ActionResult Main(string startdate, string finishdate)
         {
 
             if (Session["IDusuario"] != null)
@@ -41,8 +42,41 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.ultimavisita = Session["ultimaconexion"].ToString();//datosUsuario.fultima_visita.ToString();
                 ViewBag.bloquearcontenido = "si";
 
+
                 var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
                 var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (startdate == null)
+                {
+                    if (finishdate == null)
+                    {
+
+
+                    }
+
+                }
+                else {
+                    if (finishdate == null)
+                    {
+
+                    }
+                    else {
+                        try
+                        {
+                            sunday = Convert.ToDateTime(startdate);
+                            saturday = Convert.ToDateTime(finishdate);
+                        }
+                        catch {
+                            sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                            saturday = sunday.AddDays(6).AddHours(23);
+                        }
+
+
+                    }
+
+                }
+
+
 
                 int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
                 int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
@@ -50,7 +84,7 @@ namespace comerciamarketing_webapp.Controllers
                 int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
 
 
-                var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).Include(a => a.Usuarios).ToList();
+                var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).ToList();
 
 
                 //Asignamos la geoubicacion
@@ -71,6 +105,10 @@ namespace comerciamarketing_webapp.Controllers
                     item.GeoLat = lng.Value;
                     item.GeoLong = lat.Value;
 
+                    var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
+                    if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
+                    
+
                 }
 
 
@@ -80,7 +118,7 @@ namespace comerciamarketing_webapp.Controllers
                                     select new
                                     {
                                         id = p.ID_demo,
-                                        nombre = p.Usuarios.nombre + " " + p.Usuarios.apellido,
+                                        nombre = p.ID_usuario,
                                         PlaceName = p.store,
                                         GeoLong = p.GeoLong,
                                         GeoLat = p.GeoLat,
@@ -95,8 +133,8 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-
-
+                ViewBag.bloquearcontenido = "no";
+                ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString(); 
                 ViewBag.onhold_demos = onhold;
                 ViewBag.inprogress_demos = inprogress;
                 ViewBag.canceled_demos = canceled;
@@ -555,49 +593,52 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                //Consultamos los demos de la empresa
-                var demos = (from a in db.Demos where (a.ID_Vendor == datosUsuario.Empresas.ID_SAP) select a).ToList();
+                //Consultamos los Vendors de SAP
+                ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
                 //Recuperamos los IDS de las demos del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP) select f.ID_demo).ToArray();
+                //int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP) select f.ID_demo).ToArray();
 
-                var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
+                //var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
 
-                for (int i = demo_details_items.Count - 1; i >= 0; i--)
-                {
-                    if (demo_details_items[i].fsource =="") demo_details_items.RemoveAt(i);
-                   }
+                //for (int i = demo_details_items.Count - 1; i >= 0; i--)
+                //{
+                //    if (demo_details_items[i].fsource =="") demo_details_items.RemoveAt(i);
+                //   }
 
-            if (demo_details_items.Count > 0)
-                {
-                    IEnumerable<SelectListItem> selectList = from s in demos
-                                                             select new SelectListItem
-                                                             {
-                                                                 Value = Convert.ToString(s.ID_demo),
-                                                                 Text = s.visit_date.ToShortDateString()  + " - " + s.store.ToString()
-                                                             };
-
-
-                    ViewBag.ID_demos = new SelectList(selectList, "Value", "Text");
+                //if (demo_details_items.Count > 0)
+                //    {
+                //        IEnumerable<SelectListItem> selectList = from s in demos
+                //                                                 select new SelectListItem
+                //                                                 {
+                //                                                     Value = Convert.ToString(s.ID_demo),
+                //                                                     Text = s.visit_date.ToShortDateString()  + " - " + s.store.ToString()
+                //                                                 };
 
 
-                    ViewBag.bloquearcontenido = "no";
-                    ViewBag.imagenes = demo_details_items;
-                    
-                    return View();
-                }
-                else
-                {
-                    TempData["advertencia"] = "No images to show.";
-                    return View();
-                }
+                //        ViewBag.ID_demos = new SelectList(selectList, "Value", "Text");
 
+
+                //        ViewBag.bloquearcontenido = "no";
+                //        //ViewBag.imagenes = demo_details_items;
+
+                //        return View();
+                //    }
+                //    else
+                //    {
+                //        TempData["advertencia"] = "No images to show.";
+                //        return View();
+                //    }
+
+                ViewBag.bloquearcontenido = "no";
+                return View();
             }
             else
             {
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult Galleryfilter(int? ID_demos)
+        public ActionResult Galleryfilter(string ID_vendor, int? ID_demos)
         {
             if (Session["IDusuario"] != null)
             {
@@ -607,17 +648,9 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                //Consultamos los demos de la empresa
-                var demos = (from a in db.Demos where (a.ID_Vendor == datosUsuario.Empresas.ID_SAP) select a).ToList();
-                //Recuperamos los IDS de las demos del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP && f.ID_demo == ID_demos) select f.ID_demo).ToArray();
-
-                var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
-
-                for (int i = demo_details_items.Count - 1; i >= 0; i--)
-                {
-                    if (demo_details_items[i].fsource == "") demo_details_items.RemoveAt(i);
-                }
+                //Consultamos los Vendors de SAP
+                ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",ID_vendor);
+                var demos = (from b in db.Demos where (b.ID_Vendor == ID_vendor) select b).ToList();
 
                 IEnumerable<SelectListItem> selectList = from s in demos
                                                          select new SelectListItem
@@ -628,24 +661,42 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 ViewBag.ID_demos = new SelectList(selectList, "Value", "Text", ID_demos);
-                ViewBag.bloquearcontenido = "no";
-                ViewBag.imagenes = demo_details_items;
+
+                var demo_details_items = (from a in db.Forms_details where (a.ID_demo==ID_demos && a.ID_formresourcetype == 5) select a).ToList();
+
+                for (int i = demo_details_items.Count - 1; i >= 0; i--)
+                {
+                    if (demo_details_items[i].fsource == "") demo_details_items.RemoveAt(i);
+                }
 
                 if (demo_details_items.Count > 0)
                 {
+                    ViewBag.bloquearcontenido = "no";
+                    ViewBag.imagenes = demo_details_items;
+
                     return View();
                 }
                 else
                 {
+                    ViewBag.imagenes = demo_details_items;
                     TempData["advertencia"] = "No images to show.";
                     return View();
                 }
-
             }
             else
             {
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult GetDemosGallery(string vendorID)
+        {
+            //List<Demos> lstdemos = new List<Demos>();
+            //lstdemos = (db.Demos.Where(x => x.ID_Vendor == vendoriD)).ToList();
+            
+            //JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            //string result = javaScriptSerializer.Serialize(lstdemos);
+            return this.Json((from obj in db.Demos where(obj.ID_Vendor == vendorID) select new { ID_demo = obj.ID_demo, visit_date = obj.visit_date, store = obj.store }), JsonRequestBehavior.AllowGet);
         }
     }
 }

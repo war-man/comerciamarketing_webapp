@@ -42,7 +42,7 @@
           <Property Name="ID_Store" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="store" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="visit_date" Type="datetime" />
-          <Property Name="ID_usuario" Type="int" />
+          <Property Name="ID_usuario" Type="varchar" MaxLength="50" />
           <Property Name="ID_demostate" Type="int" />
           <Property Name="comments" Type="text" />
           <Property Name="ID_form" Type="int" />
@@ -208,20 +208,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Demos__ID_usuari__07C12930">
-          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Demos" Type="Self.Demos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuarios">
-              <PropertyRef Name="ID_usuario" />
-            </Principal>
-            <Dependent Role="Demos">
-              <PropertyRef Name="ID_usuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Forms_det__ID_fo__0D7A0286">
           <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
           <End Role="Forms_details" Type="Self.Forms_details" Multiplicity="*" />
@@ -329,10 +315,6 @@
             <End Role="Forms" EntitySet="Forms" />
             <End Role="Demos" EntitySet="Demos" />
           </AssociationSet>
-          <AssociationSet Name="FK__Demos__ID_usuari__07C12930" Association="Self.FK__Demos__ID_usuari__07C12930">
-            <End Role="Usuarios" EntitySet="Usuarios" />
-            <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
           <AssociationSet Name="FK__Forms_det__ID_fo__0D7A0286" Association="Self.FK__Forms_det__ID_fo__0D7A0286">
             <End Role="Forms" EntitySet="Forms" />
             <End Role="Forms_details" EntitySet="Forms_details" />
@@ -408,7 +390,6 @@
           <Property Name="estados_influencia" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ID_empresa" Type="Int32" />
           <NavigationProperty Name="Empresas" Relationship="dbComerciaModel.FK__Usuarios__ID_emp__6FE99F9F" FromRole="Usuarios" ToRole="Empresas" />
-          <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_usuari__07C12930" FromRole="Usuarios" ToRole="Demos" />
         </EntityType>
         <Association Name="FK__Usuarios__ID_tip__4D94879B">
           <End Type="Self.Tipo_membresia" Multiplicity="1" Role="Tipo_membresia" />
@@ -461,10 +442,6 @@
           </AssociationSet>
           <AssociationSet Name="FK__Demos__ID_form__08B54D69" Association="dbComerciaModel.FK__Demos__ID_form__08B54D69">
             <End Role="Forms" EntitySet="Forms" />
-            <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Demos__ID_usuari__07C12930" Association="dbComerciaModel.FK__Demos__ID_usuari__07C12930">
-            <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Demos" EntitySet="Demos" />
           </AssociationSet>
           <AssociationSet Name="FK__Forms_det__ID_fo__0E6E26BF" Association="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF">
@@ -589,13 +566,12 @@
           <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="visit_date" Type="DateTime" Precision="3" />
-          <Property Name="ID_usuario" Type="Int32" />
+          <Property Name="ID_usuario" Type="String" />
           <Property Name="ID_demostate" Type="Int32" />
           <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ID_form" Type="Int32" />
           <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
           <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Demos" ToRole="Forms" />
-          <NavigationProperty Name="Usuarios" Relationship="dbComerciaModel.FK__Demos__ID_usuari__07C12930" FromRole="Demos" ToRole="Usuarios" />
           <Property Name="end_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="form_resource_type">
@@ -653,20 +629,6 @@
             </Principal>
             <Dependent Role="Demos">
               <PropertyRef Name="ID_form" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Demos__ID_usuari__07C12930">
-          <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuarios">
-              <PropertyRef Name="ID_usuario" />
-            </Principal>
-            <Dependent Role="Demos">
-              <PropertyRef Name="ID_usuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

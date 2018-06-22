@@ -23,11 +23,19 @@
             @using (Html.BeginForm("Galleryfilter", "Home", FormMethod.Post))
             {
 
+        <p>Select a Vendor:</p>
+        @Html.DropDownList("ID_vendor", null, htmlAttributes: new { @class = "form-control", onChange = "getDemosGallery()" })
+        <p>Select a demo:</p>
+        <select id="ID_demos" class="form-control" name="ID_demos">
+            @foreach (var item in ViewBag.ID_demos)
+                {
+                    <option value="@item.Value">@item.Text</option>
+            }
 
-                <p>Select a demo:</p>
-                @Html.DropDownList("ID_demos", null, htmlAttributes: new { @class = "form-control" })
 
-                <input type="submit" class="form-control" value="Search" />
+        </select>
+                <br />
+        <input type="submit" class="form-control" value="Search" />
             }
             <br />
             @foreach (var item in ViewBag.imagenes)

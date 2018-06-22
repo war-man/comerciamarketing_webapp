@@ -16,6 +16,10 @@
     </style>
     <!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
     <style>
+        body.modal-open {
+            overflow: visible;
+        }
+
         .infoDiv {
             height: 180px;
             width: 150px;
@@ -286,6 +290,64 @@ s
     });
 
 </script>
+
+<!--SCRIPT PARA GUARDAR IMAGENES TIEMPO REAL -->
+<script>
+    $('input[type=file]').change(function () {
+        //Le decimos que por cada input file que encuentre hara este proceso
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+            $.each($('input[type="file"]'), function () {
+
+                var ID = $(this).attr('id');
+
+                var fileUpload = $("#" + ID).get(0);
+
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('id', ID);
+                $.ajax({
+                    url: '/Forms/UploadFiles',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    async: false,
+                    data: fileData,
+                    success: function (result) {
+
+                    },
+                    error: function (err) {
+                        new PNotify({
+                            title: "Warning",
+                            text: "Error. " + err.statusText,
+                            type: "notice"
+                        })
+
+                    }
+                });
+            });
+
+
+        }
+
+
+        else {
+            alert("FormData is not supported.");
+        }
+
+    });
+
+
+</script>
 <!--SCRIPT FORM_TEMPLATE SAVE-->
 <script>
         $(function () {
@@ -355,104 +417,7 @@ s
                     data: JSON.stringify(objects),
                     contentType: 'application/json; charset=utf-8',
                     success: function (result) {
-
-                        // Checking whether FormData is available in browser
-                        if (window.FormData !== undefined) {
-                            $.each($('input[type="file"]'), function () {
-
-                                var ID = $(this).attr('id');
-
-                                var fileUpload = $("#" + ID).get(0);
-
-                                var files = fileUpload.files;
-
-                                // Create FormData object
-                                var fileData = new FormData();
-
-                                // Looping over all files and add it to FormData object
-                                for (var i = 0; i < files.length; i++) {
-                                    fileData.append(files[i].name, files[i]);
-                                }
-
-                                // Adding one more key to FormData object
-                                fileData.append('id', ID);
-                                $.ajax({
-                                    url: '/Forms/UploadFiles',
-                                    type: "POST",
-                                    contentType: false, // Not to set any content header
-                                    processData: false, // Not to process data
-                                    data: fileData,
-                                    success: function (result) {
-
-                                    },
-                                    error: function (err) {
-                                        alert(err.statusText);
-                                    }
-                                });
-                            });
-
-
-
-                    // get the API result via jQuery.ajax
-                    @*$.ajax({
-                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
-                        dataType: 'json',
-                        success: function (jsondatos) {
-
-                            var datosusuario = {
-                                ip: jsondatos.ip,
-                                ID_demo: id_demo,
-                                hostname : jsondatos.hostname,
-                                typeh : jsondatos.type,
-                                continent_name  : jsondatos.continent_name,
-                                country_code : jsondatos.country_code,
-                                country_name : jsondatos.country_name,
-                                region_code : jsondatos.region_code,
-                                region_name : jsondatos.region_name,
-                                city : jsondatos.city,
-                                latitude : jsondatos.latitude,
-                                longitude : jsondatos.longitude,
-                                action: "Save"
-
-                            };
-
-                            $.ajax({
-                                type: 'POST',
-                                url: '@Url.Action("demo_logsave", "Demos")',
-                                dataType: 'json',
-                                contentType: "application/json; charset=utf-8",
-                                data: JSON.stringify(datosusuario),
-                                success: function (model) {
-                                    if (model.success) {
-                                        console.log("Demo log success")
-                                    } else {
-                                        console.log("Demo log error")
-
-                                    }
-
-
-
-                             }
-                            });
-
-                        }
-                    });*@
-
-
-
-
-                            $('#loadingmessage').hide();
-                            new PNotify({
-                                title: "Success",
-                                text: "Form saved successfully.",
-                                type: "success"
-                            })
-                        }
-
-
-                        else {
-                            alert("FormData is not supported.");
-                        }
+                        window.location.reload(true);
 
                     },
                     error: function (request) {
@@ -493,10 +458,10 @@ s
 
                 var date = new Date(now - offset * MS_PER_MINUTE);
                 //var localDate = new Date($(this).html());
-               
+
                 console.log(now);
                 console.log(now.toLocaleString());
-                
+
 
                 @*var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
@@ -593,11 +558,16 @@ s
                                     processData: false, // Not to process data
                                     async: false,
                                     data:  fileData,
-                                    success: function (result) {
-                                        window.location.reload(true);
+                                    success: function (response) {
+                                        if (response.success) {
+                                            window.location.reload(true);
+                                        } else {
+                                            // Si pasa algun error
+                                            alert(response.responseText);
+                                        }
                                     },
-                                    error: function (err) {
-                                        console.log(err.statusText);
+                                    error: function (response) {
+                                        alert("Error: " + response.responseText);  // 
                                     }
                                 });
                             });
@@ -917,7 +887,7 @@ s
 @if (ViewBag.Title == "Comercia Marketing - Home")
 {
     <script type="text/javascript">
-
+        var panorama;
         // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
         $(document).ready(function () {
             Initialize();
@@ -925,7 +895,7 @@ s
 
         // Where all the fun happens
         function Initialize() {
-
+            
             // Google has tweaked their interface somewhat - this tells the api to use that new UI
             google.maps.visualRefresh = true;
             var Tennesse = new google.maps.LatLng(35.860119, -86.660156);
@@ -972,6 +942,7 @@ s
                     'title': item.PlaceName
                 });
 
+                
                 // Make the marker-pin blue!
                 if (item.demo_state == "On Hold") {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png')
@@ -996,9 +967,112 @@ s
                     infowindow.open(map, marker);
                 });
 
+                marker.addListener('dblclick', function () {
+                    map.setZoom(18);
+                    map.setCenter(marker.getPosition());
+
+                    // We get the map's default panorama and set up some defaults.
+                    // Note that we don't yet set it visible.
+                    panorama = map.getStreetView();
+                    panorama.setPosition(marker.getPosition());
+                    panorama.setPov(({
+                        heading: 265,
+                        pitch: 0
+                    }));
+                });
+
+
+
             })
+
+
         }
 
-
+        function toggleStreetView() {
+            var toggle = panorama.getVisible();
+            if (toggle == false) {
+                panorama.setVisible(true);
+            } else {
+                panorama.setVisible(false);
+            }
+        }
     </script>
 }
+
+<script>
+    function getDemosGallery() {
+        var vendorId = $("#ID_vendor").val();
+        $.ajax
+            ({
+                url: '/Home/GetDemosGallery',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    vendorID: vendorId
+                }),
+                success: function (result) {
+                    console.log("devuelve datos");
+                    $("#ID_demos").html("");
+                    console.log("limpia controlador");
+                    $.each(result, function (i, demos) {
+                        console.log("realiza el append");
+                        $("#ID_demos").append($('<option></option>').val(demos.ID_demo).html(new Date(parseInt(demos.visit_date.substr(6))).toLocaleDateString() + " - " + demos.store))
+
+                    }
+                    )
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
+    }
+</script>
+<script>
+    function Demofilter() {
+        var rango = document.getElementById("filterhome").value;
+
+        var arr = rango.split('-');
+
+        var startdate = new Date(arr[0]);
+        var finishdate = new Date(arr[1]);
+
+
+
+
+
+        var url = '@Url.Action("Main", "Home", new {startdate = "START", finishdate = "FINISH"})';
+
+
+        url = url.replace('START', startdate.toLocaleDateString());
+
+        var newurl = url;
+
+
+        newurl = newurl.replace('FINISH', finishdate.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+        //window.location.href = "/Home/Main/startdate='" + startdate.toLocaleDateString() + "', finishdate='" + finishdate.toLocaleDateString() + "'";
+
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#modal_demoform").modal('show');
+    });
+</script>
+
+<script>
+    // Here we'll persist the form's data into localStorage on
+    // every keystroke
+    $(function () {
+        $("#demoTform").sisyphus();
+        // or you can persist all forms data at one command
+        // $( "form" ).sisyphus();
+    });
+
+</script>

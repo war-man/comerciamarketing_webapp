@@ -18,7 +18,6 @@ namespace comerciamarketing_webapp.Models
         public Usuarios()
         {
             this.Recursos_usuario = new HashSet<Recursos_usuario>();
-            this.Demos = new HashSet<Demos>();
         }
     
         public int ID_usuario { get; set; }
@@ -40,7 +39,5 @@ namespace comerciamarketing_webapp.Models
         public virtual ICollection<Recursos_usuario> Recursos_usuario { get; set; }
         public virtual Roles Roles { get; set; }
         public virtual Empresas Empresas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Demos> Demos { get; set; }
     }
 }

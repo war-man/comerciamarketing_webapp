@@ -338,5 +338,6 @@ namespace comerciamarketing_webapp.Models
         public Nullable<decimal> U_HI { get; set; }
         public Nullable<decimal> U_PalletCount { get; set; }
         public string U_SubCategory { get; set; }
+        public string U_customerCM { get; set; }
     }
 }

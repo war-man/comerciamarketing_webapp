@@ -20,30 +20,18 @@
     </div>
     <div class="row">
         <div class="col" style="overflow-x:auto;">
-             @using (Html.BeginForm("Galleryfilter", "Home", FormMethod.Post))
-             {
+            @using (Html.BeginForm("Galleryfilter", "Home", FormMethod.Post))
+    {
 
-
-            <p>Select a demo:</p>
-            @Html.DropDownList("ID_demos", null, htmlAttributes: new { @class = "form-control" })
-
-            <input type="submit" class="form-control" value="Search" />
-            }
-            <br />
-            @foreach (var item in ViewBag.imagenes)
-            {
-        <div class="responsive">
-            <div class="gallery">
-                <img src="@Url.Content(item.fsource)" alt="@item.fdescription" width="300" height="200">
-                <div class="overlay">
-                    <a target="_blank" href="@Url.Content(item.fsource)" class="icon" title="Zoom">
-                        <i class="fa fa-search-plus"></i>
-                    </a>
-                </div>
-
-            </div>
-        </div>
+        <p>Select a Vendor:</p>
+        @Html.DropDownList("ID_vendor", null, htmlAttributes: new { @class = "form-control", onChange = "getDemosGallery()" })
+        <p>Select a demo:</p>
+        <select id="ID_demos" class="form-control" name="ID_demos"></select>
+                <br />
+        <input type="submit" class="form-control" value="Search" />
 }
+            <br />
+
 
 
 

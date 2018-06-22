@@ -112,7 +112,7 @@
                                     @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Usuarios.nombre) @Html.DisplayFor(modelItem => item.Usuarios.apellido)
+                                    @Html.DisplayFor(modelItem => item.ID_usuario)
                                 </td>
                                 <td>
                                     @if (item.ID_demostate == 3)
