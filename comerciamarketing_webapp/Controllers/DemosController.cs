@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
 using Postal;
@@ -176,13 +177,43 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form")] Demos demos)
         {
+            demos.geoLong = "";
+            demos.geoLat = "";
+            demos.check_in = demos.visit_date;
             if (ModelState.IsValid)
             {
+
+                //GEOLOCALIZACION
+                try
+                {
+                    string address = demos.store;
+                    string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                    WebRequest request = WebRequest.Create(requestUri);
+                    WebResponse response = request.GetResponse();
+                    XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                    XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                    XElement locationElement = result.Element("geometry").Element("location");
+                    XElement lat = locationElement.Element("lat");
+                    XElement lng = locationElement.Element("lng");
+                    //NO SE PORQUE LO TIRA AL REVEZ
+                    demos.geoLat = lng.Value;
+                    demos.geoLong = lat.Value;
+                    //FIN
+
+                }
+                catch {
+                    demos.geoLong = "";
+                    demos.geoLat = "";
+                }
+
                 demos.ID_demostate = 3;
                 demos.comments = "";
                 demos.end_date = demos.visit_date;
                 db.Demos.Add(demos);
                 db.SaveChanges();
+
 
                 //Guardamos el detalle
                 var detalles_acopiar = (from a in db.Forms_details where (a.ID_form == demos.ID_form && a.original == true) select a).ToList();
@@ -276,8 +307,8 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.ID_Store = new SelectList(selectList_stores, "Value", "Text", demos.ID_Store);
 
-                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",demos.ID_Vendor);
-
+                //ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",demos.ID_Vendor);
+                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName", demos.ID_Vendor);
                 return View(demos);
 
             }
@@ -295,11 +326,45 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form")] Demos demos)
         {
+            demos.geoLong = "";
+            demos.geoLat = "";
+            demos.check_in = demos.visit_date;
+
             if (ModelState.IsValid)
             {
                 if (demos.comments == "" || demos.comments == null) {
                     demos.comments = "";
                 }
+
+                //GEOLOCALIZACION
+                try
+                {
+                    string address = demos.store;
+                    string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                    WebRequest request = WebRequest.Create(requestUri);
+                    WebResponse response = request.GetResponse();
+                    XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                    XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                    XElement locationElement = result.Element("geometry").Element("location");
+                    XElement lat = locationElement.Element("lat");
+                    XElement lng = locationElement.Element("lng");
+                    //NO SE PORQUE LO TIRA AL REVEZ
+                    demos.geoLat = lng.Value;
+                    demos.geoLong = lat.Value;
+                    //FIN
+
+                }
+                catch
+                {
+                    demos.geoLong = "";
+                    demos.geoLat = "";
+                }
+
+
+
+
                 demos.end_date = demos.visit_date;
                 db.Entry(demos).State = EntityState.Modified;
                 db.SaveChanges();
@@ -437,7 +502,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Finalizado  o cancelado
                 if (demos.ID_demostate == 4 || demos.ID_demostate == 1)
                 {
-                    TempData["advertencia"] = "This demo is finished.";
+                    TempData["exito"] = "This demo is finished.";
                 int? id_demop = id_demo;
                 int? id_formp = id_form;
                     return RedirectToAction("Form_templatepreview",new{ id_demo = id_demop, id_form = id_formp });
@@ -448,16 +513,20 @@ namespace comerciamarketing_webapp.Controllers
 
             DateTime today = DateTime.Today.Date;
 
+
             if (today >= start && today <= end)
             {
+                int mostrarCheckin = 0;
+
                 if (demos.ID_demostate == 3)
                 {
-                    demos.ID_demostate = 2;
-
-                    db.Entry(demos).State = EntityState.Modified;
-                    db.SaveChanges();
+                    //demos.ID_demostate = 2;
+                    //db.Entry(demos).State = EntityState.Modified;
+                    //db.SaveChanges();
+                    mostrarCheckin = 1;
                 }
 
+                ViewBag.checkin = mostrarCheckin;
                 ViewBag.id_demo = demos.ID_demo;
                 return View(Forms_details.ToList());
             }

@@ -214,7 +214,7 @@
 				},
 
                 findFieldsToProtect: function (target) {
-                    return target.find( ":input" ).not( ":submit" ).not( ":reset" ).not( ":button" ).not( ":file" ).not( ":password" ).not( ":disabled" ).not( "[readonly]" );
+                    return target.find(":input").not(":submit").not(":reset").not(":button").not(":file").not(":password").not(":disabled").not("[readonly]").not("[hidden]");
 					
 				},
 

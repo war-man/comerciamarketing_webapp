@@ -47,6 +47,9 @@
           <Property Name="comments" Type="text" />
           <Property Name="ID_form" Type="int" />
           <Property Name="end_date" Type="datetime" />
+          <Property Name="check_in" Type="datetime" />
+          <Property Name="geoLong" Type="varchar" MaxLength="50" />
+          <Property Name="geoLat" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -566,13 +569,16 @@
           <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="visit_date" Type="DateTime" Precision="3" />
-          <Property Name="ID_usuario" Type="String" />
+          <Property Name="ID_usuario" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="ID_demostate" Type="Int32" />
           <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ID_form" Type="Int32" />
           <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
           <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Demos" ToRole="Forms" />
           <Property Name="end_date" Type="DateTime" Precision="3" />
+          <Property Name="check_in" Type="DateTime" Precision="3" />
+          <Property Name="geoLong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="geoLat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="form_resource_type">
           <Key>
@@ -807,6 +813,9 @@
           <EntitySetMapping Name="Demos">
             <EntityTypeMapping TypeName="dbComerciaModel.Demos">
               <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="geoLat" ColumnName="geoLat" />
+                <ScalarProperty Name="geoLong" ColumnName="geoLong" />
+                <ScalarProperty Name="check_in" ColumnName="check_in" />
                 <ScalarProperty Name="end_date" ColumnName="end_date" />
                 <ScalarProperty Name="ID_form" ColumnName="ID_form" />
                 <ScalarProperty Name="comments" ColumnName="comments" />

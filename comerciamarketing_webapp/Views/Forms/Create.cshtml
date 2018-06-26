@@ -328,21 +328,33 @@
                 var ID_tipo_recurso = dropdownlist.options[dropdownlist.selectedIndex].value;
                 var descripciontp = dropdownlist.options[dropdownlist.selectedIndex].text;
                 var label = $("#label_toshow").val();
+                var categoryID = document.getElementById("category_list").value;
+                var categoryText = document.getElementById('category_list').options[document.getElementById('category_list').selectedIndex].text;
 
                 if (descripciontp == "Title") {
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
                 } else if (descripciontp == "Subtitle") {
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'> " + descripciontp + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
                 } else if (descripciontp == "Input_text") {
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='"+ label +"'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                    if (categoryID == "0") {
+                        $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
+                    } else {
+                        $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + categoryText + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
+                    }
+                    
                 } else if (descripciontp == "Picture") {
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
                 } else if (descripciontp == "Electronic_signature") {
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "</div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + descripciontp + " - " + label + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
                 }
 
                
                 $("#label_toshow").val("");
+
+                $('.dd-item a').on('mousedown', function (event) {
+                    event.preventDefault();
+                    return false;
+                });
 
                 var updateOutput = function (e) {
                     var list = e.length ? e : $(e.target),
@@ -379,11 +391,14 @@
 
                 products.forEach(function (element, e) {
 
-                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fsource='" + element.ID + "' data-fdescription='" + element.Description + "'><div class='dd-handle'> " + descripciontp + " - " + element.Description + "</li>");
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.ID + "' data-fdescription='" + element.Description + "'><div class='dd-handle'> " + descripciontp + " - " + element.Description + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
 
                 });
                 
-       
+                $('.dd-item a').on('mousedown', function (event) {
+                    event.preventDefault();
+                    return false;
+                });
 
                 var updateOutput = function (e) {
                     var list = e.length ? e : $(e.target),
@@ -546,6 +561,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group" id="div_category" style="display:none">
+                                <div class="col-md-offset-2 col-md-12 text-right">
+                                    <select class="form-control" id="category_list">
+                                        <option value="0">Select category</option>
+                                        <option value="1">Flavor</option>
+                                        <option value="2">Quality</option>
+                                        <option value="3">Price</option>
+                                        <option value="4">Packing</option>
+                                        <option value="5">Free</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group" id="div_products" style="display:none">
                                 <div class="col-md-offset-2 col-md-12 text-right">
                                     <input type="button" value="Find products" class="btn btn-primary" id="myBtn">
@@ -570,7 +598,7 @@
                                     </div>
                                 </div>
                                 <a id="clear_list" href="#" class="close" data-dismiss="alert" aria-label="close">Clear list <i class="fa fa fa-trash"></i></a>
-                                <textarea id="nestable-output" name="nestable_output" hidden></textarea>
+                                <textarea id="nestable-output" name="nestable_output"></textarea>
                                 <br /><br /><br />
                                 <div class="form-group">
                                     <div class="col-md-12 text-right">
@@ -721,8 +749,9 @@
     <script type="text/javascript">
         $(function () {
             $("#formresourcetype").change(function () {
-                var txt = $("#formresourcetype option:selected").text()
-                console.log(txt)
+                var txt = $("#formresourcetype option:selected").text();
+
+                document.getElementById("category_list").value = "0";
 
                 if (txt == "Product" || txt == "Product_sample") {
                     var x = document.getElementById("div_label");
@@ -733,7 +762,12 @@
 
                     var b = document.getElementById("div_btnadd");
                     b.style.display = "none";
-                } else {
+
+
+                    var c = document.getElementById("div_category");
+                    c.style.display = "none";
+
+                } else if (txt == "Input_text") {
                     var x = document.getElementById("div_label");
                     x.style.display = "block";
 
@@ -742,6 +776,23 @@
 
                     var b = document.getElementById("div_btnadd");
                     b.style.display = "block";
+
+                    var c = document.getElementById("div_category");
+                    c.style.display = "block";
+                }
+
+                else {
+                    var x = document.getElementById("div_label");
+                    x.style.display = "block";
+
+                    var p = document.getElementById("div_products");
+                    p.style.display = "none";
+
+                    var b = document.getElementById("div_btnadd");
+                    b.style.display = "block";
+
+                    var c = document.getElementById("div_category");
+                    c.style.display = "none";
                 }
 
             });
@@ -817,6 +868,33 @@
                     },
                 });
         }
+    </script>
+
+    <script>
+        $('#main_list').on('click', '.dd-item a', function () {
+            //$(this).closest('li').remove();
+            $(this).closest('li').fadeOut('slow', function () {
+                $(this).remove();
+
+                var updateOutput = function (e) {
+                    var list = e.length ? e : $(e.target),
+                        output = list.data('output');
+                    if (window.JSON) {
+                        output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                    } else {
+                        output.val('JSON browser support required for this demo.');
+                    }
+                };
+
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            });
+        });
+    </script>
+    <script>
+        $('.dd-item a').on('mousedown', function (event) {
+            event.preventDefault();
+            return false;
+        });
     </script>
 </body>
 </html>

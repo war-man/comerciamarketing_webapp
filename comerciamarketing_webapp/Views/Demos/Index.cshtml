@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<comerciamarketing_webapp.Models.Demos>
 @{
-    ViewBag.Title = "Comercia Marketing";
+    ViewBag.Title = "Comercia Marketing - Demos Home";
 }
 @if (ViewBag.rol == 6)
 {
@@ -55,12 +55,23 @@
                     <div class="products_iso">
                         <div class="row">
                             <div class="col">
-                                <!-- Product Sorting
+                                <!-- Product Sorting  -->
 
-                                    <div class="product_sorting_container product_sorting_container_top">
-                                        <ul class="product_sorting">
+                                <div class="product_sorting_container product_sorting_container_top">
+                                    <h4 class="pull-left">Demos</h4>
+                                    <ul class="product_sorting pull-right">
+                                        <li>
+                                            <span class="type_sorting_text">Filter by Vendor</span>
+                                            <i class="fa fa-angle-down"></i>
+                                            <ul class="sorting_type">
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>All</span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <!--
+                                        <ul class="product_sorting pull-right">
                                             <li>
-                                                <span class="type_sorting_text">Default Sorting</span>
+                                                <span class="type_sorting_text">Sort by State</span>
                                                 <i class="fa fa-angle-down"></i>
                                                 <ul class="sorting_type">
                                                     <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
@@ -70,111 +81,128 @@
                                                 </ul>
                                             </li>
                                         </ul>
-
-                                    </div>
     -->
+                                </div>
+
                                 <!-- Product Grid -->
 
 
-                                <h4>Last demos</h4>
+                                
                                 <table class="table" id="change_formattime">
-                                    <tr>
-                                        <th>
-                                            Vendor
-                                        </th>
-                                        <th>
-                                            Store
-                                        </th>
-                                        <th>
-                                            Visit date
-                                        </th>
-                                        <th>
-                                            User assigned
-                                        </th>
-                                        <th>
-                                            State
-                                        </th>
-                                        <th>
-                                            Finished
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                    @foreach (var item in Model)
+                     
+                                        <tr>
+                                            <th onClick="sortTable(4)">
+                                                Vendor
+                                            </th>
+                                            <th>
+                                                Store
+                                            </th>
+                                            <th>
+                                                Visit date
+                                            </th>
+                                            <th>
+                                                User assigned
+                                            </th>
+                                            <th onClick="sortTable(4)">
+                                                State
+                                            </th>
+                                            <th>
+                                                Check in
+                                            </th>
+                                            <th>
+                                                Check out
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                      
+                                        @foreach (var item in Model)
         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.vendor)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.store)
-                                </td>
-                                <td >
-                                    @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ID_usuario)
-                                </td>
-                                <td>
-                                    @if (item.ID_demostate == 3)
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.vendor)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.store)
+                                    </td>
+                                    <td>
+                                        @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_usuario)
+                                    </td>
+                                    <td>
+                                        @if (item.ID_demostate == 3)
         {
-                            <p style="color:orange;">On Hold</p>
+                                <p style="color:orange;">On Hold</p>
 }
 else if (item.ID_demostate == 1)
 {
-                            <p style="color:red;">Canceled</p>
+                                <p style="color:red;">Canceled</p>
 }
 else if (item.ID_demostate == 2)
 {
-                            <p style="color:green;">In progress</p>
+                                <p style="color:green;">In progress</p>
 }
 else
 {
-                            <p style="color:dodgerblue;">Finished</p>
+                                <p style="color:dodgerblue;">Finished</p>
 }
-                                </td>
-                              
-                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
-        {
-                                  <td></td>
-        }
-        else
-        {
-                                      <td class="customerIDCell">
-                                          @Convert.ToDateTime(item.end_date).ToLocalTime().ToString("yyyy/MM/dd HH:mm")
-                                      </td>
+                                    </td>
+                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1)
+    {
+                                <td></td>
 }
-                                
+else
+{
                                 <td>
-                                    @if (item.ID_demostate == 4)
+                                    @Convert.ToDateTime(item.check_in).ToString("HH:mm")
+                                </td>
+}
+                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
+    {
+                                <td></td>
+}
+else
+{
+                                <td class="customerIDCell">
+                                    @Convert.ToDateTime(item.end_date).ToString("HH:mm")
+                                </td>
+}
+
+                                    <td>
+                                        @if (item.ID_demostate == 4)
         {
-                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })<!--Html.Label(" | ")
-                            Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
+                                @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+                                <!--Html.Label(" | ")
+Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
 }
 else if (item.ID_demostate == 2)
 {<!--In progress-->
-                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
-                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })<!--Html.Label(" | ")
-                            Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
+                                @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+                                <!--Html.Label(" | ")
+Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
 
 }
 else
 {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
-                            @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
-                            @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
+                                @Html.ActionLink("Details", "Details", new { id = item.ID_demo }); @Html.Label(" | ")
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
 }
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
 }
+                                    
                                 </table>
 
-    
-                                    <div id="nav">
 
-                                    </div>
-                         
+                                <div id="nav">
+
+                                </div>
+
                             </div>
                         </div>
                     </div>

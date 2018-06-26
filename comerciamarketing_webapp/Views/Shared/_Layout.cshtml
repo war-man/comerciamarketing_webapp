@@ -152,7 +152,7 @@
     });
 
 </script>
-s
+
 @{if (ViewBag.bloquearcontenido != null)
     {
 
@@ -416,7 +416,17 @@ s
                     type: 'POST',
                     data: JSON.stringify(objects),
                     contentType: 'application/json; charset=utf-8',
+                    async: false,
                     success: function (result) {
+
+
+                        $('#loadingmessage').hide();
+                        new PNotify({
+                            title: "Success",
+                            text: "Form saved successfully.",
+                            type: "success"
+                        })
+
                         window.location.reload(true);
 
                     },
@@ -453,15 +463,15 @@ s
             $("#finish_formtemplate").click(function () {
 
                 var now = new Date();
-                var MS_PER_MINUTE = 60000;
-                var offset = new Date().getTimezoneOffset();
+               // var MS_PER_MINUTE = 60000;
+                //var offset = new Date().getTimezoneOffset();
 
-                var date = new Date(now - offset * MS_PER_MINUTE);
+                //var date = new Date(now - offset * MS_PER_MINUTE);
                 //var localDate = new Date($(this).html());
 
-                console.log(now);
+                //console.log(now);
                 console.log(now.toLocaleString());
-
+                console.log(now.toLocaleString("en-US", { hour12: true }));
 
                 @*var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
@@ -522,55 +532,29 @@ s
                     console.log(propName, propVal);
                 });
 
+                objects.push({
+                    id: "999999999",
+                    text: now.toLocaleString("en-US", { hour12: true })
+                });
+
 
                 $.ajax({
                     url: '/Forms/Finish_templateformdata',
                     type: 'POST',
                     data: JSON.stringify(objects) ,
                     contentType: 'application/json; charset=utf-8',
+                    async: false,
                     success: function (result) {
 
-                        // Checking whether FormData is available in browser
-                        if (window.FormData !== undefined) {
-                            $.each($('input[type="file"]'), function () {
+                        $('#loadingmessage').hide();
+                        new PNotify({
+                            title: "Success",
+                            text: "Form saved successfully.",
+                            type: "success"
+                        })
 
-                                var ID = $(this).attr('id');
+                        window.location.reload(true);
 
-                                var fileUpload = $("#" + ID).get(0);
-
-                                var files = fileUpload.files;
-
-                                // Create FormData object
-                                var fileData = new FormData();
-
-                                // Looping over all files and add it to FormData object
-                                for (var i = 0; i < files.length; i++) {
-                                    fileData.append(files[i].name, files[i]);
-                                }
-
-                                // Adding one more key to FormData object
-                                fileData.append('id', ID);
-                                fileData.append('end_date', now.toLocaleString());
-                                $.ajax({
-                                    url: '/Forms/UploadFilesF',
-                                    type: "POST",
-                                    contentType: false, // Not to set any content header
-                                    processData: false, // Not to process data
-                                    async: false,
-                                    data:  fileData,
-                                    success: function (response) {
-                                        if (response.success) {
-                                            window.location.reload(true);
-                                        } else {
-                                            // Si pasa algun error
-                                            alert(response.responseText);
-                                        }
-                                    },
-                                    error: function (response) {
-                                        alert("Error: " + response.responseText);  // 
-                                    }
-                                });
-                            });
 
 
                             // get the API result via jQuery.ajax
@@ -617,23 +601,7 @@ s
 
                         }
                     });*@
-
-
-
-
-                            $('#loadingmessage').hide();
-                            new PNotify({
-                                title: "Success",
-                                text: "Form saved successfully.",
-                                type: "success"
-                            })
-                        }
-                        //Redireccionamos
-
-                        else {
-                            alert("FormData is not supported.");
-                        }
-
+                       
                     },
                     error: function (request) {
                         $('#loadingmessage').hide();
@@ -642,12 +610,14 @@ s
                             text: "Something wrong happened, try again.",
                             type: "notice"
                         })
+
+                        window.location.reload(true);
                     }
                 });
 
             }
             );
-        });
+        });//end
 
 </script>
 
@@ -684,11 +654,11 @@ s
         return newDate;
     }
 
-    $('#change_formattime .customerIDCell').each(function () {
-        var date = convertUTCDateToLocalDate(new Date($(this).html()));
-        //var localDate = new Date($(this).html());
-        $(this).html(date.toLocaleString());
-    });
+    //$('#change_formattime .customerIDCell').each(function () {
+    //    var date = convertUTCDateToLocalDate(new Date($(this).html()));
+    //    //var localDate = new Date($(this).html());
+    //    $(this).html(date.toLocaleString());
+    //});
 
     $('#last_visitmain').each(function () {
         var date = convertUTCDateToLocalDate(new Date($(this).html()));
@@ -895,7 +865,7 @@ s
 
         // Where all the fun happens
         function Initialize() {
-            
+
             // Google has tweaked their interface somewhat - this tells the api to use that new UI
             google.maps.visualRefresh = true;
             var Tennesse = new google.maps.LatLng(35.860119, -86.660156);
@@ -942,7 +912,7 @@ s
                     'title': item.PlaceName
                 });
 
-                
+
                 // Make the marker-pin blue!
                 if (item.demo_state == "On Hold") {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png')
@@ -1058,14 +1028,20 @@ s
 
     }
 </script>
+@if (ViewBag.Title == "Comercia Marketing - Demo")
+{
+    if (ViewBag.checkin == 1)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
 
-<script type="text/javascript">
-    $(document).ready(function () {
+                $("#modal_demoform").modal('show');
+            });
+        </script>
+    }
 
-        $("#modal_demoform").modal('show');
-    });
-</script>
 
+}
 <script>
     // Here we'll persist the form's data into localStorage on
     // every keystroke
@@ -1076,3 +1052,52 @@ s
     });
 
 </script>
+
+
+<script>
+        $(function () {
+            $("#checkin").click(function () {
+
+                var now = new Date();
+                //var MS_PER_MINUTE = 60000;
+                //var offset = new Date().getTimezoneOffset();
+
+                //var date = new Date(now - offset * MS_PER_MINUTE);
+                //var localDate = new Date($(this).html());
+
+                //console.log(now);
+                console.log(now.toLocaleString());
+                //alert(now.toLocaleString());
+                //console.log(date.toLocaleString());
+
+                //var demo = "";
+                demo = document.getElementById('id_demo').value;
+                console.log(demo);
+  		//alert(now.toLocaleString("en-US", { hour12: true}));
+                console.log(now.toLocaleString("en-US", { hour12: true}));
+                //var today = new Date();
+                //var h = today.getHours();
+                //var m = today.getMinutes();
+                //var s = today.getSeconds();
+
+                //var fecha = today.getDate();
+
+//alert(fecha + ", " + h + ":" + m + ":" + s + "P.M");*/
+                $.ajax({
+                    url: '/Forms/Check_in',
+                    type: 'POST',
+                    data: { "ID_demo": demo, "check_in": now.toLocaleString("en-US", { hour12: true})},
+                    success: function (result) {
+                    
+                    },
+                    error: function (request) {
+
+                    }
+                });
+
+            }
+            );
+        });
+
+</script>
+

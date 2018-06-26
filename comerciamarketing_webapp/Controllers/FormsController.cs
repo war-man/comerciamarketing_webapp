@@ -112,6 +112,7 @@ namespace comerciamarketing_webapp.Controllers
             public string id_resource { get; set; }
             public string fsource { get; set; }
             public string fdescription { get; set; }
+            public string fvalue { get; set; }
         }
         // POST: Forms/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -154,8 +155,14 @@ namespace comerciamarketing_webapp.Controllers
                         detalle_nuevo.fsource = Convert.ToString(item.fsource);
                         detalle_nuevo.fdescription = Convert.ToString(item.fdescription);
                         detalle_nuevo.ID_form = forms.ID_form;
-
                         detalle_nuevo.fvalue = 0;
+
+                        if (Convert.ToInt32(item.id_resource) == 6) //6 es el ID de del recurso de input_text
+                        {
+                            detalle_nuevo.fvalue = Convert.ToInt32(item.fvalue);
+                        }
+
+                        
                         detalle_nuevo.obj_order = count;
                         detalle_nuevo.obj_group = 1;
 
@@ -276,6 +283,13 @@ namespace comerciamarketing_webapp.Controllers
                         detalle_nuevo.ID_form = forms.ID_form;
 
                         detalle_nuevo.fvalue = 0;
+
+                        if (Convert.ToInt32(item.id_resource) == 6) //6 es el ID de del recurso de input_text
+                        {
+                            detalle_nuevo.fvalue = Convert.ToInt32(item.fvalue);
+                        }
+
+
                         detalle_nuevo.obj_order = count;
                         detalle_nuevo.obj_group = 1;
 
@@ -434,26 +448,26 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else if (detail.form_resource_type.fdescription == "Picture")
                         {
-                            if (item.text == null || item.text == "")
-                            {
+                            //if (item.text == null || item.text == "")
+                            //{
 
 
-                            }
-                            else {
-                                var image_name = detail.fsource;
+                            //}
+                            //else {
+                            //    var image_name = detail.fsource;
 
-                                detail.fsource = "";
+                            //    detail.fsource = "";
 
-                                db.Entry(detail).State = EntityState.Modified;
-                                db.SaveChanges();
+                            //    db.Entry(detail).State = EntityState.Modified;
+                            //    db.SaveChanges();
 
-                                //luego, eliminamos la url
-                                string fullPath = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), image_name.Replace("~/Content/images/ftp_demo/", ""));
-                                if (System.IO.File.Exists(fullPath))
-                                {
-                                    System.IO.File.Delete(fullPath);
-                                }
-                            }
+                            //    //luego, eliminamos la url
+                            //    string fullPath = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), image_name.Replace("~/Content/images/ftp_demo/", ""));
+                            //    if (System.IO.File.Exists(fullPath))
+                            //    {
+                            //        System.IO.File.Delete(fullPath);
+                            //    }
+                            //}
 
 
                         }
@@ -558,11 +572,15 @@ namespace comerciamarketing_webapp.Controllers
 
                 Demos demo = db.Demos.Find(Convert.ToInt32(id_demo));
                 demo.ID_demostate = 4;
-                demo.end_date = DateTime.UtcNow;
+
+                //asignamos check out
+                var fecha = (from f in values where (f.id == "999999999") select f).FirstOrDefault();
+                demo.end_date = Convert.ToDateTime(fecha.text);
                 db.Entry(demo).State = EntityState.Modified;
                 db.SaveChanges();
 
-                
+                //Enviamos el correo
+                SendDemoResume(Convert.ToInt32(id_demo));
 
                 return Json(new { Result = "Success" });
             }
@@ -580,12 +598,17 @@ namespace comerciamarketing_webapp.Controllers
             if (demo_header.Count > 0)
 
             {
-
+                var nombretienda = "";
                 foreach (var item in demo_header)
                 {
+                    //nombre de usuario
                     var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
                     item.ID_Vendor = usuario.CardName;
                     item.end_date = item.end_date.ToLocalTime();
+
+                    //nombre de tienda
+                    var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
+                    nombretienda = tiendita.CardName;
                 }
 
                 //Existen datos
@@ -890,7 +913,7 @@ namespace comerciamarketing_webapp.Controllers
                     dynamic email = new Email("DemoResume");
                     email.To = usuario.E_Mail.ToString();
                     email.From = "customercare@comerciamarketing.com";
-                    email.Subject = "Demo in " + data.store.ToString();
+                    email.Subject = "DEMO IN " + nombretienda;
                     email.Attach(new Attachment(path2));
                     //email.Body = imagename;
                     //return new EmailViewResult(email);
@@ -976,12 +999,6 @@ namespace comerciamarketing_webapp.Controllers
                         //fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
                         //file.SaveAs(fname);
 
-      
-
-
-
-
-
                         //Luego guardamos la url en la db
                         Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
                         detail.fsource = "~/Content/images/ftp_demo/" + file.FileName;
@@ -1007,449 +1024,7 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult UploadFilesF(string id, string end_date)
-        {
-            Forms_details detail_id = db.Forms_details.Find(Convert.ToInt32(id));
-
-            var id_demo = detail_id.ID_demo;
-
-            Demos demo = db.Demos.Find(Convert.ToInt32(id_demo));
-            demo.ID_demostate = 4;
-            demo.end_date = Convert.ToDateTime(end_date);
-            db.Entry(demo).State = EntityState.Modified;
-            db.SaveChanges();
-
-            // Checking no of files injected in Request object  
-            if (Request.Files.Count > 0)
-            {
-                try
-                {
-                    //  Get all files from Request object  
-                    HttpFileCollectionBase files = Request.Files;
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
-                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
-
-                        HttpPostedFileBase file = files[i];
-                        string fname;
-
-                        // Checking for Internet Explorer  
-                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        {
-                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                            fname = testfiles[testfiles.Length - 1];
-                        }
-                        else
-                        {
-                            fname = file.FileName;
-                        }
-
-
-                        // Adding watermark to the image and saving it into the specified folder!!!!
-
-                        //Image image = Image.FromStream(file.InputStream, true, true);
-
-
-                        using (Image TargetImg = Image.FromStream(file.InputStream, true, true))
-                        using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
-                        using (Graphics g = Graphics.FromImage(TargetImg))
-                        {
-
-                            Image thumb = watermark.GetThumbnailImage((TargetImg.Width), (TargetImg.Height / 2), null, IntPtr.Zero);
-
-                            var destX = (TargetImg.Width / 2 - thumb.Width / 2);
-                            var destY = (TargetImg.Height / 2 - thumb.Height / 2);
-
-                            g.DrawImage(thumb, new Rectangle(destX,
-                                        destY,
-                                        thumb.Width,
-                                        thumb.Height));
-
-
-                            // display a clone for demo purposes
-                            //pb2.Image = (Image)TargetImg.Clone();
-                            Image imagenfinal = (Image)TargetImg.Clone();
-                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
-                            imagenfinal.Save(path, ImageFormat.Jpeg);
-
-                        }
-
-
-                        //fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
-                        //file.SaveAs(fname);
-
-
-
-
-
-
-
-                        //Luego guardamos la url en la db
-                        Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
-                        detail.fsource = "~/Content/images/ftp_demo/" + file.FileName;
-
-                        db.Entry(detail).State = EntityState.Modified;
-                        db.SaveChanges();
-
-
-                    }
-                    Forms_details detail2 = db.Forms_details.Find(Convert.ToInt32(id));
-                    SendDemoResume(detail2.ID_demo);
-                    var iddemo = detail2.ID_demo;
-
-                    var demo_header = (from a in db.Demos where (a.ID_demo == iddemo) select a).ToList();
-
-
-
-                    if (demo_header.Count > 0)
-
-                    {
-
-                        foreach (var item in demo_header)
-                        {
-                            var usuariod = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
-                            item.ID_Vendor = usuariod.CardName;
-                            item.end_date = item.end_date.ToLocalTime();
-                        }
-
-                        //Existen datos
-                        //Buscamos los detalles
-
-                        var demo_details = (from b in db.Forms_details where (b.ID_demo == iddemo && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
-                        var result = demo_details
-                                .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
-                                .Select(cl => new Forms_details
-                                {
-                                    ID_details = cl.First().ID_details,
-                                    ID_formresourcetype = cl.First().ID_formresourcetype,
-                                    fsource = cl.First().fsource,
-                                    fdescription = cl.First().fdescription,
-                                    fvalue = cl.Sum(c => c.fvalue),
-                                    ID_form = cl.First().ID_form,
-                                    ID_demo = cl.First().ID_demo,
-                                    original = cl.First().original,
-                                    obj_order = cl.First().obj_order,
-                                    obj_group = cl.First().obj_group
-                                }).ToList();
-
-
-                        ReportDocument rd = new ReportDocument();
-
-                        rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
-
-
-
-                        rd.SetDataSource(demo_header);
-
-                        rd.Subreports[0].SetDataSource(demo_details);
-
-                        //Verificamos si existen fotos en el demo (MAX 4 fotos)
-                        var fotos = (from c in db.Forms_details where (c.ID_demo == iddemo && c.ID_formresourcetype == 5) select c).ToList();
-
-                        int fotosC = fotos.Count();
-
-
-
-
-                        if (fotosC == 4)
-                        {
-                            if (fotos[0].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg1", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                            }
-                            if (fotos[1].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg2", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                            }
-                            if (fotos[2].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg3", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
-                            }
-                            if (fotos[3].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg4", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
-                            }
-
-
-                        }
-                        else if (fotosC == 3)
-                        {
-                            if (fotos[0].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg1", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                            }
-                            if (fotos[1].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg2", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                            }
-                            if (fotos[2].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg3", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
-                            }
-
-                            rd.SetParameterValue("urlimg4", "");
-
-                        }
-                        else if (fotosC == 2)
-                        {
-                            if (fotos[0].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg1", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                            }
-                            if (fotos[1].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg2", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                            }
-
-                            rd.SetParameterValue("urlimg3", "");
-
-                            rd.SetParameterValue("urlimg4", "");
-
-                        }
-                        else if (fotosC == 1)
-                        {
-                            if (fotos[0].fsource == "")
-                            {
-                                rd.SetParameterValue("urlimg1", "");
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                            }
-
-                            rd.SetParameterValue("urlimg2", "");
-
-                            rd.SetParameterValue("urlimg3", "");
-
-                            rd.SetParameterValue("urlimg4", "");
-
-                        }
-                        else
-                        {
-
-                            rd.SetParameterValue("urlimg1", "");
-                            rd.SetParameterValue("urlimg2", "");
-                            rd.SetParameterValue("urlimg3", "");
-                            rd.SetParameterValue("urlimg4", "");
-                        }
-
-
-                        //Verificams si existe firma electronica
-                        var firma = (from d in db.Forms_details where (d.ID_demo == iddemo && d.ID_formresourcetype == 9) select d).ToList();
-
-                        int firmaC = firma.Count();
-
-
-
-
-                        if (firmaC == 1)
-                        {
-
-                            string datad = firma[0].fsource;
-                            if (datad != "")
-                            {
-                                var base64Data = Regex.Match(datad, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
-
-                                var binData = Convert.FromBase64String(base64Data);
-
-                                using (var streamf = new MemoryStream(binData))
-                                {
-
-                                    Bitmap myImage = new Bitmap(streamf);
-
-                                    // Assumes myImage is the PNG you are converting
-                                    using (var b = new Bitmap(myImage.Width, myImage.Height))
-                                    {
-                                        b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
-
-                                        using (var g = Graphics.FromImage(b))
-                                        {
-                                            g.Clear(Color.White);
-                                            g.DrawImageUnscaled(myImage, 0, 0);
-                                        }
-
-                                        // Now save b as a JPEG like you normally would
-
-                                        var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
-                                        b.Save(path, ImageFormat.Jpeg);
-
-
-                                        rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
-                                    }
-
-
-
-                                }
-                            }
-                            else
-                            {
-                                rd.SetParameterValue("urlimgsign", "");
-
-                            }
-
-                        }
-                        else
-                        {
-                            rd.SetParameterValue("urlimgsign", "");
-                        }
-
-
-                        var filePathOriginal = Server.MapPath("/Reportes/pdf");
-
-                        Response.Buffer = false;
-
-                        Response.ClearContent();
-
-                        Response.ClearHeaders();
-
-
-                        //PARA VISUALIZAR
-                        //Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
-
-
-
-                        //Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-
-                        //stream.Seek(0, SeekOrigin.Begin);
-
-
-
-                        //return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
-
-                        //PARA ENVIAR POR CORREO
-
-                        try
-
-                        {
-                            //limpiamos el directorio
-
-                            System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
-
-                            foreach (FileInfo file in di.GetFiles())
-
-                            {
-
-                                file.Delete();
-
-                            }
-
-                            foreach (DirectoryInfo dir in di.GetDirectories())
-
-                            {
-
-                                dir.Delete(true);
-
-                            }
-
-                        }
-
-                        catch (Exception e)
-
-                        {
-
-                            var mensaje = e.ToString();
-
-                        }
-
-                        var path2 = "";
-                        var filename = "Demo resume " + "" + ".pdf";
-                        path2 = Path.Combine(filePathOriginal, filename);
-                        rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
-
-                        //PdfDocument doc = new PdfDocument();
-                        //doc.LoadFromFile(path);
-                        ////Contamos numero total de paginas
-                        //int indexpages = doc.Pages.Count;
-
-                        //Image img = doc.SaveAsImage(0);
-                        //var imagename = "Accounts Receivable Report " + seller.SalesRepresentative + ".jpg";
-                        //pathimage = Path.Combine(filePathOriginal, imagename);
-                        //img.Save(pathimage);
-                        //doc.Close();
-
-
-                        //Para enviar correos
-
-                            var data = demo_header.FirstOrDefault();
-                            var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
-
-
-                            dynamic email = new Email("DemoResume");
-                            email.To = usuario.E_Mail.ToString();
-                            email.From = "customercare@comerciamarketing.com";
-                            email.Subject = "Demo in " + data.store.ToString();
-                            email.Attach(new Attachment(path2));
-                            //email.Body = imagename;
-                            //return new EmailViewResult(email);
-
-                            email.Send();
-                       
-                    }
-                    else
-                    {
-
-                    }
-
-
-
-
-
-
-
-                    // Returns message that successfully uploaded  
-                    return Json(new { success = true, responseText = "Message successfuly sent!" }, JsonRequestBehavior.AllowGet);
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, responseText = "Error occurred. Error details: " + ex.Message }, JsonRequestBehavior.AllowGet);
-           
-                }
-            }
-            else
-            {
-                Forms_details detail2 = db.Forms_details.Find(Convert.ToInt32(id));
-                SendDemoResume(detail2.ID_demo);
-                return Json("No files selected.");
-            }
-        }
+       
 
         public ActionResult Form_templatepreview(int? id_form)
         {
@@ -1487,6 +1062,28 @@ namespace comerciamarketing_webapp.Controllers
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = javaScriptSerializer.Serialize(lstproduct);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Check_in(string ID_demo, string check_in)
+        {
+            try
+            {
+                Demos demo = db.Demos.Find(Convert.ToInt32(ID_demo));
+                if (demo != null) {
+                    demo.ID_demostate = 2;
+                    demo.check_in = Convert.ToDateTime(check_in);
+                    db.Entry(demo).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { Result = "Success" });
+                }
+                return Json(new { Result = "Fail" });
+            }
+            catch {
+                return Json(new { Result = "Error" });
+            }
+
+
+           
         }
     }
 }

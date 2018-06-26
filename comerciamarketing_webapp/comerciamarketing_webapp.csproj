@@ -397,6 +397,7 @@
     <Content Include="Content\css\bootstrap-select.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\js\jquery.tablesorter.js" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\material-dashboard.css" />
     <Content Include="Content\css\multiple-select.css" />

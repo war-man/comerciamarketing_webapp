@@ -90,20 +90,6 @@ namespace comerciamarketing_webapp.Controllers
                 //Asignamos la geoubicacion
                 foreach (var item in demos_map) {
 
-                    string address = item.store;
-                    string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
-
-                    WebRequest request = WebRequest.Create(requestUri);
-                    WebResponse response = request.GetResponse();
-                    XDocument xdoc = XDocument.Load(response.GetResponseStream());
-
-                    XElement result = xdoc.Element("GeocodeResponse").Element("result");
-                    XElement locationElement = result.Element("geometry").Element("location");
-                    XElement lat = locationElement.Element("lat");
-                    XElement lng = locationElement.Element("lng");
-                    //NO SE PORQUE LO TIRA AL REVEZ
-                    item.GeoLat = lng.Value;
-                    item.GeoLong = lat.Value;
 
                     var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
                     if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
@@ -120,8 +106,8 @@ namespace comerciamarketing_webapp.Controllers
                                         id = p.ID_demo,
                                         nombre = p.ID_usuario,
                                         PlaceName = p.store,
-                                        GeoLong = p.GeoLong,
-                                        GeoLat = p.GeoLat,
+                                        GeoLong = p.geoLong,
+                                        GeoLat = p.geoLat,
                                         demo_state = p.Demo_state.sdescription,
                                         vendor = p.vendor,
                                         date = p.visit_date,
@@ -361,7 +347,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     int ID = Convert.ToInt32(Session["IDusuario"]);
                     datosusuario.ID_usuario = ID;
-                    datosusuario.fecha_conexion = DateTime.Now;
+                    datosusuario.fecha_conexion = DateTime.UtcNow;
 
                     db.historial_conexiones.Add(datosusuario);
                     db.SaveChanges();
