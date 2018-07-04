@@ -72,6 +72,17 @@
                         @Html.ValidationMessageFor(model => model.ID_rol, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+             <div class="form-group">
+                <p class="control-label col-md-4">Send summary?</p>
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.activo)
+                        @Html.ValidationMessageFor(model => model.activo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
                 @Html.Hidden("ID_empresa", (int)ViewBag.ID_empresa)
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

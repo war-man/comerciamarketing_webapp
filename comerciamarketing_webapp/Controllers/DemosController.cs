@@ -706,6 +706,8 @@ namespace comerciamarketing_webapp.Controllers
         {
             DateTime today_init_hour = DateTime.Today;
             DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
+            
+
 
             var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
 
@@ -763,7 +765,7 @@ namespace comerciamarketing_webapp.Controllers
 
                             item.ID_Vendor = Convert.ToString(sumLineTotal);
 
-                            DateTime dt = item.visit_date;
+                            DateTime dt = item.check_in;
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
@@ -780,7 +782,7 @@ namespace comerciamarketing_webapp.Controllers
                             item.ID_Vendor = Convert.ToString(sumLineTotal);
 
 
-                            DateTime dt = item.visit_date;
+                            DateTime dt = item.check_in;
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
@@ -953,14 +955,15 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult SendDemoResumeByCustomer(string id)
         {
             DateTime today_init_hour = DateTime.Today;
-            DateTime today_end_hour = DateTime.Today.AddHours(11).AddMinutes(58);
+            DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
+            var id_empresa = (from j in db.Empresas where (j.ID_SAP == id) select j.ID_empresa).FirstOrDefault();
 
             var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
 
             if (total_demos.Count > 0)
             {
                 //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour || f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour && f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
 
                 //Existen datos
                 //Buscamos los detalles
@@ -1012,7 +1015,7 @@ namespace comerciamarketing_webapp.Controllers
 
                             item.ID_Vendor = Convert.ToString(sumLineTotal);
 
-                            DateTime dt = item.visit_date;
+                            DateTime dt = item.check_in;
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
@@ -1030,7 +1033,7 @@ namespace comerciamarketing_webapp.Controllers
                             item.ID_Vendor = Convert.ToString(sumLineTotal);
 
 
-                            DateTime dt = item.visit_date;
+                            DateTime dt = item.check_in;
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
@@ -1112,7 +1115,7 @@ namespace comerciamarketing_webapp.Controllers
                     }
 
                     var path2 = "";
-                    var filename = "Demo resume " + "" + ".pdf";
+                    var filename = "Demo summary" + "" + ".pdf";
                     path2 = Path.Combine(filePathOriginal, filename);
                     rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
@@ -1131,25 +1134,38 @@ namespace comerciamarketing_webapp.Controllers
                     //Para enviar correos
                     try
                     {
-                        var contactos = (from u in db.Usuarios where (u.ID_tipomembresia == 7) select u).ToList();
+                        var contactos = (from u in db.Usuarios where (u.ID_tipomembresia == 7 && u.ID_empresa == id_empresa && u.activo == true) select u).ToList();
+                        if (contactos.Count > 0)
+                        {
+                            foreach (var item in contactos)
+                            {
+                                if (item.correo != null)
+                                {
+                                    dynamic email = new Email("DemoResumeTotal");
+                                    email.To = item.correo;
+                                    email.From = "customercare@comerciamarketing.com";
+                                    email.Subject = "Demos daily summary " + today_init_hour.ToShortDateString();
+                                    email.Attach(new Attachment(path2));
+                                    //email.Body = imagename;
+                                    //return new EmailViewResult(email);
 
-                        foreach (var item in contactos) {
-                            dynamic email = new Email("DemoResumeTotal");
-                            email.To = item.correo;
-                            email.From = "customercare@comerciamarketing.com";
-                            email.Subject = "Demos daily summary " + today_init_hour.ToShortDateString();
-                            email.Attach(new Attachment(path2));
-                            //email.Body = imagename;
-                            //return new EmailViewResult(email);
 
+                                    email.Send();
 
-                            email.Send();
+                                }
+
+                            }
+                            TempData["exito"] = "All emails were successfully sent.";
+                            return RedirectToAction("Index", "Empresas", null);
 
                         }
+                        else {
+                            TempData["exito"] = "No email contacts.";
+                            return RedirectToAction("Index", "Empresas", null);
+                        }
+                        
 
-
-                        TempData["exito"] = "All emails were successfully sent.";
-                        return RedirectToAction("Index", "Empresas", null);
+       
                     }
 
                     catch (Exception e)

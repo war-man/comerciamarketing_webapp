@@ -593,7 +593,7 @@ namespace comerciamarketing_webapp.Controllers
 
             var demo_header = (from a in db.Demos where (a.ID_demo == id) select a).ToList();
 
-
+            var id_empresa = "";
 
             if (demo_header.Count > 0)
 
@@ -609,6 +609,8 @@ namespace comerciamarketing_webapp.Controllers
                     //nombre de tienda
                     var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
                     nombretienda = tiendita.CardName;
+
+                    id_empresa = item.ID_Vendor;
                 }
 
                 //Existen datos
@@ -903,7 +905,7 @@ namespace comerciamarketing_webapp.Controllers
                 //doc.Close();
 
 
-                //Para enviar correos
+                //Enviamos correo al usuario
                 try
                 {
                     var data = demo_header.FirstOrDefault();
@@ -925,6 +927,40 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     Console.WriteLine("{0} Exception caught.", e);
                 }
+
+
+                //Enviamos correo a los mail contacts
+                var contacts = (from s in db.Usuarios where (s.Empresas.ID_SAP == id_empresa && s.ID_tipomembresia == 7) select s).ToList();
+
+                if (contacts.Count > 0) {
+                    foreach (var item in contacts) {
+                        if(item.correo != null)
+                        {
+                            try
+                            {
+
+                                dynamic email = new Email("DemoResume");
+                                email.To = item.correo;
+                                email.From = "customercare@comerciamarketing.com";
+                                email.Subject = "DEMO IN " + nombretienda;
+                                email.Attach(new Attachment(path2));
+                                //email.Body = imagename;
+                                //return new EmailViewResult(email);
+
+                                email.Send();
+                            }
+
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("{0} Exception caught.", e);
+                            }
+
+                        }
+                    }
+
+                }
+
+
 
             }
             else
@@ -971,20 +1007,50 @@ namespace comerciamarketing_webapp.Controllers
                         //Image image = Image.FromStream(file.InputStream, true, true);
 
 
-                        using (Image TargetImg = Image.FromStream(file.InputStream, true, true))
+                        Image TargetImg = Image.FromStream(file.InputStream, true, true);
+                        try
+                        {
+                            if (TargetImg.PropertyIdList.Contains(0x0112))
+                            {
+                                int rotationValue = TargetImg.GetPropertyItem(0x0112).Value[0];
+                                switch (rotationValue)
+                                {
+                                    case 1: // landscape, do nothing
+                                        break;
+
+                                    case 8: // rotated 90 right
+                                            // de-rotate:
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate270FlipNone);
+                                        break;
+
+                                    case 3: // bottoms up
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate180FlipNone);
+                                        break;
+
+                                    case 6: // rotated 90 left
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate90FlipNone);
+                                        break;
+                                }
+                            }
+                        }
+                        catch {
+
+                        }
+
+
                         using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
                         using (Graphics g = Graphics.FromImage(TargetImg))
                         {
 
-                            Image thumb = watermark.GetThumbnailImage((TargetImg.Width), (TargetImg.Height/2), null, IntPtr.Zero);
+                            Image thumb = watermark.GetThumbnailImage((TargetImg.Width / 2), (TargetImg.Height / 3), null, IntPtr.Zero);
 
                             var destX = (TargetImg.Width / 2 - thumb.Width / 2);
                             var destY = (TargetImg.Height / 2 - thumb.Height / 2);
 
-                            g.DrawImage(thumb, new Rectangle(destX,
+                            g.DrawImage(watermark, new Rectangle(destX,
                                         destY,
-                                        thumb.Width,
-                                        thumb.Height));
+                                        TargetImg.Width / 2,
+                                        TargetImg.Height / 4));
 
 
                             // display a clone for demo purposes

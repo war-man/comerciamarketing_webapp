@@ -14,9 +14,39 @@
 
     @Html.Partial("~/Views/Shared/Styles.cshtml")
 
+    <script type="text/javascript">
 
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        function success(pos) {
+            var crd = pos.coords;
+
+            console.log('Your current position is:');
+            console.log('Latitude : ' + crd.latitude);
+            console.log('Longitude: ' + crd.longitude);
+            console.log('More or less ' + crd.accuracy + ' meters.');
+        };
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        };
+
+        function initGeolocation() {
+            if (navigator && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error, options);
+            } else {
+                console.log('Geolocation is not supported');
+            }
+        }
+      
+
+    </script>
 </head>
-<body>
+<body  onload="javascript:initGeolocation()">
     <div class="super_container">
         <!-- Header -->
 
@@ -73,19 +103,19 @@
             <div class="hamburger_menu_content text-right">
                 <ul class="menu_top_nav">
                     <!--
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            usd
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#">cad</a></li>
-                            <li><a href="#">aud</a></li>
-                            <li><a href="#">eur</a></li>
-                            <li><a href="#">gbp</a></li>
-                        </ul>
-                    </li>
-                    -->
+                <li class="menu_item has-children">
+                    <a href="#">
+                        usd
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="menu_selection">
+                        <li><a href="#">cad</a></li>
+                        <li><a href="#">aud</a></li>
+                        <li><a href="#">eur</a></li>
+                        <li><a href="#">gbp</a></li>
+                    </ul>
+                </li>
+                -->
                     <li class="menu_item"><a href="http://comerciamarketing.com/">Back to home page</a></li>
 
 
@@ -96,6 +126,7 @@
         </div>
 
         <br /><br /><br /><br /><br /><br /><br /><br />
+
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="text-center login-title">To log in, enter your credentials below.</h1>
@@ -104,9 +135,9 @@
                          alt="">
 
                     @*@using (Html.BeginForm("Iniciar_sesion", "Home", FormMethod.Post, new { @class = "form-signin" }))
-    {
-                @Html.AntiForgeryToken();
-                @Html.ValidationSummary();*@
+                    {
+                                @Html.AntiForgeryToken();
+                                @Html.ValidationSummary();*@
 
                     <form class="form-signin" method="post" id="form">
                         <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
@@ -117,13 +148,13 @@
                         </button>
 
                     </form>
-                <!--
-<label class="checkbox pull-left">
-    <input type="checkbox" value="remember-me">
-    Recuerdame
-</label>
-<a href="#" class="pull-right need-help">Necesitas ayuda? </a><span class="clearfix"></span>-->
-@*}*@
+                    <!--
+                <label class="checkbox pull-left">
+                    <input type="checkbox" value="remember-me">
+                    Recuerdame
+                </label>
+                <a href="#" class="pull-right need-help">Necesitas ayuda? </a><span class="clearfix"></span>-->
+                    @*}*@
                 </div>
             </div>
 
@@ -179,7 +210,7 @@
  
                     // get the API result via jQuery.ajax
                     $.ajax({
-                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        url: 'https://api.ipstack.com/' + ip + '?access_key=' + access_key,
                         dataType: 'json',
                         error: function () {
                             console.log("Geolocation error");

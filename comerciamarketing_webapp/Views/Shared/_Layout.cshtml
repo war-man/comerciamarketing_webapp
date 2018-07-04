@@ -136,6 +136,16 @@
     </style>
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116898086-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116898086-1');
+    </script>
 </head>
 <body>
     <div class="super_container">
@@ -354,12 +364,12 @@
             $("#save_formtemplate").click(function () {
                 @*var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
-
+         
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
 
                 var objects = [];
-                $('#loadingmessage').show();
+                
                 $.each($('input.form-control'), function () {
 
                     //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
@@ -416,22 +426,30 @@
                     type: 'POST',
                     data: JSON.stringify(objects),
                     contentType: 'application/json; charset=utf-8',
-                    async: false,
+                    async: true,
                     success: function (result) {
 
 
-                        $('#loadingmessage').hide();
+                       
                         new PNotify({
                             title: "Success",
                             text: "Form saved successfully.",
                             type: "success"
                         })
 
-                        window.location.reload(true);
+                        var x = document.getElementById("finish_formtemplate");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            x.style.display = "none";
+                        }
+
+                        $("#modal_demoform_saving").modal('hide');
+                        //window.location.reload(true);
 
                     },
                     error: function (request) {
-                        $('#loadingmessage').hide();
+                       
                             new PNotify({
                                 title: "Warning",
                                 text: "Something wrong happened, try again.",
@@ -440,6 +458,7 @@
                     }
                 });
 
+               
             }
             );
         });
@@ -481,7 +500,7 @@
 
 
                 var objects = [];
-                $('#loadingmessage').show();
+                
                 $.each($('input.form-control'), function () {
 
                     //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
@@ -543,16 +562,16 @@
                     type: 'POST',
                     data: JSON.stringify(objects) ,
                     contentType: 'application/json; charset=utf-8',
-                    async: false,
+                    async: true,
                     success: function (result) {
 
-                        $('#loadingmessage').hide();
+                        
                         new PNotify({
                             title: "Success",
                             text: "Form saved successfully.",
                             type: "success"
                         })
-
+                        $("#modal_demoform_saving").modal('hide');
                         window.location.reload(true);
 
 
@@ -601,10 +620,10 @@
 
                         }
                     });*@
-                       
+
                     },
                     error: function (request) {
-                        $('#loadingmessage').hide();
+                        $("#modal_demoform_saving").modal('hide');
                         new PNotify({
                             title: "Warning",
                             text: "Something wrong happened, try again.",
@@ -1055,49 +1074,50 @@
 
 
 <script>
-        $(function () {
-            $("#checkin").click(function () {
+    $(function () {
+        $("#checkin").click(function () {
 
-                var now = new Date();
-                //var MS_PER_MINUTE = 60000;
-                //var offset = new Date().getTimezoneOffset();
+            var now = new Date();
+            //var MS_PER_MINUTE = 60000;
+            //var offset = new Date().getTimezoneOffset();
 
-                //var date = new Date(now - offset * MS_PER_MINUTE);
-                //var localDate = new Date($(this).html());
+            //var date = new Date(now - offset * MS_PER_MINUTE);
+            //var localDate = new Date($(this).html());
 
-                //console.log(now);
-                console.log(now.toLocaleString());
-                //alert(now.toLocaleString());
-                //console.log(date.toLocaleString());
+            //console.log(now);
+            console.log(now.toLocaleString());
+            //alert(now.toLocaleString());
+            //console.log(date.toLocaleString());
 
-                //var demo = "";
-                demo = document.getElementById('id_demo').value;
-                console.log(demo);
-  		//alert(now.toLocaleString("en-US", { hour12: true}));
-                console.log(now.toLocaleString("en-US", { hour12: true}));
-                //var today = new Date();
-                //var h = today.getHours();
-                //var m = today.getMinutes();
-                //var s = today.getSeconds();
+            //var demo = "";
+            demo = document.getElementById('id_demo').value;
+            console.log(demo);
+            //alert(now.toLocaleString("en-US", { hour12: true}));
+            console.log(now.toLocaleString("en-US", { hour12: true }));
+            //var today = new Date();
+            //var h = today.getHours();
+            //var m = today.getMinutes();
+            //var s = today.getSeconds();
 
-                //var fecha = today.getDate();
+            //var fecha = today.getDate();
 
-//alert(fecha + ", " + h + ":" + m + ":" + s + "P.M");*/
-                $.ajax({
-                    url: '/Forms/Check_in',
-                    type: 'POST',
-                    data: { "ID_demo": demo, "check_in": now.toLocaleString("en-US", { hour12: true})},
-                    success: function (result) {
-                    
-                    },
-                    error: function (request) {
+            //alert(fecha + ", " + h + ":" + m + ":" + s + "P.M");*/
+            $.ajax({
+                url: '/Forms/Check_in',
+                type: 'POST',
+                data: { "ID_demo": demo, "check_in": now.toLocaleString("en-US", { hour12: true }) },
+                success: function (result) {
 
-                    }
-                });
+                },
+                error: function (request) {
 
-            }
-            );
-        });
+                }
+            });
+
+        }
+        );
+    });
 
 </script>
+
 

@@ -74,7 +74,15 @@
                 </div>
             </div>
 
-                @Html.HiddenFor(model => model.activo)
+              <div class="form-group">
+                <p class="control-label col-md-4">Send summary?</p>
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.activo)
+                        @Html.ValidationMessageFor(model => model.activo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
 
             @Html.HiddenFor(model => model.ID_empresa, new { htmlAttributes = new { @class = "form-control" } })
 

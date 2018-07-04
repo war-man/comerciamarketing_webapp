@@ -203,7 +203,7 @@ namespace comerciamarketing_webapp.Controllers
                     //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
 
 
-                    if (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                    if (obj.Tipo_membresia.descripcion == "Demo")
                     {
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
@@ -211,6 +211,7 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         Session["IDusuario"] = obj.ID_usuario.ToString();
                         Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+                        Session["tiporol"] = obj.ID_rol.ToString();
                         Session["ultimaconexion"] = "";
 
 
@@ -579,42 +580,19 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                //Consultamos los Vendors de SAP
-                ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
-                ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
-                //Recuperamos los IDS de las demos del customer especifico
-                //int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == datosUsuario.Empresas.ID_SAP) select f.ID_demo).ToArray();
-
-                //var demo_details_items = (from b in db.Forms_details where (demo_ids.Contains(b.ID_demo) && b.ID_formresourcetype == 5) select b).ToList();
-
-                //for (int i = demo_details_items.Count - 1; i >= 0; i--)
-                //{
-                //    if (demo_details_items[i].fsource =="") demo_details_items.RemoveAt(i);
-                //   }
-
-                //if (demo_details_items.Count > 0)
-                //    {
-                //        IEnumerable<SelectListItem> selectList = from s in demos
-                //                                                 select new SelectListItem
-                //                                                 {
-                //                                                     Value = Convert.ToString(s.ID_demo),
-                //                                                     Text = s.visit_date.ToShortDateString()  + " - " + s.store.ToString()
-                //                                                 };
+                //Consultamos los Vendors de SAP dependiendo el usuario
+                if (Session["tipousuario"].ToString() == "1")
+                {
+                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                    ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
+                }
+                else {
+                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "" && b.CardCode == datosUsuario.Empresas.ID_SAP).OrderBy(b => b.CardName), "CardCode", "CardName");
+                    ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == datosUsuario.Empresas.ID_SAP), "ID_demo", "visit_date");
+                }
 
 
-                //        ViewBag.ID_demos = new SelectList(selectList, "Value", "Text");
 
-
-                //        ViewBag.bloquearcontenido = "no";
-                //        //ViewBag.imagenes = demo_details_items;
-
-                //        return View();
-                //    }
-                //    else
-                //    {
-                //        TempData["advertencia"] = "No images to show.";
-                //        return View();
-                //    }
 
                 ViewBag.bloquearcontenido = "no";
                 return View();
@@ -635,7 +613,16 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //Consultamos los Vendors de SAP
-                ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",ID_vendor);
+                if (Session["tipousuario"].ToString() == "1")
+                {
+                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                }
+                else
+                {
+                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "" && b.CardCode == datosUsuario.Empresas.ID_SAP).OrderBy(b => b.CardName), "CardCode", "CardName");
+                    ID_vendor = datosUsuario.Empresas.ID_SAP;
+                }
+
                 var demos = (from b in db.Demos where (b.ID_Vendor == ID_vendor) select b).ToList();
 
                 IEnumerable<SelectListItem> selectList = from s in demos
@@ -665,7 +652,10 @@ namespace comerciamarketing_webapp.Controllers
                 else
                 {
                     ViewBag.imagenes = demo_details_items;
-                    TempData["advertencia"] = "No images to show.";
+                    if (ID_demos != null) {
+                        TempData["advertencia"] = "No images to show.";
+                    }
+                    
                     return View();
                 }
             }
