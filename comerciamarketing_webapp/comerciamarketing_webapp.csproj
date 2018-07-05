@@ -343,6 +343,9 @@
     <Compile Include="Models\OITM.cs">
       <DependentUpon>COM_MK.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OMRC.cs">
+      <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Recursos_usuario.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>

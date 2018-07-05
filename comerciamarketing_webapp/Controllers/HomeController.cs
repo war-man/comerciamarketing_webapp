@@ -203,7 +203,7 @@ namespace comerciamarketing_webapp.Controllers
                     //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
 
 
-                    if (obj.Tipo_membresia.descripcion == "Demo")
+                    if (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
                     {
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
@@ -581,15 +581,9 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //Consultamos los Vendors de SAP dependiendo el usuario
-                if (Session["tipousuario"].ToString() == "1")
-                {
+
                     ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
                     ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
-                }
-                else {
-                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "" && b.CardCode == datosUsuario.Empresas.ID_SAP).OrderBy(b => b.CardName), "CardCode", "CardName");
-                    ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == datosUsuario.Empresas.ID_SAP), "ID_demo", "visit_date");
-                }
 
 
 
@@ -613,7 +607,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //Consultamos los Vendors de SAP
-                if (Session["tipousuario"].ToString() == "1")
+                if (Session["tipousuario"].ToString() == "1" || Session["tipousuario"].ToString() == "6")
                 {
                     ViewBag.ID_vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
                 }

@@ -703,9 +703,19 @@
           <Property Name="U_SubCategory" Type="nvarchar" MaxLength="30" />
           <Property Name="U_customerCM" Type="nvarchar" MaxLength="15" />
         </EntityType>
+        <EntityType Name="OMRC">
+          <Key>
+            <PropertyRef Name="FirmCode" />
+          </Key>
+          <Property Name="FirmCode" Type="smallint" Nullable="false" />
+          <Property Name="FirmName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DataSource" Type="char" MaxLength="1" />
+          <Property Name="UserSign" Type="smallint" />
+        </EntityType>
         <EntityContainer Name="COM_MKModelStoreContainer">
           <EntitySet Name="OCRD" EntityType="Self.OCRD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OITM" EntityType="Self.OITM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OMRC" EntityType="Self.OMRC" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1412,7 +1422,17 @@
         <EntityContainer Name="COM_MKEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="OCRDs" EntityType="Self.OCRD" />
           <EntitySet Name="OITMs" EntityType="Self.OITM" />
+          <EntitySet Name="OMRC" EntityType="COM_MKModel.OMRC" />
         </EntityContainer>
+        <EntityType Name="OMRC">
+          <Key>
+            <PropertyRef Name="FirmCode" />
+          </Key>
+          <Property Name="FirmCode" Type="Int16" Nullable="false" />
+          <Property Name="FirmName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DataSource" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="UserSign" Type="Int16" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2119,6 +2139,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OMRC">
+            <EntityTypeMapping TypeName="COM_MKModel.OMRC">
+              <MappingFragment StoreEntitySet="OMRC">
+                <ScalarProperty Name="UserSign" ColumnName="UserSign" />
+                <ScalarProperty Name="DataSource" ColumnName="DataSource" />
+                <ScalarProperty Name="FirmName" ColumnName="FirmName" />
+                <ScalarProperty Name="FirmCode" ColumnName="FirmCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2133,7 +2163,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

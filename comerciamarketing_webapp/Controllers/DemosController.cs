@@ -175,7 +175,7 @@ namespace comerciamarketing_webapp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form")] Demos demos)
+        public ActionResult Create([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form,extra_hours")] Demos demos)
         {
             demos.geoLong = "";
             demos.geoLat = "";
@@ -228,6 +228,29 @@ namespace comerciamarketing_webapp.Controllers
                     db.SaveChanges();
                 }
 
+                //Obtenemos el nombre de las marcas o brands por cada articulo
+                var listadeItems = (from d in db.Forms_details where (d.ID_demo == demos.ID_demo && d.ID_formresourcetype == 3) select d).ToList();
+
+    
+                foreach (var itemd in listadeItems) {
+                    itemd.fdescription = (from k in CMKdb.OITMs join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault(); 
+                }
+
+                var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                var brandstoshow = "";
+                int count = 0;
+                foreach (var items in brands) {
+                    if (count == 0)
+                    {
+                        brandstoshow = items.fdescription.ToString();
+                    }
+                    else {
+                        brandstoshow += ", " + items.fdescription.ToString();
+                    }
+                    count += 1;
+                }
+                //*******************************
                 try
                 {
                     var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
@@ -235,7 +258,7 @@ namespace comerciamarketing_webapp.Controllers
                     dynamic email = new Email("newdemo_alert");
                     email.To = usuario.E_Mail.ToString();
                     email.From = "customercare@comerciamarketing.com";
-                    email.Vendor = demos.vendor;
+                    email.Vendor = brandstoshow;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
                     email.Place = demos.store;
@@ -324,7 +347,7 @@ namespace comerciamarketing_webapp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form")] Demos demos)
+        public ActionResult Edit([Bind(Include = "ID_demo,ID_Vendor,vendor,ID_Store,store,visit_date,ID_usuario,ID_demostate,comments,ID_form,extra_hours")] Demos demos)
         {
             demos.geoLong = "";
             demos.geoLat = "";
@@ -370,6 +393,34 @@ namespace comerciamarketing_webapp.Controllers
                 db.SaveChanges();
 
 
+                //Obtenemos el nombre de las marcas o brands por cada articulo
+                var listadeItems = (from d in db.Forms_details where (d.ID_demo == demos.ID_demo && d.ID_formresourcetype == 3) select d).ToList();
+
+
+                foreach (var itemd in listadeItems)
+                {
+                    itemd.fdescription = (from k in CMKdb.OITMs join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                }
+
+                var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                var brandstoshow = "";
+                int count = 0;
+                foreach (var items in brands)
+                {
+                    if (count == 0)
+                    {
+                        brandstoshow = items.fdescription.ToString();
+                    }
+                    else
+                    {
+                        brandstoshow += ", " + items.fdescription.ToString();
+                    }
+                    count += 1;
+                }
+                //*******************************
+
+
                 try
                 {
                     var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
@@ -378,7 +429,7 @@ namespace comerciamarketing_webapp.Controllers
                     dynamic email = new Email("editdemo_alert");
                     email.To = usuario.E_Mail.ToString();
                     email.From = "customercare@comerciamarketing.com";
-                    email.Vendor = demos.vendor;
+                    email.Vendor = brandstoshow;
                     email.Date = Convert.ToDateTime(demos.visit_date).ToLongDateString();
                     email.Time = Convert.ToDateTime(demos.visit_date).ToLongTimeString();
                     email.Place = demos.store;
@@ -769,7 +820,7 @@ namespace comerciamarketing_webapp.Controllers
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
-
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                             totaldemohours = totaldemohours + ts;
                         }
                         else {
@@ -786,7 +837,7 @@ namespace comerciamarketing_webapp.Controllers
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
-
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                             totaldemohours = totaldemohours + ts;
                             
                         }
@@ -1019,7 +1070,7 @@ namespace comerciamarketing_webapp.Controllers
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
-
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                             totaldemohours = totaldemohours + ts;
                         }
                         else
@@ -1037,7 +1088,7 @@ namespace comerciamarketing_webapp.Controllers
                             DateTime dt2 = item.end_date;
                             TimeSpan ts = (dt2 - dt);
 
-
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                             totaldemohours = totaldemohours + ts;
 
                         }
@@ -1210,9 +1261,10 @@ namespace comerciamarketing_webapp.Controllers
                     else {
                         item.ID_Vendor = usuario.CardName;
                     }
-                   
 
+                    item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                     item.end_date = item.end_date.ToLocalTime();
+           
 
                 }
 
@@ -1241,11 +1293,40 @@ namespace comerciamarketing_webapp.Controllers
 
                 rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
 
+                //Obtenemos el nombre de las marcas o brands por cada articulo
+                var listadeItems = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
+                var oitm = (from h in CMKdb.OITMs select h).ToList();
+                var omrc = (from i in CMKdb.OMRC select i).ToList();
+                foreach (var itemd in listadeItems)
+                {
+
+                    itemd.fdescription = (from k in oitm join j in omrc on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                }
+
+                var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                var brandstoshow = "";
+                int count = 0;
+                foreach (var items in brands)
+                {
+                    if (count == 0)
+                    {
+                        brandstoshow = items.fdescription.ToString();
+                    }
+                    else
+                    {
+                        brandstoshow += ", " + items.fdescription.ToString();
+                    }
+                    count += 1;
+                }
+                //*******************************
+
+                demo_header[0].vendor = brandstoshow;
 
                 rd.SetDataSource(demo_header);
 
-                rd.Subreports[0].SetDataSource(demo_details);
+                rd.Subreports[0].SetDataSource(result);
 
                 //Verificamos si existen fotos en el demo (MAX 4 fotos)
                 var fotos = (from c in db.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();

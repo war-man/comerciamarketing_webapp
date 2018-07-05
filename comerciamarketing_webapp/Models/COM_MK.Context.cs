@@ -27,5 +27,6 @@ namespace comerciamarketing_webapp.Models
     
         public virtual DbSet<OCRD> OCRDs { get; set; }
         public virtual DbSet<OITM> OITMs { get; set; }
+        public virtual DbSet<OMRC> OMRC { get; set; }
     }
 }

@@ -50,6 +50,7 @@
           <Property Name="check_in" Type="datetime" />
           <Property Name="geoLong" Type="varchar" MaxLength="50" />
           <Property Name="geoLat" Type="varchar" MaxLength="50" />
+          <Property Name="extra_hours" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -579,6 +580,7 @@
           <Property Name="check_in" Type="DateTime" Precision="3" />
           <Property Name="geoLong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="geoLat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="extra_hours" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="form_resource_type">
           <Key>
@@ -813,6 +815,7 @@
           <EntitySetMapping Name="Demos">
             <EntityTypeMapping TypeName="dbComerciaModel.Demos">
               <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
                 <ScalarProperty Name="geoLat" ColumnName="geoLat" />
                 <ScalarProperty Name="geoLong" ColumnName="geoLong" />
                 <ScalarProperty Name="check_in" ColumnName="check_in" />
