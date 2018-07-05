@@ -330,12 +330,21 @@
                     type: "POST",
                     contentType: false, // Not to set any content header
                     processData: false, // Not to process data
-                    async: false,
+                    async: true,
+                    timeout: 60000,
                     data: fileData,
+                    cache: false,
+                    beforeSend: function () {
+                        $("#modal_demoform_saving").modal('show');
+                    },
+                    complete: function () {
+                        $("#modal_demoform_saving").modal('hide');
+                    },
                     success: function (result) {
 
                     },
                     error: function (err) {
+
                         new PNotify({
                             title: "Warning",
                             text: "Error. " + err.statusText,
@@ -364,7 +373,7 @@
             $("#save_formtemplate").click(function () {
                 @*var ip = "@Session["ip_user"]";
                 var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
-         
+
                 var id_demo = "";
                 id_demo = document.getElementById('id_demo').value;
 
@@ -427,10 +436,15 @@
                     data: JSON.stringify(objects),
                     contentType: 'application/json; charset=utf-8',
                     async: true,
+                    cache: false,
+                    beforeSend: function () {
+                        $("#modal_demoform_saving").modal('show');
+                    },
+                    complete: function () {
+                        $("#modal_demoform_saving").modal('hide');
+                    },
                     success: function (result) {
 
-
-                       
                         new PNotify({
                             title: "Success",
                             text: "Form saved successfully.",
@@ -444,17 +458,17 @@
                             x.style.display = "none";
                         }
 
-                        $("#modal_demoform_saving").modal('hide');
+
                         //window.location.reload(true);
 
                     },
                     error: function (request) {
-                       
-                            new PNotify({
-                                title: "Warning",
-                                text: "Something wrong happened, try again.",
-                                type: "notice"
-                            })
+
+                        new PNotify({
+                            title: "Warning",
+                            text: "Something wrong happened, try again.",
+                            type: "notice"
+                        })
                     }
                 });
 
@@ -563,15 +577,21 @@
                     data: JSON.stringify(objects) ,
                     contentType: 'application/json; charset=utf-8',
                     async: true,
+                    cache: false,
+                    beforeSend: function () {
+                        $("#modal_demoform_saving").modal('show');
+                    },
+                    complete: function () {
+                        $("#modal_demoform_saving").modal('hide');
+                    },
                     success: function (result) {
 
-                        
                         new PNotify({
                             title: "Success",
                             text: "Form saved successfully.",
                             type: "success"
                         })
-                        $("#modal_demoform_saving").modal('hide');
+                    
                         window.location.reload(true);
 
 
@@ -623,7 +643,7 @@
 
                     },
                     error: function (request) {
-                        $("#modal_demoform_saving").modal('hide');
+             
                         new PNotify({
                             title: "Warning",
                             text: "Something wrong happened, try again.",

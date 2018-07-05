@@ -1446,7 +1446,7 @@ namespace comerciamarketing_webapp.Controllers
                             // display a clone for demo purposes
                             //pb2.Image = (Image)TargetImg.Clone();
                             Image imagenfinal = (Image)TargetImg.Clone();
-                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
+                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), id + "_" + fname);
                             imagenfinal.Save(path, ImageFormat.Jpeg);
 
                         }
@@ -1457,7 +1457,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         //Luego guardamos la url en la db
                         Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
-                        detail.fsource = "~/Content/images/ftp_demo/" + file.FileName;
+                        detail.fsource = "~/Content/images/ftp_demo/" + id + "_" + file.FileName;
 
                         db.Entry(detail).State = EntityState.Modified;
                         db.SaveChanges();
