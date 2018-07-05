@@ -127,6 +127,18 @@
           <Property Name="ID_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <EntityType Name="Stock_items">
+          <Key>
+            <PropertyRef Name="ID_stock" />
+          </Key>
+          <Property Name="ID_stock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="itemCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="itemName" Type="varchar" MaxLength="500" />
+          <Property Name="quantity" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="odate" Type="datetime" />
+          <Property Name="ID_usuario" Type="varchar" MaxLength="15" />
+          <Property Name="comment" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
             <PropertyRef Name="ID_tipomembresia" />
@@ -307,6 +319,7 @@
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock_items" EntityType="Self.Stock_items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_form_w9" EntityType="Self.user_form_w9" Schema="dbo" store:Type="Tables" />
@@ -458,6 +471,7 @@
           </AssociationSet>
           <EntitySet Name="demo_log" EntityType="dbComerciaModel.demo_log" />
           <EntitySet Name="user_form_w9" EntityType="dbComerciaModel.user_form_w9" />
+          <EntitySet Name="Stock_items" EntityType="dbComerciaModel.Stock_items" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -713,6 +727,18 @@
           <Property Name="iscomplete" Type="Boolean" Nullable="false" />
           <Property Name="ID_usuario" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Stock_items">
+          <Key>
+            <PropertyRef Name="ID_stock" />
+          </Key>
+          <Property Name="ID_stock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="itemName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="quantity" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="odate" Type="DateTime" Precision="3" />
+          <Property Name="ID_usuario" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -913,6 +939,19 @@
                 <ScalarProperty Name="business_name" ColumnName="business_name" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stock_items">
+            <EntityTypeMapping TypeName="dbComerciaModel.Stock_items">
+              <MappingFragment StoreEntitySet="Stock_items">
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
+                <ScalarProperty Name="odate" ColumnName="odate" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="itemName" ColumnName="itemName" />
+                <ScalarProperty Name="itemCode" ColumnName="itemCode" />
+                <ScalarProperty Name="ID_stock" ColumnName="ID_stock" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

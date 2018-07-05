@@ -27,10 +27,10 @@
                         </div>
                         <ul class="sidebar_categories">
                             <!--
-                            <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total users: </a></li>
-                            <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total demos: </a></li>-->
+    <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total users: </a></li>
+    <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Total demos: </a></li>-->
                             <li><a href="@Url.Action("Create", "Demos")"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i> New Demo</span> </a></li>
-
+                            <li><a href="@Url.Action("Create", "Stock_items")"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i> Stock Receipt </span> </a></li>
                         </ul>
 
                     </div>
@@ -40,9 +40,10 @@
                             <h5>Demo settings</h5>
                         </div>
                         <!--<div class="filter_button"><a href="Url.Action("Demo_users", "Usuarios")"><span>Users</span></a></div>-->
-                        <div class="filter_button"><a  href="@Url.Action("Index", "Empresas")"><span>Customers</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Empresas")"><span>Customers</span></a></div>
 
                         <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
                     </div>
                 </div>
 

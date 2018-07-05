@@ -1,0 +1,92 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Stock_items>
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col" style="overflow-x:auto;">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Stock Items</a></li>
+
+                </ul>
+            </div>
+
+
+            <div class="product_sorting_container product_sorting_container_top">
+                <h4 class="pull-left"> @Html.ActionLink("+ New stock receipt", "Create")</h4>
+                <ul class="product_sorting pull-right">
+                    <li>
+                        <span class="type_sorting_text">Filter by Item name</span>
+                        <i class="fa fa-angle-down"></i>
+                        <ul class="sorting_type">
+                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>All</span></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!--
+                                            <ul class="product_sorting pull-right">
+                                                <li>
+                                                    <span class="type_sorting_text">Sort by State</span>
+                                                    <i class="fa fa-angle-down"></i>
+                                                    <ul class="sorting_type">
+                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
+                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Last 10 </span></li>
+                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Waiting demos</span></li>
+                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Demos finished</span></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+        -->
+            </div>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        ITEM CODE (SAP)
+                    </th>
+                    <th>
+                        ITEM NAME (SAP)
+                    </th>
+                    <th>
+                        QUANTITY
+                    </th>
+                    <th>
+                        SOURCE
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.comment)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID_stock }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID_stock })
+                </td>
+            </tr>
+}
+
+            </table>
+        </div>
+    </div>
+</div>

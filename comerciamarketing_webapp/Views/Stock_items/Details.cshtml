@@ -1,0 +1,74 @@
+﻿@model comerciamarketing_webapp.Models.Stock_items
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Stock_items</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.itemCode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.itemCode)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.itemName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.itemName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.quantity)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.quantity)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.odate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.odate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ID_usuario)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ID_usuario)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.comment)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.comment)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID_stock }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

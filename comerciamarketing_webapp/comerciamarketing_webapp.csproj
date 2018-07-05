@@ -278,6 +278,7 @@
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Recursos_usuarioController.cs" />
+    <Compile Include="Controllers\Stock_itemsController.cs" />
     <Compile Include="Controllers\user_form_w9Controller.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
@@ -350,6 +351,9 @@
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Roles.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Stock_items.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tipo_membresia.cs">
@@ -754,6 +758,11 @@
     <Content Include="Views\Home\Galleryfilter.cshtml" />
     <Content Include="Views\Emails\DemoResume.cshtml" />
     <Content Include="Views\Emails\DemoResumeTotal.cshtml" />
+    <Content Include="Views\Stock_items\Create.cshtml" />
+    <Content Include="Views\Stock_items\Delete.cshtml" />
+    <Content Include="Views\Stock_items\Details.cshtml" />
+    <Content Include="Views\Stock_items\Edit.cshtml" />
+    <Content Include="Views\Stock_items\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

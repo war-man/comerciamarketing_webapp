@@ -1,0 +1,71 @@
+﻿@model comerciamarketing_webapp.Models.Stock_items
+
+@{
+    ViewBag.Title = "Comercia Marketing";
+}
+<div class="fs_menu_overlay"></div>
+<div class="container single_product_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Stock Items</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <h3>Are you sure you want to delete this stock receipt?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+               Item Code
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.itemCode)
+            </dd>
+
+            <dt>
+                Item Name
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.itemName)
+            </dd>
+
+            <dt>
+                Quantity
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.quantity)
+            </dd>
+
+            <dt>
+               Source
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.comment)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</div>
