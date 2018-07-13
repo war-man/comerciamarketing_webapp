@@ -11,6 +11,7 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Gallery</a></li>
 
                 </ul>
@@ -20,6 +21,7 @@
     </div>
     <div class="row">
         <div class="col" style="overflow-x:auto;">
+          
             @using (Html.BeginForm("Galleryfilter", "Home", FormMethod.Post))
     {
 
@@ -27,7 +29,7 @@
         @Html.DropDownList("ID_vendor", null, htmlAttributes: new { @class = "form-control", onChange = "getDemosGallery()" })
         <p>Select a demo:</p>
         <select id="ID_demos" class="form-control" name="ID_demos"></select>
-                <br />
+        <br />
         <input type="submit" class="form-control" value="Search" />
 }
             <br />
@@ -39,6 +41,7 @@
 
         </div>
     </div>
+      <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back to List</a>
 </div>
 
 

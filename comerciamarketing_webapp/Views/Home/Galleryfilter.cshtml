@@ -11,6 +11,7 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Demos")"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Gallery</a></li>
 
                 </ul>
@@ -20,38 +21,39 @@
     </div>
     <div class="row">
         <div class="col" style="overflow-x:auto;">
+          
             @using (Html.BeginForm("Galleryfilter", "Home", FormMethod.Post))
-            {
+    {
 
         <p>Select a Vendor:</p>
         @Html.DropDownList("ID_vendor", null, htmlAttributes: new { @class = "form-control", onChange = "getDemosGallery()" })
         <p>Select a demo:</p>
         <select id="ID_demos" class="form-control" name="ID_demos">
             @foreach (var item in ViewBag.ID_demos)
-                {
-                    <option value="@item.Value">@item.Text</option>
-            }
+    {
+        <option value="@item.Value">@item.Text</option>
+}
 
 
         </select>
-                <br />
+        <br />
         <input type="submit" class="form-control" value="Search" />
-            }
+}
             <br />
             @foreach (var item in ViewBag.imagenes)
-            {
-                <div class="responsive">
-                    <div class="gallery">
-                        <img src="@Url.Content(item.fsource)" alt="@item.fdescription" width="300" height="200">
-                        <div class="overlay">
-                            <a target="_blank" href="@Url.Content(item.fsource)" class="icon" title="Zoom">
-                                <i class="fa fa-search-plus"></i>
-                            </a>
-                        </div>
-
-                    </div>
+    {
+        <div class="responsive">
+            <div class="gallery">
+                <img src="@Url.Content(item.fsource)" alt="@item.fdescription" width="300" height="200">
+                <div class="overlay">
+                    <a target="_blank" href="@Url.Content(item.fsource)" class="icon" title="Zoom">
+                        <i class="fa fa-search-plus"></i>
+                    </a>
                 </div>
-            }
+
+            </div>
+        </div>
+}
 
 
 
@@ -59,4 +61,6 @@
 
         </div>
     </div>
+
+      <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back to List</a>
 </div>

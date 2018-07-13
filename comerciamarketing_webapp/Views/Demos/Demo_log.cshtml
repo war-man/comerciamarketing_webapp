@@ -21,53 +21,28 @@
             <table class="table" id="change_formattime">
                 <tr>
                     <th>
-                        IP
-                    </th>
-                    <th>
-                        Continent Name
-                    </th>
-                    <th>
-                        Country Name
-                    </th>
-                    <th>
-                        Region Name
-                    </th>
-                    <th>
-                        City
-                    </th>
-
-                    <th>
                         Date
                     </th>
-                    <th></th>
+                    <th>
+                        Description
+                    </th>
+                   
                 </tr>
 
                 @foreach (var item in Model)
                 {
 
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.continent_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.country_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.region_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.city)
 
-                    </td>
                     <td class="customerIDCell">
                         @(Convert.ToDateTime(item.fecha_conexion).ToLocalTime())
 
                     </td>
                     <td>
-                            @Html.ActionLink("More details", "Details_demolog", new { id = item.ID_historial }) 
+                        @Html.DisplayFor(modelItem => item.action)
+                    </td>
+                    <td>
+                        <!--Html.ActionLink("More details", "Details_demolog", new { id = item.ID_historial })-->
 
                     </td>
                 </tr>

@@ -18,6 +18,90 @@
                 </div>
 
                 <!-- Sidebar -->
+                @if (Session["tipousuario"].ToString() == "1") {
+           
+            <div class="col-lg-12">
+                <div class="benefit">
+                    <div class="container">
+                        
+                        <div class="row benefit_row">
+                           
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header" data-background-color="gray">
+                                        <h4 class="title">Demos</h4>
+                                        <p class="category">@ViewBag.desdehasta </p> 
+                                        <div class="col-lg-3">
+                                            Change week: <input data-weekpicker="weekpicker" class="form-control" onchange='Demofilter2()' id="filterDemoHome"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="orange">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">On Holding Demos</p>
+                                        <h3 class="title">@ViewBag.onhold_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="green">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">In progress Demos</p>
+                                        <h3 class="title">@ViewBag.inprogress_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="red">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Canceled Demos</p>
+                                        <h3 class="title">@ViewBag.canceled_demos</h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="blue">
+                                        <i class="fa fa-user-circle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Finished Demos</p>
+                                        <h3 class="title">@ViewBag.finished_demos</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="floating-panel">
+                                    <input type="button" value="Toggle Street View" onclick="toggleStreetView();"></input>
+                                </div>
+                                <div id="map_canvas" style="height: 600px;"></div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+            <hr />
+                }
+                
 
                 <div class="sidebar">
                     <div class="sidebar_section">
@@ -40,10 +124,21 @@
                             <h5>Demo settings</h5>
                         </div>
                         <!--<div class="filter_button"><a href="Url.Action("Demo_users", "Usuarios")"><span>Users</span></a></div>-->
+
+                        @if (Session["tipousuario"].ToString() == "1")
+                        {
+                                                   
+                        <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Gallery", "Home")"><span>Demos Gallery</span></a></div>
+                        }
+                        else {
                         <div class="filter_button"><a href="@Url.Action("Index", "Empresas")"><span>Customers</span></a></div>
 
                         <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms</span></a></div>
                         <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
+                        }
+                    
                     </div>
                 </div>
 
@@ -59,15 +154,23 @@
                                 <!-- Product Sorting  -->
 
                                 <div class="product_sorting_container product_sorting_container_top">
-                                    <h4 class="pull-left">Demos</h4>
+
+                                            <div class="card-header" data-background-color="gray">
+                                                <h4 class="title">Demos</h4>
+                                                <p class="category">@ViewBag.desdehasta </p>
+                                                <div class="col-lg-4">
+                                                    Change week: <input data-weekpicker="weekpicker" class="form-control" onchange='Demofilter2()' id="filterDemoHome" />
+                                                </div>
+                                            </div>
+    
                                     <ul class="product_sorting pull-right">
-                                        <li>
-                                            <span class="type_sorting_text">Filter by Vendor</span>
-                                            <i class="fa fa-angle-down"></i>
-                                            <ul class="sorting_type">
-                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>All</span></li>
-                                            </ul>
-                                        </li>
+                                        @*<li>
+            <span class="type_sorting_text">Filter by Vendor</span>
+            <i class="fa fa-angle-down"></i>
+            <ul class="sorting_type">
+                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>All</span></li>
+            </ul>
+                                            </li>*@
                                     </ul>
                                     <!--
                                         <ul class="product_sorting pull-right">
@@ -89,10 +192,10 @@
 
 
                                 
-                                <table class="table" id="change_formattime">
-                     
+                                <table class="table table-striped " id="change_formattime" > 
+                                    <thead>
                                         <tr>
-                                            <th onClick="sortTable(4)">
+                                            <th>
                                                 Vendor
                                             </th>
                                             <th>
@@ -104,7 +207,7 @@
                                             <th>
                                                 User assigned
                                             </th>
-                                            <th onClick="sortTable(4)">
+                                            <th>
                                                 State
                                             </th>
                                             <th>
@@ -115,64 +218,65 @@
                                             </th>
                                             <th></th>
                                         </tr>
-                      
+                                    </thead>
+                                    <tbody>
                                         @foreach (var item in Model)
         {
                                 <tr>
-                                    <td>
+                                    <td style="height: 5px; font-size: 13px;">
                                         @Html.DisplayFor(modelItem => item.vendor)
                                     </td>
-                                    <td>
+                                    <td style="height: 5px; font-size: 13px;">
                                         @Html.DisplayFor(modelItem => item.store)
                                     </td>
-                                    <td>
+                                    <td style="height: 5px;font-size: 13px;">
                                         @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ID_usuario)
+                                    <td style="height: 5px;font-size: 13px;">
+                                        @Html.DisplayFor(modelItem => item.ID_Vendor)
                                     </td>
-                                    <td>
+                                    <td style="height: 5px;font-size: 13px;">
                                         @if (item.ID_demostate == 3)
         {
-                                <p style="color:orange;">On Hold</p>
+                                <p style="color:orange;font-size: 13px;">On Hold</p>
 }
 else if (item.ID_demostate == 1)
 {
-                                <p style="color:red;">Canceled</p>
+                                <p style="color:red;font-size: 13px;">Canceled</p>
 }
 else if (item.ID_demostate == 2)
 {
-                                <p style="color:green;">In progress</p>
+                                <p style="color:green;font-size: 13px;">In progress</p>
 }
 else
 {
-                                <p style="color:dodgerblue;">Finished</p>
+                                <p style="color:dodgerblue;font-size: 13px;">Finished</p>
 }
                                     </td>
                                     @if (item.ID_demostate == 3 || item.ID_demostate == 1)
     {
-                                <td></td>
+                                <td style="height: 5px;"></td>
 }
 else
 {
-                                <td>
+                                <td style="height: 5px;font-size: 13px;">
                                     @Convert.ToDateTime(item.check_in).ToString("HH:mm")
                                 </td>
 }
                                     @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
     {
-                                <td></td>
+                                <td style="height: 5px;font-size: 13px;"></td>
 }
 else
 {
-                                <td class="customerIDCell">
+                                <td class="customerIDCell" style="height: 12px;font-size: 12px;">
                                     @Convert.ToDateTime(item.end_date).ToString("HH:mm")
                                 </td>
 }
 
-                                    <td>
-                                        @if (item.ID_demostate == 4)
-        {
+                                <td style="height: 5px;font-size: 14px;">
+                                    @if (item.ID_demostate == 4)
+    {
                                 @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
                                 @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
                                 <!--Html.Label(" | ")
@@ -193,16 +297,15 @@ else
                                 @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
                                 @Html.ActionLink("Delete", "Delete", new { id = item.ID_demo });
 }
-                                    </td>
+                                </td>
                                 </tr>
 }
-                                    
+                                    </tbody>
+
                                 </table>
 
 
-                                <div id="nav">
 
-                                </div>
 
                             </div>
                         </div>
@@ -216,149 +319,149 @@ else
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                @using (Html.BeginForm("Change_password", "Home", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            @using (Html.BeginForm("Change_password", "Home", FormMethod.Post))
+            {
+                                @Html.AntiForgeryToken()
 
-                    <div class="modal-body">
-                        <p>Enter password</p>
-                        <input type="password" name="password" id="password" required oncopy="return false;" />
-                        <hr />
-                        <div>
-                            <p>Enter new password</p>
-                            <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;" />
-                            <p>Enter new password again</p>
-                            <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;" />
-                            <span id='message'></span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
+                                <div class="modal-body">
+                                    <p>Enter password</p>
+                                    <input type="password" name="password" id="password" required oncopy="return false;" />
+                                    <hr />
+                                    <div>
+                                        <p>Enter new password</p>
+                                        <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;" />
+                                        <p>Enter new password again</p>
+                                        <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;" />
+                                        <span id='message'></span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
+                                </div>
+}
+                                        </div>
+                                    </div>
+                                </div>
 
 }
 else
 {
-    <div class="container single_product_container">
-        <div class="row">
-            <div class="col" style="overflow-x:auto;">
+                                <div class="container single_product_container">
+                                    <div class="row">
+                                        <div class="col" style="overflow-x:auto;">
 
-                <!-- Breadcrumbs -->
+                                            <!-- Breadcrumbs -->
 
-                <div class="breadcrumbs d-flex flex-row align-items-center">
-                    <ul>
-                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
+                                            <div class="breadcrumbs d-flex flex-row align-items-center">
+                                                <ul>
+                                                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                                                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Demos</a></li>
 
-                    </ul>
-                </div>
-                <h4>Assigned demos</h4>
-                <table class="table">
-                    <tr>
-                        <th>
-                            Vendor
-                        </th>
-                        <th>
-                            Store
-                        </th>
-                        <th>
-                            Visit date
-                        </th>
-                        <th>
-                            State
-                        </th>
-                        <th>
-                            Finished
-                        </th>
-                        <th></th>
-                    </tr>
+                                                </ul>
+                                            </div>
+                                            <h4>Assigned demos</h4>
+                                            <table class="table">
+                                                <tr>
+                                                    <th>
+                                                        Vendor
+                                                    </th>
+                                                    <th>
+                                                        Store
+                                                    </th>
+                                                    <th>
+                                                        Visit date
+                                                    </th>
+                                                    <th>
+                                                        State
+                                                    </th>
+                                                    <th>
+                                                        Finished
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
 
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.vendor)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.store)
-                            </td>
-                            <td>
-                                @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
-                            </td>
-                            <td>
-                                @if (item.ID_demostate == 3)
-                                {
-                                    <p style="color:orange;">On Hold</p>
-                                }
-                                else if (item.ID_demostate == 1)
-                                {
-                                    <p style="color:red;">Canceled</p>
-                                }
-                                else if (item.ID_demostate == 2)
-                                {
-                                    <p style="color:green;">In progress</p>
-                                }
-                                else
-                                {
-                                    <p style="color:dodgerblue;">Finished</p>
-                                }
-                            </td>
-                            <td>
-                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
-                                {
+                                                @foreach (var item in Model)
+                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.vendor)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.store)
+                                    </td>
+                                    <td>
+                                        @Convert.ToDateTime(item.visit_date).ToString("yyyy/MM/dd HH:mm")
+                                    </td>
+                                    <td>
+                                        @if (item.ID_demostate == 3)
+        {
+                                <p style="color:orange;">On Hold</p>
+}
+else if (item.ID_demostate == 1)
+{
+                                <p style="color:red;">Canceled</p>
+}
+else if (item.ID_demostate == 2)
+{
+                                <p style="color:green;">In progress</p>
+}
+else
+{
+                                <p style="color:dodgerblue;">Finished</p>
+}
+                                    </td>
+                                    <td>
+                                        @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
+        {
 
-                                }
-                                else
-                                {
-                            @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
-                                }
-                                </td>
+        }
+        else
+        {
+                                @Convert.ToDateTime(item.end_date).ToString("yyyy/MM/dd HH:mm")
+}
+                                    </td>
 
-                            <td>
-                                <!--finished-->
-                                @if (item.ID_demostate == 4)
-                                {
-                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+                                    <td>
+                                        <!--finished-->
+                                        @if (item.ID_demostate == 4)
+        {
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
 
-                                }
-                                else if (item.ID_demostate == 2)
-                                {<!--In progress-->
-                                    @Html.ActionLink("Continue demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
+}
+else if (item.ID_demostate == 2)
+{<!--In progress-->
+                                @Html.ActionLink("Continue demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
 
-                                }
-                                else if (item.ID_demostate == 1)
-                                {<!--Canceled-->
+}
+else if (item.ID_demostate == 1)
+{<!--Canceled-->
 
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Start demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                    @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
-                                }
-                            </td>
-                        </tr>
-                    }
+}
+else
+{
+                                @Html.ActionLink("Start demo", "Form_template", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form }) @Html.Label(" | ")
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo })
+}
+                                    </td>
+                                </tr>
+}
 
-                </table>
-            </div>
-        </div>
-    </div>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 
 
 }

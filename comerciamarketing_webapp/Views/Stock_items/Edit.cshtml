@@ -29,22 +29,21 @@
             <hr />
               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                @Html.HiddenFor(model => model.ID_stock)
-            <div class="form-group">
-                @Html.LabelFor(model => model.itemCode, "Item code", htmlAttributes: new { @class = "control-label col-md-2" })
+
+             <div class="form-group">
+                @Html.LabelFor(model => model.itemCode, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.itemCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("itemCode", null, htmlAttributes: new { @class = "form-control js-example-basic-single", @id = "dropdown_iditemE", @onchange = "getItemNameE()" })
                     @Html.ValidationMessageFor(model => model.itemCode, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.itemName, "Item name", htmlAttributes: new { @class = "control-label col-md-2" })
+             <div class="form-group">
+
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.itemName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.itemName, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.itemName, new { htmlAttributes = new { @class = "form-control", @id="item_nameE", @hidden="hidden"} })
                 </div>
             </div>
-
             <div class="form-group">
                 @Html.LabelFor(model => model.quantity, "Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -53,24 +52,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.odate, "Stock receipt date", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.odate, new { htmlAttributes = new { @class = "form-control", @type = "date", min = "2018-01-01", max = "2050-01-01" } })
-                    @Html.ValidationMessageFor(model => model.odate, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            @Html.HiddenFor(model => model.odate)
+
+            @Html.HiddenFor(model => model.ID_usuario)
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ID_usuario, "User", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ID_usuario, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ID_usuario, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.comment, "Source", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.comment, "Comment", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.comment, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.comment, "", new { @class = "text-danger" })

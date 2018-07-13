@@ -65,6 +65,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             sunday = Convert.ToDateTime(startdate);
                             saturday = Convert.ToDateTime(finishdate);
+                            saturday = saturday.AddHours(23);
                         }
                         catch {
                             sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);

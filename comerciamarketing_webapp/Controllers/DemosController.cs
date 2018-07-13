@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
+using Newtonsoft.Json;
 using Postal;
 
 namespace comerciamarketing_webapp.Controllers
@@ -24,7 +26,7 @@ namespace comerciamarketing_webapp.Controllers
         private COM_MKEntities CMKdb = new COM_MKEntities();
 
         // GET: Demos
-        public ActionResult Index()
+        public ActionResult Index(string startdate, string finishdate)
         {
             if (Session["IDusuario"] != null)
             {
@@ -34,11 +36,51 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                if (datosUsuario.ID_rol == 6 || datosUsuario.ID_rol==1)
+                if (datosUsuario.ID_rol == 6)
                 {
-                    var demos = db.Demos.OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
+
+                    //filtros de fecha
+                    var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                    var saturday = sunday.AddDays(6).AddHours(23);
+
+                    if (startdate == null)
+                    {
+                        if (finishdate == null)
+                        {
+
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (finishdate == null)
+                        {
+
+                        }
+                        else
+                        {
+                            try
+                            {
+                                sunday = Convert.ToDateTime(startdate);
+                                saturday = Convert.ToDateTime(finishdate);
+                                saturday = saturday.AddHours(23);
+                            }
+                            catch
+                            {
+                                sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                                saturday = sunday.AddDays(6).AddHours(23);
+                            }
+
+
+                        }
+
+                    }
+
+                    var demos = db.Demos.Where(d => d.visit_date >= sunday && d.end_date <= saturday).OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
                     ViewBag.rol = 6;
-                    if (demos.Count() > 0) {
+                    if (demos.Count() > 0)
+                    {
 
                         foreach (var item in demos)
                         {
@@ -47,10 +89,56 @@ namespace comerciamarketing_webapp.Controllers
                             {
 
                             }
-                            else {
+                            else
+                            {
                                 item.ID_Vendor = usuario.CardName;
                             }
-                           
+
+
+                        }
+
+                    }
+
+                    ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString();
+
+                    return View(demos.ToList());
+
+                }
+                else if (datosUsuario.ID_rol == 1) {
+
+                    //filtros de fecha
+                    var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                    var saturday = sunday.AddDays(6).AddHours(23);
+
+                    if (startdate == null)
+                    {
+                        if (finishdate == null)
+                        {
+
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (finishdate == null)
+                        {
+
+                        }
+                        else
+                        {
+                            try
+                            {
+                                sunday = Convert.ToDateTime(startdate);
+                                saturday = Convert.ToDateTime(finishdate);
+                                saturday = saturday.AddHours(23);
+                            }
+                            catch
+                            {
+                                sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                                saturday = sunday.AddDays(6).AddHours(23);
+                            }
+
 
                         }
 
@@ -58,12 +146,91 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-                    return View(demos.ToList());
+                    var demos = db.Demos.Where(d => d.visit_date >= sunday && d.end_date <= saturday).OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
+                    ViewBag.rol = 6;
+                    if (demos.Count() > 0)
+                    {
 
+                        foreach (var item in demos)
+                        {
+                            var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                            if (usuario == null)
+                            {
+
+                            }
+                            else
+                            {
+                                item.ID_Vendor = usuario.CardName;
+                            }
+
+
+                        }
+
+                    }
+
+                    //Proceso mapa
+
+
+
+
+                    int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                    int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                    int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                    int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+
+
+                    var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).ToList();
+
+
+                    //Asignamos la geoubicacion
+                    foreach (var item in demos_map)
+                    {
+
+
+                        var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
+                        if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
+
+
+                    }
+
+
+                    // Convertimos la lista a array
+                    ArrayList myArrList = new ArrayList();
+                    myArrList.AddRange((from p in demos_map
+                                        select new
+                                        {
+                                            id = p.ID_demo,
+                                            nombre = p.ID_usuario,
+                                            PlaceName = p.store,
+                                            GeoLong = p.geoLong,
+                                            GeoLat = p.geoLat,
+                                            demo_state = p.Demo_state.sdescription,
+                                            vendor = p.vendor,
+                                            date = p.visit_date,
+                                            comment = p.comments
+                                        }).ToList());
+
+
+                    ViewBag.demos_map = JsonConvert.SerializeObject(myArrList);
+
+
+
+                    ViewBag.bloquearcontenido = "no";
+                    ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString();
+                    ViewBag.onhold_demos = onhold;
+                    ViewBag.inprogress_demos = inprogress;
+                    ViewBag.canceled_demos = canceled;
+                    ViewBag.finished_demos = finished;
+
+                    //Fin proceso mapa
+
+
+                    return View(demos.ToList());
                 }
-                else {
+                else
+                {
                     //Esto se iba a utilizar si se les daba usuario y registor 
-                    var demos = db.Demos.Where(c=>c.ID_usuario == "noexisten2018").OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
+                    var demos = db.Demos.Where(c => c.ID_usuario == "noexisten2018").OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
                     ViewBag.rol = 7;
                     return View();
                 }
@@ -1270,8 +1437,8 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Existen datos
                 //Buscamos los detalles
-
-                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                //3 - Products | 4- Products samples | 6 - Input_text | 10- GIFT
+                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
                 var result = demo_details
                         .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
                         .Select(cl => new Forms_details
@@ -1302,6 +1469,9 @@ namespace comerciamarketing_webapp.Controllers
                 {
 
                     itemd.fdescription = (from k in oitm join j in omrc on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    if (itemd.fdescription == null) {
+                        itemd.fdescription = "No data found";
+                    }
                 }
 
                 var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();

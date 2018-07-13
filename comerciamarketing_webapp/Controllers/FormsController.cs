@@ -26,6 +26,7 @@ namespace comerciamarketing_webapp.Controllers
         private dbComerciaEntities db = new dbComerciaEntities();
         private COM_MKEntities COM_MKdb = new COM_MKEntities();
 
+        private dbComerciaEntities dbtoreport = new dbComerciaEntities();
         // GET: Forms
         public ActionResult Index()
         {
@@ -46,7 +47,7 @@ namespace comerciamarketing_webapp.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
         }
 
         // GET: Forms/Details/5
@@ -105,7 +106,7 @@ namespace comerciamarketing_webapp.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-           
+
         }
 
         public class MyObj
@@ -163,7 +164,7 @@ namespace comerciamarketing_webapp.Controllers
                             detalle_nuevo.fvalue = Convert.ToInt32(item.fvalue);
                         }
 
-                        
+
                         detalle_nuevo.obj_order = count;
                         detalle_nuevo.obj_group = 1;
 
@@ -213,8 +214,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.vendors = (from b in COM_MKdb.OCRDs where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type, "ID_formresourcetype", "fdescription");
 
-                
-                ViewBag.lista_objetos = (from a in db.Forms_details where (a.ID_form == id && a.original == true) select a).OrderBy(a=>a.obj_order).Include(a => a.form_resource_type).ToList();
+
+                ViewBag.lista_objetos = (from a in db.Forms_details where (a.ID_form == id && a.original == true) select a).OrderBy(a => a.obj_order).Include(a => a.form_resource_type).ToList();
 
 
                 return View(forms);
@@ -258,7 +259,8 @@ namespace comerciamarketing_webapp.Controllers
 
                     var objetos_ant = (from b in db.Forms_details where (b.ID_form == forms.ID_form && b.original == true) select b).ToList();
 
-                    foreach (var object_item in objetos_ant) {
+                    foreach (var object_item in objetos_ant)
+                    {
 
                         Forms_details detailstodelete = db.Forms_details.Find(object_item.ID_details);
                         db.Forms_details.Remove(detailstodelete);
@@ -381,7 +383,8 @@ namespace comerciamarketing_webapp.Controllers
                 TempData["exito"] = "Form deleted successfully.";
                 return RedirectToAction("Index");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 TempData["error"] = "An error was handled.  " + ex.Message;
                 return RedirectToAction("Index");
             }
@@ -429,16 +432,19 @@ namespace comerciamarketing_webapp.Controllers
         public JsonResult Save_templateformdata(List<MyObj_formtemplate> values)
         {
 
-            if (values.Count > 0) {
+            if (values.Count > 0)
+            {
 
-                foreach (var item in values) {
+                foreach (var item in values)
+                {
                     Forms_details detail = db.Forms_details.Find(Convert.ToInt32(item.id));
                     if (detail == null)
                     {
 
                     }
-                    else {
-                        if (detail.form_resource_type.fdescription == "Product" || detail.form_resource_type.fdescription == "Product_sample")
+                    else
+                    {
+                        if (detail.form_resource_type.fdescription == "Product" || detail.form_resource_type.fdescription == "Product_sample" || detail.form_resource_type.fdescription == "Gift")
                         {
                             if (item.text == "" || item.text == null) { item.text = "0"; }
                             detail.fvalue = Convert.ToInt32(item.text);
@@ -472,16 +478,18 @@ namespace comerciamarketing_webapp.Controllers
 
 
                         }
-                        else if (detail.form_resource_type.fdescription == "Input_text" || detail.form_resource_type.fdescription == "Electronic_signature") {
+                        else if (detail.form_resource_type.fdescription == "Input_text" || detail.form_resource_type.fdescription == "Electronic_signature")
+                        {
 
-                            if (item.text == "" || item.text == null){item.text = "";}
+                            if (item.text == "" || item.text == null) { item.text = ""; }
 
                             detail.fsource = item.text;
 
                             db.Entry(detail).State = EntityState.Modified;
                             db.SaveChanges();
                         }
-                        else {
+                        else
+                        {
                             //No hacemos nada porque no esta registrado
                         }
 
@@ -510,7 +518,7 @@ namespace comerciamarketing_webapp.Controllers
                     }
                     else
                     {
-                        if (detail.form_resource_type.fdescription == "Product" || detail.form_resource_type.fdescription == "Product_sample")
+                        if (detail.form_resource_type.fdescription == "Product" || detail.form_resource_type.fdescription == "Product_sample" || detail.form_resource_type.fdescription == "Gift")
                         {
                             if (item.text == "" || item.text == null) { item.text = "0"; }
                             detail.fvalue = Convert.ToInt32(item.text);
@@ -579,6 +587,9 @@ namespace comerciamarketing_webapp.Controllers
                 demo.end_date = Convert.ToDateTime(fecha.text);
                 db.Entry(demo).State = EntityState.Modified;
                 db.SaveChanges();
+          
+                //Guardamos log
+                demo_logsave("CHECK OUT - DEMO FINISHED SUCCESSFULLY", id_demo);
 
                 //Enviamos el correo al usuario
                 SendDemoResume(Convert.ToInt32(id_demo));
@@ -593,12 +604,15 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
-        public void SendDemoResume(int? id)
+        public void SendDemoResume(int id)
         {
 
-            var demo_header = (from a in db.Demos where (a.ID_demo == id) select a).ToList();
+            var demo_header = (from a in dbtoreport.Demos where (a.ID_demo == id) select a).ToList();
 
-            var id_empresa = "";
+            Demos demoidempresa = new Demos();
+            demoidempresa = dbtoreport.Demos.Find(id);
+
+            var id_empresa = demoidempresa.ID_Vendor;
 
             if (demo_header.Count > 0)
 
@@ -608,20 +622,30 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     //nombre de usuario
                     var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
-                    item.ID_Vendor = usuario.CardName;
+
+                    if (usuario != null)
+                    {
+                        item.ID_Vendor = usuario.CardName;
+                    }
+                    else
+                    {
+                        item.ID_Vendor = "NO CODE FOUND";
+
+                    }
                     item.end_date = item.end_date.ToLocalTime();
 
                     //nombre de tienda
                     var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
-                    nombretienda = tiendita.CardName;
 
-                    id_empresa = item.ID_Vendor;
+                    if (tiendita != null) { nombretienda = tiendita.CardName; }
+                    else { nombretienda = "NO CODE FOUND"; }
+
                 }
 
                 //Existen datos
                 //Buscamos los detalles
 
-                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var demo_details = (from b in dbtoreport.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
                 var result = demo_details
                         .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
                         .Select(cl => new Forms_details
@@ -645,7 +669,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Obtenemos el nombre de las marcas o brands por cada articulo
-                var listadeItems = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
+                var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
                 var oitm = (from h in COM_MKdb.OITMs select h).ToList();
                 var omrc = (from i in COM_MKdb.OMRC select i).ToList();
@@ -681,7 +705,7 @@ namespace comerciamarketing_webapp.Controllers
                 rd.Subreports[0].SetDataSource(result);
 
                 //Verificamos si existen fotos en el demo (MAX 4 fotos)
-                var fotos = (from c in db.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
+                var fotos = (from c in dbtoreport.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
 
                 int fotosC = fotos.Count();
 
@@ -808,7 +832,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Verificams si existe firma electronica
-                var firma = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
+                var firma = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
 
                 int firmaC = firma.Count();
 
@@ -843,7 +867,7 @@ namespace comerciamarketing_webapp.Controllers
 
                                 // Now save b as a JPEG like you normally would
 
-                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod_" + id + ".jpg");
                                 b.Save(path, ImageFormat.Jpeg);
 
 
@@ -891,41 +915,41 @@ namespace comerciamarketing_webapp.Controllers
 
                 //PARA ENVIAR POR CORREO
 
-                try
+                //try
 
-                {
-                    //limpiamos el directorio
+                //{
+                //    //limpiamos el directorio
 
-                    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+                //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
 
-                    foreach (FileInfo file in di.GetFiles())
+                //    foreach (FileInfo file in di.GetFiles())
 
-                    {
+                //    {
 
-                        file.Delete();
+                //        file.Delete();
 
-                    }
+                //    }
 
-                    foreach (DirectoryInfo dir in di.GetDirectories())
+                //    foreach (DirectoryInfo dir in di.GetDirectories())
 
-                    {
+                //    {
 
-                        dir.Delete(true);
+                //        dir.Delete(true);
 
-                    }
+                //    }
 
-                }
+                //}
 
-                catch (Exception e)
+                //catch (Exception e)
 
-                {
+                //{
 
-                    var mensaje = e.ToString();
+                //    var mensaje = e.ToString();
 
-                }
+                //}
 
                 var path2 = "";
-                var filename = "Demo resume " + "" + ".pdf";
+                var filename = "Demo_resume_" + id + ".pdf";
                 path2 = Path.Combine(filePathOriginal, filename);
                 rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
@@ -942,57 +966,103 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Enviamos correo al usuario
-                try
-                {
-                    var data = demo_header.FirstOrDefault();
-                    var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
+                int intentos = 1;
+
+                while (intentos < 4) {
+                    try
+                    {
+                        var data = demo_header.FirstOrDefault();
+                        var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
 
 
-                    dynamic email = new Email("DemoResume");
-                    email.To = usuario.E_Mail.ToString();
-                    email.From = "customercare@comerciamarketing.com";
-                    email.Subject = "DEMO IN " + nombretienda;
-                    email.Attach(new Attachment(path2));
-                    //email.Body = imagename;
-                    //return new EmailViewResult(email);
+                        dynamic email = new Email("DemoResume");
+                        email.To = usuario.E_Mail.ToString();
+                        //email.From = "customercare@comerciamarketing.com";
+                        email.Subject = "DEMO RESUME IN " + nombretienda;
+                        email.Attach(new Attachment(path2));
+                        //email.Body = imagename;
+                        //return new EmailViewResult(email);
 
-                    email.Send();
+                        email.Send();
+                        intentos = 5;
+                        demo_logsave("AUTO-DEMO-USER EMAIL SENT SUCCESSFULLY TO: " + usuario.E_Mail.ToString(), id);
+                        intentos = 5;//por si el proceso de arriba falla de guardar el log
+                        TempData["exito"] = "EMAIL SENT SUCCESSFULLY";
+                    }
+                    catch (Exception e)
+                    {
+                        //Console.WriteLine("{0} Exception caught.", e);
+                        string mensaje = e.Message;
+                        //mensaje = mensaje.Substring(0, 490);
+                        
+                        if (intentos == 1)
+                        {
+                          demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " TRYING IT AGAIN", id);
+                            TempData["advertencia"] = "EMAIL ERROR";
+                        }
+                        else if (intentos == 2)
+                        {
+                            demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " SECOND TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
+                        }
+                        else if (intentos == 3) {
+                            demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " LAST TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
+                        }
+
+                        intentos++;
+
+                    }
+
+
                 }
 
-                catch (Exception e)
-                {
-                    Console.WriteLine("{0} Exception caught.", e);
-                }
+
+
+
             }
             else
             {
-
+                demo_logsave("NO DATA FOUND TO SEND EMAIL TO DEMO USER", id);
             }
         }
 
-        public void SendDemoResumeMC(int? id)
+        public void SendDemoResumeMC(int id)
         {
 
-            var demo_header = (from a in db.Demos where (a.ID_demo == id) select a).ToList();
+            var demo_header = (from a in dbtoreport.Demos where (a.ID_demo == id) select a).ToList();
+         
+            Demos demoidempresa = new Demos();
+            demoidempresa = db.Demos.Find(id);
+            
+            var id_empresa = demoidempresa.ID_Vendor;
 
-            var id_empresa = "";
 
             if (demo_header.Count > 0)
 
             {
+
                 var nombretienda = "";
                 foreach (var item in demo_header)
                 {
                     //nombre de usuario
                     var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
-                    item.ID_Vendor = usuario.CardName;
+
+                    if (usuario != null)
+                    {
+                        item.ID_Vendor = usuario.CardName;                   
+                    }
+                    else {
+                        item.ID_Vendor = "NO CODE FOUND";
+                       
+                    }
                     item.end_date = item.end_date.ToLocalTime();
 
                     //nombre de tienda
                     var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
-                    nombretienda = tiendita.CardName;
 
-                    id_empresa = item.ID_Vendor;
+                    if (tiendita != null) { nombretienda = tiendita.CardName; }
+                    else { nombretienda = "NO CODE FOUND"; }
+
+
 
                     item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                 }
@@ -1000,7 +1070,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Existen datos
                 //Buscamos los detalles
 
-                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var demo_details = (from b in dbtoreport.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
                 var result = demo_details
                         .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
                         .Select(cl => new Forms_details
@@ -1023,7 +1093,7 @@ namespace comerciamarketing_webapp.Controllers
                 rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
 
                 //Obtenemos el nombre de las marcas o brands por cada articulo
-                var listadeItems = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
+                var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
                 var oitm = (from h in COM_MKdb.OITMs select h).ToList();
                 var omrc = (from i in COM_MKdb.OMRC select i).ToList();
@@ -1058,7 +1128,7 @@ namespace comerciamarketing_webapp.Controllers
                 rd.Subreports[0].SetDataSource(result);
 
                 //Verificamos si existen fotos en el demo (MAX 4 fotos)
-                var fotos = (from c in db.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
+                var fotos = (from c in dbtoreport.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
 
                 int fotosC = fotos.Count();
 
@@ -1185,7 +1255,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Verificams si existe firma electronica
-                var firma = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
+                var firma = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
 
                 int firmaC = firma.Count();
 
@@ -1220,7 +1290,7 @@ namespace comerciamarketing_webapp.Controllers
 
                                 // Now save b as a JPEG like you normally would
 
-                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod_" + id + ".jpg");
                                 b.Save(path, ImageFormat.Jpeg);
 
 
@@ -1268,41 +1338,41 @@ namespace comerciamarketing_webapp.Controllers
 
                 //PARA ENVIAR POR CORREO
 
-                try
+                //try
 
-                {
-                    //limpiamos el directorio
+                //{
+                //    //limpiamos el directorio
 
-                    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+                //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
 
-                    foreach (FileInfo file in di.GetFiles())
+                //    foreach (FileInfo file in di.GetFiles())
 
-                    {
+                //    {
 
-                        file.Delete();
+                //        file.Delete();
 
-                    }
+                //    }
 
-                    foreach (DirectoryInfo dir in di.GetDirectories())
+                //    foreach (DirectoryInfo dir in di.GetDirectories())
 
-                    {
+                //    {
 
-                        dir.Delete(true);
+                //        dir.Delete(true);
 
-                    }
+                //    }
 
-                }
+                //}
 
-                catch (Exception e)
+                //catch (Exception e)
 
-                {
+                //{
 
-                    var mensaje = e.ToString();
+                //    var mensaje = e.ToString();
 
-                }
+                //}
 
                 var path2 = "";
-                var filename = "Demo resume " + "" + ".pdf";
+                var filename = "Demo_resume_" + id + ".pdf";
                 path2 = Path.Combine(filePathOriginal, filename);
                 rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
@@ -1320,36 +1390,48 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Enviamos correo a los mail contacts
-                var contacts = (from s in db.Usuarios where (s.Empresas.ID_SAP == id_empresa && s.ID_tipomembresia == 7) select s).ToList();
-
-                if (contacts.Count > 0)
+                if (id_empresa == null) {
+                    demo_logsave("NO CUSTOMER SAP CODE FOUND", id);
+                }
+                else
                 {
-                    foreach (var item in contacts)
+                    //var contacts = (from s in db.Usuarios where (s.Empresas.ID_SAP == id_empresa && s.ID_tipomembresia == 7) select s).ToList();
+
+                    var contacts = string.Join(",", db.Usuarios.Where(p => p.Empresas.ID_SAP == id_empresa && p.ID_tipomembresia ==7)
+                                 .Select(p => p.correo.ToString()));
+
+
+
+                    if (contacts != null && contacts != "")
                     {
-                        if (item.correo != null)
+                        try
                         {
-                            try
-                            {
 
-                                dynamic email = new Email("DemoResume");
-                                email.To = item.correo;
-                                email.From = "customercare@comerciamarketing.com";
-                                email.Subject = "DEMO IN " + nombretienda;
-                                email.Attach(new Attachment(path2));
-                                //email.Body = imagename;
-                                //return new EmailViewResult(email);
+                            dynamic email = new Email("DemoResume");
+                            email.To = contacts;
+                            //email.From = "customercare@comerciamarketing.com";
+                            email.Subject = "DEMO RESUME IN " + nombretienda;
+                            email.Attach(new Attachment(path2));
+                            //email.Body = imagename;
+                            //return new EmailViewResult(email);
 
-                                email.Send();
-                            }
-
-                            catch (Exception e)
-                            {
-                                Console.WriteLine("{0} Exception caught.", e);
-                            }
-
+                            email.Send();
+                            demo_logsave("AUTO-EMAIL-CONTACTS EMAIL SENT SUCCESSFULLY TO: " + contacts, id);
+                            TempData["exito"] = "EMAIL SENT SUCCESSFULLY";
                         }
-                    }
+                        catch (Exception e)
+                        {
+                            //Console.WriteLine("{0} Exception caught.", e);
+                            string mensaje = e.Message;
 
+                            demo_logsave("EMAIL_CONTACTS ERROR: " + mensaje, id);
+                            TempData["advertencia"] = "EMAIL ERROR";
+                        }
+
+                    }
+                    else {
+                        demo_logsave("NO EMAIL CONTACTS FOUND", id);
+                    }
                 }
 
 
@@ -1357,10 +1439,10 @@ namespace comerciamarketing_webapp.Controllers
             }
             else
             {
-
+                demo_logsave("NO DEMO DATA FOUND TO SEND EMAIL TO EMAIL_CONTACTS", id);
             }
         }
-        [HttpPost]  
+        [HttpPost]
         public ActionResult UploadFiles(string id)
         {
 
@@ -1423,10 +1505,12 @@ namespace comerciamarketing_webapp.Controllers
                                 }
                             }
                         }
-                        catch {
+                        catch
+                        {
 
                         }
-
+                        //buscamos el id del detalle
+                        Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
 
                         using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
                         using (Graphics g = Graphics.FromImage(TargetImg))
@@ -1446,23 +1530,23 @@ namespace comerciamarketing_webapp.Controllers
                             // display a clone for demo purposes
                             //pb2.Image = (Image)TargetImg.Clone();
                             Image imagenfinal = (Image)TargetImg.Clone();
-                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), id + "_" + fname);
+                            var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), id + "_demoimg_" + detail.ID_demo + ".jpg");
                             imagenfinal.Save(path, ImageFormat.Jpeg);
 
                         }
-                        
+
 
                         //fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
                         //file.SaveAs(fname);
 
                         //Luego guardamos la url en la db
-                        Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));
-                        detail.fsource = "~/Content/images/ftp_demo/" + id + "_" + file.FileName;
+                        //Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));  //se movio hacia arriba
+                        detail.fsource = "~/Content/images/ftp_demo/" + id + "_demoimg_" + detail.ID_demo + ".jpg";
 
                         db.Entry(detail).State = EntityState.Modified;
                         db.SaveChanges();
 
-                        
+
                     }
 
 
@@ -1480,7 +1564,7 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-       
+
 
         public ActionResult Form_templatepreview(int? id_form)
         {
@@ -1492,7 +1576,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                var Forms_details = db.Forms_details.Where(c => c.ID_form == id_form && c.original==true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
+                var Forms_details = db.Forms_details.Where(c => c.ID_form == id_form && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order).Include(d => d.form_resource_type).Include(d => d.Forms);
 
 
 
@@ -1520,26 +1604,123 @@ namespace comerciamarketing_webapp.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Getsamples(string vendorID)
+        {
+            List<OITM> lstproduct = new List<OITM>();
+            string vendoriD = vendorID;
+            using (COM_MKEntities dbmk = new COM_MKEntities())
+            {
+                lstproduct = (dbmk.OITMs.Where(x => x.U_customerCM == vendoriD && x.ItmsGrpCod == 107)).ToList<OITM>();
+            }
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result = javaScriptSerializer.Serialize(lstproduct);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Getgifts(string vendorID)
+        {
+            List<OITM> lstproduct = new List<OITM>();
+            string vendoriD = vendorID;
+            using (COM_MKEntities dbmk = new COM_MKEntities())
+            {
+                lstproduct = (dbmk.OITMs.Where(x => x.U_customerCM == vendoriD && x.ItmsGrpCod == 108)).ToList<OITM>();
+            }
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result = javaScriptSerializer.Serialize(lstproduct);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Check_in(string ID_demo, string check_in)
         {
             try
             {
                 Demos demo = db.Demos.Find(Convert.ToInt32(ID_demo));
-                if (demo != null) {
+                if (demo != null)
+                {
                     demo.ID_demostate = 2;
                     demo.check_in = Convert.ToDateTime(check_in);
                     db.Entry(demo).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    demo_logsave("CHECK IN - DEMO STATE CHANGED SUCCESSFULLY", demo.ID_demo);
+
                     return Json(new { Result = "Success" });
                 }
                 return Json(new { Result = "Fail" });
             }
-            catch {
+            catch
+            {
                 return Json(new { Result = "Error" });
             }
 
 
-           
+
+        }
+
+        public void demo_logsave(string accion, int idDemo)
+        {
+            demo_log datosusuario = new demo_log();
+
+            datosusuario.ID_demo = idDemo;
+            datosusuario.action = accion;
+
+
+            try
+            {
+                if (datosusuario.ip == null)
+                {
+                    datosusuario.ip = "";
+                }
+                if (datosusuario.hostname == null)
+                {
+                    datosusuario.hostname = "";
+                }
+                if (datosusuario.typeh == null)
+                {
+                    datosusuario.typeh = "";
+                }
+                if (datosusuario.continent_name == null)
+                {
+                    datosusuario.continent_name = "";
+                }
+                if (datosusuario.country_code == null)
+                {
+                    datosusuario.country_code = "";
+                }
+                if (datosusuario.country_name == null)
+                {
+                    datosusuario.country_name = "";
+                }
+                if (datosusuario.region_code == null)
+                {
+                    datosusuario.region_code = "";
+                }
+                if (datosusuario.region_name == null)
+                {
+                    datosusuario.region_name = "";
+                }
+                if (datosusuario.city == null)
+                {
+                    datosusuario.city = "";
+                }
+                if (datosusuario.latitude == null)
+                {
+                    datosusuario.latitude = "";
+                }
+                if (datosusuario.longitude == null)
+                {
+                    datosusuario.longitude = "";
+                }
+
+                datosusuario.fecha_conexion = DateTime.UtcNow;
+
+                db.demo_log.Add(datosusuario);
+                db.SaveChanges();
+
+            }
+            catch
+            {
+
+            }
         }
     }
 }

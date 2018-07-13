@@ -415,6 +415,95 @@
                 
             });
 
+            $("#btn_agregarSample").click(function () {
+
+                var dropdownlist = document.getElementById("formresourcetype");
+                var ID_tipo_recurso = dropdownlist.options[dropdownlist.selectedIndex].value;
+                var descripciontp = dropdownlist.options[dropdownlist.selectedIndex].text;
+
+
+                var products = [];
+                $('#samples_list :selected').each(function (i, selected) {
+                    var $itm = $(this);
+                    products.push({
+                        'ID': $(selected).val(),
+                        'Description': $(selected).text()
+                    });
+
+
+                    //textvalues[i] = $(selected).text();
+                });
+
+                products.forEach(function (element, e) {
+
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.ID + "' data-fdescription='" + element.Description + "'><div class='dd-handle'> " + descripciontp + " - " + element.Description + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
+
+                });
+
+                $('.dd-item a').on('mousedown', function (event) {
+                    event.preventDefault();
+                    return false;
+                });
+
+                var updateOutput = function (e) {
+                    var list = e.length ? e : $(e.target),
+                        output = list.data('output');
+                    if (window.JSON) {
+                        output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                    } else {
+                        output.val('JSON browser support required for this demo.');
+                    }
+                };
+
+
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+            });
+
+            $("#btn_agregarGift").click(function () {
+
+                var dropdownlist = document.getElementById("formresourcetype");
+                var ID_tipo_recurso = dropdownlist.options[dropdownlist.selectedIndex].value;
+                var descripciontp = dropdownlist.options[dropdownlist.selectedIndex].text;
+
+
+                var products = [];
+                $('#gifts_list :selected').each(function (i, selected) {
+                    var $itm = $(this);
+                    products.push({
+                        'ID': $(selected).val(),
+                        'Description': $(selected).text()
+                    });
+
+
+                    //textvalues[i] = $(selected).text();
+                });
+
+                products.forEach(function (element, e) {
+
+                    $("ol#main_list").append("<li class='dd-item' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.ID + "' data-fdescription='" + element.Description + "'><div class='dd-handle'> " + descripciontp + " - " + element.Description + "<span class='pull-right'><a class='button-delete text-danger'><i class='fa fa-close'></i></a></span></div></li>");
+
+                });
+
+                $('.dd-item a').on('mousedown', function (event) {
+                    event.preventDefault();
+                    return false;
+                });
+
+                var updateOutput = function (e) {
+                    var list = e.length ? e : $(e.target),
+                        output = list.data('output');
+                    if (window.JSON) {
+                        output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                    } else {
+                        output.val('JSON browser support required for this demo.');
+                    }
+                };
+
+
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+            });
         });
     </script>
 </head>
@@ -434,6 +523,50 @@
                         </div>
                         <div class="col-md-6 text-right">
                             <div class="top_nav_right">
+                                <ul class="top_nav_menu">
+
+                                    <!-- Currency / Language / My Account -->
+                                    <!--
+                                                            <li class="currency">
+                                                                <a href="#">
+                                                                    usd
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                                <ul class="currency_selection">
+                                                                    <li><a href="#">cad</a></li>
+                                                                    <li><a href="#">aud</a></li>
+                                                                    <li><a href="#">eur</a></li>
+                                                                    <li><a href="#">gbp</a></li>
+                                                                </ul>
+                                                            </li>
+
+                            <li class="language">
+                                <a href="#">
+                                    Español
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="language_selection">
+                                    <li><a href="#">Inglés</a></li>
+                                </ul>
+                            </li>-->
+                                    @if (ViewBag.Title == "Comercia Marketing - W9" || ViewBag.Title == "Comercia Marketing - Demo" || ViewBag.Title == "Comercia Marketing - Demo preview")
+                            {
+
+                            }
+                            else
+                            {
+                                <li class="account">
+                                    <a href="#">
+                                        @ViewBag.usuario
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="account_selection">
+                                        <li><a href="@Url.Action("Settings", "Home")"><i class="fa fa-cogs" aria-hidden="true"></i>Settings</a></li>
+                                        <li><a href="@Url.Action("Cerrar_sesion", "Home")"><i class="fa fa-sign-in" aria-hidden="true"></i>Log out</a></li>
+                                    </ul>
+                                </li>
+                    }
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -451,28 +584,29 @@
                             </div>
                             <nav class="navbar">
                                 @if (Session["tipousuario"].ToString() == "1")
-                                {
-                                    <ul class="navbar_menu">
-                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                                        <li><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
-                                        <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
-                                    </ul>
-                                }
-                                else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
-                                {
-                                    <ul class="navbar_menu">
-                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                                        <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
-                                    </ul>
-                                }
-                                else
-                                {
-                                    <ul class="navbar_menu">
-                                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                                        <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
+                        {
+                                <ul class="navbar_menu">
+                                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                                    <li><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
+                                    <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
+                                    <li><a href="@Url.Action("Gallery", "Home")">Demos gallery</a></li>
+                                </ul>
+                }
+                else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                {
+                    <ul class="navbar_menu">
+                        <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                        <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+                    </ul>
+        }
+        else
+        {
+            <ul class="navbar_menu">
+                <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
 
-                                    </ul>
-                                }
+            </ul>
+}
                                 <div class="hamburger_container">
                                     <i class="fa fa-bars" aria-hidden="true"></i>
                                 </div>
@@ -580,9 +714,23 @@
                                 </div>
                             </div>
 
+
+                            <div class="form-group" id="div_samples" style="display:none">
+                                <div class="col-md-offset-2 col-md-12 text-right">
+                                    <input type="button" value="Find samples" class="btn btn-primary" id="myBtn_samples">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" id="div_gifts" style="display:none">
+                                <div class="col-md-offset-2 col-md-12 text-right">
+                                    <input type="button" value="Find gifts" class="btn btn-primary" id="myBtn_gifts">
+                                </div>
+                            </div>
+
                             <div class="form-group" id="div_btnadd">
                                 <div class="col-md-offset-2 col-md-12 text-right">
-                                    <input type="button" value="Add" id="btn_agregarObjeto" class="btn btn-default">
+                                    <input type="button" value="Add" id="btn_agregarObjeto" class="btn btn-primary">
                                 </div>
                             </div>
 
@@ -603,7 +751,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 text-right">
                                         <input type="submit" value="Create" class="btn btn-primary" />
-                                        @Html.ActionLink("Back", "Index")
+                                        <a href="@Url.Action("Index", "Forms")" class="btn btn-default">Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -665,6 +813,90 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" value="Add" id="btn_agregarProducto" class="btn btn-primary" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal samples-->
+    <div class="modal fade" id="myModal_samples" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-left">Select samples</h4>
+                </div>
+                <div class="modal-body col-md-12">
+                    <div class="form-group">
+                        <p class="control-label col-md-12">Vendor</p>
+                        <div class="col-md-12">
+                            <select class="form-control" id="vendors_list_samples" onChange='getSamples()'>
+                                <option data-hidden="true">Select vendor</option>
+                                @foreach (var item in ViewBag.vendors)
+                                {
+                                    <option value="@item.CardCode">@item.CardName</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label col-md-8">Samples</p>
+                        <div class="col-md-12">
+                            <select id="samples_list" multiple="multiple"></select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Add" id="btn_agregarSample" class="btn btn-primary" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal gifts-->
+    <div class="modal fade" id="myModal_gift" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-left">Select gifts</h4>
+                </div>
+                <div class="modal-body col-md-12">
+                    <div class="form-group">
+                        <p class="control-label col-md-12">Vendor</p>
+                        <div class="col-md-12">
+                            <select class="form-control" id="vendors_list_gift" onChange='getGifts()'>
+                                <option data-hidden="true">Select vendor</option>
+                                @foreach (var item in ViewBag.vendors)
+                                {
+                                    <option value="@item.CardCode">@item.CardName</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label col-md-8">Gifts</p>
+                        <div class="col-md-12">
+                            <select id="gifts_list" multiple="multiple"></select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Add" id="btn_agregarGift" class="btn btn-primary" data-dismiss="modal">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -753,7 +985,7 @@
 
                 document.getElementById("category_list").value = "0";
 
-                if (txt == "Product" || txt == "Product_sample") {
+                if (txt == "Product") {
                     var x = document.getElementById("div_label");
                     x.style.display = "none";
 
@@ -767,6 +999,54 @@
                     var c = document.getElementById("div_category");
                     c.style.display = "none";
 
+
+                    var e = document.getElementById("div_samples");
+                    e.style.display = "none";
+
+
+                    var o = document.getElementById("div_gifts");
+                    o.style.display = "none";
+
+                } else if (txt == "Gift") {
+                    var x = document.getElementById("div_label");
+                    x.style.display = "none";
+
+                    var p = document.getElementById("div_products");
+                    p.style.display = "none";
+
+                    var b = document.getElementById("div_btnadd");
+                    b.style.display = "none";
+
+                    var c = document.getElementById("div_category");
+                    c.style.display = "none";
+
+                    var e = document.getElementById("div_samples");
+                    e.style.display = "none";
+
+
+                    var o = document.getElementById("div_gifts");
+                    o.style.display = "block";
+                }
+                else if (txt == "Product_sample") {
+                    var x = document.getElementById("div_label");
+                    x.style.display = "none";
+
+                    var p = document.getElementById("div_products");
+                    p.style.display = "none";
+
+                    var b = document.getElementById("div_btnadd");
+                    b.style.display = "none";
+
+                    var c = document.getElementById("div_category");
+                    c.style.display = "none";
+
+                    var e = document.getElementById("div_samples");
+                    e.style.display = "block";
+
+
+                    var o = document.getElementById("div_gifts");
+                    o.style.display = "none";
+
                 } else if (txt == "Input_text") {
                     var x = document.getElementById("div_label");
                     x.style.display = "block";
@@ -779,6 +1059,14 @@
 
                     var c = document.getElementById("div_category");
                     c.style.display = "block";
+
+
+                    var e = document.getElementById("div_samples");
+                    e.style.display = "none";
+
+
+                    var o = document.getElementById("div_gifts");
+                    o.style.display = "none";
                 }
 
                 else {
@@ -793,6 +1081,14 @@
 
                     var c = document.getElementById("div_category");
                     c.style.display = "none";
+
+
+                    var e = document.getElementById("div_samples");
+                    e.style.display = "none";
+
+
+                    var o = document.getElementById("div_gifts");
+                    o.style.display = "none";
                 }
 
             });
@@ -803,6 +1099,20 @@
         $(document).ready(function () {
             $("#myBtn").click(function () {
                 $("#myModal").modal();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#myBtn_samples").click(function () {
+                $("#myModal_samples").modal();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#myBtn_gifts").click(function () {
+                $("#myModal_gift").modal();
             });
         });
     </script>
@@ -819,7 +1129,8 @@
     <script>
 
         $('#products_list').multipleSelect();
-
+        $('#samples_list').multipleSelect();
+        $('#gifts_list').multipleSelect();
     </script>
     <script>
         $("#clear_list").on("click", function (e) {
@@ -862,6 +1173,66 @@
                         }
                         )
                         $('#products_list').multipleSelect();
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+        }
+    </script>
+
+    <script>
+        function getSamples() {
+            var vendorId = $("#vendors_list_samples").val();
+            $.ajax
+                ({
+                    url: '/Forms/Getsamples',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        vendorID: vendorId
+                    }),
+                    success: function (result) {
+
+                        $("#samples_list").html("");
+                        $.each($.parseJSON(result), function (i, product) {
+                            $("#samples_list").append
+                                ($('<option></option>').val(product.ItemCode).html(product.ItemName))
+
+                        }
+                        )
+                        $('#samples_list').multipleSelect();
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+        }
+    </script>
+
+    <script>
+        function getGifts() {
+            var vendorId = $("#vendors_list_gift").val();
+            $.ajax
+                ({
+                    url: '/Forms/Getgifts',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        vendorID: vendorId
+                    }),
+                    success: function (result) {
+
+                        $("#gifts_list").html("");
+                        $.each($.parseJSON(result), function (i, product) {
+                            $("#gifts_list").append
+                                ($('<option></option>').val(product.ItemCode).html(product.ItemName))
+
+                        }
+                        )
+                        $('#gifts_list').multipleSelect();
                     },
                     error: function () {
                         alert("Whooaaa! Something went wrong..")

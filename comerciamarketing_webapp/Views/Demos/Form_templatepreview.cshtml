@@ -7,7 +7,7 @@
     <div class="container single_product_container">
         <div class="row">
             <div class="col">
-
+                <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back to List</a>
 
             </div>
         </div>
@@ -52,6 +52,16 @@
                             <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details"  readonly/>
                     </div>
                 </div>
+                }
+                                <!--PARA GIFT -->
+                if (objeto.form_resource_type.fdescription == "Gift")
+                {
+                    <div class="form-group">
+                        <p class="control-label col-md-10">@objeto.fdescription</p>
+                        <div class="col-md-12">
+                            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.ID_details" readonly/>
+                        </div>
+                    </div>
                 }
 
                 <!--PARA FOTOS -->

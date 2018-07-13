@@ -95,10 +95,19 @@
         </dd>
 
     </dl>
+    <h4>Options</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <a href="@Url.Action("SendDemoResumeMC", "Forms", new { id= Model.ID_demo})" class="btn btn-primary">Send to Customer Mail Contacts</a> <a href="@Url.Action("SendDemoResume", "Forms", new { id= Model.ID_demo})" class="btn btn-primary">Send to Demo User</a> <a href="@Url.Action("PreviewSendDemoResume", "Demos", new { id= Model.ID_demo})" class="btn btn-primary" target="_blank">Preview</a>
+        </dt>
 
-    <p>
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+        <dd>
+           
+        </dd>
+
+    </dl>
+    <a href="@Url.Action("Index", "Demos")" class="btn btn-default">Back to List</a>
 </div>
 
 

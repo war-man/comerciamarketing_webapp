@@ -300,7 +300,23 @@
     });
 
 </script>
+@if (ViewBag.Title == "Comercia Marketing - Demo")
+{
+    <script>
 
+        $(document).ajaxStop(function () {
+            $("#modal_demoform_saving").modal('hide');
+            window.location.reload(true);
+        });
+
+        $(document).ajaxError(function () {
+            console.log("An error was handle");
+            $("#modal_demoform_saving").modal('hide');
+            window.location.reload(true);
+        });
+
+    </script>
+}
 <!--SCRIPT PARA GUARDAR IMAGENES TIEMPO REAL -->
 <script>
     $('input[type=file]').change(function () {
@@ -308,7 +324,7 @@
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
             $.each($('input[type="file"]'), function () {
-
+                $("#modal_demoform_saving").modal('show');
                 var ID = $(this).attr('id');
 
                 var fileUpload = $("#" + ID).get(0);
@@ -331,20 +347,13 @@
                     contentType: false, // Not to set any content header
                     processData: false, // Not to process data
                     async: true,
-                    timeout: 60000,
+                    timeout: 80000,
                     data: fileData,
-                    cache: false,
-                    beforeSend: function () {
-                        $("#modal_demoform_saving").modal('show');
-                    },
-                    complete: function () {
-                        $("#modal_demoform_saving").modal('hide');
-                    },
                     success: function (result) {
-
+                        //$("#modal_demoform_saving").modal('hide');
                     },
                     error: function (err) {
-
+                        //$("#modal_demoform_saving").modal('hide');
                         new PNotify({
                             title: "Warning",
                             text: "Error. " + err.statusText,
@@ -378,7 +387,7 @@
                 id_demo = document.getElementById('id_demo').value;
 
                 var objects = [];
-                
+
                 $.each($('input.form-control'), function () {
 
                     //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
@@ -404,14 +413,14 @@
                 });
 
 
-                $.each($('img.form-control'), function () {
+                //$.each($('img.form-control'), function () {
 
-                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
-                    objects.push({
-                        id: $(this).attr('id'),
-                        text: $(this).attr('src')
-                    });
-                });
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        text: $(this).attr('src')
+                //    });
+                //});
 
                 //var canvas = document.getElementById("sig-canvas");
                 $.each($('canvas'), function () {
@@ -437,12 +446,7 @@
                     contentType: 'application/json; charset=utf-8',
                     async: true,
                     cache: false,
-                    beforeSend: function () {
-                        $("#modal_demoform_saving").modal('show');
-                    },
-                    complete: function () {
-                        $("#modal_demoform_saving").modal('hide');
-                    },
+                    global: false,
                     success: function (result) {
 
                         new PNotify({
@@ -455,7 +459,7 @@
                         if (x.style.display === "none") {
                             x.style.display = "inline-block";
                         } else {
-                            x.style.display = "none";
+                            //x.style.display = "none";
                         }
 
 
@@ -472,7 +476,7 @@
                     }
                 });
 
-               
+
             }
             );
         });
@@ -494,7 +498,7 @@
 
         $(function () {
             $("#finish_formtemplate").click(function () {
-
+                $("#modal_demoform_saving").modal('show');
                 var now = new Date();
                // var MS_PER_MINUTE = 60000;
                 //var offset = new Date().getTimezoneOffset();
@@ -514,7 +518,7 @@
 
 
                 var objects = [];
-                
+
                 $.each($('input.form-control'), function () {
 
                     //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
@@ -540,14 +544,14 @@
                 });
 
 
-                $.each($('img.form-control'), function () {
+                //$.each($('img.form-control'), function () {
 
-                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
-                    objects.push({
-                        id: $(this).attr('id'),
-                        text: $(this).attr('src')
-                    });
-                });
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        text: $(this).attr('src')
+                //    });
+                //});
 
                 //var canvas = document.getElementById("sig-canvas");
                 $.each($('canvas'), function () {
@@ -578,20 +582,18 @@
                     contentType: 'application/json; charset=utf-8',
                     async: true,
                     cache: false,
-                    beforeSend: function () {
-                        $("#modal_demoform_saving").modal('show');
-                    },
+                    global: false,
                     complete: function () {
                         $("#modal_demoform_saving").modal('hide');
                     },
                     success: function (result) {
-
+                        $("#modal_demoform_saving").modal('hide');
                         new PNotify({
                             title: "Success",
                             text: "Form saved successfully.",
                             type: "success"
                         })
-                    
+
                         window.location.reload(true);
 
 
@@ -643,7 +645,7 @@
 
                     },
                     error: function (request) {
-             
+                        $("#modal_demoform_saving").modal('hide');
                         new PNotify({
                             title: "Warning",
                             text: "Something wrong happened, try again.",
@@ -739,6 +741,28 @@
 
 
         $("#vendor_nameDemoE").val(vendortext);
+    };
+</script>
+
+
+<!--GET ITEM NAME-->
+<script>
+    function getItemNameC() {
+        var vendorId = $("#dropdown_iditemC").val();
+        var vendortext = $("#dropdown_iditemC option:selected").text();
+
+
+        $("#item_nameC").val(vendortext);
+    };
+</script>
+
+<script>
+    function getItemNameE() {
+        var vendorId = $("#dropdown_iditemE").val();
+        var vendortext = $("#dropdown_iditemE option:selected").text();
+
+
+        $("#item_nameE").val(vendortext);
     };
 </script>
 
@@ -869,7 +893,7 @@
 <script>
     $(document).ready(function () {
         $('#change_formattime');
-        var rowsShown = 5;
+        var rowsShown = 15;
         var rowsTotal = $('#change_formattime tbody tr').length;
         var numPages = rowsTotal / rowsShown;
         for (i = 0; i < numPages; i++) {
@@ -893,9 +917,9 @@
 </script>
 
 
-@if (ViewBag.Title == "Comercia Marketing - Home")
+@if (ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - Demos Home")
 {
-    <script type="text/javascript">
+<script type="text/javascript">
         var panorama;
         // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
         $(document).ready(function () {
@@ -954,21 +978,28 @@
 
                 // Make the marker-pin blue!
                 if (item.demo_state == "On Hold") {
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
                 }
                 if (item.demo_state == "In progress") {
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
                 }
                 if (item.demo_state == "Canceled") {
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
                 }
                 if (item.demo_state == "Finished") {
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
                 }
 
                 // put in some information about each json object - in this case, the opening hours.
+
+                //colocamos la url de la demo
+                var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID"})';
+
+
+                url = url.replace('DEMOID', item.id);
+
                 var infowindow = new google.maps.InfoWindow({
-                    content: "<div class='infoDiv'><h8>Place: " + item.PlaceName + ".</h8><br>" + "<div><h8>Vendor: " + item.vendor + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>User: " + item.nombre + ".</h8><br><h8>Comment: " + item.comment + ".</h8></div></div>"
+                    content: "<div class='infoDiv'><h8>Place: " + item.PlaceName + ".</h8><br>" + "<div><h8>Vendor: " + item.vendor + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>User: " + item.nombre + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + url + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
                 });
 
                 // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
@@ -1005,7 +1036,32 @@
                 panorama.setVisible(false);
             }
         }
-    </script>
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#change_formattime').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5,6]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                'colvis'
+            ]
+        });
+
+    });
+
+</script>
 }
 
 <script>
@@ -1067,6 +1123,38 @@
 
     }
 </script>
+
+<script>
+    function Demofilter2() {
+        var rango = document.getElementById("filterDemoHome").value;
+
+        var arr = rango.split('-');
+
+        var startdate = new Date(arr[0]);
+        var finishdate = new Date(arr[1]);
+
+
+
+
+
+        var url = '@Url.Action("Index", "Demos", new {startdate = "START", finishdate = "FINISH"})';
+
+
+        url = url.replace('START', startdate.toLocaleDateString());
+
+        var newurl = url;
+
+
+        newurl = newurl.replace('FINISH', finishdate.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+        //window.location.href = "/Home/Main/startdate='" + startdate.toLocaleDateString() + "', finishdate='" + finishdate.toLocaleDateString() + "'";
+
+    }
+</script>
+
 @if (ViewBag.Title == "Comercia Marketing - Demo")
 {
     if (ViewBag.checkin == 1)

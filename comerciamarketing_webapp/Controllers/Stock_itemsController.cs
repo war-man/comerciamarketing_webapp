@@ -13,7 +13,7 @@ namespace comerciamarketing_webapp.Controllers
     public class Stock_itemsController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
-
+        private COM_MKEntities COM_MKdb = new COM_MKEntities();
         // GET: Stock_items
         public ActionResult Index()
         {
@@ -62,6 +62,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
+                ViewBag.itemCode = new SelectList(COM_MKdb.OITMs.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName");
                 return View();
 
 
@@ -80,6 +81,10 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID_stock,itemCode,itemName,quantity,odate,ID_usuario,comment")] Stock_items stock_items)
         {
+            int ID = Convert.ToInt32(Session["IDusuario"]);
+            stock_items.ID_usuario = ID.ToString();
+            stock_items.odate = DateTime.UtcNow;
+            stock_items.comment = stock_items.comment + " - " + "PROVIENE DE MODULO INVENTARIO"; 
             if (ModelState.IsValid)
             {
                 db.Stock_items.Add(stock_items);
@@ -102,6 +107,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
+
+
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -111,6 +118,8 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
+                ViewBag.itemCode = new SelectList(COM_MKdb.OITMs.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName",id);
                 return View(stock_items);
 
 
@@ -129,6 +138,10 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID_stock,itemCode,itemName,quantity,odate,ID_usuario,comment")] Stock_items stock_items)
         {
+            int ID = Convert.ToInt32(Session["IDusuario"]);
+            stock_items.ID_usuario = ID.ToString();
+            stock_items.odate = DateTime.UtcNow;
+            stock_items.comment = stock_items.comment + " - " + "PROVIENE DE MODULO INVENTARIO";
             if (ModelState.IsValid)
             {
                 db.Entry(stock_items).State = EntityState.Modified;
