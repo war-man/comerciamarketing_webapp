@@ -36,75 +36,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                if (datosUsuario.ID_rol == 6)
-                {
 
-                    //filtros de fecha
-                    var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                    var saturday = sunday.AddDays(6).AddHours(23);
-
-                    if (startdate == null)
-                    {
-                        if (finishdate == null)
-                        {
-
-
-                        }
-
-                    }
-                    else
-                    {
-                        if (finishdate == null)
-                        {
-
-                        }
-                        else
-                        {
-                            try
-                            {
-                                sunday = Convert.ToDateTime(startdate);
-                                saturday = Convert.ToDateTime(finishdate);
-                                saturday = saturday.AddHours(23);
-                            }
-                            catch
-                            {
-                                sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                                saturday = sunday.AddDays(6).AddHours(23);
-                            }
-
-
-                        }
-
-                    }
-
-                    var demos = db.Demos.Where(d => d.visit_date >= sunday && d.end_date <= saturday).OrderByDescending(d => d.visit_date).Include(d => d.Demo_state).Include(d => d.Forms);
-                    ViewBag.rol = 6;
-                    if (demos.Count() > 0)
-                    {
-
-                        foreach (var item in demos)
-                        {
-                            var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
-                            if (usuario == null)
-                            {
-
-                            }
-                            else
-                            {
-                                item.ID_Vendor = usuario.CardName;
-                            }
-
-
-                        }
-
-                    }
-
-                    ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString();
-
-                    return View(demos.ToList());
-
-                }
-                else if (datosUsuario.ID_rol == 1) {
+                if (datosUsuario.ID_rol == 1 || datosUsuario.ID_rol == 6) {
 
                     //filtros de fecha
                     var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
@@ -153,6 +86,13 @@ namespace comerciamarketing_webapp.Controllers
 
                         foreach (var item in demos)
                         {
+                            //TimeSpan totaldemohours = new TimeSpan(0, 0, 0);
+                            //DateTime dt = item.check_in;
+                            //DateTime dt2 = item.end_date;
+                            //TimeSpan ts = (dt2 - dt);
+                            //totaldemohours = ts;
+
+                            //item.extra_hours = totaldemohours
                             var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
                             if (usuario == null)
                             {

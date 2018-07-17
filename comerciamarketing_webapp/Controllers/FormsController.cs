@@ -645,7 +645,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Existen datos
                 //Buscamos los detalles
 
-                var demo_details = (from b in dbtoreport.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
                 var result = demo_details
                         .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
                         .Select(cl => new Forms_details
@@ -1070,7 +1070,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Existen datos
                 //Buscamos los detalles
 
-                var demo_details = (from b in dbtoreport.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
                 var result = demo_details
                         .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
                         .Select(cl => new Forms_details

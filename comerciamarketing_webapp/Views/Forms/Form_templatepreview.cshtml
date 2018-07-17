@@ -84,7 +84,30 @@
                                 <!--PARA INPUT TEXT -->
                 if (objeto.form_resource_type.fdescription == "Input_text") {
                 <div class="form-group">
-                    <p class="control-label col-md-10">@objeto.fdescription</P>
+                                            @if (objeto.fvalue == 0)
+                        {
+                        <p class="control-label col-md-10">@objeto.fdescription</p>
+                        }
+                        else if (objeto.fvalue == 1)
+                        {
+                        <p class="control-label col-md-10">Flavor - @objeto.fdescription</p>
+                        }
+                        else if (objeto.fvalue == 2)
+                        {
+                        <p class="control-label col-md-10">Quality - @objeto.fdescription</p>
+                        }
+                        else if (objeto.fvalue == 3)
+                        {
+                        <p class="control-label col-md-10">Price - @objeto.fdescription</p>
+                        }
+                        else if (objeto.fvalue == 4)
+                        {
+                       <p class="control-label col-md-10">Packing - @objeto.fdescription</p>
+                        }
+                        else if (objeto.fvalue == 5)
+                        {
+                       <p class="control-label col-md-10">Free - @objeto.fdescription</p>
+                        }
                     <div class="col-md-12">
                         <textarea id="@objeto.ID_details" readonly class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
                         

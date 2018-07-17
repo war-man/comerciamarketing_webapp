@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Comercia Marketing - Demos Home";
 }
-@if (ViewBag.rol == 6)
+@if (ViewBag.rol == 6  )
 {
     <div class="container product_section_container">
         <div class="row">
@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Sidebar -->
-                @if (Session["tipousuario"].ToString() == "1") {
+                @if (Session["tipousuario"].ToString() == "1" || Session["tipousuario"].ToString() == "6") {
            
             <div class="col-lg-12">
                 <div class="benefit">
@@ -43,7 +43,7 @@
                                         <i class="fa fa-user-circle"></i>
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">On Holding Demos</p>
+                                        <p class="category">On Hold Demos</p>
                                         <h3 class="title">@ViewBag.onhold_demos</h3>
                                     </div>
 
@@ -87,7 +87,7 @@
 
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div id="floating-panel">
-                                    <input type="button" value="Toggle Street View" onclick="toggleStreetView();"></input>
+                                    <input type="button" value="Toggle Street View" onclick="toggleStreetView();"/>
                                 </div>
                                 <div id="map_canvas" style="height: 600px;"></div>
                             </div>
@@ -128,14 +128,14 @@
                         @if (Session["tipousuario"].ToString() == "1")
                         {
                                                    
-                        <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms</span></a></div>
-                        <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms Templates</span></a></div>                     
                         <div class="filter_button"><a href="@Url.Action("Gallery", "Home")"><span>Demos Gallery</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
                         }
                         else {
-                        <div class="filter_button"><a href="@Url.Action("Index", "Empresas")"><span>Customers</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Empresas")"><span>Mail contacts</span></a></div>
 
-                        <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms</span></a></div>
+                        <div class="filter_button"><a href="@Url.Action("Index", "Forms")"><span>Forms Templates</span></a></div>
                         <div class="filter_button"><a href="@Url.Action("Index", "Stock_items")"><span>Stock Items</span></a></div>
                         }
                     
@@ -158,9 +158,6 @@
                                             <div class="card-header" data-background-color="gray">
                                                 <h4 class="title">Demos</h4>
                                                 <p class="category">@ViewBag.desdehasta </p>
-                                                <div class="col-lg-4">
-                                                    Change week: <input data-weekpicker="weekpicker" class="form-control" onchange='Demofilter2()' id="filterDemoHome" />
-                                                </div>
                                             </div>
     
                                     <ul class="product_sorting pull-right">
@@ -215,6 +212,9 @@
                                             </th>
                                             <th>
                                                 Check out
+                                            </th>
+                                            <th hidden>
+                                                Total Hours
                                             </th>
                                             <th></th>
                                         </tr>
@@ -273,7 +273,17 @@ else
                                     @Convert.ToDateTime(item.end_date).ToString("HH:mm")
                                 </td>
 }
+                                    @if (item.ID_demostate == 3 || item.ID_demostate == 1 || item.ID_demostate == 2)
+                                    {
+                                <td style="height: 5px;font-size: 13px;" hidden></td>
+}
+else
+{
+                                <td class="customerIDCell" style="height: 12px;font-size: 12px;" hidden>
+                                    @(item.end_date - item.check_in)
 
+                                </td>
+}
                                 <td style="height: 5px;font-size: 14px;">
                                     @if (item.ID_demostate == 4)
     {
@@ -284,6 +294,7 @@ Html.ActionLink("Log", "Demo_log", new { id_demo = item.ID_demo })-->
 }
 else if (item.ID_demostate == 2)
 {<!--In progress-->
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID_demo }); @Html.Label(" | ")
                                 @Html.ActionLink("Details", "Details", new { id = item.ID_demo });@Html.Label(" | ")
                                 @Html.ActionLink("Preview", "Form_templatepreview", new { id_demo = item.ID_demo, id_form = item.ID_form })
                                 <!--Html.Label(" | ")
@@ -301,7 +312,38 @@ else
                                 </tr>
 }
                                     </tbody>
+                                    <tfoot>
 
+                                        <tr>
+
+                                            <th>
+                                                
+                                                Vendor
+                                            </th>
+                                            <th>
+                                                
+                                            </th>
+                                            <th>
+                                                
+                                            </th>
+                                            <th>
+                                                User assigned
+                                            </th>
+                                            <th>
+                                              
+                                            </th>
+                                            <th>
+                                              
+                                            </th>
+                                            <th>
+                                               
+                                            </th>
+                                            <th>
+                                             
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
 
 

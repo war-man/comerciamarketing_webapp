@@ -590,7 +590,7 @@
                                     <li><a href="@Url.Action("Main", "Home")">Home</a></li>
                                     <li><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
                                     <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
-                                    <li><a href="@Url.Action("Gallery", "Home")">Demos gallery</a></li>
+                                    
                                 </ul>
                 }
                 else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
@@ -828,11 +828,13 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="footer_nav_container">
-                            <div class="cr">Comercia Marketing (c) 2018. All rights reserved.</div>
+                            <div class="col-md-6 text-left">Comercia Marketing (c) 2018. All rights reserved.</div>
+                            <div class="col-md-6 text-left"><p>Version 2.6.2.170718 </p></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <br />
         </footer>
     </div>
 

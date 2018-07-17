@@ -40,92 +40,92 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
                 ViewBag.ultimavisita = Session["ultimaconexion"].ToString();//datosUsuario.fultima_visita.ToString();
-                ViewBag.bloquearcontenido = "si";
+                ViewBag.bloquearcontenido = "no";
 
 
-                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                var saturday = sunday.AddDays(6).AddHours(23);
+                //var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                //var saturday = sunday.AddDays(6).AddHours(23);
 
-                if (startdate == null)
-                {
-                    if (finishdate == null)
-                    {
-
-
-                    }
-
-                }
-                else {
-                    if (finishdate == null)
-                    {
-
-                    }
-                    else {
-                        try
-                        {
-                            sunday = Convert.ToDateTime(startdate);
-                            saturday = Convert.ToDateTime(finishdate);
-                            saturday = saturday.AddHours(23);
-                        }
-                        catch {
-                            sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                            saturday = sunday.AddDays(6).AddHours(23);
-                        }
+                //if (startdate == null)
+                //{
+                //    if (finishdate == null)
+                //    {
 
 
-                    }
+                //    }
 
-                }
+                //}
+                //else {
+                //    if (finishdate == null)
+                //    {
+
+                //    }
+                //    else {
+                //        try
+                //        {
+                //            sunday = Convert.ToDateTime(startdate);
+                //            saturday = Convert.ToDateTime(finishdate);
+                //            saturday = saturday.AddHours(23);
+                //        }
+                //        catch {
+                //            sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                //            saturday = sunday.AddDays(6).AddHours(23);
+                //        }
+
+
+                //    }
+
+                //}
 
 
 
-                int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                //int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                //int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                //int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
+                //int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
 
 
-                var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).ToList();
+                //var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).ToList();
 
 
-                //Asignamos la geoubicacion
-                foreach (var item in demos_map) {
+                ////Asignamos la geoubicacion
+                //foreach (var item in demos_map) {
 
 
-                    var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
-                    if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
+                //    var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
+                //    if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
                     
 
-                }
+                //}
 
 
-                // Convertimos la lista a array
-                ArrayList myArrList = new ArrayList();
-                myArrList.AddRange((from p in demos_map
-                                    select new
-                                    {
-                                        id = p.ID_demo,
-                                        nombre = p.ID_usuario,
-                                        PlaceName = p.store,
-                                        GeoLong = p.geoLong,
-                                        GeoLat = p.geoLat,
-                                        demo_state = p.Demo_state.sdescription,
-                                        vendor = p.vendor,
-                                        date = p.visit_date,
-                                        comment = p.comments
-                                    }).ToList());
+                //// Convertimos la lista a array
+                //ArrayList myArrList = new ArrayList();
+                //myArrList.AddRange((from p in demos_map
+                //                    select new
+                //                    {
+                //                        id = p.ID_demo,
+                //                        nombre = p.ID_usuario,
+                //                        PlaceName = p.store,
+                //                        GeoLong = p.geoLong,
+                //                        GeoLat = p.geoLat,
+                //                        demo_state = p.Demo_state.sdescription,
+                //                        vendor = p.vendor,
+                //                        date = p.visit_date,
+                //                        comment = p.comments
+                //                    }).ToList());
 
 
-                ViewBag.demos_map = JsonConvert.SerializeObject(myArrList);
+                //ViewBag.demos_map = JsonConvert.SerializeObject(myArrList);
 
 
 
-                ViewBag.bloquearcontenido = "no";
-                ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString(); 
-                ViewBag.onhold_demos = onhold;
-                ViewBag.inprogress_demos = inprogress;
-                ViewBag.canceled_demos = canceled;
-                ViewBag.finished_demos = finished;
+                //ViewBag.bloquearcontenido = "no";
+                //ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString(); 
+                //ViewBag.onhold_demos = onhold;
+                //ViewBag.inprogress_demos = inprogress;
+                //ViewBag.canceled_demos = canceled;
+                //ViewBag.finished_demos = finished;
                 //Actualizamos datos del usuario
                 //Usuarios actualizardatosUsuario = new Usuarios();
 

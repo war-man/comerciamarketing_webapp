@@ -1046,21 +1046,48 @@
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5,6]
+                        columns: [0, 1, 2, 3, 4, 5,6,7]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6]
+                        columns: [0, 1, 2, 3, 4, 5, 6,7]
                     }
                 },
                 'colvis'
-            ]
+            ],
+            initComplete: function () {
+                
+                this.api().columns([0, 3]).every(function () {
+                    var column = this;
+                    var select = $('<select><option value="">Show All</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+
         });
 
     });
 
+    //$(document).ready(function() {
+    //$('#change_formattime').DataTable( {
+
+    //} );
+//} );
 </script>
 }
 
