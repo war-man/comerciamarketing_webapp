@@ -156,7 +156,7 @@ namespace comerciamarketing_webapp.Controllers
             return View();
         }
 
-        public ActionResult Dashboard()
+        public ActionResult Dashboard_merchandising()
         {
             if (Session["IDusuario"] != null)
             {
@@ -189,6 +189,38 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
+        public ActionResult Dashboard_demos()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                //Consultamos los recursos
+
+                var recursos = (from b in db.Recursos_usuario where (b.ID_usuario == ID && b.ID_tiporecurso == 2) select b).FirstOrDefault();
+
+                if (recursos != null)
+                {
+                    ViewBag.url = recursos.url;
+                    ViewBag.bloquearcontenido = "si";
+                    return View();
+                }
+                else
+                {
+                    TempData["advertencia"] = "No resources to show.";
+                    return RedirectToAction("Main");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
         public ActionResult Iniciar_sesion(string usuariocorreo, string password)
         {
             //Validamos del lado del cliente que ambos parametros no vengan vacios
@@ -203,8 +235,10 @@ namespace comerciamarketing_webapp.Controllers
                     //PARA DEMOS
                     //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
 
+                    //PARA MERCHANDISING
+                    //((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
 
-                    if (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                    if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
                     {
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
@@ -218,32 +252,32 @@ namespace comerciamarketing_webapp.Controllers
 
                         //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
                         //6 demos ,rol: 7 demo_user
-                        if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
-                            var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
+                        //if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
+                        //    var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
 
-                            if (formw9 != null)
-                            {
-                                if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
-                                {
-                                    return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
-                                }
-                                else if (formw9.iscomplete = false && formw9.name != "")
-                                {
-                                    return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                        //    if (formw9 != null)
+                        //    {
+                        //        if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
+                        //        {
+                        //            return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
+                        //        }
+                        //        else if (formw9.iscomplete = false && formw9.name != "")
+                        //        {
+                        //            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
 
-                                }
-
-
-                            }
-                            else {
-                                return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                            }
+                        //        }
 
 
-                        }
+                        //    }
+                        //    else {
+                        //        return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                        //    }
 
 
+                        //}
 
+
+                        //Verificamos si el usuario esta activo
                         if (obj.activo != false)
                         {
                             var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();

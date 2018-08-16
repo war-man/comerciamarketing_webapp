@@ -214,6 +214,71 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
+        //public class MyObjStores
+        //{
+        //    public string id { get; set; }
+        //    public string store { get; set; }
+        //    public string lng { get; set; }
+        //    public string lat { get; set; }
+        //}
+
+        //public ActionResult Storeslatlong()
+        //{
+            
+
+
+        //        var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+        //        IEnumerable<SelectListItem> selectList_stores = from st in store
+        //                                                        select new SelectListItem
+        //                                                        {
+        //                                                            Value = Convert.ToString(st.CardCode),
+        //                                                            Text = st.CardName.ToString() + ", " + st.MailAddres.ToString() + ", " + st.MailCity.ToString() + ", " + st.MailZipCod.ToString()
+        //                                                        };
+        //    List<MyObjStores> listaTiendas = new List<MyObjStores>();
+
+        //    foreach (var item in store) {
+        //        MyObjStores dtnuevo = new MyObjStores();
+
+        //        dtnuevo.id = item.CardCode.ToString();
+        //        dtnuevo.store = item.CardName.ToString() + ", " + item.MailAddres.ToString() + ", " + item.MailCity.ToString() + ", " + item.MailZipCod.ToString();
+
+        //        //GEOLOCALIZACION
+        //        try
+        //        {
+        //            string address = dtnuevo.store;
+        //            string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+        //            WebRequest request = WebRequest.Create(requestUri);
+        //            WebResponse response = request.GetResponse();
+        //            XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+        //            XElement result = xdoc.Element("GeocodeResponse").Element("result");
+        //            XElement locationElement = result.Element("geometry").Element("location");
+        //            XElement lat = locationElement.Element("lat");
+        //            XElement lng = locationElement.Element("lng");
+        //            //NO SE PORQUE LO TIRA AL REVEZ
+        //            dtnuevo.lng = lng.Value;
+        //            dtnuevo.lat = lat.Value;
+        //            //FIN
+
+        //        }
+        //        catch
+        //        {
+        //            dtnuevo.lng = "";
+        //            dtnuevo.lat = "";
+        //        }
+
+        //        listaTiendas.Add(dtnuevo);
+        //    }
+
+
+
+        //        ViewBag.lista = listaTiendas.ToList();
+        //        return View();
+
+
+
+        //}
         // GET: Demos/Create
         public ActionResult Create()
         {

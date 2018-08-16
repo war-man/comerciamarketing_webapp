@@ -696,7 +696,7 @@
     <Content Include="Views\Shared\Scripts.cshtml" />
     <Content Include="Views\Shared\Styles.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Home\Dashboard_merchandising.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Usuarios\Delete.cshtml" />
@@ -763,6 +763,8 @@
     <Content Include="Views\Stock_items\Details.cshtml" />
     <Content Include="Views\Stock_items\Edit.cshtml" />
     <Content Include="Views\Stock_items\Index.cshtml" />
+    <Content Include="Views\Demos\Storeslatlong.cshtml" />
+    <Content Include="Views\Home\Dashboard_demos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

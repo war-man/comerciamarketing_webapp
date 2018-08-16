@@ -95,18 +95,17 @@
                         {
                         <ul class="navbar_menu">
                             <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                            <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
-                            @if (Session["tiporol"].ToString() == "8" || Session["tiporol"].ToString() == "9")
-                            {
-                            <li><a href="@Url.Action("Galleryfilter", "Home")">Demos gallery</a></li>
-                            }
+                            <li><a href="@Url.Action("Dashboard_merchandising", "Home")">Merchandising Report</a></li>
+                            <li><a href="@Url.Action("Dashboard_demos", "Home")">Demos Report</a></li>
+                            
                         </ul>
                         } else if (Session["tipousuario"].ToString() == "6")
                         {
                         <ul class="navbar_menu">
                             <li><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
                             <li><a href="@Url.Action("Index", "Demos")">Demos</a></li>
-                            <li><a href="@Url.Action("Gallery", "Home")">Demos gallery</a></li>
+
                         </ul>
                         }
                         <div class="hamburger_container">
@@ -154,23 +153,20 @@
                             <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
                             <li class="menu_item"><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
                             <li class="menu_item"><a href="@Url.Action("Index", "Demos")">Demos</a></li>
-                            <li class="menu_item"><a href="@Url.Action("Gallery", "Home")">Demos Gallery</a></li>
 
                                             }
                                             else if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
                                             {
                         <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
-                        <li class="menu_item"><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
-                                    if (Session["tiporol"].ToString() == "8" || Session["tiporol"].ToString() == "9")
-                                    {
-                                    <li class="menu_item"><a href="@Url.Action("Galleryfilter", "Home")">Demos Gallery</a></li>
-                                    }
+                        <li class="menu_item"><a href="@Url.Action("Dashboard_merchandising", "Home")">Merchandising Report</a></li>
+                        <li class="menu_item"><a href="@Url.Action("Dashboard_demos", "Home")">Demos Report</a></li>
+                                    
                                             }
                                            else if (Session["tipousuario"].ToString() == "6")
                                             {
                            <li class="menu_item"><a href="@Url.Action("Main", "Home")">Home</a></li>
+                            <li class="menu_item"><a href="@Url.Action("Index", "Empresas")">Customers</a></li>
                            <li class="menu_item"><a href="@Url.Action("Index", "Demos")">Demos</a></li>
-                           <li class="menu_item"><a href="@Url.Action("Gallery", "Home")">Demos Gallery</a></li>
                                             }
 
             <!--

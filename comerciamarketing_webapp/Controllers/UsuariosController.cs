@@ -262,7 +262,7 @@ namespace comerciamarketing_webapp.Controllers
             catch (Exception ex) {
                 Usuarios usuarios = db.Usuarios.Find(id);
                 var id_back = usuarios.ID_empresa;
-                TempData["error"] = "An error was handled.  " + ex.Message;
+                TempData["error"] = "An error was handled.  " + ex.Message + ". Please check if the user has resources assigned";
                 return RedirectToAction("Index", "Usuarios", new { ID_Empresa = id_back });
             }
 
