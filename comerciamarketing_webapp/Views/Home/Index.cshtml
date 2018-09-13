@@ -1,18 +1,17 @@
 ﻿@{
     Layout = null;
-    ViewBag.Title = "Comercia Marketing";
+    ViewBag.Title = "Comercia Marketing - Log In";
 }
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Comercia Marketing App">
     <title>@ViewData["Title"]</title>
 
-    @Html.Partial("~/Views/Shared/Styles.cshtml")
+    @Html.Partial("~/Views/Shared/Styles2.cshtml")
 
     <script type="text/javascript">
 
@@ -42,164 +41,70 @@
                 console.log('Geolocation is not supported');
             }
         }
-      
+
 
     </script>
+
+
 </head>
-<body onload="javascript:initGeolocation()">
-    <div class="super_container">
-        <!-- Header -->
+<body class="horizontal-menu-2">
 
-        <header class="header trans_300">
-
-            <!-- Top Navigation -->
-
-            <div class="top_nav">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!--<div class="top_nav_left">Representación y desarrollo de marcas</div>-->
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <div class="top_nav_right">
-                            </div>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper auth p-0 theme-two">
+                <div class="row d-flex align-items-stretch">
+                    <div class="col-md-4 banner-section d-none d-md-flex align-items-stretch justify-content-center">
+                        <div class="slide-content bg-1">
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Main Navigation -->
-
-            <div class="main_nav_container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <div class="logo_container">
+                    <div class="col-12 col-md-8 h-100 bg-white">
+                        <div class="auto-form-wrapper d-flex align-items-center justify-content-center flex-column">
+                            <div class="nav-get-started">
                                 <img src="~/Content/images/LogoPNG-1.png" height="60" width="190">
                             </div>
-                            <nav class="navbar">
-                                <ul class="navbar_menu">
-                                    <li><a href="http://comerciamarketing.com/">Back to home page</a></li>
-
-
-                                </ul>
-                                <div class="hamburger_container">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                            <form method="post" id="form">
+                                <h3 class="mr-auto">Welcome!</h3>
+                                <p class="mb-5 mr-auto">Enter your details below.</p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="mdi mdi-account-outline"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
+                                    </div>
                                 </div>
-                            </nav>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="mdi mdi-lock-outline"></i></span>
+                                        </div>
+                                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info submit-btn">LOG IN</button>
+                                </div>
+                                <div class="wrapper mt-5 text-gray">
+                                    <p class="footer-text">Copyright © 2018 Comercia Marketing. All rights reserved.</p>
+                                    <ul class="auth-footer text-gray">
+                                        <!--
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Cookie Policy</a></li>
+                                            -->
+                                    </ul>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </header>
-
-        <div class="fs_menu_overlay"></div>
-
-        <!-- Hamburger Menu -->
-
-        <div class="hamburger_menu">
-            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-            <div class="hamburger_menu_content text-right">
-                <ul class="menu_top_nav">
-                    <!--
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            usd
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#">cad</a></li>
-                            <li><a href="#">aud</a></li>
-                            <li><a href="#">eur</a></li>
-                            <li><a href="#">gbp</a></li>
-                        </ul>
-                    </li>
-                    -->
-                    <li class="menu_item"><a href="http://comerciamarketing.com/">Back to home page</a></li>
-
-
-
-
-                </ul>
-            </div>
-        </div>
-
-        <br /><br /><br /><br /><br /><br /><br /><br />
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-center login-title">To log in, enter your credentials below.</h1>
-                <div class="account-wall">
-                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                         alt="">
-
-                    @*@using (Html.BeginForm("Iniciar_sesion", "Home", FormMethod.Post, new { @class = "form-signin" }))
-                        {
-                                    @Html.AntiForgeryToken();
-                                    @Html.ValidationSummary();*@
-
-                    <form class="form-signin" method="post" id="form">
-                        <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
-                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">
-                            Log in
-                        </button>
-
-                    </form>
-                    <!--
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Recuerdame
-                    </label>
-                    <a href="#" class="pull-right need-help">Necesitas ayuda? </a><span class="clearfix"></span>-->
-                    @*}*@
-                </div>
-            </div>
-
-        </div>
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="footer_nav_container">
-                            <div class="col-md-6 text-left">Comercia Marketing (c) 2018. All rights reserved. </div>
-                            
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-        </footer>
-    </div>  
-    @Html.Partial("~/Views/Shared/Scripts.cshtml")
-
-    <!-- Modal saving -->
-    <div class="modal hide fade in" data-keyboard="false" data-backdrop="static" id="modal_demoform_saving" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="col-md-offset-4 col-md-12 text-center">
-                        <div id="loadingmessage" class="col-md-offset-4 col-md-12 text-center">
-                            <img src="~/Content/images/ajax-loader.gif" />
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
+            <!-- content-wrapper ends -->
         </div>
     </div>
-    <!--END MODAL-->
+    <!-- page-body-wrapper ends -->
+    @Html.Partial("~/Views/Shared/Scripts2.cshtml")
 </body>
 </html>
-
 <script type="text/javascript">
     $("#form").submit(function (e) {
         e.preventDefault();
@@ -221,16 +126,20 @@
 
                         var href = '@Url.Action("Edit", "user_form_w9", new { id = "id" })';
                         href = href.replace("id", data.redireccion);
-                    
-                
+
+
                         window.location.href = href;
 
                     } else {
-                    //Si todo salió bien, s devolvemos ip y datos de registro y luego enviamos a pagina Home
+                        console.log("Login success")
+                        window.location.href = '@Url.Action("Main", "Home")';
+
+
+                    @*//Si todo salió bien, s devolvemos ip y datos de registro y luego enviamos a pagina Home
                     // set endpoint and your access key
                     var ip = "@Session["ip_user"]";
                     var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
-                        
+
                     // get the API result via jQuery.ajax
                     $.ajax({
                         url: 'https://api.ipstack.com/' + ip + '?access_key=' + access_key,
@@ -265,11 +174,11 @@
                                     data: JSON.stringify(datosusuario),
                                     success: function (model) {
                                         if (model.success) {
-                                            
+
                                             console.log("Login success")
                                             window.location.href = '@Url.Action("Main", "Home")';
                                         } else {
-                                          
+
                                             console.log("Error")
                                             window.location.href = '@Url.Action("Main", "Home")';
                                         }
@@ -279,66 +188,121 @@
                                     }
                                 });
 
-                 
-                        } 
-                        
+
+                        }
+
                     });
-                  
-                   //window.location.href = 'Url.Action("Main", "Home")';
+
+                   //window.location.href = 'Url.Action("Main", "Home")';*@
 
                     }
 
 
 
                 } else {
-                   
-                    new PNotify({
-                        title: "Warning",
-                        text: "Wrong email or password",
-                        type: "notice"
-                    });
-
+                    showWarningToast();
                     $('#usuariocorreo').val("");
                     $('#usuariocorreo').focus();
                     $('#password').val("");
-                   
+
                 }
-            },                      
+            },
             error: function () {
 
-               
+
             }
 
 
         });
-      
+
     });
 </script>
-
-@if (TempData["advertencia"] != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-
-            new PNotify({
-                title: "Warning",
-                text: "@(TempData["advertencia"])",
-                type: "notice"
+<script>
+    (function ($) {
+        showSuccessToast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Success',
+                text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                showHideTransition: 'slide',
+                icon: 'success',
+                loaderBg: '#f96868',
+                position: 'top-right'
             })
         };
-    </script>
-}
-
-@if (TempData["error"] != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-
-            new PNotify({
-                title: "Error",
-                text: "@(TempData["error"])",
-                type: "error"
+        showInfoToast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Info',
+                text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                showHideTransition: 'slide',
+                icon: 'info',
+                loaderBg: '#46c35f',
+                position: 'top-right'
             })
         };
-    </script>
-}
+        showWarningToast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Warning',
+                text: 'Something wrong happened, try again.',
+                showHideTransition: 'slide',
+                icon: 'warning',
+                loaderBg: '#ff9900',
+                position: 'top-right'
+            })
+        };
+        showDangerToast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Danger',
+                text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                showHideTransition: 'slide',
+                icon: 'error',
+                loaderBg: '#f2a654',
+                position: 'top-right'
+            })
+        };
+        showToastPosition = function (position) {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Positioning',
+                text: 'Specify the custom position object or use one of the predefined ones',
+                position: String(position),
+                icon: 'info',
+                stack: false,
+                loaderBg: '#f96868'
+            })
+        }
+        showToastInCustomPosition = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Custom positioning',
+                text: 'Specify the custom position object or use one of the predefined ones',
+                icon: 'info',
+                position: {
+                    left: 120,
+                    top: 120
+                },
+                stack: false,
+                loaderBg: '#f96868'
+            })
+        }
+        resetToastPosition = function () {
+            $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
+            $(".jq-toast-wrap").css({
+                "top": "",
+                "left": "",
+                "bottom": "",
+                "right": ""
+            }); //to remove previous position style
+        }
+    })(jQuery);
+
+</script>

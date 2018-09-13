@@ -1,0 +1,444 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!--SCRIPT FORM_TEMPLATE SAVE-->
+<script>
+    (function ($) {
+        showSuccessToast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Success',
+                text: 'Data saved.',
+                showHideTransition: 'slide',
+                icon: 'success',
+                loaderBg: '#f96868',
+                position: 'top-right'
+            })
+        };
+
+        showWarning2Toast = function () {
+            'use strict';
+            resetToastPosition();
+            $.toast({
+                heading: 'Warning',
+                text: 'Something wrong happened, try again.',
+                showHideTransition: 'slide',
+                icon: 'warning',
+                loaderBg: '#ff9900',
+                position: 'top-right'
+            })
+        };
+
+        resetToastPosition = function () {
+            $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
+            $(".jq-toast-wrap").css({
+                "top": "",
+                "left": "",
+                "bottom": "",
+                "right": ""
+            }); //to remove previous position style
+        }
+    })(jQuery);
+
+
+    $(function () {
+        $("#save_activity").click(function () {
+
+            initGeolocation();
+
+        }
+        );
+    });
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+
+
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+
+        //GUARDAMOS OBJETOS
+
+        var objects = [];
+
+        $.each($('input.form-control[type = "text"]'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text: ""
+            });
+
+
+        });
+
+        $.each($('input.form-control[type = "number"]'), function () {
+
+            
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text: ""
+            });
+
+
+        });
+
+        $.each($('input.form-check-input[type = "radio"]'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text:""
+            });
+
+
+        });
+        $.each($('input.form-check-input[type = "checkbox"]'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text:""
+            });
+
+
+        });
+
+        $.each($('input.dropifyIMG[type = "file"]'), function () { 
+           
+                    objects.push({
+                        id: $(this).attr('id'),
+                        value: $(this).attr('data-changeflag'),
+                        text: ""
+                    });
+
+            });
+           
+
+
+        $.each($('textarea.form-control'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text:""
+            });
+
+
+        });
+
+        $.each($('select'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+            var str = $(this).find('option:selected').text();
+              str = str.substring(str.indexOf("-")+1);
+
+            var final = "";
+            objects.push({
+                id: $(this).attr('name'),
+                value: $(this).val(),
+                text: str.trim()
+            });
+
+
+        });
+  
+        //var canvas = document.getElementById("sig-canvas");
+        $.each($('canvas'), function () {
+            var canvas = document.getElementById($(this).attr("id"));
+            var dataUrl = canvas.toDataURL();
+            //alert(dataUrl);
+
+            objects.push({
+                id: $(this).attr("data-id"),
+                value: dataUrl,
+                text:""
+            });
+        });
+
+
+        //$.each(objects, function (propName, propVal) {
+        //    console.log(propName, propVal);
+        //});
+
+        
+        $.ajax({
+            url: '/FormsM/Save_activity',
+            type: 'POST',
+            data: {'id': idvisita,'objects': objects,'lat':lat,'lng':lng },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    showSuccessToast();
+
+                    //var x = document.getElementById("finish_activity");
+                    //if (x.style.display === "none") {
+                    //    x.style.display = "inline-block";
+                    //} else {
+                    //    //x.style.display = "none";
+                    //}
+
+                    window.location.reload(true);
+                //window.location.reload(true);
+                } else {
+                    showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                showWarning2Toast();
+
+            }
+        });
+
+
+
+
+    };
+
+    function error(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+
+        //GUARDAMOS OBJETOS
+
+        var objects = [];
+
+        $.each($('input.form-control[type = "text"]'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text: ""
+            });
+
+
+        });
+
+        $.each($('input.form-control[type = "number"]'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text: ""
+            });
+
+
+        });
+
+        $.each($('input.form-check-input[type = "radio"]'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text: ""
+            });
+
+
+        });
+        $.each($('input.form-check-input[type = "checkbox"]'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text: ""
+            });
+
+
+        });
+        $.each($('textarea.form-control'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).val(),
+                text: ""
+            });
+
+
+        });
+
+        $.each($('select'), function () {
+
+            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+            var str = $(this).find('option:selected').text();
+            str = str.substring(str.indexOf("-") + 1);
+
+            var final = "";
+            objects.push({
+                id: $(this).attr('name'),
+                value: $(this).val(),
+                text: str.trim()
+            });
+
+
+        });
+
+        //var canvas = document.getElementById("sig-canvas");
+        $.each($('canvas'), function () {
+            var canvas = document.getElementById($(this).attr("id"));
+            var dataUrl = canvas.toDataURL();
+            //alert(dataUrl);
+
+            objects.push({
+                id: $(this).attr("data-id"),
+                value: dataUrl,
+                text: ""
+            });
+        });
+
+        $.each($('input.dropifyIMG[type = "file"]'), function () {
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).attr('data-changeflag'),
+                text: ""
+            });
+
+        });
+        //$.each(objects, function (propName, propVal) {
+        //    console.log(propName, propVal);
+        //});
+
+
+        $.ajax({
+            url: '/FormsM/Save_activity',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    showSuccessToast();
+
+                    ////var x = document.getElementById("finish_activity");
+                    ////if (x.style.display === "none") {
+                    ////    x.style.display = "inline-block";
+                    ////} else {
+                    ////    x.style.display = "none";
+                    ////}
+                    window.location.reload(true);
+
+                    //window.location.reload(true);
+                } else {
+                    showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                showWarning2Toast();
+
+            }
+        });
+    };
+
+    function initGeolocation() {
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            console.log('Geolocation is not supported');
+        }
+    }
+</script>
+
+
+<!--SCRIPT PARA GUARDAR IMAGENES TIEMPO REAL -->
+<script>
+    $('input[type=file]').change(function () {
+        //Le decimos que por cada input file que encuentre hara este proceso
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+            //$.each($('input[type="file"]'), function () {
+             
+            var ID = $(this).attr('id');
+         
+            $(this).attr('data-changeflag', '0');
+
+                var idvisita = "";
+             
+
+                var fileUpload = $("#" + ID).get(0);
+
+                var files = fileUpload.files;
+                
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('id', ID);
+                fileData.append('idvisita', idvisita);
+                
+
+                
+                //$.ajax({
+                //    url: '/FormsM/UploadFiles',
+                //    type: "POST",
+                //    contentType: false, // Not to set any content header
+                //    processData: false, // Not to process data
+                //    async: true,
+                //    timeout: 80000,
+                //    data: fileData,
+                //    success: function (result) {
+                //        //$("#modal_demoform_saving").modal('hide');
+                //    },
+                //    error: function (err) {
+                //        //$("#modal_demoform_saving").modal('hide');
+                //        alert("An error is reported.");
+
+                //    }
+                //});
+            //});
+
+
+        }
+
+
+        else {
+            alert("FormData is not supported.");
+        }
+
+    });
+
+
+</script>
+

@@ -1,4 +1,8 @@
-﻿(function () {
+﻿if (document.getElementById("sig-canvas")) {
+
+
+
+(function () {
 
     // Get a regular interval for drawing to the screen
     window.requestAnimFrame = (function (callback) {
@@ -17,6 +21,10 @@
     var ctx = canvas.getContext("2d");
     ctx.strokeStyle = "#222222";
     ctx.lineWith = 2;
+
+
+    
+
 
     // Set up the UI
     var sigText = document.getElementById("sig-dataUrl");
@@ -128,4 +136,6 @@
         renderCanvas();
     })();
 
-})();
+    })();
+
+}

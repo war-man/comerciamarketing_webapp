@@ -920,5 +920,56 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
+
+        //MERCHANDISING
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRep(string nombre, string apellido, string correo, string telefono)
+        {
+            Usuarios usuarios = new Usuarios();
+
+            usuarios.nombre = nombre;
+            usuarios.apellido = apellido;
+            usuarios.correo = correo;
+            usuarios.telefono = telefono;
+
+
+            if (usuarios.contrasena == null)
+            {
+                usuarios.contrasena = "c0m2018";
+            }
+
+            if (usuarios.cargo == null)
+            {
+                usuarios.cargo = "";
+            }
+            if (usuarios.telefono == null)
+            {
+                usuarios.telefono = "";
+            }
+            if (usuarios.estados_influencia == null)
+            {
+                usuarios.estados_influencia = "";
+            }
+            usuarios.cargo = "Representative";
+            usuarios.ID_empresa = 2;
+            usuarios.ID_tipomembresia = 8;
+            usuarios.ID_rol = 9;
+            usuarios.fcreacion_usuario = DateTime.UtcNow;
+            usuarios.activo = true;
+
+            if (ModelState.IsValid)
+            {
+                db.Usuarios.Add(usuarios);
+                db.SaveChanges();
+                TempData["exito"] = "User created successfully.";
+                return RedirectToAction("Representatives", "Home", null);
+            }
+            TempData["advertencia"] = "Something wrong happened, try again.";
+            return RedirectToAction("Representatives", "Home", null);
+        }
+
+
+
     }
 }

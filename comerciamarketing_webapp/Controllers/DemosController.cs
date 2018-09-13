@@ -93,7 +93,7 @@ namespace comerciamarketing_webapp.Controllers
                             //totaldemohours = ts;
 
                             //item.extra_hours = totaldemohours
-                            var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                            var usuario = (from u in CMKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
                             if (usuario == null)
                             {
 
@@ -127,7 +127,7 @@ namespace comerciamarketing_webapp.Controllers
                     {
 
 
-                        var usuario = (from h in CMKdb.OCRDs where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
+                        var usuario = (from h in CMKdb.OCRD where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
                         if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
 
 
@@ -227,7 +227,7 @@ namespace comerciamarketing_webapp.Controllers
             
 
 
-        //        var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+        //        var store = CMKdb.OCRD.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
         //        IEnumerable<SelectListItem> selectList_stores = from st in store
         //                                                        select new SelectListItem
         //                                                        {
@@ -304,7 +304,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
 //USERS
-                var usuariosdemo = CMKdb.OCRDs.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType=="s").OrderBy(b => b.CardName).ToList();
+                var usuariosdemo = CMKdb.OCRD.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType=="s").OrderBy(b => b.CardName).ToList();
 
                 IEnumerable<SelectListItem> selectList_usuarios = from st in usuariosdemo
                                                                   select new SelectListItem
@@ -317,11 +317,11 @@ namespace comerciamarketing_webapp.Controllers
 
 
 //VENDORS
-                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRD.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
                 
 
 
-                var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+                var store = CMKdb.OCRD.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
                 IEnumerable<SelectListItem> selectList_stores = from st in store
                                                          select new SelectListItem
                                                          {
@@ -405,7 +405,7 @@ namespace comerciamarketing_webapp.Controllers
 
     
                 foreach (var itemd in listadeItems) {
-                    itemd.fdescription = (from k in CMKdb.OITMs join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault(); 
+                    itemd.fdescription = (from k in CMKdb.OITM join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault(); 
                 }
 
                 var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
@@ -425,7 +425,7 @@ namespace comerciamarketing_webapp.Controllers
                 //*******************************
                 try
                 {
-                    var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
+                    var usuario = (from a in CMKdb.OCRD where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
                     //Enviamos correo para notificar
                     dynamic email = new Email("newdemo_alert");
                     email.To = usuario.E_Mail.ToString();
@@ -492,7 +492,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //ViewBag.ID_usuario = new SelectList(selectList, "Value", "Text", demos.ID_usuario);
-                var store = CMKdb.OCRDs.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
+                var store = CMKdb.OCRD.Where(b => b.Series == 68 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName).ToList();
                 IEnumerable<SelectListItem> selectList_stores = from st in store
                                                                 select new SelectListItem
                                                                 {
@@ -502,8 +502,8 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.ID_Store = new SelectList(selectList_stores, "Value", "Text", demos.ID_Store);
 
-                //ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",demos.ID_Vendor);
-                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRDs.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName", demos.ID_Vendor);
+                //ViewBag.ID_Vendor = new SelectList(CMKdb.OCRD.Where(b => b.Series == 2 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName",demos.ID_Vendor);
+                ViewBag.ID_Vendor = new SelectList(CMKdb.OCRD.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName", demos.ID_Vendor);
                 return View(demos);
 
             }
@@ -571,7 +571,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 foreach (var itemd in listadeItems)
                 {
-                    itemd.fdescription = (from k in CMKdb.OITMs join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    itemd.fdescription = (from k in CMKdb.OITM join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
                 }
 
                 var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
@@ -595,7 +595,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 try
                 {
-                    var usuario = (from a in CMKdb.OCRDs where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
+                    var usuario = (from a in CMKdb.OCRD where (a.CardCode == demos.ID_usuario) select a).FirstOrDefault();
 
                     //Enviamos correo para notificar
                     dynamic email = new Email("editdemo_alert");
@@ -976,7 +976,7 @@ namespace comerciamarketing_webapp.Controllers
                     TimeSpan totaldemohours = new TimeSpan(0,0,0);
 
                     foreach (var item in total_demos) {
-                        var store_details = (from CM in CMKdb.OCRDs where (CM.CardCode == item.ID_Store) select CM).FirstOrDefault();
+                        var store_details = (from CM in CMKdb.OCRD where (CM.CardCode == item.ID_Store) select CM).FirstOrDefault();
 
                         if (store_details == null)
                         {
@@ -1226,7 +1226,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     foreach (var item in total_demos)
                     {
-                        var store_details = (from CM in CMKdb.OCRDs where (CM.CardCode == item.ID_Store) select CM).FirstOrDefault();
+                        var store_details = (from CM in CMKdb.OCRD where (CM.CardCode == item.ID_Store) select CM).FirstOrDefault();
 
                         if (store_details == null)
                         {
@@ -1425,7 +1425,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 foreach (var item in demo_header)
                 {
-                    var usuario = (from u in CMKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    var usuario = (from u in CMKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
                     if (usuario == null)
                     {
 
@@ -1468,7 +1468,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Obtenemos el nombre de las marcas o brands por cada articulo
                 var listadeItems = (from d in db.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
-                var oitm = (from h in CMKdb.OITMs select h).ToList();
+                var oitm = (from h in CMKdb.OITM select h).ToList();
                 var omrc = (from i in CMKdb.OMRC select i).ToList();
                 foreach (var itemd in listadeItems)
                 {

@@ -1,0 +1,459 @@
+﻿
+@{
+    ViewBag.Title = "Comercia Marketing - CustomersM stats";
+}
+
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="row profile-page">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <a href="@Url.Action("CustomersM", "Home")"><i class="mdi mdi-arrow-left-bold-circle-outline icon-lg" title="Back"></i></a>
+                                    </div>
+                                    <div class="text-right col-md-10">
+                                        <h4 class="display-4">Nombre de cliente</h4>
+                                    </div>
+                                </div>
+
+                                <div class="profile-header text-black">
+                                    <div class="d-flex justify-content-around">
+                                        <div class="profile-info d-flex align-items-center">
+
+                                            <div class="wrapper pl-4">
+                                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                                    <i class="mdi mdi-calendar"></i>&nbsp;
+                                                    <span></span> <i class="fa fa-caret-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-body">
+                                    <ul class="nav tab-switch" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="user-profile-info-tab" data-toggle="pill" href="#user-profile-info" role="tab" aria-controls="user-profile-info" aria-selected="true">Routes</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="user-profile-activity-tab" data-toggle="pill" href="#user-profile-activity" role="tab" aria-controls="user-profile-activity" aria-selected="false">Activity</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="user-profile-data-tab" data-toggle="pill" href="#user-profile-data" role="tab" aria-controls="user-profile-data" aria-selected="false">Analytics</a>
+                                        </li>
+                                    </ul>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="tab-content tab-body" id="profile-log-switch">
+                                                <div class="tab-pane fade show active pr-3" id="user-profile-info" role="tabpanel" aria-labelledby="user-profile-info-tab">
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex">
+                                                                        <i class="mdi mdi-seat-recline-extra icon-lg"></i>
+                                                                        <div class="d-flex flex-column ml-2">
+                                                                            <span class="d-flex flex-column">
+                                                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
+                                                                                <p class="font-weight-bold">0</p>
+                                                                            </span>
+                                                                            <small>% total</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex">
+                                                                        <i class="mdi mdi-truck-delivery icon-lg"></i>
+                                                                        <div class="d-flex flex-column ml-2">
+                                                                            <span class="d-flex flex-column">
+                                                                                <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
+                                                                                <p class="font-weight-bold">0</p>
+                                                                            </span>
+                                                                            <small>% total</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex">
+                                                                        <i class="mdi mdi-clipboard-check icon-lg"></i>
+                                                                        <div class="d-flex flex-column ml-2">
+                                                                            <span class="d-flex flex-column">
+                                                                                <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
+                                                                                <p class="font-weight-bold">0</p>
+                                                                            </span>
+                                                                            <small>% total</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex">
+                                                                        <i class="mdi mdi-alert-octagon icon-lg"></i>
+                                                                        <div class="d-flex flex-column ml-2">
+                                                                            <span class="d-flex flex-column">
+                                                                                <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
+                                                                                <p class="font-weight-bold">0</p>
+                                                                            </span>
+                                                                            <small>0.0% total</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr />
+                                                    <div class="row">
+                                                        <div class="col-md-12 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12 table-responsive">
+                                                                            <table id="order-listing" class="table table-striped">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Route #</th>
+                                                                                        <th>Date</th>
+                                                                                        <th>Store</th>
+                                                                                        <th>Representatives</th>
+                                                                                        <th>Status</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>1</td>
+                                                                                        <td> May 15, 2015</td>
+                                                                                        <td>
+                                                                                            CHAPINLANDIA<br />
+                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
+                                                                                        </td>
+                                                                                        <td>Stanley Valenzuela, Aldo Quijano</td>
+
+                                                                                        <td>
+                                                                                            <label class="badge badge-warning">On hold</label>
+                                                                                        </td>
+
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>2</td>
+                                                                                        <td> May 15, 2015</td>
+                                                                                        <td>
+                                                                                            CHAPINLANDIA<br />
+                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
+                                                                                        </td>
+                                                                                        <td>Francisco Velasquez</td>
+
+                                                                                        <td>
+                                                                                            <label class="badge badge-danger">Canceled</label>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="user-profile-activity" role="tabpanel" aria-labelledby="user-profile-activity-tab">
+                                                    <div class="horizontal-timeline">
+                                                        <section class="time-frame">
+                                                            <h4 class="section-time-frame">Today</h4>
+                                                            <div class="event">
+                                                                <p class="event-text">We’re big on real names around here, so people know who’s who</p>
+                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
+                                                                <div class="event-info">New Dashboard Design - 9:24 PM</div>
+                                                            </div>
+                                                            <div class="event">
+                                                                <p class="event-text">It is a fully responsive bootstrap admin template / bootstrap admin dashboard</p>
+                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
+                                                                <div class="event-info">New Dashboard Design - 9:24 PM</div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="time-frame">
+                                                            <h4 class="section-time-frame">Yesterday</h4>
+                                                            <div class="event">
+                                                                <p class="event-text">Night fill together itself. Midst. Beginning. Behold living god had.</p>
+                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
+                                                                <div class="event-info">New Dashboard Design - 11:24 PM</div>
+                                                            </div>
+                                                            <div class="event">
+                                                                <p class="event-text">Why waste time starting from scratch; try out our admin dashboard template</p>
+                                                                <div class="event-info">New Dashboard Design - 11:30 PM</div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="user-profile-data" role="tabpanel" aria-labelledby="user-profile-data-tab">
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <h4 class="card-title mb-0">Visited Stores</h4>
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <div class="d-inline-block pt-3">
+                                                                            <div class="d-flex">
+                                                                                <h2 class="mb-0">17</h2>
+                                                                            </div>
+                                                                            <small class="text-gray">of 89 stores.</small>
+                                                                        </div>
+                                                                        <div class="d-inline-block">
+                                                                            <div class="bg-success px-4 py-2 rounded">
+                                                                                <i class="mdi mdi-store text-white icon-lg"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <h4 class="card-title mb-0">Activities</h4>
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <div class="d-inline-block pt-3">
+                                                                            <div class="d-flex">
+                                                                                <h2 class="mb-0">256</h2>
+                                                                            </div>
+                                                                            <small class="text-gray">Forms, Retail Audits, Sales Orders</small>
+                                                                        </div>
+                                                                        <div class="d-inline-block">
+                                                                            <div class="bg-warning px-4 py-2 rounded">
+                                                                                <i class="mdi mdi-chart-timeline text-white icon-lg"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="row">
+                                                        <div class="col-lg-6 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <h4 class="card-title">Route Stats</h4>
+                                                                    <div class="map-container">
+                                                                        <div id="regions_div" class="google-map"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <h4 class="card-title">Store Stats</h4>
+                                                                    <div class="map-container">
+                                                                        <div id="Donut-chart" class="google-map"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col-md-12 grid-margin stretch-card">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h4 class="card-title"></h4>
+                                                                <div class="row ml-md-0 mr-md-0 vertical-tab tab-minimal">
+                                                                    <ul class="nav nav-tabs col-md-3 justify-content-between" role="tablist">
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link active" id="tab-2-1" data-toggle="tab" href="#dashboard-2-1" role="tab" aria-controls="dashboard-2-1" aria-selected="true"><i class="mdi mdi-speedometer"></i>Activities by type</a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" id="tab-2-2" data-toggle="tab" href="#message-2-2" role="tab" aria-controls="message-2-2" aria-selected="false"><i class="mdi mdi-message-outline"></i>Routes by states</a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" id="tab-2-3" data-toggle="tab" href="#campaigns-2-3" role="tab" aria-controls="campaigns-2-3" aria-selected="false"><i class="mdi mdi-bell-outline"></i>Stores details</a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" id="tab-2-4" data-toggle="tab" href="#influencers-2-4" role="tab" aria-controls="influencers-2-4" aria-selected="false"><i class="mdi mdi-account-outline"></i>Representatives</a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" id="tab-2-5" data-toggle="tab" href="#payments-2-5" role="tab" aria-controls="payments-2-5" aria-selected="false"><i class="mdi mdi-lightbulb-outline"></i>Sales and Merchandising</a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" id="tab-2-6" data-toggle="tab" href="#analytics-2-6" role="tab" aria-controls="analytics-2-6" aria-selected="false"><i class="mdi mdi-airplay"></i>Team Effort</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="tab-content col-md-9">
+                                                                        <div class="tab-pane fade show active" id="dashboard-2-1" role="tabpanel" aria-labelledby="tab-2-1">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <div class="list-wrapper">
+                                                                                        <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                                                                            <li>
+                                                                                                <div class="form-check form-check-flat">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input class="checkbox" type="checkbox">
+                                                                                                        Forms
+                                                                                                    </label>
+                                                                                                </div>
+
+                                                                                            </li>
+                                                                                            <li class="completed">
+                                                                                                <div class="form-check form-check-flat">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input class="checkbox" type="checkbox" checked>
+                                                                                                        Audits
+                                                                                                    </label>
+                                                                                                </div>
+
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <div class="form-check form-check-flat">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input class="checkbox" type="checkbox">
+                                                                                                        Sales Order
+                                                                                                    </label>
+                                                                                                </div>
+
+                                                                                            </li>
+
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane fade" id="message-2-2" role="tabpanel" aria-labelledby="tab-2-2">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane fade" id="campaigns-2-3" role="tabpanel" aria-labelledby="tab-2-3">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane fade" id="influencers-2-4" role="tabpanel" aria-labelledby="tab-2-4">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane fade" id="payments-2-5" role="tabpanel" aria-labelledby="tab-2-5">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane fade" id="analytics-2-6" role="tabpanel" aria-labelledby="tab-2-6">
+                                                                            <div class="row">
+                                                                                <div class="col-md-5">
+                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
+                                                                                </div>
+                                                                                <div class="col-md-7 pl-md-5">
+                                                                                    <div class="wrapper mb-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                    <div class="wrapper mt-4 pt-4">
+                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
+                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/Footer2.cshtml")
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+
+</div>
+

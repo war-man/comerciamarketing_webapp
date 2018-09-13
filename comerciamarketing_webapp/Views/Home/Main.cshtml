@@ -1,223 +1,773 @@
-﻿@{
-    /**/
-
+﻿
+@{
     ViewBag.Title = "Comercia Marketing - Home";
 }
-<div class="container single_product_container">
-    @if (Session["tipousuario"].ToString() != "1" && Session["tipousuario"].ToString() != "6")
-    {
-        <!-- Slider -->
+<!--Primero tenemos que definir los tipos de usuario que manejamos
+    Por el momento manejamos 3 tipos de usuario principales y cada uno tiene subdivisiones
 
-        <div class="main_slider" style="background-image:url(../Content/images/MechandiserWeb.jpg)">
-            <div class="container fill_height">
-                <div class="row align-items-center fill_height">
-                    <div class="col">
-                        <div class="main_slider_content">
-                            <h2>
-                                Welcome
-                            </h2><br />
-                            @if (Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
-                            {
-                                <h5>  @ViewBag.nomusuarioSAP</h5>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-    @if (Session["tipousuario"].ToString() != "1" && Session["tipousuario"].ToString() != "6")
-    {
+    -1-Super Administrador
+    -Administrador de modulo
+        -6-Demos
+        -8-Merchandising
+    -Usuario de modulo
+        -Dashboard(Clientes o marcas)
+        -Merchandising(Nuestros empleados)
+    -->
+<!--Si es Super Usuario-->
+<!--Si es usuario con membresia Merchandising pero rol Administrador-->
+@if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8")
+{
 
+}
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="benefit">
-                    <div class="container">
-                        <div class="row benefit_row">
-                            <div class="col-lg-6 benefit_col">
-                                <div class="benefit_item d-flex flex-row align-items-center">
-                                    <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
-                                    <div class="benefit_content">
-                                        <h6>Membership</h6>
-                                        <p>@ViewBag.tipomembresia </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 benefit_col">
-                                <div class="benefit_item d-flex flex-row align-items-center">
-                                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-                                    <div class="benefit_content">
-                                        <h6>Last visit</h6>
-                                        <p id="last_visitmain">@ViewBag.ultimavisita </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--
-                            <div class="col-lg-4 benefit_col">
-                                <div class="benefit_item d-flex flex-row align-items-center">
-                                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                                    <div class="benefit_content">
-                                        <h6>Last update</h6>
-                                        <p>Today, 03:05:00 am (server time)</p>
-                                    </div>
-                                </div>
-                            </div>
-                                -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<!--Si es usuario con membresia Merchandising pero rol Administrador-->
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="container">
 
-    @if (Session["tipousuario"].ToString() == "6" || Session["tipousuario"].ToString() == "1")
-    {
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
 
-
-
-
-        <!--<div class="row">
-            <div class="col-lg-12">
-                <div class="benefit">
-                    <div class="container">
-                        
-                        <div class="row benefit_row">
-                            <p> Welcome!</p>
-                            <div class="col-lg-12 col-md-12">
+                            <div class="accordion basic-accordion" id="accordion" role="tablist">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="gray">
-                                        <h4 class="title">Demos Stats</h4>
-                                        <p class="category">@ViewBag.desdehasta </p> 
-                                        <div class="col-lg-3">
-                                            Change week: <input data-weekpicker="weekpicker" class="form-control" onchange='Demofilter()' id="filterhome"/>
+                                    <div class="card-header" role="tab" id="headingOne">
+                                        <h6 class="mb-0">
+                                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                <i class="card-icon mdi mdi-filter"></i>Filters
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">By Date</h4>
+                                                            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                                                <i class="mdi mdi-calendar"></i>&nbsp;
+                                                                <span></span> <i class="fa fa-caret-down"></i>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">By Customer</h4>
+                                                            <div class="form-group">
+                                                                <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
+                                                                    @foreach (var itemCustomers in ViewBag.customers)
+                                                                    {
+                                                                        <option value="@itemCustomers.CardCode">@itemCustomers.CardCode - @itemCustomers.CardName</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">By Store</h4>
+                                                            <div class="form-group">
+                                                                <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
+                                                                    @foreach (var itemStores in ViewBag.stores)
+                                                                    {
+                                                                        <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8")
+                                                {
+                                                    <div class="col-md-4 grid-margin stretch-card">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">By Representative</h4>
+                                                                <div class="form-group">
+                                                                    <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
+                                                                        @foreach (var itemUsuarios in ViewBag.usuarios)
+                                                                        {
+                                                                            <option value="@itemUsuarios.ID_usuario">@itemUsuarios.nombre @itemUsuarios.apellido</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <i class="mdi mdi-seat-recline-extra icon-lg"></i>
+                                        <div class="d-flex flex-column ml-2">
+                                            <span class="d-flex flex-column">
+                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
+                                                <p class="font-weight-bold">@ViewBag.onhold</p>
+                                            </span>
+                                            <small>@ViewBag.onholdP% total</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-header" data-background-color="orange">
-                                        <i class="fa fa-user-circle"></i>
-                                    </div>
-                                    <div class="card-content">
-                                        <p class="category">On Holding Demos</p>
-                                        <h3 class="title">@ViewBag.onhold_demos</h3>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-header" data-background-color="green">
-                                        <i class="fa fa-user-circle"></i>
-                                    </div>
-                                    <div class="card-content">
-                                        <p class="category">In progress Demos</p>
-                                        <h3 class="title">@ViewBag.inprogress_demos</h3>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-header" data-background-color="red">
-                                        <i class="fa fa-user-circle"></i>
-                                    </div>
-                                    <div class="card-content">
-                                        <p class="category">Canceled Demos</p>
-                                        <h3 class="title">@ViewBag.canceled_demos</h3>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-header" data-background-color="blue">
-                                        <i class="fa fa-user-circle"></i>
-                                    </div>
-                                    <div class="card-content">
-                                        <p class="category">Finished Demos</p>
-                                        <h3 class="title">@ViewBag.finished_demos</h3>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="floating-panel">
-                                    <input type="button" value="Toggle Street View" onclick="toggleStreetView();"></input>
-                                </div>
-                                <div id="map_canvas" style="height: 600px;"></div>
-                            </div>
-
-
-
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="benefit">
-                    <div class="container">
-
-                        <div class="col-lg-12 col-md-12">
+                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
                             <div class="card">
-                                <div class="card-header" data-background-color="blue">
-                                    <h4 class="title">Sharepoint</h4>
-                                    <p class="category">External Forms Links</p>
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <i class="mdi mdi-truck-delivery icon-lg"></i>
+                                        <div class="d-flex flex-column ml-2">
+                                            <span class="d-flex flex-column">
+                                                <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
+                                                <p class="font-weight-bold">@ViewBag.inprogress</p>
+                                            </span>
+                                            <small>@ViewBag.inprogressP% total</small>
+                                        </div>
+                                    </div>
                                 </div>
-                                <br />
-                                <p><i class="fa fa-users"></i><a href="https://limenainc.sharepoint.com/sites/comercia/Lists/Customer%20Data/AllItems.aspx?viewpath=%2Fsites%2Fcomercia%2FLists%2FCustomer%20Data%2FAllItems.aspx" target="_blank"> Customers Form </a></p>
-
-                                <p><i class="fa fa-language"></i><a href="https://limenainc.sharepoint.com/sites/comercia/Lists/Vendor%20Data/AllItems.aspx" target="_blank"> Vendors Form </a></p>
-
-                                <p><i class="fa fa-archive"></i><a href="https://limenainc.sharepoint.com/sites/comercia/Lists/Product%20Data/AllItems.aspx?viewpath=%2Fsites%2Fcomercia%2FLists%2FProduct%20Data%2FAllItems.aspx" target="_blank"> Products Form</a></p>
                             </div>
                         </div>
-                        <div class="row benefit_row">
-
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="benefit_item d-flex flex-row align-items-center">
-                                    <div class="benefit_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
-                                    <div class="benefit_content">
-                                        <h6>Membership</h6>
-                                        <p>@ViewBag.tipomembresia </p>
+                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <i class="mdi mdi-clipboard-check icon-lg"></i>
+                                        <div class="d-flex flex-column ml-2">
+                                            <span class="d-flex flex-column">
+                                                <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
+                                                <p class="font-weight-bold">@ViewBag.finished</p>
+                                            </span>
+                                            <small>@ViewBag.finishedP% total</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="benefit_item d-flex flex-row align-items-center">
-                                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-                                    <div class="benefit_content">
-                                        <h6>Last visit</h6>
-                                        <p id="last_visitmain">@ViewBag.ultimavisita </p>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <i class="mdi mdi-alert-octagon icon-lg"></i>
+                                        <div class="d-flex flex-column ml-2">
+                                            <span class="d-flex flex-column">
+                                                <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
+                                                <p class="font-weight-bold">@ViewBag.canceled</p>
+                                            </span>
+                                            <small>@ViewBag.canceledP% total</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--
-        <div class="col-lg-4 benefit_col">
-            <div class="benefit_item d-flex flex-row align-items-center">
-                <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                <div class="benefit_content">
-                    <h6>Last update</h6>
-                    <p>Today, 03:05:00 am (server time)</p>
-                </div>
-            </div>
-        </div>
-            -->
                         </div>
                     </div>
+                    <!--MAPA-->
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="map-containerVisits">
+                                        <div id="map-with-marker" class="google-map"></div>
+
+                                        <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 10px;display:none;" id="RouteDetails">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <button type="button" class="close" aria-label="Close" id="close_divmap">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <div class="row mt-4">
+                                                        <div class="col-md-12">
+                                                            <h5>Visit details</h5>
+
+                                                            <ul class="nav nav-tabs tab-simple-styled" role="tablist">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="tab-content tab-content-basic">
+                                                                <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
+                                                                    <p class="mb-0" id="map_id"></p>
+                                                                    <p id="map_customername"></p>
+                                                                    <p id="map_storename"></p>
+                                                                    <p id="map_date"></p>
+                                                                    <p id="map_representatives"></p>
+                                                                </div>
+                                                                <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
+                                                                    <p id="map_comment"></p>
+                                                                </div>
+                                                                <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
+
+                                                                    <div class="card" style="height: 220px; bottom:10px;display:block">
+                                                                        <div class="card-body" style="height: 220px;overflow: auto; bottom:10px;display:block">
+                                                                            <p class="text-gray">TUESDAY, APR 9, 2018</p>
+                                                                            <ul class="bullet-line-list pb-3">
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Check in</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Start
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">02</small>
+                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Form</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Data saved
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">03</small>
+                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Form</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Data saved
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">04</small>
+                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                            <p class="text-gray mt-4">TUESDAY, APR 10, 2018</p>
+                                                                            <ul class="bullet-line-list">
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Form</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Data saved
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">08</small>
+                                                                                            <small class="text-muted d-block">am</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Form</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Data saved
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">10</small>
+                                                                                            <small class="text-muted d-block">am</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Retail Audit</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Data saved
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">11</small>
+                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                                        <div class="d-flex">
+
+                                                                                            <div class="ml-3">
+                                                                                                <h6 class="mb-0">Check out</h6>
+                                                                                                <small class="text-muted">
+                                                                                                    Finish
+                                                                                                </small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <small class="d-block mb-0">11</small>
+                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--FIN-->
+                    <!--VISITS LIST-->
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Visits list</h4>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 table-responsive">
+                                            <table id="order-listing" class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID </th>
+                                                        <th>Store</th>
+                                                        <th>Date</th>
+
+                                                        <th>Representatives</th>
+                                                        <th>Status</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var itemVisita in ViewBag.visitas)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @itemVisita.ID_visit
+
+                                                            </td>
+                                                            <td>
+                                                                <a class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to visit" href="@Url.Action("Details", "VisitsMs", new { id = itemVisita.ID_visit })">
+                                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                    <span class="text-primary">@itemVisita.address</span>
+                                                                </a>
+                                                            </td>
+                                                            <td>@itemVisita.visit_date.ToShortDateString()</td>
+
+                                                            <td>@itemVisita.city</td>
+
+                                                            <td>
+                                                                @switch (itemVisita.ID_visitstate)
+                                                                {
+                                                                    case 1: //Canceled
+                                                                        <label class="badge badge-danger">Canceled</label>
+                                                                        break;
+                                                                    case 2: //In Progress
+                                                                        <label class="badge badge-success">In progress</label>
+                                                                        break;
+                                                                    case 3: //On Hold
+                                                                        <label class="badge badge-warning">On hold</label>
+                                                                        break;
+                                                                    case 4: //Finished
+                                                                        <label class="badge badge-primary">Finished</label>
+                                                                        break;
+                                                                }
+
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--CALENDAR-->
+                    @*<div class="row">
+                            <div class="col-md-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div id="calendar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8")
+                    {
+                        <div class="row">
+                            <div class="col-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="display-4">Activities</h4>
+                                        <hr />
+                                        <div class="fluid-container">
+                                            @foreach (var itemVisita in ViewBag.visitas)
+                                            {
+                                                <div class="card">
+
+
+                                                    <div class="row">
+                                                        <div class="ticket-details col-md-12">
+                                                            <span class="text-muted" style="float:right;"> @Convert.ToDateTime(itemVisita.visit_date).ToShortDateString()</span>
+                                                            <div class="d-flex flex-row align-items-center">
+                                                                <i class="mdi mdi-compass icon-lg text-warning"></i>
+                                                                <h6 class="mb-0 ml-12" style="text-align:left;">
+                                                                    <span class="text-primary">@itemVisita.store</span><br />
+                                                                    <span class="text-black-50">@itemVisita.address, @itemVisita.state, @itemVisita.zipcode</span>
+
+
+                                                                </h6>
+
+
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                    <div class="owl-carousel owl-example">
+
+                                                        @foreach (var activity in ViewBag.actlist)
+                                                        {
+
+
+
+                                                            if (activity.ID_visit == itemVisita.ID_visit)
+                                                            {
+                                                                <div>
+                                                                    <div class="card card-revenue border rounded">
+                                                                        <div class="card-body d-flex align-items-center">
+                                                                            <div class="d-flex flex-grow">
+                                                                                <div class="mr-auto">
+                                                                                    @if (activity.ID_activitytype == 1)
+                                                                                    {
+                                                                                        <a href="#" data-toggle="modal" data-target="#infoFormModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
+                                                                                    }
+                                                                                    else if (activity.ID_activitytype == 2)
+                                                                                    {
+                                                                                        <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
+                                                                                    }
+                                                                                    else if (activity.ID_activitytype == 3)
+                                                                                    {
+                                                                                        <a href="#" data-toggle="modal" data-target="#infoSalesModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
+                                                                                    }
+
+
+                                                                                    <p class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Last Update">
+                                                                                        @Convert.ToDateTime(activity.date).ToShortDateString() @Convert.ToDateTime(activity.date).ToShortTimeString()
+                                                                                        <br /> by @activity.ID_usuarioEnd
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="ml-auto align-content-lg-stretch">
+                                                                                    @if (activity.ID_activitytype == 1)
+                                                                                    {
+                                                                                        <i class="mdi mdi-file-document text-primary icon-lg"></i>
+                                                                                    }
+                                                                                    else if (activity.ID_activitytype == 2)
+                                                                                    {
+                                                                                        <i class="mdi mdi-file-document text-warning icon-lg"></i>
+                                                                                    }
+                                                                                    else if (activity.ID_activitytype == 3)
+                                                                                    {
+                                                                                        <i class="mdi mdi-file-document text-success icon-lg"></i>
+                                                                                    }
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                            }
+                                                        }
+
+                                                    </div>
+
+                                                    <hr />
+
+                                                </div>}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @Html.Partial("~/Views/Shared/Footer2.cshtml")
                 </div>
             </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <!-- partial -->
         </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+
+
+<!--Si es usuario con membresia Merchandising pero rol Usuario-->
+@if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
+{
+}
+
+
+<!--INFO FORM DATA STARTS-->
+<div class="modal fade" id="infoFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file"></i> Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
 
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
 
-    }
-
-
+        </div>
+    </div>
 </div>
+<!--END-->
+<!--INFO RETAIL DATA STARTS-->
+<div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUD" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table class="table table-striped" id="resultsRetail">
+                                            <thead>
+          
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br />
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--END-->
+<!--INFO SALES ORDER DATA STARTS-->
+<div class="modal fade" id="infoSalesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file"></i> Sales</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--END-->
+
+<script>
+    window.onload = function () {
+        function BuildEditorHeader(array) {
+
+            array.forEach(function (element, root) {
+                var $th;
+                var $tr = "<tr id='headerR'></tr>";
+                $("#resultsRetail thead").append($tr);
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "8") {
+
+                    $th = "<th>" + element.fsource + "</th>";
+                }
+
+                $('#headerR').append($th);
+            });
+        };
+
+        function BuildEditorRows(array) {
+
+            array.forEach(function (element) {
+                var $tr = "<tr></tr>";
+                var $td;
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "3") {
+
+                    $td = "<td><strong>" + element.fdescription + "</strong></td>";
+                    $("#resultsRetail tbody").append($tr);
+                    $("#resultsRetail tr:last").append($td);
+
+                    if (element.children != null) {
+                        BuildEditorRows(element.children);
+                    }
+                }
+
+                if (element.id_resource == "16") {
+            
+                    $td = "<td>";
+                    $td += "<div class='form-check'>";
+                    $td += "<label class='form-check-label'>";
+                    $td += "<input type='checkbox' class='form-check-input' name='radio_" + element.parent + "' id='" + element.idkey + "'>";
+                    $td += "&nbsp;</label></div>";
+                    $td += "</td>";
+         
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "18") {
+
+                    $td = "<td>";
+                    $td += "<div class='form-group'>";                      
+                    $td += "<div class='col-md-12'>";
+                    $td += "<input type='number' id='" + element.idkey + "' class='form-control form-control-sm' />";        
+                    $td += "</div></div></td>";         
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+
+            });
+        };
+
+        (function ($) {
+            'use strict';
+            $('#infoRetailModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);// Button that triggered the modal
+
+                var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
+                var DesAct = $(event.relatedTarget).data("name");
+
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+
+                $.ajax
+                    ({
+                        url: '/Home/Getformdata',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            IDform: IDform
+                        }),
+                        success: function (result) {
+
+    
+                            $("#resultsRetail").find("tr").remove();
+                            $("#descriptionUD").text(DesAct);
+                            
+                            BuildEditorHeader(result);
+                            BuildEditorRows(result);
+
+                                },
+                                error: function () {
+                                alert("Whooaaa! Something went wrong..")
+                                },
+                                });
+
+
+
+
+                                })
+                                })(jQuery);
+                                }
+</script>

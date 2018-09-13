@@ -377,5 +377,12 @@ namespace comerciamarketing_webapp.Models
         public string U_DayMA { get; set; }
         public string U_DayMB { get; set; }
         public string U_RetailAudit { get; set; }
+        public string U_Latitud { get; set; }
+        public string U_Longitud { get; set; }
+        public Nullable<short> U_VisitFrequency { get; set; }
+        public string U_Status { get; set; }
+        public string U_StoreSize { get; set; }
+        public string U_CardCodeDLI { get; set; }
+        public string U_Classification { get; set; }
     }
 }

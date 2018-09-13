@@ -29,6 +29,18 @@
         <EntityTypeShape EntityType="dbComerciaModel.demo_log" Width="1.5" PointX="7.375" PointY="12.75" />
         <EntityTypeShape EntityType="dbComerciaModel.user_form_w9" Width="1.5" PointX="9.375" PointY="12.75" />
         <EntityTypeShape EntityType="dbComerciaModel.Stock_items" Width="1.5" PointX="9.375" PointY="7.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.ActivitiesM" Width="1.5" PointX="11.375" PointY="14.25" />
+        <EntityTypeShape EntityType="dbComerciaModel.FormsM" Width="1.5" PointX="13.625" PointY="13.875" />
+        <AssociationConnector Association="dbComerciaModel.FK__FormsM__ID_activ__7A3223E8" />
+        <EntityTypeShape EntityType="dbComerciaModel.RoutesM" Width="1.5" PointX="15.375" PointY="5.5" />
+        <EntityTypeShape EntityType="dbComerciaModel.VisitsM" Width="1.5" PointX="13.375" PointY="1.125" />
+        <EntityTypeShape EntityType="dbComerciaModel.FormsM_details" Width="1.5" PointX="15.375" PointY="8.75" />
+        <AssociationConnector Association="dbComerciaModel.FK__VisitsM__ID_rout__18B6AB08" />
+        <EntityTypeShape EntityType="dbComerciaModel.ActivitiesM_types" Width="1.5" PointX="13.625" PointY="18.625" />
+        <EntityTypeShape EntityType="dbComerciaModel.VisitsM_representatives" Width="1.5" PointX="15.625" PointY="0.75" />
+        <AssociationConnector Association="dbComerciaModel.FK__Activitie__ID_ac__17C286CF" />
+        <AssociationConnector Association="dbComerciaModel.FK__RoutesM_R__ID_vi__03BB8E221" />
+        <EntityTypeShape EntityType="dbComerciaModel.ActivitiesM_log" Width="1.5" PointX="0.75" PointY="16.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

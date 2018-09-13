@@ -62,7 +62,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
-                ViewBag.itemCode = new SelectList(COM_MKdb.OITMs.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName");
+                ViewBag.itemCode = new SelectList(COM_MKdb.OITM.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName");
                 return View();
 
 
@@ -119,7 +119,7 @@ namespace comerciamarketing_webapp.Controllers
                     return RedirectToAction("Index");
                 }
 
-                ViewBag.itemCode = new SelectList(COM_MKdb.OITMs.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName",id);
+                ViewBag.itemCode = new SelectList(COM_MKdb.OITM.Where(x => x.ItmsGrpCod == 108 || x.ItmsGrpCod == 107).OrderBy(x => x.ItemName), "ItemCode", "ItemName",id);
                 return View(stock_items);
 
 

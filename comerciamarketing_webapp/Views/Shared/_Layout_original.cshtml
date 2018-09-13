@@ -1,0 +1,1258 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Comercia Marketing App">
+    <title>@ViewData["Title"]</title>
+
+    @Html.Partial("~/Views/Shared/Styles.cshtml")
+    <!-- This css is to ensure that the google map contols (zoom bar etc) show and size correctly. -->
+    <style>
+        #map_canvas img {
+            max-width: none
+        }
+    </style>
+    <!-- This css is to give a nice big popup "info window" when a marker is clicked on the map -->
+    <style>
+        body.modal-open {
+            overflow: visible;
+        }
+
+        .infoDiv {
+            height: 180px;
+            width: 150px;
+            -webkit-user-select: none;
+            background-color: white;
+        }
+
+
+        .bootstrap-select .dropdown-menu > li > a small.muted {
+            display: none;
+        }
+
+        .bootstrap-select .dropdown-toggle .filter-option {
+            position: relative;
+            padding-left: 38px;
+        }
+
+            .bootstrap-select .dropdown-toggle .filter-option:before {
+                content: "Size:";
+                font-size: 14px;
+                font-weight: 700;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+    </style>
+    <style>
+        #sig-canvas {
+            border: 2px dotted #CCCCCC;
+            border-radius: 5px;
+            cursor: crosshair;
+        }
+
+        #sig-dataUrl {
+            width: 100%;
+        }
+    </style>
+
+    <style>
+
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
+
+
+
+        .responsive {
+            padding: 0 6px 7px;
+            display: inline-block;
+
+            width: 33%;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .3s ease;
+            background-color: transparent;
+        }
+
+        div.gallery:hover .overlay {
+            opacity: 1;
+        }
+
+        .icon {
+            color: white;
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .fa-search-plus:hover {
+            color: #eee;
+        }
+
+                @Html.Raw("@")media only screen and (max-width: 1000px) {
+    .responsive {
+        width: 49%;
+        margin: 6px 0;
+    }
+}
+
+
+        @Html.Raw("@")media only screen and (max-width: 700px) {
+    .responsive {
+        width: 48%;
+        margin: 6px 0;
+    }
+}
+
+        @Html.Raw("@")media only screen and (max-width: 300px) {
+            .responsive {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116898086-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116898086-1');
+    </script>
+</head>
+<body>
+    <div class="super_container">
+        @Html.Partial("~/Views/Shared/Menu.cshtml")
+        @RenderBody()
+        @Html.Partial("~/Views/Shared/Footer.cshtml")
+    </div>
+    @Html.Partial("~/Views/Shared/Scripts.cshtml")
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
+
+</script>
+
+@{if (ViewBag.bloquearcontenido != null)
+    {
+
+        if (ViewBag.bloquearcontenido.ToString() == "si")
+        {
+            <script type="text/javascript" language="javascript">
+                $(function () //right click disabled
+                {
+                    $(this).bind('contextmenu', function () {
+                        //alert("Function disabled");
+                        return false;
+                    })
+                });
+
+                function copyToClipboard() {
+                    var aux = document.createElement("input");
+                    aux.setAttribute("value", "Function Disabled.....");
+                    document.body.appendChild(aux);
+                    aux.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(aux);
+                    //alert("Print screen disabled.");
+
+
+
+                }
+
+                function blockPrint() {
+                    //alert("Print is not allowed...");
+                }
+
+                function PreSaveAction() {
+                    //alert("saving..");
+                }
+
+                $(function () {
+                    $(this).keyup(function (e) {
+                        if (e.keyCode == 44 || e.keyCode == 137 || e.KeyCode == 93)
+                        //100 Save 137 SHift F10 93 RightClick 44 PrintScreen
+                        {
+                            copyToClipboard();
+                            return false;
+                        }
+                    })
+                });
+
+                //disable Ctrl + keys
+                document.onkeydown = function (e) {
+                    e = e || window.event;//Get event
+                    if (e.ctrlKey) {
+                        var c = e.which || e.keyCode;//Get key code
+                        switch (c) {
+                            case 83://Block Ctrl+S
+                            case 80: //block Ctrl+P
+                            case 17: //block Ctrl
+                            case 16: //block Shift
+                                e.preventDefault();
+                                e.stopPropagation();
+                                alert("Esta función han sido bloqueada");
+                                break;
+                        }
+                    }
+                };
+
+
+                $(window).focus(function () {
+                    $("body").show();
+                }).blur(function () {
+                    $("body").show();
+                });
+
+                function setClipBoardData() { //override system function - make clipBoard null always
+                    setInterval("window.clipboardData.setData('text','')", 20);
+                }
+                function blockError() {
+                    window.location.reload(true);
+                    return true;
+                }
+            </script>
+        }
+    }
+}
+
+
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Error",
+                text: "@(TempData["error"])",
+                type: "error"
+            })
+        };
+    </script>
+}
+
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Warning",
+                text: "@(TempData["advertencia"])",
+                type: "notice"
+            })
+        };
+    </script>
+}
+
+
+@if (TempData["exito"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Success",
+                text: "@(TempData["exito"])",
+                type: "success"
+            })
+        };
+    </script>
+}
+<script type="text/javascript">
+    $('#newpassword, #retrypassword').on('keyup', function () {
+        if ($('#newpassword').val() == $('#retrypassword').val()) {
+            $('#message').html('Matching').css('color', 'green');
+
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+
+</script>
+@if (ViewBag.Title == "Comercia Marketing - Demo")
+{
+    <script>
+
+        $(document).ajaxStop(function () {
+            $("#modal_demoform_saving").modal('hide');
+            window.location.reload(true);
+        });
+
+        $(document).ajaxError(function () {
+            console.log("An error was handle");
+            $("#modal_demoform_saving").modal('hide');
+            window.location.reload(true);
+        });
+
+    </script>
+}
+<!--SCRIPT PARA GUARDAR IMAGENES TIEMPO REAL -->
+<script>
+    $('input[type=file]').change(function () {
+        //Le decimos que por cada input file que encuentre hara este proceso
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+            $.each($('input[type="file"]'), function () {
+                $("#modal_demoform_saving").modal('show');
+                var ID = $(this).attr('id');
+
+                var fileUpload = $("#" + ID).get(0);
+
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('id', ID);
+                $.ajax({
+                    url: '/Forms/UploadFiles',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    async: true,
+                    timeout: 80000,
+                    data: fileData,
+                    success: function (result) {
+                        //$("#modal_demoform_saving").modal('hide');
+                    },
+                    error: function (err) {
+                        //$("#modal_demoform_saving").modal('hide');
+                        new PNotify({
+                            title: "Warning",
+                            text: "Error. " + err.statusText,
+                            type: "notice"
+                        })
+
+                    }
+                });
+            });
+
+
+        }
+
+
+        else {
+            alert("FormData is not supported.");
+        }
+
+    });
+
+
+</script>
+<!--SCRIPT FORM_TEMPLATE SAVE-->
+<script>
+        $(function () {
+            $("#save_formtemplate").click(function () {
+                @*var ip = "@Session["ip_user"]";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
+
+                var id_demo = "";
+                id_demo = document.getElementById('id_demo').value;
+
+                var objects = [];
+
+                $.each($('input.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+                $.each($('textarea.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+
+                //$.each($('img.form-control'), function () {
+
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        text: $(this).attr('src')
+                //    });
+                //});
+
+                //var canvas = document.getElementById("sig-canvas");
+                $.each($('canvas'), function () {
+                    var canvas = document.getElementById($(this).attr("id"));
+                    var dataUrl = canvas.toDataURL();
+                    //alert(dataUrl);
+
+                    objects.push({
+                        id: $(this).attr("data-id"),
+                        text: dataUrl
+                    });
+                });
+
+                $.each(objects, function (propName, propVal) {
+                    console.log(propName, propVal);
+                });
+
+
+                $.ajax({
+                    url: '/Forms/Save_templateformdata',
+                    type: 'POST',
+                    data: JSON.stringify(objects),
+                    contentType: 'application/json; charset=utf-8',
+                    async: true,
+                    cache: false,
+                    global: false,
+                    success: function (result) {
+
+                        new PNotify({
+                            title: "Success",
+                            text: "Form saved successfully.",
+                            type: "success"
+                        })
+
+                        var x = document.getElementById("finish_formtemplate");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            //x.style.display = "none";
+                        }
+
+
+                        //window.location.reload(true);
+
+                    },
+                    error: function (request) {
+
+                        new PNotify({
+                            title: "Warning",
+                            text: "Something wrong happened, try again.",
+                            type: "notice"
+                        })
+                    }
+                });
+
+
+            }
+            );
+        });
+
+</script>
+
+<!--FORM TEMPLATE FINISH-->
+<script>
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+
+        newDate.setHours(hours - offset);
+
+        return newDate;
+    };
+
+        $(function () {
+            $("#finish_formtemplate").click(function () {
+                $("#modal_demoform_saving").modal('show');
+                var now = new Date();
+               // var MS_PER_MINUTE = 60000;
+                //var offset = new Date().getTimezoneOffset();
+
+                //var date = new Date(now - offset * MS_PER_MINUTE);
+                //var localDate = new Date($(this).html());
+
+                //console.log(now);
+                console.log(now.toLocaleString());
+                console.log(now.toLocaleString("en-US", { hour12: true }));
+
+                @*var ip = "@Session["ip_user"]";
+                var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';*@
+
+                var id_demo = "";
+                id_demo = document.getElementById('id_demo').value;
+
+
+                var objects = [];
+
+                $.each($('input.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+                $.each($('textarea.form-control'), function () {
+
+                    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    objects.push({
+                        id: $(this).attr('id'),
+                        text: $(this).val()
+                    });
+
+
+                });
+
+
+                //$.each($('img.form-control'), function () {
+
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).attr('src'));
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        text: $(this).attr('src')
+                //    });
+                //});
+
+                //var canvas = document.getElementById("sig-canvas");
+                $.each($('canvas'), function () {
+                    var canvas = document.getElementById($(this).attr("id"));
+                    var dataUrl = canvas.toDataURL();
+                    //alert(dataUrl);
+
+                    objects.push({
+                        id: $(this).attr("data-id"),
+                        text: dataUrl
+                    });
+                });
+
+                $.each(objects, function (propName, propVal) {
+                    console.log(propName, propVal);
+                });
+
+                objects.push({
+                    id: "999999999",
+                    text: now.toLocaleString("en-US", { hour12: true })
+                });
+
+
+                $.ajax({
+                    url: '/Forms/Finish_templateformdata',
+                    type: 'POST',
+                    data: JSON.stringify(objects) ,
+                    contentType: 'application/json; charset=utf-8',
+                    async: true,
+                    cache: false,
+                    global: false,
+                    complete: function () {
+                        $("#modal_demoform_saving").modal('hide');
+                    },
+                    success: function (result) {
+                        $("#modal_demoform_saving").modal('hide');
+                        new PNotify({
+                            title: "Success",
+                            text: "Form saved successfully.",
+                            type: "success"
+                        })
+
+                        window.location.reload(true);
+
+
+
+                            // get the API result via jQuery.ajax
+                    @*$.ajax({
+                        url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        dataType: 'json',
+                        success: function (jsondatos) {
+
+                            var datosusuario = {
+                                ip: jsondatos.ip,
+                                ID_demo: id_demo,
+                                hostname : jsondatos.hostname,
+                                typeh : jsondatos.type,
+                                continent_name  : jsondatos.continent_name,
+                                country_code : jsondatos.country_code,
+                                country_name : jsondatos.country_name,
+                                region_code : jsondatos.region_code,
+                                region_name : jsondatos.region_name,
+                                city : jsondatos.city,
+                                latitude : jsondatos.latitude,
+                                longitude : jsondatos.longitude,
+                                action: "Finish demo"
+
+                            };
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("demo_logsave", "Demos")',
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(datosusuario),
+                                success: function (model) {
+                                    if (model.success) {
+                                        console.log("Demo log success")
+                                    } else {
+                                        console.log("Demo log error")
+
+                                    }
+
+
+
+                             }
+                            });
+
+                        }
+                    });*@
+
+                    },
+                    error: function (request) {
+                        $("#modal_demoform_saving").modal('hide');
+                        new PNotify({
+                            title: "Warning",
+                            text: "Something wrong happened, try again.",
+                            type: "notice"
+                        })
+
+                        window.location.reload(true);
+                    }
+                });
+
+            }
+            );
+        });//end
+
+</script>
+
+
+<script>
+    $(function () {
+        $("#w9-submitBtn").click(function () {
+
+            //var canvas = document.getElementById("sig-canvas");
+            $.each($('canvas'), function () {
+                var canvas = document.getElementById($(this).attr("id"));
+                var dataUrl = canvas.toDataURL();
+
+                $("#signature").val(dataUrl);
+
+            });
+
+        });
+    });
+
+</script>
+
+
+
+<script>
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+
+        newDate.setHours(hours - offset);
+
+        return newDate;
+    }
+
+    //$('#change_formattime .customerIDCell').each(function () {
+    //    var date = convertUTCDateToLocalDate(new Date($(this).html()));
+    //    //var localDate = new Date($(this).html());
+    //    $(this).html(date.toLocaleString());
+    //});
+
+    $('#last_visitmain').each(function () {
+        var date = convertUTCDateToLocalDate(new Date($(this).html()));
+        //var localDate = new Date($(this).html());
+        $(this).html(date.toLocaleString());
+    });
+</script>
+
+<script>
+    function getStorename_demoC() {
+        var vendorId = $("#dropdown_idstore_c").val();
+        var vendortext = $("#dropdown_idstore_c option:selected").text();
+
+
+        $("#store_nameDemoC").val(vendortext);
+    };
+
+    function getVendorname_demoC() {
+        var vendorId = $("#dropdown_idvendor_c").val();
+        var vendortext = $("#dropdown_idvendor_c option:selected").text();
+
+
+        $("#vendor_nameDemoC").val(vendortext);
+    };
+</script>
+
+<script>
+    function getStorename_demoE() {
+        var vendorId = $("#dropdown_idstore_E").val();
+        var vendortext = $("#dropdown_idstore_E option:selected").text();
+
+
+        $("#store_nameDemoE").val(vendortext);
+    };
+
+    function getVendorname_demoE() {
+        var vendorId = $("#dropdown_idvendor_E").val();
+        var vendortext = $("#dropdown_idvendor_E option:selected").text();
+
+
+        $("#vendor_nameDemoE").val(vendortext);
+    };
+</script>
+
+
+<!--GET ITEM NAME-->
+<script>
+    function getItemNameC() {
+        var vendorId = $("#dropdown_iditemC").val();
+        var vendortext = $("#dropdown_iditemC option:selected").text();
+
+
+        $("#item_nameC").val(vendortext);
+    };
+</script>
+
+<script>
+    function getItemNameE() {
+        var vendorId = $("#dropdown_iditemE").val();
+        var vendortext = $("#dropdown_iditemE option:selected").text();
+
+
+        $("#item_nameE").val(vendortext);
+    };
+</script>
+
+@if (ViewBag.Title == "Comercia Marketing - Demo Log")
+{
+    <script type="text/javascript">
+
+        // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+        $(document).ready(function () {
+            Initialize();
+        });
+
+        // Where all the fun happens
+        function Initialize() {
+
+            // Google has tweaked their interface somewhat - this tells the api to use that new UI
+            google.maps.visualRefresh = true;
+            var Liverpool = new google.maps.LatLng(@ViewBag.latitude, @ViewBag.longitude);
+
+            // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+            var mapOptions = {
+                zoom: 12,
+                center: Liverpool,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+            // This makes the div with id "map_canvas" a google map
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+            // This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
+            var myLatlng = new google.maps.LatLng(@ViewBag.latitude, @ViewBag.longitude);
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: 'Tate Gallery'
+            });
+
+            // You can make markers different colors...  google it up!
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+            // a sample list of JSON encoded data of places to visit in Liverpool, UK
+            /* you can either make up a JSON list server side, or call it from a controller using JSONResult
+            var data = [
+                { "Id": 1, "PlaceName": "Liverpool Museum", "OpeningHours": "9-5, M-F", "GeoLong": "53.410146", "GeoLat": "-2.979919" },
+                { "Id": 2, "PlaceName": "Merseyside Maritime Museum ", "OpeningHours": "9-1,2-5, M-F", "GeoLong": "53.401217", "GeoLat": "-2.993052" },
+                { "Id": 3, "PlaceName": "Walker Art Gallery", "OpeningHours": "9-7, M-F", "GeoLong": "53.409839", "GeoLat": "-2.979447" },
+                { "Id": 4, "PlaceName": "National Conservation Centre", "OpeningHours": "10-6, M-F", "GeoLong": "53.407511", "GeoLat": "-2.984683" }
+            ];
+            */
+            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+            $.each(data, function (i, item) {
+                var marker = new google.maps.Marker({
+                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'map': map,
+                    'title': item.PlaceName
+                });
+
+                // Make the marker-pin blue!
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                // put in some information about each json object - in this case, the opening hours.
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='infoDiv'><h2>" + item.PlaceName + "</h2>" + "<div><h4>Opening hours: " + item.OpeningHours + "</h4></div></div>"
+                });
+
+                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+
+            })
+        }
+
+
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - W9")
+{
+    <script type="text/javascript">
+                    $(document).ready(function () {
+                                var canvas = document.getElementsByClassName("canvas_w9");
+                                //var canvas = document.getElementById("sig-canvas");
+                                var context = canvas[0].getContext("2d");
+
+                                // load image from data url
+
+                                var imageObj = new Image();
+
+                                imageObj.onload = function () {
+
+                                    context.drawImage(this, 0, 0);
+
+                                };
+
+                                imageObj.src = "@Model.signature";
+
+                            });
+    </script>
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Demo preview")
+{
+    foreach (var objeto in Model)
+    {
+        <script type="text/javascript">
+                             $(document).ready(function () {
+                                var canvas = document.getElementsByClassName("@("canvas_" + objeto.ID_details)");
+                                //var canvas = document.getElementById("sig-canvas");
+                                var context = canvas[0].getContext("2d");
+
+                                // load image from data url
+
+                                var imageObj = new Image();
+
+                                imageObj.onload = function () {
+
+                                    context.drawImage(this, 0, 0);
+
+                                };
+
+                                imageObj.src = "@objeto.fsource";
+
+                            });
+        </script>
+    }
+}
+<script>
+    $(document).ready(function () {
+        $('#change_formattime');
+        var rowsShown = 15;
+        var rowsTotal = $('#change_formattime tbody tr').length;
+        var numPages = rowsTotal / rowsShown;
+        for (i = 0; i < numPages; i++) {
+            var pageNum = i + 1;
+            $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+        }
+        $('#change_formattime tbody tr').hide();
+        $('#change_formattime tbody tr').slice(0, rowsShown).show();
+        $('#nav a:first').addClass('active');
+        $('#nav a').bind('click', function () {
+
+            $('#nav a').removeClass('active');
+            $(this).addClass('active');
+            var currPage = $(this).attr('rel');
+            var startItem = currPage * rowsShown;
+            var endItem = startItem + rowsShown;
+            $('#change_formattime tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+                css('display', 'table-row').animate({ opacity: 1 }, 300);
+        });
+    });
+</script>
+
+
+@if (ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - Demos Home")
+{
+<script type="text/javascript">
+        var panorama;
+        // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+        $(document).ready(function () {
+            Initialize();
+        });
+
+        // Where all the fun happens
+        function Initialize() {
+
+            // Google has tweaked their interface somewhat - this tells the api to use that new UI
+            google.maps.visualRefresh = true;
+            var Tennesse = new google.maps.LatLng(35.860119, -86.660156);
+
+            // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+            var mapOptions = {
+                zoom: 4.5,
+                center: Tennesse,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+            // This makes the div with id "map_canvas" a google map
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+            //// This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
+            //var myLatlng = new google.maps.LatLng(53.40091, -2.994464);
+
+            //var marker = new google.maps.Marker({
+            //    position: myLatlng,
+            //    map: map,
+            //    title: 'Tate Gallery'
+            //});
+
+            //// You can make markers different colors...  google it up!
+            //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+            // a sample list of JSON encoded data of places to visit in Liverpool, UK
+             //you can either make up a JSON list server side, or call it from a controller using JSONResult
+            //var data = [
+            //    { "Id": 1, "PlaceName": "Liverpool Museum", "OpeningHours": "9-5, M-F", "GeoLong": "53.410146", "GeoLat": "-2.979919" },
+            //    { "Id": 2, "PlaceName": "Merseyside Maritime Museum ", "OpeningHours": "9-1,2-5, M-F", "GeoLong": "53.401217", "GeoLat": "-2.993052" },
+            //    { "Id": 3, "PlaceName": "Walker Art Gallery", "OpeningHours": "9-7, M-F", "GeoLong": "53.409839", "GeoLat": "-2.979447" },
+            //    { "Id": 4, "PlaceName": "National Conservation Centre", "OpeningHours": "10-6, M-F", "GeoLong": "53.407511", "GeoLat": "-2.984683" }
+            //];
+
+            var data = @Html.Raw(ViewBag.demos_map);
+
+
+            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+            $.each(data, function (i, item) {
+                var marker = new google.maps.Marker({
+                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'map': map,
+                    'title': item.PlaceName
+                });
+
+
+                // Make the marker-pin blue!
+                if (item.demo_state == "On Hold") {
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+                }
+                if (item.demo_state == "In progress") {
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+                }
+                if (item.demo_state == "Canceled") {
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+                }
+                if (item.demo_state == "Finished") {
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+                }
+
+                // put in some information about each json object - in this case, the opening hours.
+
+                //colocamos la url de la demo
+                var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID"})';
+
+
+                url = url.replace('DEMOID', item.id);
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='infoDiv'><h8>Place: " + item.PlaceName + ".</h8><br>" + "<div><h8>Vendor: " + item.vendor + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>User: " + item.nombre + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + url + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+                });
+
+                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+
+                marker.addListener('dblclick', function () {
+                    map.setZoom(18);
+                    map.setCenter(marker.getPosition());
+
+                    // We get the map's default panorama and set up some defaults.
+                    // Note that we don't yet set it visible.
+                    panorama = map.getStreetView();
+                    panorama.setPosition(marker.getPosition());
+                    panorama.setPov(({
+                        heading: 265,
+                        pitch: 0
+                    }));
+                });
+
+
+
+            })
+
+
+        }
+
+        function toggleStreetView() {
+            var toggle = panorama.getVisible();
+            if (toggle == false) {
+                panorama.setVisible(true);
+            } else {
+                panorama.setVisible(false);
+            }
+        }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#change_formattime').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5,6,7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6,7]
+                    }
+                },
+                'colvis'
+            ],
+            initComplete: function () {
+                
+                this.api().columns([0, 3]).every(function () {
+                    var column = this;
+                    var select = $('<select><option value="">Show All</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+
+        });
+
+    });
+
+    //$(document).ready(function() {
+    //$('#change_formattime').DataTable( {
+
+    //} );
+//} );
+</script>
+}
+
+<script>
+    function getDemosGallery() {
+        var vendorId = $("#ID_vendor").val();
+        $.ajax
+            ({
+                url: '/Home/GetDemosGallery',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    vendorID: vendorId
+                }),
+                success: function (result) {
+                    console.log("devuelve datos");
+                    $("#ID_demos").html("");
+                    console.log("limpia controlador");
+                    $.each(result, function (i, demos) {
+                        console.log("realiza el append");
+                        $("#ID_demos").append($('<option></option>').val(demos.ID_demo).html(new Date(parseInt(demos.visit_date.substr(6))).toLocaleDateString() + " - " + demos.store))
+
+                    }
+                    )
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
+    }
+</script>
+<script>
+    function Demofilter() {
+        var rango = document.getElementById("filterhome").value;
+
+        var arr = rango.split('-');
+
+        var startdate = new Date(arr[0]);
+        var finishdate = new Date(arr[1]);
+
+
+
+
+
+        var url = '@Url.Action("Main", "Home", new {startdate = "START", finishdate = "FINISH"})';
+
+
+        url = url.replace('START', startdate.toLocaleDateString());
+
+        var newurl = url;
+
+
+        newurl = newurl.replace('FINISH', finishdate.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+        //window.location.href = "/Home/Main/startdate='" + startdate.toLocaleDateString() + "', finishdate='" + finishdate.toLocaleDateString() + "'";
+
+    }
+</script>
+
+<script>
+    function Demofilter2() {
+        var rango = document.getElementById("filterDemoHome").value;
+
+        var arr = rango.split('-');
+
+        var startdate = new Date(arr[0]);
+        var finishdate = new Date(arr[1]);
+
+
+
+
+
+        var url = '@Url.Action("Index", "Demos", new {startdate = "START", finishdate = "FINISH"})';
+
+
+        url = url.replace('START', startdate.toLocaleDateString());
+
+        var newurl = url;
+
+
+        newurl = newurl.replace('FINISH', finishdate.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+        //window.location.href = "/Home/Main/startdate='" + startdate.toLocaleDateString() + "', finishdate='" + finishdate.toLocaleDateString() + "'";
+
+    }
+</script>
+
+@if (ViewBag.Title == "Comercia Marketing - Demo")
+{
+    if (ViewBag.checkin == 1)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#modal_demoform").modal('show');
+            });
+        </script>
+    }
+
+
+}
+<script>
+    // Here we'll persist the form's data into localStorage on
+    // every keystroke
+    $(function () {
+        $("#demoTform").sisyphus();
+        // or you can persist all forms data at one command
+        // $( "form" ).sisyphus();
+    });
+
+</script>
+
+
+<script>
+    $(function () {
+        $("#checkin").click(function () {
+
+            var now = new Date();
+            //var MS_PER_MINUTE = 60000;
+            //var offset = new Date().getTimezoneOffset();
+
+            //var date = new Date(now - offset * MS_PER_MINUTE);
+            //var localDate = new Date($(this).html());
+
+            //console.log(now);
+            console.log(now.toLocaleString());
+            //alert(now.toLocaleString());
+            //console.log(date.toLocaleString());
+
+            //var demo = "";
+            demo = document.getElementById('id_demo').value;
+            console.log(demo);
+            //alert(now.toLocaleString("en-US", { hour12: true}));
+            console.log(now.toLocaleString("en-US", { hour12: true }));
+            //var today = new Date();
+            //var h = today.getHours();
+            //var m = today.getMinutes();
+            //var s = today.getSeconds();
+
+            //var fecha = today.getDate();
+
+            //alert(fecha + ", " + h + ":" + m + ":" + s + "P.M");*/
+            $.ajax({
+                url: '/Forms/Check_in',
+                type: 'POST',
+                data: { "ID_demo": demo, "check_in": now.toLocaleString("en-US", { hour12: true }) },
+                success: function (result) {
+
+                },
+                error: function (request) {
+
+                }
+            });
+
+        }
+        );
+    });
+
+</script>
+
+

@@ -2,115 +2,160 @@
 @{
     ViewBag.Title = "Settings";
 }
-<div class="fs_menu_overlay"></div>
-<div class="container product_section_container">
-    <div class="row">
-        <div class="col product_section clearfix">
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="row profile-page">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="profile-header2 text-white">
+                                    <div class="d-flex justify-content-around">
+                                        <div class="profile-info d-flex align-items-center">
 
-            <!-- Breadcrumbs -->
-
-            <div class="breadcrumbs d-flex flex-row align-items-center">
-                <ul>
-                    <li><a href="@Url.Action("Main", "Home")">Home</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Settings</a></li>
-                </ul>
-            </div>
-
-            <!-- Sidebar -->
-
-            <div class="sidebar">
-                <div class="sidebar_section">
-
-                    <div class="sidebar_title">
-                        <h5>Account details</h5>
-                    </div>
-                    <ul class="sidebar_categories">
-                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Name: </a></li> @ViewBag.nombre
-                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Email: </a></li>@ViewBag.correo
-                        <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Membership: </a></li>@ViewBag.membresia
-
-                    </ul>
-                    <div class="filter_button"><span data-toggle="modal" data-target="#exampleModal">Change password</span></div>
-                </div>
-
-            </div>
-
-            <!-- Main Content -->
-
-            <div class="main_content">
-
-                <!-- Products -->
-
-                <div class="products_iso">
-                    <div class="row">
-                        <div class="col">
-
-                            <!-- Product Sorting -->
-
-                            <div class="product_sorting_container product_sorting_container_top">
-                                <div class="pages d-flex flex-row align-items-center">
-                                    <div class="sidebar_section">
-                                        <div class="sidebar_title">
-                                            <h5>Company details</h5>
                                         </div>
-                                        <ul class="sidebar_categories">
-                                            <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Company:</a></li>@ViewBag.empresa
-                                            <li><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Position: </a></li>@ViewBag.cargo
-                                        </ul>
+
                                     </div>
-
                                 </div>
+                                <div class="profile-body">
+                                    <ul class="nav tab-switch" role="tablist">
+                                        <li class="nav-item">
+                                           
+                                        </li>
+                      
+                                    </ul>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="tab-content tab-body" id="profile-log-switch">
+                                                <div class="tab-pane fade show active pr-3" id="user-profile-info" role="tabpanel" aria-labelledby="user-profile-info-tab">
+                                                    <div class="row mt-5 pb-4 border-bottom">
+                                                        <div class="col-6">
+                                                            <div class="d-flex align-items-start pb-3 border-bottom">
 
-                            </div>
+                                                                <div class="wrapper pl-6">
+                                                                    <p class="font-weight-bold mb-0">Full Name</p>
+                                                                    <small> @ViewBag.nombre</small>
+                                                                    <p class="font-weight-bold mb-0">Email</p>
+                                                                    <small>@ViewBag.correo</small>
 
-                            <!-- Product Grid -->
+                                                                    <p class="font-weight-bold mb-0">Company</p>
+                                                                    <small>  @ViewBag.empresa</small>
+                                                                    <p class="font-weight-bold mb-0">Position</p>
+                                                                    <small>@ViewBag.cargo</small>
 
-                            <div class="product-grid">
+                                                                    <p class="font-weight-bold mb-0">Membership</p>
+                                                                    <small> @ViewBag.membresia</small>
+                                                                    <p class="font-weight-bold mb-0">Phone</p>
+                                                                    <small></small>
+                                                                </div>
 
+                                                            </div>
+                                                        </div>
 
+                                                    </div>
+                                                    <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Change password<i class="mdi mdi-key"></i></a>
+                                                   
+                                                </div>
+          
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h5 class="my-4">Activities Stats</h5>
+                                            <div class="new-accounts">
+                                                <ul class="chats">
+                                                    <li class="chat-persons">
+                                                        <a href="#">
+                                                            <i class="mdi mdi-file-account icon-lg"></i>
+                                                            <div class="user">
+                                                                <p class="u-name">Forms</p>
+                                                                <p class="u-designation">0</p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="chat-persons">
+                                                        <a href="#">
+                                                            <i class="mdi mdi-file-account text-warning icon-lg"></i>
+                                                            <div class="user">
+                                                                <p class="u-name">Retail Audits</p>
+                                                                <p class="u-designation">0</p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="chat-persons">
+                                                        <a href="#">
+                                                            <i class="mdi mdi-file-account text-danger icon-lg"></i>
+                                                            <div class="user">
+                                                                <p class="u-name">Sales orders</p>
+                                                                <p class="u-designation">0</p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="chat-persons">
+                                                        <a href="#">
+                                                            <i class="mdi mdi-file-account text-black icon-lg"></i>
+                                                            <div class="user">
+                                                                <p class="u-name">Demos</p>
+                                                                <p class="u-designation">0</p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    @Html.Partial("~/Views/Shared/Footer2.cshtml")
                 </div>
             </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+
+            <!-- partial -->
         </div>
     </div>
+
 </div>
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @using (Html.BeginForm("Change_password", "Home", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
 
-        <div class="modal-body">
-            <p>Enter password</p>
-            <input type="password" name="password" id="password" required oncopy="return false;"/>
-            <hr />
-            <div>
-                <p>Enter new password</p>
-                <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;"/>
-                <p>Enter new password again</p>
-                <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;"/>
-                <span id='message'></span>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Change_password", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-body">
+                        <p>Enter password</p>
+                        <input type="password" name="password" id="password" required oncopy="return false;" />
+                        <hr />
+                        <div>
+                            <p>Enter new password</p>
+                            <input type="password" name="newpassword" id="newpassword" required onpaste="return false;" oncopy="return false;" />
+                            <p>Enter new password again</p>
+                            <input type="password" name="retrypassword" id="retrypassword" required onpaste="return false;" oncopy="return false;" />
+                            <span id='message'></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
+                    </div>
+                }
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="buttonsave">Save changes</button>
-        </div>
-            }
         </div>
     </div>
-</div>
-

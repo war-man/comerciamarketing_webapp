@@ -5,6 +5,58 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dbComerciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActivitiesM">
+          <Key>
+            <PropertyRef Name="ID_activity" />
+          </Key>
+          <Property Name="ID_activity" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_visit" Type="int" Nullable="false" />
+          <Property Name="ID_form" Type="int" Nullable="false" />
+          <Property Name="ID_customer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Customer" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="comments" Type="text" Nullable="false" />
+          <Property Name="check_in" Type="datetime" Nullable="false" />
+          <Property Name="check_out" Type="datetime" Nullable="false" />
+          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+          <Property Name="isfinished" Type="bit" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_usuarioCreate" Type="int" Nullable="false" />
+          <Property Name="ID_usuarioEnd" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="ID_activitytype" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivitiesM_log">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_activity" Type="int" Nullable="false" />
+          <Property Name="ip" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="hostname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="typeh" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="continent_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="country_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="country_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="region_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="region_name" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="latitude" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="longitude" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="fecha_conexion" Type="datetime" Nullable="false" />
+          <Property Name="action" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_usuario" Type="int" Nullable="false" />
+          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="query2" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivitiesM_types">
+          <Key>
+            <PropertyRef Name="ID_activity" />
+          </Key>
+          <Property Name="ID_activity" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="demo_log">
           <Key>
             <PropertyRef Name="ID_historial" />
@@ -90,6 +142,41 @@
           <Property Name="obj_order" Type="int" />
           <Property Name="obj_group" Type="int" />
         </EntityType>
+        <EntityType Name="FormsM">
+          <Key>
+            <PropertyRef Name="ID_form" />
+          </Key>
+          <Property Name="ID_form" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_activity" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="query2" Type="text" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormsM_details">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_formresourcetype" Type="int" Nullable="false" />
+          <Property Name="fsource" Type="text" Nullable="false" />
+          <Property Name="fdescription" Type="text" Nullable="false" />
+          <Property Name="fvalue" Type="int" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="fvalueText" Type="text" Nullable="false" />
+          <Property Name="ID_formM" Type="int" Nullable="false" />
+          <Property Name="ID_visit" Type="int" Nullable="false" />
+          <Property Name="original" Type="bit" Nullable="false" />
+          <Property Name="obj_order" Type="int" Nullable="false" />
+          <Property Name="obj_group" Type="int" Nullable="false" />
+          <Property Name="idkey" Type="int" Nullable="false" />
+          <Property Name="parent" Type="int" Nullable="false" />
+          <Property Name="query1" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="query2" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="historial_conexiones">
           <Key>
             <PropertyRef Name="ID_historial" />
@@ -127,17 +214,29 @@
           <Property Name="ID_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <EntityType Name="RoutesM">
+          <Key>
+            <PropertyRef Name="ID_route" />
+          </Key>
+          <Property Name="ID_route" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="query2" Type="text" Nullable="false" />
+          <Property Name="query3" Type="text" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Stock_items">
           <Key>
             <PropertyRef Name="ID_stock" />
           </Key>
           <Property Name="ID_stock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="itemCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="itemName" Type="varchar" MaxLength="500" />
+          <Property Name="itemName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="quantity" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="odate" Type="datetime" />
-          <Property Name="ID_usuario" Type="varchar" MaxLength="15" />
-          <Property Name="comment" Type="varchar" MaxLength="500" />
+          <Property Name="odate" Type="datetime" Nullable="false" />
+          <Property Name="ID_usuario" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
@@ -199,6 +298,41 @@
           <Property Name="telefono" Type="varchar" MaxLength="50" />
           <Property Name="estados_influencia" Type="varchar" MaxLength="500" />
           <Property Name="ID_empresa" Type="int" />
+        </EntityType>
+        <EntityType Name="VisitsM">
+          <Key>
+            <PropertyRef Name="ID_visit" />
+          </Key>
+          <Property Name="ID_visit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_customer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="customer" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ID_store" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="store" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="zipcode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="state" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="visit_date" Type="datetime" Nullable="false" />
+          <Property Name="ID_visitstate" Type="int" Nullable="false" />
+          <Property Name="comments" Type="text" Nullable="false" />
+          <Property Name="check_in" Type="datetime" Nullable="false" />
+          <Property Name="check_out" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="geoLong" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="geoLat" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="extra_hours" Type="int" Nullable="false" />
+          <Property Name="ID_route" Type="int" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VisitsM_representatives">
+          <Key>
+            <PropertyRef Name="ID_detalle" />
+          </Key>
+          <Property Name="ID_detalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_visit" Type="int" Nullable="false" />
+          <Property Name="ID_usuario" Type="int" Nullable="false" />
+          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Demos__ID_demost__04E4BC85">
           <End Role="Demo_state" Type="Self.Demo_state" Multiplicity="0..1" />
@@ -272,6 +406,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__RoutesM_R__ID_vi__03BB8E22">
+          <End Role="VisitsM" Type="Self.VisitsM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VisitsM_representatives" Type="Self.VisitsM_representatives" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VisitsM">
+              <PropertyRef Name="ID_visit" />
+            </Principal>
+            <Dependent Role="VisitsM_representatives">
+              <PropertyRef Name="ID_visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Usuarios__ID_emp__6FE99F9F">
           <End Role="Empresas" Type="Self.Empresas" Multiplicity="0..1" />
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
@@ -308,7 +456,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__VisitsM__ID_rout__18B6AB08">
+          <End Role="RoutesM" Type="Self.RoutesM" Multiplicity="1" />
+          <End Role="VisitsM" Type="Self.VisitsM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoutesM">
+              <PropertyRef Name="ID_route" />
+            </Principal>
+            <Dependent Role="VisitsM">
+              <PropertyRef Name="ID_route" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="dbComerciaModelStoreContainer">
+          <EntitySet Name="ActivitiesM" EntityType="Self.ActivitiesM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivitiesM_log" EntityType="Self.ActivitiesM_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivitiesM_types" EntityType="Self.ActivitiesM_types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="demo_log" EntityType="Self.demo_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demo_state" EntityType="Self.Demo_state" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demos" EntityType="Self.Demos" Schema="dbo" store:Type="Tables" />
@@ -316,14 +479,19 @@
           <EntitySet Name="form_resource_type" EntityType="Self.form_resource_type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Forms" EntityType="Self.Forms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Forms_details" EntityType="Self.Forms_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormsM" EntityType="Self.FormsM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormsM_details" EntityType="Self.FormsM_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoutesM" EntityType="Self.RoutesM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock_items" EntityType="Self.Stock_items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_form_w9" EntityType="Self.user_form_w9" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VisitsM" EntityType="Self.VisitsM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VisitsM_representatives" EntityType="Self.VisitsM_representatives" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="Self.FK__Demos__ID_demost__04E4BC85">
             <End Role="Demo_state" EntitySet="Demo_state" />
             <End Role="Demos" EntitySet="Demos" />
@@ -348,6 +516,10 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Recursos_usuario" EntitySet="Recursos_usuario" />
           </AssociationSet>
+          <AssociationSet Name="FK__RoutesM_R__ID_vi__03BB8E22" Association="Self.FK__RoutesM_R__ID_vi__03BB8E22">
+            <End Role="VisitsM" EntitySet="VisitsM" />
+            <End Role="VisitsM_representatives" EntitySet="VisitsM_representatives" />
+          </AssociationSet>
           <AssociationSet Name="FK__Usuarios__ID_emp__6FE99F9F" Association="Self.FK__Usuarios__ID_emp__6FE99F9F">
             <End Role="Empresas" EntitySet="Empresas" />
             <End Role="Usuarios" EntitySet="Usuarios" />
@@ -359,6 +531,10 @@
           <AssociationSet Name="FK__Usuarios__ID_tip__5BE2A6F2" Association="Self.FK__Usuarios__ID_tip__5BE2A6F2">
             <End Role="Tipo_membresia" EntitySet="Tipo_membresia" />
             <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VisitsM__ID_rout__18B6AB08" Association="Self.FK__VisitsM__ID_rout__18B6AB08">
+            <End Role="RoutesM" EntitySet="RoutesM" />
+            <End Role="VisitsM" EntitySet="VisitsM" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -472,6 +648,30 @@
           <EntitySet Name="demo_log" EntityType="dbComerciaModel.demo_log" />
           <EntitySet Name="user_form_w9" EntityType="dbComerciaModel.user_form_w9" />
           <EntitySet Name="Stock_items" EntityType="dbComerciaModel.Stock_items" />
+          <EntitySet Name="ActivitiesM" EntityType="dbComerciaModel.ActivitiesM" />
+          <EntitySet Name="FormsM" EntityType="dbComerciaModel.FormsM" />
+          <AssociationSet Name="FK__FormsM__ID_activ__7A3223E8" Association="dbComerciaModel.FK__FormsM__ID_activ__7A3223E8">
+            <End Role="ActivitiesM" EntitySet="ActivitiesM" />
+            <End Role="FormsM" EntitySet="FormsM" />
+          </AssociationSet>
+          <EntitySet Name="RoutesM" EntityType="dbComerciaModel.RoutesM" />
+          <EntitySet Name="VisitsM" EntityType="dbComerciaModel.VisitsM" />
+          <EntitySet Name="FormsM_details" EntityType="dbComerciaModel.FormsM_details" />
+          <AssociationSet Name="FK__VisitsM__ID_rout__18B6AB08" Association="dbComerciaModel.FK__VisitsM__ID_rout__18B6AB08">
+            <End Role="RoutesM" EntitySet="RoutesM" />
+            <End Role="VisitsM" EntitySet="VisitsM" />
+          </AssociationSet>
+          <EntitySet Name="ActivitiesM_types" EntityType="dbComerciaModel.ActivitiesM_types" />
+          <EntitySet Name="VisitsM_representatives" EntityType="dbComerciaModel.VisitsM_representatives" />
+          <AssociationSet Name="FK__Activitie__ID_ac__17C286CF" Association="dbComerciaModel.FK__Activitie__ID_ac__17C286CF">
+            <End Role="ActivitiesM" EntitySet="ActivitiesM" />
+            <End Role="ActivitiesM_types" EntitySet="ActivitiesM_types" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RoutesM_R__ID_vi__03BB8E221" Association="dbComerciaModel.FK__RoutesM_R__ID_vi__03BB8E221">
+            <End Role="VisitsM" EntitySet="VisitsM" />
+            <End Role="VisitsM_representatives" EntitySet="VisitsM_representatives" />
+          </AssociationSet>
+          <EntitySet Name="ActivitiesM_log" EntityType="dbComerciaModel.ActivitiesM_log" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -733,11 +933,203 @@
           </Key>
           <Property Name="ID_stock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="itemCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="itemName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="itemName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="quantity" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="odate" Type="DateTime" Precision="3" />
-          <Property Name="ID_usuario" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="odate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="ID_usuario" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivitiesM">
+          <Key>
+            <PropertyRef Name="ID_activity" />
+          </Key>
+          <Property Name="ID_activity" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="FormsM" Relationship="dbComerciaModel.FK__FormsM__ID_activ__7A3223E8" FromRole="ActivitiesM" ToRole="FormsM" />
+          <Property Name="ID_visit" Type="Int32" Nullable="false" />
+          <Property Name="ID_form" Type="Int32" Nullable="false" />
+          <Property Name="ID_customer" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="comments" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="check_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="check_out" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ActivitiesM_types" Relationship="dbComerciaModel.FK__Activitie__ID_ac__17C286CF" FromRole="ActivitiesM" ToRole="ActivitiesM_types" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+          <Property Name="isfinished" Type="Boolean" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_usuarioCreate" Type="Int32" Nullable="false" />
+          <Property Name="ID_usuarioEnd" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_activitytype" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormsM">
+          <Key>
+            <PropertyRef Name="ID_form" />
+          </Key>
+          <Property Name="ID_form" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_activity" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ActivitiesM" Relationship="dbComerciaModel.FK__FormsM__ID_activ__7A3223E8" FromRole="FormsM" ToRole="ActivitiesM" />
+          <Property Name="query1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="query2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__FormsM__ID_activ__7A3223E8">
+          <End Type="dbComerciaModel.ActivitiesM" Role="ActivitiesM" Multiplicity="1" />
+          <End Type="dbComerciaModel.FormsM" Role="FormsM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivitiesM">
+              <PropertyRef Name="ID_activity" />
+            </Principal>
+            <Dependent Role="FormsM">
+              <PropertyRef Name="ID_activity" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoutesM">
+          <Key>
+            <PropertyRef Name="ID_route" />
+          </Key>
+          <Property Name="ID_route" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="query2" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="query3" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VisitsM" Relationship="dbComerciaModel.FK__VisitsM__ID_rout__18B6AB08" FromRole="RoutesM" ToRole="VisitsM" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VisitsM">
+          <Key>
+            <PropertyRef Name="ID_visit" />
+          </Key>
+          <Property Name="ID_visit" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_customer" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="customer" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="ID_store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="store" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="zipcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="visit_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_visitstate" Type="Int32" Nullable="false" />
+          <Property Name="comments" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="check_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="check_out" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="geoLong" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="geoLat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="extra_hours" Type="Int32" Nullable="false" />
+          <Property Name="ID_route" Type="Int32" Nullable="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RoutesM" Relationship="dbComerciaModel.FK__VisitsM__ID_rout__18B6AB08" FromRole="VisitsM" ToRole="RoutesM" />
+          <NavigationProperty Name="VisitsM_representatives" Relationship="dbComerciaModel.FK__RoutesM_R__ID_vi__03BB8E221" FromRole="VisitsM" ToRole="VisitsM_representatives" />
+        </EntityType>
+        <EntityType Name="FormsM_details">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_formresourcetype" Type="Int32" Nullable="false" />
+          <Property Name="fsource" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fdescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fvalue" Type="Int32" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="fvalueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_formM" Type="Int32" Nullable="false" />
+          <Property Name="ID_visit" Type="Int32" Nullable="false" />
+          <Property Name="original" Type="Boolean" Nullable="false" />
+          <Property Name="obj_order" Type="Int32" Nullable="false" />
+          <Property Name="obj_group" Type="Int32" Nullable="false" />
+          <Property Name="idkey" Type="Int32" Nullable="false" />
+          <Property Name="parent" Type="Int32" Nullable="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="query2" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__VisitsM__ID_rout__18B6AB08">
+          <End Type="dbComerciaModel.RoutesM" Role="RoutesM" Multiplicity="1" />
+          <End Type="dbComerciaModel.VisitsM" Role="VisitsM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoutesM">
+              <PropertyRef Name="ID_route" />
+            </Principal>
+            <Dependent Role="VisitsM">
+              <PropertyRef Name="ID_route" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ActivitiesM_types">
+          <Key>
+            <PropertyRef Name="ID_activity" />
+          </Key>
+          <Property Name="ID_activity" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ActivitiesM" Relationship="dbComerciaModel.FK__Activitie__ID_ac__17C286CF" FromRole="ActivitiesM_types" ToRole="ActivitiesM" />
+        </EntityType>
+        <EntityType Name="VisitsM_representatives">
+          <Key>
+            <PropertyRef Name="ID_detalle" />
+          </Key>
+          <Property Name="ID_detalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_visit" Type="Int32" Nullable="false" />
+          <Property Name="ID_usuario" Type="Int32" Nullable="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VisitsM" Relationship="dbComerciaModel.FK__RoutesM_R__ID_vi__03BB8E221" FromRole="VisitsM_representatives" ToRole="VisitsM" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Activitie__ID_ac__17C286CF">
+          <End Type="dbComerciaModel.ActivitiesM" Role="ActivitiesM" Multiplicity="1" />
+          <End Type="dbComerciaModel.ActivitiesM_types" Role="ActivitiesM_types" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ActivitiesM">
+              <PropertyRef Name="ID_activity" />
+            </Principal>
+            <Dependent Role="ActivitiesM_types">
+              <PropertyRef Name="ID_activity" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RoutesM_R__ID_vi__03BB8E221">
+          <End Type="dbComerciaModel.VisitsM" Role="VisitsM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbComerciaModel.VisitsM_representatives" Role="VisitsM_representatives" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VisitsM">
+              <PropertyRef Name="ID_visit" />
+            </Principal>
+            <Dependent Role="VisitsM_representatives">
+              <PropertyRef Name="ID_visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ActivitiesM_log">
+          <Key>
+            <PropertyRef Name="ID_historial" />
+          </Key>
+          <Property Name="ID_historial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_activity" Type="Int32" Nullable="false" />
+          <Property Name="ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hostname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="typeh" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="continent_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="country_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="country_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="region_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="region_name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="latitude" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="longitude" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_conexion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="action" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_usuario" Type="Int32" Nullable="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="query2" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -952,6 +1344,148 @@
                 <ScalarProperty Name="itemName" ColumnName="itemName" />
                 <ScalarProperty Name="itemCode" ColumnName="itemCode" />
                 <ScalarProperty Name="ID_stock" ColumnName="ID_stock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivitiesM">
+            <EntityTypeMapping TypeName="dbComerciaModel.ActivitiesM">
+              <MappingFragment StoreEntitySet="ActivitiesM">
+                <ScalarProperty Name="ID_activitytype" ColumnName="ID_activitytype" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="ID_usuarioEnd" ColumnName="ID_usuarioEnd" />
+                <ScalarProperty Name="ID_usuarioCreate" ColumnName="ID_usuarioCreate" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="isfinished" ColumnName="isfinished" />
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="check_out" ColumnName="check_out" />
+                <ScalarProperty Name="check_in" ColumnName="check_in" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="ID_customer" ColumnName="ID_customer" />
+                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+                <ScalarProperty Name="ID_activity" ColumnName="ID_activity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormsM">
+            <EntityTypeMapping TypeName="dbComerciaModel.FormsM">
+              <MappingFragment StoreEntitySet="FormsM">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="ID_activity" ColumnName="ID_activity" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoutesM">
+            <EntityTypeMapping TypeName="dbComerciaModel.RoutesM">
+              <MappingFragment StoreEntitySet="RoutesM">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="query3" ColumnName="query3" />
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="ID_route" ColumnName="ID_route" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VisitsM">
+            <EntityTypeMapping TypeName="dbComerciaModel.VisitsM">
+              <MappingFragment StoreEntitySet="VisitsM">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="ID_route" ColumnName="ID_route" />
+                <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
+                <ScalarProperty Name="geoLat" ColumnName="geoLat" />
+                <ScalarProperty Name="geoLong" ColumnName="geoLong" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="check_out" ColumnName="check_out" />
+                <ScalarProperty Name="check_in" ColumnName="check_in" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ID_visitstate" ColumnName="ID_visitstate" />
+                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="store" ColumnName="store" />
+                <ScalarProperty Name="ID_store" ColumnName="ID_store" />
+                <ScalarProperty Name="customer" ColumnName="customer" />
+                <ScalarProperty Name="ID_customer" ColumnName="ID_customer" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormsM_details">
+            <EntityTypeMapping TypeName="dbComerciaModel.FormsM_details">
+              <MappingFragment StoreEntitySet="FormsM_details">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="idkey" ColumnName="idkey" />
+                <ScalarProperty Name="obj_group" ColumnName="obj_group" />
+                <ScalarProperty Name="obj_order" ColumnName="obj_order" />
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+                <ScalarProperty Name="ID_formM" ColumnName="ID_formM" />
+                <ScalarProperty Name="fvalueText" ColumnName="fvalueText" />
+                <ScalarProperty Name="fvalueDecimal" ColumnName="fvalueDecimal" />
+                <ScalarProperty Name="fvalue" ColumnName="fvalue" />
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="fsource" ColumnName="fsource" />
+                <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
+                <ScalarProperty Name="ID_details" ColumnName="ID_details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivitiesM_types">
+            <EntityTypeMapping TypeName="dbComerciaModel.ActivitiesM_types">
+              <MappingFragment StoreEntitySet="ActivitiesM_types">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="ID_activity" ColumnName="ID_activity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VisitsM_representatives">
+            <EntityTypeMapping TypeName="dbComerciaModel.VisitsM_representatives">
+              <MappingFragment StoreEntitySet="VisitsM_representatives">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+                <ScalarProperty Name="ID_detalle" ColumnName="ID_detalle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivitiesM_log">
+            <EntityTypeMapping TypeName="dbComerciaModel.ActivitiesM_log">
+              <MappingFragment StoreEntitySet="ActivitiesM_log">
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="fecha_conexion" ColumnName="fecha_conexion" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="region_name" ColumnName="region_name" />
+                <ScalarProperty Name="region_code" ColumnName="region_code" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+                <ScalarProperty Name="country_code" ColumnName="country_code" />
+                <ScalarProperty Name="continent_name" ColumnName="continent_name" />
+                <ScalarProperty Name="typeh" ColumnName="typeh" />
+                <ScalarProperty Name="hostname" ColumnName="hostname" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="ID_activity" ColumnName="ID_activity" />
+                <ScalarProperty Name="ID_historial" ColumnName="ID_historial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

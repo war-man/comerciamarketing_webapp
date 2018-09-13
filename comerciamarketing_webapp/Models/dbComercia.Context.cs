@@ -40,5 +40,13 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<demo_log> demo_log { get; set; }
         public virtual DbSet<user_form_w9> user_form_w9 { get; set; }
         public virtual DbSet<Stock_items> Stock_items { get; set; }
+        public virtual DbSet<ActivitiesM> ActivitiesM { get; set; }
+        public virtual DbSet<FormsM> FormsM { get; set; }
+        public virtual DbSet<RoutesM> RoutesM { get; set; }
+        public virtual DbSet<VisitsM> VisitsM { get; set; }
+        public virtual DbSet<FormsM_details> FormsM_details { get; set; }
+        public virtual DbSet<ActivitiesM_types> ActivitiesM_types { get; set; }
+        public virtual DbSet<VisitsM_representatives> VisitsM_representatives { get; set; }
+        public virtual DbSet<ActivitiesM_log> ActivitiesM_log { get; set; }
     }
 }

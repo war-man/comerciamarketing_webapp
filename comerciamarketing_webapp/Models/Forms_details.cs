@@ -18,7 +18,15 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public int ID_formresourcetype { get; set; }
+
+
+
+
 
 
 
@@ -26,7 +34,15 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public string fdescription { get; set; }
+
+
+
+
 
 
 
@@ -34,7 +50,15 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public int ID_form { get; set; }
+
+
+
+
 
 
 
@@ -42,7 +66,15 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public bool original { get; set; }
+
+
+
+
 
 
 
@@ -50,18 +82,13 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public int obj_group { get; set; }
 
-
-
-
-
-
-
         public virtual form_resource_type form_resource_type { get; set; }
-
-
-
         public virtual Forms Forms { get; set; }
     }
 }

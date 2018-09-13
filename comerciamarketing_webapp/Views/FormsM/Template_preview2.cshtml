@@ -1,0 +1,172 @@
+﻿@{
+
+    ViewBag.Title = "Comercia Marketing - Template preview2";
+}
+
+@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+    {
+        foreach (var objeto in parentList)
+        {
+            <!--PARA TITULOS (AUN QUE EN ESTE CASO SOLO TENDRIA QUE HABER 1 SOLO TITULO-->
+            if (objeto.id_resource == "1")
+            {
+                <div class="row">
+                    <hr />
+                    <div class="form-horizontal">
+                        <hr />
+                        <h5 class="display-4 text-warning" style="text-align:center;">@objeto.fsource</h5>
+                        <hr />
+                    </div>
+                    <hr />
+
+                </div>
+            }
+        }
+}
+@helper OrderedListHeadertable(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+    {
+        foreach (var objeto in parentList)
+        {
+            <!--PARA SUBTITULOS -->
+            if (objeto.id_resource == "8")
+            {
+
+                <th class="none">@objeto.fsource</th>
+
+            }
+        }
+}
+@helper OrderedListRetail(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+    {
+        foreach (var objeto in parentList)
+        {
+            <!--PARA PRODUCTOS -->
+            if (objeto.id_resource == "3")
+            {
+                <tr>
+
+                    <td><strong>@objeto.fdescription</strong></td>
+                    @if (objeto.children != null)
+                    {
+                        @OrderedListRetail(objeto.children, objeto.idkey)
+                    }
+
+                </tr>
+            }
+
+
+            <!--CHECK SELECCION MULTIPLE -->
+            if (objeto.id_resource == "16")
+            {
+                if (objeto.parent != 0)
+                {
+                    <td>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                                &nbsp;
+                            </label>
+                        </div>
+                    </td>
+                }
+
+
+            }
+
+
+
+            <!--PARA INPUT NUMBER -->
+            if (objeto.id_resource == "18")
+            {
+                if (objeto.parent != 0)
+                {
+                    <td>
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <input type="number" id="@objeto.idkey" class="form-control form-control-sm" />
+
+
+                            </div>
+                        </div>
+                    </td>
+                }
+
+
+            }
+
+
+            <!--PARA INPUT NUMBER (CURRENCY)-->
+            if (objeto.id_resource == "21")
+            {
+                if (objeto.parent != 0)
+                {
+                    <td>
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control form-control-sm currency" />
+
+
+                            </div>
+                        </div>
+                    </td>
+                }
+
+            }
+
+
+        }
+}
+
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
+
+                            <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                @OrderedList(ViewBag.details)
+
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table id="retailaudit" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    @OrderedListHeadertable(ViewBag.details)
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @OrderedListRetail(ViewBag.details)
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br />
+
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->

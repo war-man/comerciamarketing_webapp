@@ -1,0 +1,526 @@
+﻿@{
+
+    ViewBag.Title = "Comercia Marketing - Template preview";
+}
+
+@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+    {
+        foreach (var objeto in parentList)
+        {
+
+
+            <!--PARA TITULOS -->
+            if (objeto.id_resource == "1")
+            {
+                <div class="row">
+                    <hr />
+                    <div class="form-horizontal">
+                        <hr />
+                        <h5 class="display-4 text-warning" style="text-align:center;">@objeto.fsource</h5>
+                        <hr />
+                    </div>
+                    <hr />
+
+                </div>
+            }
+            <!--PARA SUBTITULOS -->
+            if (objeto.id_resource == "8")
+            {
+                if (objeto.children != null)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10">@objeto.fsource</p>
+                                <!--VERIFICAMOS SI TIENE HIJOS-->
+                                <div class="col-md-12 parentdiv">
+                                    @OrderedList(objeto.children, objeto.idkey)
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12 grid-margin">
+
+                            <hr />
+                            <h6 style="text-align:center;">@objeto.fsource</h6>
+                            <hr />
+
+                        </div>
+                    </div>
+                }
+
+
+            }
+
+
+
+            <!--PARA PRODUCTOS -->
+            if (objeto.id_resource == "3")
+            {
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            <!--PARA MUESTRAS -->
+            if (objeto.id_resource == "4")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!--PARA GIFT -->
+            if (objeto.id_resource == "10")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!--RADIO SELECCION UNICA -->
+            if (objeto.id_resource == "19")
+            {
+                if (objeto.parent != 0)
+                {
+                    <div class="form-radio">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" />
+                            @objeto.fsource
+                        </label>
+                    </div>
+                    if (objeto.children != null)
+                    {
+                        <div class="col-md-12 parentdiv">
+                            <hr />
+                            <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                @OrderedList(objeto.children, objeto.idkey)
+                            </div>
+                        </div>
+                    }
+
+
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource">
+                                        @objeto.fsource
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            <!--CHECK SELECCION MULTIPLE -->
+            if (objeto.id_resource == "16")
+            {
+                if (objeto.parent != 0)
+                {
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                            @objeto.fsource
+                        </label>
+                    </div>
+
+                    if (objeto.children != null)
+                    {
+                        <div class="col-md-12 parentdiv">
+                            <hr />
+                            <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                @OrderedList(objeto.children, objeto.idkey)
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input chk" id="@objeto.idkey">
+                                        @objeto.fsource
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            <!--PARA IMAGENES -->
+            if (objeto.id_resource == "5")
+            {
+                if (objeto.parent != 0)
+                {
+
+
+                    <p class="control-label col-md-10">@objeto.fdescription</p>
+                    <div class="col-md-12">
+                        @if (objeto.fsource != "")
+                        {
+                            <input type="file" class="dropifyIMG" id="@objeto.idkey">
+                        }
+                        else
+                        {   //disabled="disabled"
+                            <input type="file" class="dropifyIMG" id="@objeto.idkey">
+                        }
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                @if (objeto.fsource != "")
+                                {
+                                    <input type="file" class="dropifyIMG" id="@objeto.idkey">
+                                }
+                                else
+                                {   //disabled="disabled"
+                                    <input type="file" class="dropifyIMG" id="@objeto.idkey">
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                }
+
+
+
+            }
+
+            <!--PARA INPUT TEXT -->
+            if (objeto.id_resource == "6")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            @if (objeto.fvalue == "0")
+                            {
+                                <p class="control-label col-md-10">@objeto.fdescription</p>
+                            }
+                            else if (objeto.fvalue == "1")
+                            {
+                                <p class="control-label col-md-10">Flavor - @objeto.fdescription</p>
+                            }
+                            else if (objeto.fvalue == "2")
+                            {
+                                <p class="control-label col-md-10">Quality - @objeto.fdescription</p>
+                            }
+                            else if (objeto.fvalue == "3")
+                            {
+                                <p class="control-label col-md-10">Price - @objeto.fdescription</p>
+                            }
+                            else if (objeto.fvalue == "4")
+                            {
+                                <p class="control-label col-md-10">Packing - @objeto.fdescription</p>
+                            }
+                            else if (objeto.fvalue == "5")
+                            {
+                                <p class="control-label col-md-10">Free - @objeto.fdescription</p>
+                            }
+                            <div class="col-md-12">
+                                <textarea id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA INPUT NUMBER -->
+            if (objeto.id_resource == "18")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <input type="number" id="@objeto.idkey" class="form-control" />
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA INPUT NUMBER (CURRENCY)-->
+            if (objeto.id_resource == "21")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <input type="number" id="@objeto.idkey" class="form-control currency" />
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA CUSTOMERS -->
+            if (objeto.id_resource == "12")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <select id="customer_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
+                                    <option value="0">Seleccione un cliente</option>
+                                    @foreach (var itemCustomer in ViewBag.customers)
+                                    {
+                                        <option value="@itemCustomer.CardCode">@itemCustomer.CardCode - @itemCustomer.CardName</option>
+                                    }
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA BRANDS-->
+            if (objeto.id_resource == "13")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <select id="brands_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
+                                    <option value="0">Seleccione una marca</option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA PRODUCT LINE -->
+            if (objeto.id_resource == "14")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <select id="productline_list" name="@objeto.idkey" class="js-example-basic-multiple" style="width:100%">
+                                    <option value="0">Seleccione un linea de producto</option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA SELECT GENERAL -->
+            if (objeto.id_resource == "17")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <select id="@objeto.idkey" class="js-example-basic-multiple" style="width:100%">
+                                    <option value="0">Seleccione un elemento</option>
+                                    @if (objeto.children != null)
+                                    {
+                                        @OrderedList(objeto.children, objeto.idkey)
+                                    }
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA ITEMS DE SELECT GENERAL -->
+            if (objeto.id_resource == "20")
+            {
+
+                <option value="@objeto.idkey">@objeto.fsource</option>
+
+            }
+
+            <!--PARA BRAND COMPETITORS -->
+            if (objeto.id_resource == "15")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource</p>
+
+                            <div class="col-md-12">
+                                <select class="js-example-basic-multiple" style="width:100%">
+                                    <option value="0">Seleccione competidor de la marca</option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA FIRMA ELECTRONICA -->
+            if (objeto.id_resource == "9")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="ol-md-12 col-md-12 border" id="contain">
+                                <!-- Content -->
+
+
+
+
+
+                                <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();">
+                                    Get a better browser, bro.
+                                </canvas>
+
+
+                                <script type="text/javascript">
+                            window.onload = function () {
+                                var canvas = document.getElementsByClassName("@("canvas_" + objeto.idkey)");
+                                //var canvas = document.getElementById("sig-canvas");
+                                var context = canvas[0].getContext("2d");
+
+                                // load image from data url
+
+                                var imageObj = new Image();
+
+                                imageObj.onload = function () {
+
+                                    context.drawImage(this, 0, 0);
+
+                                };
+
+                                imageObj.src = "@objeto.fsource";
+
+                            };
+                                </script>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <button class="btn btn-primary" id="sig-submitBtn" hidden>Submit Signature</button>
+                                        <a href="#" class="btn btn-default" id="sig-clearBtn" onclick="return false">Clear</a>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            }
+
+        }
+}
+
+
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
+
+                            <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+
+
+                        @OrderedList(ViewBag.details)
+
+
+                    </div><br />
+
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->

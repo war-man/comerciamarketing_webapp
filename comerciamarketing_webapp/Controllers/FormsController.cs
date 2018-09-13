@@ -94,7 +94,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //ViewBag.ID_empresa = new SelectList(COM_MKdb.OCRDs.Where(c => c.Series == 2 || c.CardName != null), "CardCode", "CardName");
-                ViewBag.vendors = (from b in COM_MKdb.OCRDs where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.vendors = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type, "ID_formresourcetype", "fdescription");
 
                 return View();
@@ -211,7 +211,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
 
                 //ViewBag.ID_empresa = new SelectList(COM_MKdb.OCRDs.Where(b => b.Series == 2 || b.CardName != null).OrderBy(b=> b.CardName), "CardCode", "CardName");
-                ViewBag.vendors = (from b in COM_MKdb.OCRDs where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.vendors = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type, "ID_formresourcetype", "fdescription");
 
 
@@ -621,7 +621,7 @@ namespace comerciamarketing_webapp.Controllers
                 foreach (var item in demo_header)
                 {
                     //nombre de usuario
-                    var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
 
                     if (usuario != null)
                     {
@@ -635,7 +635,7 @@ namespace comerciamarketing_webapp.Controllers
                     item.end_date = item.end_date.ToLocalTime();
 
                     //nombre de tienda
-                    var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
+                    var tiendita = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
 
                     if (tiendita != null) { nombretienda = tiendita.CardName; }
                     else { nombretienda = "NO CODE FOUND"; }
@@ -671,7 +671,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Obtenemos el nombre de las marcas o brands por cada articulo
                 var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
-                var oitm = (from h in COM_MKdb.OITMs select h).ToList();
+                var oitm = (from h in COM_MKdb.OITM select h).ToList();
                 var omrc = (from i in COM_MKdb.OMRC select i).ToList();
                 foreach (var itemd in listadeItems)
                 {
@@ -972,7 +972,7 @@ namespace comerciamarketing_webapp.Controllers
                     try
                     {
                         var data = demo_header.FirstOrDefault();
-                        var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
+                        var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
 
 
                         dynamic email = new Email("DemoResume");
@@ -1044,7 +1044,7 @@ namespace comerciamarketing_webapp.Controllers
                 foreach (var item in demo_header)
                 {
                     //nombre de usuario
-                    var usuario = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
 
                     if (usuario != null)
                     {
@@ -1057,7 +1057,7 @@ namespace comerciamarketing_webapp.Controllers
                     item.end_date = item.end_date.ToLocalTime();
 
                     //nombre de tienda
-                    var tiendita = (from u in COM_MKdb.OCRDs where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
+                    var tiendita = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
 
                     if (tiendita != null) { nombretienda = tiendita.CardName; }
                     else { nombretienda = "NO CODE FOUND"; }
@@ -1095,7 +1095,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Obtenemos el nombre de las marcas o brands por cada articulo
                 var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
 
-                var oitm = (from h in COM_MKdb.OITMs select h).ToList();
+                var oitm = (from h in COM_MKdb.OITM select h).ToList();
                 var omrc = (from i in COM_MKdb.OMRC select i).ToList();
                 foreach (var itemd in listadeItems)
                 {
@@ -1597,7 +1597,7 @@ namespace comerciamarketing_webapp.Controllers
             string vendoriD = vendorID;
             using (COM_MKEntities dbmk = new COM_MKEntities())
             {
-                lstproduct = (dbmk.OITMs.Where(x => x.U_customerCM == vendoriD)).ToList<OITM>();
+                lstproduct = (dbmk.OITM.Where(x => x.U_CustomerCM == vendoriD)).ToList<OITM>();
             }
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = javaScriptSerializer.Serialize(lstproduct);
@@ -1610,7 +1610,7 @@ namespace comerciamarketing_webapp.Controllers
             string vendoriD = vendorID;
             using (COM_MKEntities dbmk = new COM_MKEntities())
             {
-                lstproduct = (dbmk.OITMs.Where(x => x.U_customerCM == vendoriD && x.ItmsGrpCod == 107)).ToList<OITM>();
+                lstproduct = (dbmk.OITM.Where(x => x.U_CustomerCM == vendoriD && x.ItmsGrpCod == 107)).ToList<OITM>();
             }
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = javaScriptSerializer.Serialize(lstproduct);
@@ -1623,7 +1623,7 @@ namespace comerciamarketing_webapp.Controllers
             string vendoriD = vendorID;
             using (COM_MKEntities dbmk = new COM_MKEntities())
             {
-                lstproduct = (dbmk.OITMs.Where(x => x.U_customerCM == vendoriD && x.ItmsGrpCod == 108)).ToList<OITM>();
+                lstproduct = (dbmk.OITM.Where(x => x.U_CustomerCM == vendoriD && x.ItmsGrpCod == 108)).ToList<OITM>();
             }
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result = javaScriptSerializer.Serialize(lstproduct);

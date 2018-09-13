@@ -1,0 +1,344 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Comercia Marketing";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Comercia Marketing App">
+    <title>@ViewData["Title"]</title>
+
+    @Html.Partial("~/Views/Shared/Styles.cshtml")
+
+    <script type="text/javascript">
+
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        function success(pos) {
+            var crd = pos.coords;
+
+            console.log('Your current position is:');
+            console.log('Latitude : ' + crd.latitude);
+            console.log('Longitude: ' + crd.longitude);
+            console.log('More or less ' + crd.accuracy + ' meters.');
+        };
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        };
+
+        function initGeolocation() {
+            if (navigator && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error, options);
+            } else {
+                console.log('Geolocation is not supported');
+            }
+        }
+      
+
+    </script>
+</head>
+<body onload="javascript:initGeolocation()">
+    <div class="super_container">
+        <!-- Header -->
+
+        <header class="header trans_300">
+
+            <!-- Top Navigation -->
+
+            <div class="top_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!--<div class="top_nav_left">Representación y desarrollo de marcas</div>-->
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top_nav_right">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+
+            <div class="main_nav_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <img src="~/Content/images/LogoPNG-1.png" height="60" width="190">
+                            </div>
+                            <nav class="navbar">
+                                <ul class="navbar_menu">
+                                    <li><a href="http://comerciamarketing.com/">Back to home page</a></li>
+
+
+                                </ul>
+                                <div class="hamburger_container">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="fs_menu_overlay"></div>
+
+        <!-- Hamburger Menu -->
+
+        <div class="hamburger_menu">
+            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger_menu_content text-right">
+                <ul class="menu_top_nav">
+                    <!--
+                    <li class="menu_item has-children">
+                        <a href="#">
+                            usd
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#">cad</a></li>
+                            <li><a href="#">aud</a></li>
+                            <li><a href="#">eur</a></li>
+                            <li><a href="#">gbp</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li class="menu_item"><a href="http://comerciamarketing.com/">Back to home page</a></li>
+
+
+
+
+                </ul>
+            </div>
+        </div>
+
+        <br /><br /><br /><br /><br /><br /><br /><br />
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center login-title">To log in, enter your credentials below.</h1>
+                <div class="account-wall">
+                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                         alt="">
+
+                    @*@using (Html.BeginForm("Iniciar_sesion", "Home", FormMethod.Post, new { @class = "form-signin" }))
+                        {
+                                    @Html.AntiForgeryToken();
+                                    @Html.ValidationSummary();*@
+
+                    <form class="form-signin" method="post" id="form">
+                        <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">
+                            Log in
+                        </button>
+
+                    </form>
+                    <!--
+                    <label class="checkbox pull-left">
+                        <input type="checkbox" value="remember-me">
+                        Recuerdame
+                    </label>
+                    <a href="#" class="pull-right need-help">Necesitas ayuda? </a><span class="clearfix"></span>-->
+                    @*}*@
+                </div>
+            </div>
+
+        </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer_nav_container">
+                            <div class="col-md-6 text-left">Comercia Marketing (c) 2018. All rights reserved. </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </footer>
+    </div>  
+    @Html.Partial("~/Views/Shared/Scripts.cshtml")
+
+    <!-- Modal saving -->
+    <div class="modal hide fade in" data-keyboard="false" data-backdrop="static" id="modal_demoform_saving" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="col-md-offset-4 col-md-12 text-center">
+                        <div id="loadingmessage" class="col-md-offset-4 col-md-12 text-center">
+                            <img src="~/Content/images/ajax-loader.gif" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--END MODAL-->
+</body>
+</html>
+
+<script type="text/javascript">
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        //PRIMERO LLAMAMOS LA FUNCION LOGIN
+        var email = $('#usuariocorreo').val();
+        var password = $('#password').val();
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Iniciar_sesion", "Home")',
+            contentType: "application/json; charset=utf-8",
+            data: { usuariocorreo: email, password: password },
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    //SI ES UN USUARIO DEMO
+                    if (data.redireccion != "") {
+                        console.log("Incomplete form")
+
+                        var href = '@Url.Action("Edit", "user_form_w9", new { id = "id" })';
+                        href = href.replace("id", data.redireccion);
+                    
+                
+                        window.location.href = href;
+
+                    } else {
+                    //Si todo salió bien, s devolvemos ip y datos de registro y luego enviamos a pagina Home
+                    // set endpoint and your access key
+                    var ip = "@Session["ip_user"]";
+                    var access_key = 'dc1265cf4a5283ef6c00e7522c85d09e';
+                        
+                    // get the API result via jQuery.ajax
+                    $.ajax({
+                        url: 'https://api.ipstack.com/' + ip + '?access_key=' + access_key,
+                        dataType: 'json',
+                        error: function () {
+                            console.log("Geolocation error");
+                        },
+                        success: function (jsondatos) {
+
+                                var datosusuario = {
+                                    ip: jsondatos.ip,
+                                    hostname: jsondatos.hostname,
+                                    typeh: jsondatos.type,
+                                    continent_name: jsondatos.continent_name,
+                                    country_code: jsondatos.country_code,
+                                    country_name: jsondatos.country_name,
+                                    region_code: jsondatos.region_code,
+                                    region_name: jsondatos.region_name,
+                                    city: jsondatos.city,
+                                    latitude: jsondatos.latitude,
+                                    longitude: jsondatos.longitude
+
+
+                                };
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Url.Action("Historial_conexiones", "Home")',
+                                    dataType: 'json',
+                                    async: false,
+                                    contentType: "application/json; charset=utf-8",
+                                    data: JSON.stringify(datosusuario),
+                                    success: function (model) {
+                                        if (model.success) {
+                                            
+                                            console.log("Login success")
+                                            window.location.href = '@Url.Action("Main", "Home")';
+                                        } else {
+                                          
+                                            console.log("Error")
+                                            window.location.href = '@Url.Action("Main", "Home")';
+                                        }
+
+
+
+                                    }
+                                });
+
+                 
+                        } 
+                        
+                    });
+                  
+                   //window.location.href = 'Url.Action("Main", "Home")';
+
+                    }
+
+
+
+                } else {
+                   
+                    new PNotify({
+                        title: "Warning",
+                        text: "Wrong email or password",
+                        type: "notice"
+                    });
+
+                    $('#usuariocorreo').val("");
+                    $('#usuariocorreo').focus();
+                    $('#password').val("");
+                   
+                }
+            },                      
+            error: function () {
+
+               
+            }
+
+
+        });
+      
+    });
+</script>
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Warning",
+                text: "@(TempData["advertencia"])",
+                type: "notice"
+            })
+        };
+    </script>
+}
+
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+            new PNotify({
+                title: "Error",
+                text: "@(TempData["error"])",
+                type: "error"
+            })
+        };
+    </script>
+}
