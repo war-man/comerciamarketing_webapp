@@ -62,7 +62,7 @@
 
     function success(pos) {
         var crd = pos.coords;
-
+        $("#loading").show();
 
         var lat = crd.latitude;
         var lng = crd.longitude;
@@ -182,11 +182,11 @@
         //    console.log(propName, propVal);
         //});
 
-        
+        var now = new Date();
         $.ajax({
             url: '/FormsM/Save_activity',
             type: 'POST',
-            data: {'id': idvisita,'objects': objects,'lat':lat,'lng':lng },
+            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
             cache: false,
             global: false,
             success: function (result) {
@@ -222,7 +222,7 @@
 
     function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
-
+        $("#loading").show();
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
 
@@ -333,11 +333,11 @@
         //    console.log(propName, propVal);
         //});
 
-
+        var now = new Date();
         $.ajax({
             url: '/FormsM/Save_activity',
             type: 'POST',
-            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng },
+            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
             cache: false,
             global: false,
             success: function (result) {
@@ -386,7 +386,7 @@
             //$.each($('input[type="file"]'), function () {
              
             var ID = $(this).attr('id');
-         
+            $("#loading").show();
             $(this).attr('data-changeflag', '0');
 
                 var idvisita = "";

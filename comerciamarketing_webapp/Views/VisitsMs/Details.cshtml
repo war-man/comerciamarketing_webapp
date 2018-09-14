@@ -21,9 +21,22 @@
                             <div class="card-body">
                                 <div class="profile-header text-white">
 
+                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                    {
+                                <a href="#" class="btn btn-success"  data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>
 
-                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>
-                                </div>
+                                    }
+                                    else {
+                                        if (ViewBag.estadovisita == 3)
+                                        {
+                                            <a href="#" style="padding: 62px 32px;margin-left:63px; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>
+                                        }
+                                        else if (ViewBag.estadovisita == 2) {
+                                            <a href="#" style="padding: 62px 32px;margin-left:63px; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>
+                                        }
+                                        
+                                        
+                                    }</div>
                                 <div class="profile-body">
                                     <ul class="nav tab-switch" role="tablist">
                                         <li class="nav-item">
@@ -39,46 +52,50 @@
                                                         <div class="col-md-8">
                                                             <div class="wrapper mt-8">
                                                                 @if (ViewBag.activities.Count == 0)
-                                                                {
-                                                                    <label>No activities to show</label>
-                                                                    <hr />
-                                                                }
-                                                                else {
-                                                                    foreach (var activity in ViewBag.activities)
-                                                                {
-                                                                    <div class="item-wrapper d-flex pb-4 border-bottom">
-                                                                        <div class="status-wrapper d-flex align-items-start pr-3">
-                                                                            @if (activity.isfinished == true)
-                                                                            {
-                                                                                <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
-                                                                            }
-                                                                        </div>
-                                                                        <div class="text-wrapper">
-                                                                            @if (activity.ID_activitytype ==1)
-                                                                            {
-                                                                            <a href="@Url.Action("Activity", "FormsM", new { id = activity.ID_activity })" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1" > @activity.description</h6></a>
-                                                                            }
-                                                                            else if (activity.ID_activitytype == 2)
-                                                                            {
-                                                                                 <a href="@Url.Action("Activityra", "FormsM", new { id = activity.ID_activity })" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1" > @activity.description</h6></a>
-                                                                            }
-                                                                            else {
-                                                                                <a href="#" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1" > @activity.description</h6></a>
-                                                                            }<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
-                                                                            <small class="text-gray d-block">Last update : @activity.date</small>
-                                                                        </div>
-                                                                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                                                                            <i class="close ml-auto mdi mdi-close-circle-outline" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                            {
+                                    <label>No activities to show</label>
+                                    <hr />
+}
+else
+{
+foreach (var activity in ViewBag.activities)
+{
+                                    <div class="item-wrapper d-flex pb-4 border-bottom">
+                                        <div class="status-wrapper d-flex align-items-start pr-3">
+                                            @if (activity.isfinished == true)
+        {
+                                    <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
+}
+else
+{
+                                    <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
+}
+                                        </div>
+                                        <div class="text-wrapper">
+                                            @if (activity.ID_activitytype == 1)
+        {
+                                    <a href="@Url.Action("Activity", "FormsM", new { id = activity.ID_activity })" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1"> @activity.description</h6></a>
+}
+else if (activity.ID_activitytype == 2)
+{
+                                    <a href="@Url.Action("Activityra", "FormsM", new { id = activity.ID_activity })" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1"> @activity.description</h6></a>
+}
+else
+{
+                                    <a href="#" class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to activity"><h6 class="d-block mb-1"> @activity.description</h6></a>
+}<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
+                                    <small class="text-gray d-block">Last update : @activity.date</small>
+                                    </div>
+                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+{
+                                    <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                                        <i class="close ml-auto mdi mdi-close-circle-outline" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
 
-                                                                        </a>
-
-                                                                    </div><br />
-                                                                }
-                                                                }
+                                    </a>
+}
+                                    </div><br />
+}
+}
                                                             </div>
 
                                                         </div>
@@ -94,29 +111,48 @@
                                             <h5 class="my-4"><i class="mdi mdi-account-circle icon-sm text-info"></i> Who follow this visit</h5>
 
                                             <div class="calendar-aside">
-                                                @foreach (var rep in ViewBag.repslist)
-                                                {
-                                                <div class="list">
-                                                    <div class="text-wrapper">
-                                                        <small class="d-block mb-2"><strong>@rep.name</strong></small>
-                                                        <small class="text-gray d-block">@rep.email</small>
-                                                    </div>
-                                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") | Session["tipousuario"].ToString() == "1")
-                                                    {
-                                                <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-ID="@rep.ID" data-description="@rep.name - @rep.email ">
-                                                    <i class="close ml-auto mdi mdi-close-circle-outline" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
-                                                </a>
-                                                    }
-                                                    else {
-                                                        <a href="javascript:void(0)" class="count online ml-auto">
-                                                   
-                                                </a>
-                                                    }</div>
-                                                }
-                                            </div><h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5><div class="add-items d-flex">
-                                                <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
-                                                <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
-                                            </div><div class="list-wrapper">
+                                                @if (ViewBag.repslist.Count == 0)
+            {
+                                    <div class="list">
+                                        <div class="col-12">
+                                            <small class="d-block mb-2">No representatives assigned</small>
+
+                                        </div>
+                                    </div>
+}
+else
+{
+foreach (var rep in ViewBag.repslist)
+{
+                                    <div class="list">
+                                        <div class="col-12">
+                                            <small class="d-block mb-2"><strong>@rep.name</strong></small>
+                                            <small class="text-gray d-block">@rep.email</small>
+                                        </div>
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                    <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-ID="@rep.ID" data-description="@rep.name - @rep.email ">
+                                        <i class="close ml-auto mdi mdi-close-circle-outline" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                    </a>
+}
+else
+{
+                                    <a href="javascript:void(0)" class="count online ml-auto">
+
+                                    </a>
+}
+                                    </div>
+}
+}
+                                            </div>
+                                            <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5><div class="add-items d-flex">
+                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+            {
+                                    <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
+                                    <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
+}
+                                            </div>
+                                            <div class="list-wrapper">
                                                 <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
                                                     <li>
                                                         <div class="form-check form-check-flat">
@@ -125,7 +161,10 @@
                                                                 Example
                                                             </label>
                                                         </div>
-                                                        <i class="remove mdi mdi-close-circle-outline"></i>
+                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                    {
+                                    <i class="remove mdi mdi-close-circle-outline"></i>
+}
                                                     </li>
                                                     <li class="completed">
                                                         <div class="form-check form-check-flat">
@@ -134,11 +173,38 @@
                                                                 Example completed
                                                             </label>
                                                         </div>
-                                                        <i class="remove mdi mdi-close-circle-outline"></i>
+                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                    {
+                                    <i class="remove mdi mdi-close-circle-outline"></i>
+}
                                                     </li>
 
                                                 </ul>
-                                            </div></div></div></div></div></div></div></div></div><!-- partial:../../partials/_footer.html -->@Html.Partial("~/Views/Shared/Footer2.cshtml")
+                                            </div>
+
+
+
+                                        </div>
+                                        <!--CANCEL VIIT
+    <div class="calendar-aside">
+
+        <div class="list">
+            <div class="text-wrapper">
+              <br /><br />
+                <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
+
+            </div>
+        </div>
+
+    </div>
+        -->
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- partial:../../partials/_footer.html -->@Html.Partial("~/Views/Shared/Footer2.cshtml")
         </div>
 
     </div>
@@ -223,7 +289,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <p class="card-description">
+                                    <h4 class="card-title">Representative</h4>
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <select name="ID_rep" class="js-example-basic-single" style="width:100%">
+                                                <option id="0">Select a representative</option>
+                                                @foreach (var rep in ViewBag.representatives)
+                                                {
 
+                                                <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
+                                                }
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -349,5 +434,15 @@
 
             })
         })(jQuery);
+
+
+
+
+
+
     }
+
+
+
+
 </script>

@@ -34,7 +34,7 @@
                                                 <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
                                                 <p class="font-weight-bold">@ViewBag.onhold</p>
                                             </span>
-                                            <small>@ViewBag.onholdP% total</small>
+                                            <small>@ViewBag.onholdP.ToString("F") % total</small>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                                 <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
                                                 <p class="font-weight-bold">@ViewBag.inprogress</p>
                                             </span>
-                                            <small>@ViewBag.inprogressP% total</small>
+                                            <small>@ViewBag.inprogressP.ToString("F") % total</small>
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                                 <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
                                                 <p class="font-weight-bold">@ViewBag.finished</p>
                                             </span>
-                                            <small>@ViewBag.finishedP% total</small>
+                                            <small>@ViewBag.finishedP.ToString("F") % total</small>
                                         </div>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
                                                 <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
                                                 <p class="font-weight-bold">@ViewBag.canceled</p>
                                             </span>
-                                            <small>@ViewBag.canceledP% total</small>
+                                            <small>@ViewBag.canceledP.ToString("F") % total</small>
                                         </div>
                                     </div>
                                 </div>

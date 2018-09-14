@@ -18894,17 +18894,18 @@ ul {
   position: relative;
   margin: 0 auto; }
 
-.circle-loader:after,
-.circle-loader:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  border: 10px solid transparent;
-  border-top-color: #ffaf00; }
+    .circle-loader:after,
+    .circle-loader:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        border: 10px solid transparent;
+        border-top-color: #682c90;
+    }
 
 .circle-loader:before {
   z-index: 100;

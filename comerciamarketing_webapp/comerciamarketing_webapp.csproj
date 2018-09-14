@@ -299,6 +299,9 @@
     <Compile Include="Models\ActivitiesM_types.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Brand_competitors.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\COM_MK.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -363,6 +366,9 @@
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\historial_conexiones.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Items_displays.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OCRD.cs">
@@ -3181,6 +3187,7 @@
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\FormsM\Activityra.cshtml" />
     <Content Include="Views\Shared\ActivityraScripts.cshtml" />
+    <Content Include="Views\Shared\visitScript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

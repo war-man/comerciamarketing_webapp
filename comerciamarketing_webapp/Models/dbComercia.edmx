@@ -57,6 +57,17 @@
           <Property Name="description" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Brand_competitors">
+          <Key>
+            <PropertyRef Name="ID_competitor" />
+          </Key>
+          <Property Name="ID_competitor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID_customer" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Costumer_name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID_brand" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Brand_name" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
         <EntityType Name="demo_log">
           <Key>
             <PropertyRef Name="ID_historial" />
@@ -164,7 +175,7 @@
           <Property Name="fsource" Type="text" Nullable="false" />
           <Property Name="fdescription" Type="text" Nullable="false" />
           <Property Name="fvalue" Type="int" Nullable="false" />
-          <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="fvalueText" Type="text" Nullable="false" />
           <Property Name="ID_formM" Type="int" Nullable="false" />
           <Property Name="ID_visit" Type="int" Nullable="false" />
@@ -195,6 +206,15 @@
           <Property Name="latitude" Type="varchar" MaxLength="50" />
           <Property Name="longitude" Type="varchar" MaxLength="50" />
           <Property Name="fecha_conexion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Items_displays">
+          <Key>
+            <PropertyRef Name="ID_item" />
+          </Key>
+          <Property Name="ID_item" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SKU" Type="varchar" MaxLength="90" Nullable="false" />
+          <Property Name="description" Type="varbinary" MaxLength="100" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
@@ -472,6 +492,7 @@
           <EntitySet Name="ActivitiesM" EntityType="Self.ActivitiesM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivitiesM_log" EntityType="Self.ActivitiesM_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivitiesM_types" EntityType="Self.ActivitiesM_types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brand_competitors" EntityType="Self.Brand_competitors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="demo_log" EntityType="Self.demo_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demo_state" EntityType="Self.Demo_state" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demos" EntityType="Self.Demos" Schema="dbo" store:Type="Tables" />
@@ -482,6 +503,7 @@
           <EntitySet Name="FormsM" EntityType="Self.FormsM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormsM_details" EntityType="Self.FormsM_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Items_displays" EntityType="Self.Items_displays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoutesM" EntityType="Self.RoutesM" Schema="dbo" store:Type="Tables" />
@@ -672,6 +694,8 @@
             <End Role="VisitsM_representatives" EntitySet="VisitsM_representatives" />
           </AssociationSet>
           <EntitySet Name="ActivitiesM_log" EntityType="dbComerciaModel.ActivitiesM_log" />
+          <EntitySet Name="Brand_competitors" EntityType="dbComerciaModel.Brand_competitors" />
+          <EntitySet Name="Items_displays" EntityType="dbComerciaModel.Items_displays" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -1037,7 +1061,7 @@
           <Property Name="fsource" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fdescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fvalue" Type="Int32" Nullable="false" />
-          <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="fvalueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ID_formM" Type="Int32" Nullable="false" />
           <Property Name="ID_visit" Type="Int32" Nullable="false" />
@@ -1130,6 +1154,26 @@
           <Property Name="ID_usuario" Type="Int32" Nullable="false" />
           <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="query2" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Brand_competitors">
+          <Key>
+            <PropertyRef Name="ID_competitor" />
+          </Key>
+          <Property Name="ID_competitor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Costumer_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_brand" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Brand_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Items_displays">
+          <Key>
+            <PropertyRef Name="ID_item" />
+          </Key>
+          <Property Name="ID_item" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SKU" Type="String" Nullable="false" MaxLength="90" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="Binary" Nullable="false" MaxLength="100" FixedLength="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1486,6 +1530,28 @@
                 <ScalarProperty Name="ip" ColumnName="ip" />
                 <ScalarProperty Name="ID_activity" ColumnName="ID_activity" />
                 <ScalarProperty Name="ID_historial" ColumnName="ID_historial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brand_competitors">
+            <EntityTypeMapping TypeName="dbComerciaModel.Brand_competitors">
+              <MappingFragment StoreEntitySet="Brand_competitors">
+                <ScalarProperty Name="Brand_name" ColumnName="Brand_name" />
+                <ScalarProperty Name="ID_brand" ColumnName="ID_brand" />
+                <ScalarProperty Name="Costumer_name" ColumnName="Costumer_name" />
+                <ScalarProperty Name="ID_customer" ColumnName="ID_customer" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID_competitor" ColumnName="ID_competitor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items_displays">
+            <EntityTypeMapping TypeName="dbComerciaModel.Items_displays">
+              <MappingFragment StoreEntitySet="Items_displays">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="ID_item" ColumnName="ID_item" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

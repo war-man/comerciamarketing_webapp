@@ -117,10 +117,10 @@
                                                         <td>
                                                             <div class="d-flex justify-content-between mt-2">
 
-                                                                <small>@itemRuta.query3%</small>
+                                                                <small>@Convert.ToDecimal(itemRuta.query3).ToString("F") %</small>
                                                             </div>
                                                             <div class="progress progress-sm mt-2">
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: @itemRuta.query3%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: @Convert.ToDecimal(itemRuta.query3).ToString("F")%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -254,7 +254,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="card-description">
+                                @*<p class="card-description">
                                     <h4 class="card-title">Activities to show</h4>
                                 </p>
                                 <div class="row">
@@ -266,7 +266,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
+                            <!--
                                 <p class="card-description">
                                     <h4 class="card-title">Representatives</h4>
                                 </p>
@@ -288,7 +289,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                -->
 
 
                             </div>

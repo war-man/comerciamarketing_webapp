@@ -441,15 +441,17 @@ namespace comerciamarketing_webapp.Controllers
 
                 int IDV = Convert.ToInt32(idvisit);
                 var itemselectbrand = (from br in db.FormsM_details where (br.ID_formresourcetype == 14 && br.ID_visit == IDV) select br).FirstOrDefault();
-                foreach (var item in lstproductline)
+                if (itemselectbrand != null)
                 {
-                    if (item.Id_subcategory.ToString() == itemselectbrand.fvalueText)
+                    foreach (var item in lstproductline)
                     {
-                        item.isselected = true;
+                        if (item.Id_subcategory.ToString() == itemselectbrand.fvalueText)
+                        {
+                            item.isselected = true;
+                        }
+
                     }
-
                 }
-
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
                 string result = javaScriptSerializer.Serialize(lstproductline);
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -859,7 +861,7 @@ namespace comerciamarketing_webapp.Controllers
             public string Brand { get; set; }
             public Boolean isselected { get; set; }
         }
-        public JsonResult Save_activity(string id, List<MyObj_formtemplate> objects, string lat, string lng)
+        public JsonResult Save_activity(string id, List<MyObj_formtemplate> objects, string lat, string lng, string check_in)
         {
             try
             {
@@ -877,7 +879,7 @@ namespace comerciamarketing_webapp.Controllers
                         nuevoLog.longitude = lng;
                         nuevoLog.ID_usuario = IDU;
                         nuevoLog.ID_activity = Convert.ToInt32(id);
-                        nuevoLog.fecha_conexion = DateTime.UtcNow;
+                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
                         nuevoLog.query1 = "";
                         nuevoLog.query2 = "";
                         nuevoLog.action = "SAVE ACTIVITY - " + activity.description;

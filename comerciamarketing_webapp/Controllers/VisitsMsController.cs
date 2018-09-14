@@ -63,15 +63,28 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.repslist = reps;
                 //FIN representantes
                 //ACTIVITIES
-                var activities = (from a in db.ActivitiesM where (a.ID_visit == id) select a).ToList();
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    var activities = (from a in db.ActivitiesM where (a.ID_visit == id) select a).ToList();
+                    ViewBag.activities = activities;
+                }
+                else {
+                    var activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_usuarioEnd==ID) select a).ToList();
+                    ViewBag.activities = activities;
+                }
 
-                ViewBag.activities = activities;
+
+
+                ViewBag.estadovisita = visitsM.ID_visitstate;
 
                 ViewBag.idvisita = id;
 
                 ViewBag.storename = visitsM.store;
 
                 //FIN ACTIVITIES
+                //representantes
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                ViewBag.representatives = usuarios.ToList();
                 //Cargamos ruta 
                 var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
                 //FORMULARIOS
@@ -108,12 +121,12 @@ namespace comerciamarketing_webapp.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita)
+        public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita, string ID_rep)
         {
             try
             {
                 int IDForm = Convert.ToInt32(ID_form);
-               
+                int IDRep = Convert.ToInt32(ID_rep);
 
                 //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
                 ActivitiesM nuevaActivida = new ActivitiesM();
@@ -145,7 +158,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
                 nuevaActivida.ID_usuarioCreate = ID_usuario;
-                nuevaActivida.ID_usuarioEnd = ID_usuario;
+                nuevaActivida.ID_usuarioEnd = IDRep;  //Usuario que sera asignado
                 nuevaActivida.date = DateTime.Today.Date;
                
 
@@ -167,6 +180,19 @@ namespace comerciamarketing_webapp.Controllers
                     db.FormsM_details.Add(nuevodetalle);
                     db.SaveChanges();
                 }
+
+
+                //Por ultimo asignamos el usuario a la visita
+
+                VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                        repvisita.ID_visit = nuevaActivida.ID_visit;
+                        repvisita.ID_usuario = IDRep;
+                        repvisita.query1 = "";
+                        repvisita.ID_empresa= nuevaActivida.ID_empresa;
+                        db.VisitsM_representatives.Add(repvisita);
+                        db.SaveChanges();
+                //************
 
                 TempData["exito"] = "Activity created successfully.";
                 return RedirectToAction("Details", "VisitsMs", new { id= ID_visita});
@@ -247,5 +273,168 @@ namespace comerciamarketing_webapp.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        //CHECK IN
+        public ActionResult Check_in(string ID_visit, string check_in, string lat, string lng)
+        {
+            try
+            {
+                int IDU = Convert.ToInt32(Session["IDusuario"]);
+                VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+                if (visita != null)
+                {
+                    visita.ID_visitstate = 2;
+                    visita.check_in = Convert.ToDateTime(check_in);
+                    db.Entry(visita).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    
+                    if (lat != null || lat != "")
+                    {
+                        //Guardamos el log de la actividad
+                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                        nuevoLog.latitude = lat;
+                        nuevoLog.longitude = lng;
+                        nuevoLog.ID_usuario = IDU;
+                        nuevoLog.ID_activity =0;
+                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        nuevoLog.query1 = ID_visit;
+                        nuevoLog.query2 = "";
+                        nuevoLog.action = "CHECK IN  - " + visita.store;
+                        nuevoLog.ip = "";
+                        nuevoLog.hostname = "";
+                        nuevoLog.typeh = "";
+                        nuevoLog.continent_name = "";
+                        nuevoLog.country_code = "";
+                        nuevoLog.country_name = "";
+                        nuevoLog.region_code = "";
+                        nuevoLog.region_name = "";
+                        nuevoLog.city = "";
+
+                        db.ActivitiesM_log.Add(nuevoLog);
+                        db.SaveChanges();
+                    }
+
+                    return Json(new { Result = "Success" });
+                }
+                return Json(new { Result = "Fail" });
+            }
+            catch
+            {
+                return Json(new { Result = "Error" });
+            }
+
+
+
+        }
+        //CHECK OUT
+        public ActionResult Check_out(string ID_visit, string check_in, string lat, string lng)
+        {
+            try
+            {
+                int IDU = Convert.ToInt32(Session["IDusuario"]);
+                VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+                if (visita != null)
+                {
+                    visita.ID_visitstate = 4; //FINALIZADO
+                    visita.check_in = Convert.ToDateTime(check_in);
+                    db.Entry(visita).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    if (lat != null || lat != "")
+                    {
+                        //Guardamos el log de la actividad
+                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                        nuevoLog.latitude = lat;
+                        nuevoLog.longitude = lng;
+                        nuevoLog.ID_usuario = IDU;
+                        nuevoLog.ID_activity = 0;
+                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        nuevoLog.query1 = ID_visit;
+                        nuevoLog.query2 = "";
+                        nuevoLog.action = "CHECK IN  - " + visita.store;
+                        nuevoLog.ip = "";
+                        nuevoLog.hostname = "";
+                        nuevoLog.typeh = "";
+                        nuevoLog.continent_name = "";
+                        nuevoLog.country_code = "";
+                        nuevoLog.country_name = "";
+                        nuevoLog.region_code = "";
+                        nuevoLog.region_name = "";
+                        nuevoLog.city = "";
+
+                        db.ActivitiesM_log.Add(nuevoLog);
+                        db.SaveChanges();
+                    }
+
+                    return Json(new { Result = "Success" });
+                }
+                return Json(new { Result = "Fail" });
+            }
+            catch
+            {
+                return Json(new { Result = "Error" });
+            }
+
+
+
+        }
+
+        //CHECK OUT
+        public ActionResult cancel_visit(string ID_visit, string check_in, string lat, string lng)
+        {
+            try
+            {
+                int IDU = Convert.ToInt32(Session["IDusuario"]);
+                VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+                if (visita != null)
+                {
+                    visita.ID_visitstate = 1; //FINALIZADO
+                    visita.check_in = Convert.ToDateTime(check_in);
+                    db.Entry(visita).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    if (lat != null || lat != "")
+                    {
+                        //Guardamos el log de la actividad
+                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                        nuevoLog.latitude = lat;
+                        nuevoLog.longitude = lng;
+                        nuevoLog.ID_usuario = IDU;
+                        nuevoLog.ID_activity = 0;
+                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        nuevoLog.query1 = ID_visit;
+                        nuevoLog.query2 = "";
+                        nuevoLog.action = "CHECK IN  - " + visita.store;
+                        nuevoLog.ip = "";
+                        nuevoLog.hostname = "";
+                        nuevoLog.typeh = "";
+                        nuevoLog.continent_name = "";
+                        nuevoLog.country_code = "";
+                        nuevoLog.country_name = "";
+                        nuevoLog.region_code = "";
+                        nuevoLog.region_name = "";
+                        nuevoLog.city = "";
+
+                        db.ActivitiesM_log.Add(nuevoLog);
+                        db.SaveChanges();
+                    }
+
+                    return Json(new { Result = "Success" });
+                }
+                return Json(new { Result = "Fail" });
+            }
+            catch
+            {
+                return Json(new { Result = "Error" });
+            }
+
+
+
+        }
+
     }
 }

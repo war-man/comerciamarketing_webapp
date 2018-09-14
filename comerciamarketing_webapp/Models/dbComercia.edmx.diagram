@@ -41,6 +41,8 @@
         <AssociationConnector Association="dbComerciaModel.FK__Activitie__ID_ac__17C286CF" />
         <AssociationConnector Association="dbComerciaModel.FK__RoutesM_R__ID_vi__03BB8E221" />
         <EntityTypeShape EntityType="dbComerciaModel.ActivitiesM_log" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.Brand_competitors" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.Items_displays" Width="1.5" PointX="5.75" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

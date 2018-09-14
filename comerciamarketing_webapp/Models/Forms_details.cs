@@ -22,7 +22,23 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
+
+
         public int ID_formresourcetype { get; set; }
+
+
+
+
+
+
+
+
 
 
 
@@ -38,7 +54,23 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
+
+
         public string fdescription { get; set; }
+
+
+
+
+
+
+
+
 
 
 
@@ -54,7 +86,23 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
+
+
         public int ID_form { get; set; }
+
+
+
+
+
+
+
+
 
 
 
@@ -70,6 +118,14 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
+
+
         public bool original { get; set; }
 
 
@@ -78,7 +134,23 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
+
+
         public int obj_order { get; set; }
+
+
+
+
+
+
+
+
 
 
 

@@ -17,11 +17,21 @@ namespace comerciamarketing_webapp.Models
     {
         public int ID_demo { get; set; }
 
+
+
         public string ID_Vendor { get; set; }
+
+
 
         public string vendor { get; set; }
 
+
+
         public string ID_Store { get; set; }
+
+
+
+
 
 
 
@@ -29,9 +39,19 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         [DataType(DataType.Date)]
 
+
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
+
+
+
+
 
 
 
@@ -39,7 +59,15 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public string ID_usuario { get; set; }
+
+
+
+
 
 
 
@@ -47,9 +75,19 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
         public string comments { get; set; }
 
+
+
         public int ID_form { get; set; }
+
+
+
+
 
 
 
@@ -59,36 +97,36 @@ namespace comerciamarketing_webapp.Models
 
 
 
+
+
+
+
+
+
         [DataType(DataType.Date)]
 
+
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+
+
+
+
 
 
 
         public System.DateTime end_date { get; set; }
 
 
-
-
-
         [DataType(DataType.Date)]
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+
+
 
         public System.DateTime check_in { get; set; }
 
-
-
-
-
-
-
         public string geoLong { get; set; }
-
-
-
-
-
-
 
         public string geoLat { get; set; }
 

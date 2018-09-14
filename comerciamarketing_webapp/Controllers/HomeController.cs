@@ -143,15 +143,30 @@ namespace comerciamarketing_webapp.Controllers
                 //**************************
                 //VISITAS
                 //SELECCIONAMOS RUTAS
-                var rutas = db.VisitsM.ToList();
+
+                var rutas = new List<VisitsM>();
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    rutas = db.VisitsM.ToList();
+                }
+                else
+                {
+                    var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
+
+                    
+                    rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit)) select r).ToList();
+                }
+
+               
 
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();
 
-                int onhold = (from e in db.VisitsM where (e.ID_visitstate == 3) select e).Count();
-                int inprogress = (from e in db.VisitsM where (e.ID_visitstate == 2) select e).Count();
-                int canceled = (from e in db.VisitsM where (e.ID_visitstate == 1) select e).Count();
-                int finished = (from e in db.VisitsM where (e.ID_visitstate == 4) select e).Count();
+                int onhold = (from e in rutas where (e.ID_visitstate == 3) select e).Count();
+                int inprogress = (from e in rutas where (e.ID_visitstate == 2) select e).Count();
+                int canceled = (from e in rutas where (e.ID_visitstate == 1) select e).Count();
+                int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
 
 
                 ViewBag.onhold = onhold;
@@ -176,21 +191,12 @@ namespace comerciamarketing_webapp.Controllers
                 }
                 //Agregamos los representantes
                 foreach (var itemVisita in rutas) {
-                    var nombreRep = "";
-                    var reps = (from e in db.VisitsM_representatives where (e.ID_visit == itemVisita.ID_visit) select e).ToList();
+                    var nombreRuta = "";
+                    var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
 
-                    foreach (var itemrep in reps) {
-                        var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
-                        if (reps.Count() == 1)
-                        {
-                            nombreRep = usuario.nombre + " " + usuario.apellido;
-                        }
-                        else if(reps.Count() >1) {
-                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
-                        }
-                    }
+                    nombreRuta = rutitalist.query2;
                     //utiliamos esta variable para el nombre del representante
-                    itemVisita.city = nombreRep;
+                    itemVisita.city = nombreRuta;
                 }
 
 
@@ -265,22 +271,62 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
                 //VISITAS
-                //SELECCIONAMOS RUTAS
-                var rutas = db.RoutesM.OrderByDescending(d => d.date);
-                var visitas = db.VisitsM.ToList();
+
+                var visitas = new List<VisitsM>();
+                var rutas = new List<RoutesM>();
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    visitas = db.VisitsM.ToList();
+                    rutas = db.RoutesM.OrderByDescending(d => d.date).ToList();
+                }
+                else
+                {
+                    var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
+
+
+                    visitas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit)) select r).ToList();
+
+                    var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
+                    rutas = (from rut in db.RoutesM where (arrayVisiID.Contains(rut.ID_route)) select rut).ToList();
+                }
+          
+                
                 //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
-                int totalRutas = visitas.Count();
+                decimal totalRutas = visitas.Count();
                 foreach (var rutait in rutas)
                 {
 
-                    int finishedorCanceled = (from e in db.VisitsM where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
-                    totalRutas = (from e in db.VisitsM where ( e.ID_route == rutait.ID_route) select e).Count();
+                    //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2 && e.ID_route == rutait.ID_route) select e).Count();
+                    totalRutas = (from e in visitas where ( e.ID_route == rutait.ID_route) select e).Count();
 
                     ViewBag.finished = finishedorCanceled;
 
                     if (totalRutas != 0)
                     {
-                        rutait.query3 = ((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100).ToString();
+                        if (inprogressv != 0 && finishedorCanceled != 0)
+                        {
+                            decimal n = (finishedorCanceled / totalRutas) * 100;
+                            decimal m = (inprogressv / totalRutas) * 50;
+                            rutait.query3 = (n+m).ToString();
+
+                        }
+                        else if (inprogressv == 0 && finishedorCanceled != 0)
+                        {
+                            
+                            rutait.query3 = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
+                        }
+                        else if (inprogressv != 0 && finishedorCanceled == 0)
+                        {
+                            rutait.query3 = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
+                        }
+                        else {
+                            rutait.query3 = (Convert.ToDecimal(0)).ToString();
+                        }
+
+
                     }
                     else
                     {
@@ -289,24 +335,24 @@ namespace comerciamarketing_webapp.Controllers
                 }
 
                 //MAPA DE RUTAS
-                var demos_map = (from a in db.RoutesM select a).ToList();
+                var demos_map = (from a in rutas select a).ToList();
 
 
                 // Convertimos la lista a array
-                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                //var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
                 // Convertimos la lista a array
-                ArrayList myArrList = new ArrayList();
-                myArrList.AddRange((from p in usuarios
-                                    select new
-                                    {
-                                        id = p.ID_usuario,
-                                        text = p.nombre + " " + p.apellido
-                                    }).ToList());
+                //ArrayList myArrList = new ArrayList();
+                //myArrList.AddRange((from p in usuarios
+                //                    select new
+                //                    {
+                //                        id = p.ID_usuario,
+                //                        text = p.nombre + " " + p.apellido
+                //                    }).ToList());
 
 
-                //LISTADO DE REPRESENTANTES
+                ////LISTADO DE REPRESENTANTES
                 
-                ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
+                //ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
                 //LISTADO DE RUTAS
                 var rutass = CMKdb.C_ROUTES.OrderBy(c => c.Code);
                 ViewBag.rutass = rutass.ToList();
@@ -382,15 +428,28 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
                 //VISITAS
                 //SELECCIONAMOS RUTAS
-                var rutas = db.VisitsM.Where(c=> c.ID_route ==id).ToList();
+                var rutas = new List<VisitsM>();
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    rutas = db.VisitsM.Where(c=> c.ID_route == id).ToList();
+                }
+                else
+                {
+                    var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
+
+
+                    rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_route == id) select r).ToList();
+                }
+                
 
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();
 
-                int onhold = (from e in db.VisitsM where (e.ID_visitstate == 3  && e.ID_route == id) select e).Count();
-                int inprogress = (from e in db.VisitsM where (e.ID_visitstate == 2 && e.ID_route == id) select e).Count();
-                int canceled = (from e in db.VisitsM where (e.ID_visitstate == 1 && e.ID_route == id) select e).Count();
-                int finished = (from e in db.VisitsM where (e.ID_visitstate == 4 && e.ID_route == id) select e).Count();
+                int onhold = (from e in rutas where (e.ID_visitstate == 3 ) select e).Count();
+                int inprogress = (from e in rutas where (e.ID_visitstate == 2 ) select e).Count();
+                int canceled = (from e in rutas where (e.ID_visitstate == 1 ) select e).Count();
+                int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
 
 
                 ViewBag.onhold = onhold;
@@ -1225,7 +1284,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 rutamaestra.date = date;
                 rutamaestra.end_date = enddate;
-                rutamaestra.query1 = listatiposactividades;
+                rutamaestra.query1 = "";
                 rutamaestra.query2 = descriptionN;
                 rutamaestra.query3 = "";
 
@@ -1301,24 +1360,24 @@ namespace comerciamarketing_webapp.Controllers
                         db.SaveChanges();
 
 
-                        List<int> repIds = listarepresentantes.Split(',').Select(int.Parse).ToList();
+                        //List<int> repIds = listarepresentantes.Split(',').Select(int.Parse).ToList();
 
-                        foreach (var rep in repIds)
-                        {
+                        //foreach (var rep in repIds)
+                        //{
 
-                            if (rep != 0)
-                            {
-                                VisitsM_representatives repvisita = new VisitsM_representatives();
+                        //    if (rep != 0)
+                        //    {
+                        //        VisitsM_representatives repvisita = new VisitsM_representatives();
 
-                                repvisita.ID_visit = visita.ID_visit;
-                                repvisita.ID_usuario = rep;
-                                repvisita.query1 = "";
-                                repvisita.ID_empresa= visita.ID_empresa;
-                                db.VisitsM_representatives.Add(repvisita);
-                                db.SaveChanges();
-                            }
+                        //        repvisita.ID_visit = visita.ID_visit;
+                        //        repvisita.ID_usuario = rep;
+                        //        repvisita.query1 = "";
+                        //        repvisita.ID_empresa= visita.ID_empresa;
+                        //        db.VisitsM_representatives.Add(repvisita);
+                        //        db.SaveChanges();
+                        //    }
 
-                        }
+                        //}
 
 
                     }

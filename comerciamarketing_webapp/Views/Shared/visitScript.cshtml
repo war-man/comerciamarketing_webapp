@@ -1,0 +1,336 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script>
+
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        $("#loading").show();
+
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+        //console.log(now.toLocaleString("en-US", { hour12: true }));
+        $.ajax({
+            url: '/VisitsMs/check_in',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': lat, 'lng': lng },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+
+
+
+
+    };
+
+    function error(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+        $("#loading").show();
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+
+        $.ajax({
+            url: '/VisitsMs/check_in',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': "", 'lng': "" },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+    };
+
+    function initGeolocation() {
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            console.log('Geolocation is not supported');
+        }
+    }
+
+    //CHECK IN
+    function checkinVisit() {
+
+
+        swal({
+            title: "Check in",
+            text: "Are you sure you want to check in to the store?",
+            icon: "info",
+            closeModal: false,
+            buttons: true,
+            buttons: ["Cancel", "Check in"]
+
+        }).then((willDelete) => {
+            if (willDelete) {
+                initGeolocation();
+            } else {
+                
+            }
+        });
+    }
+
+
+    //CHECK OUT
+    function checkoutVisit() {
+
+
+        swal({
+            title: "Check out",
+            text: "Are you sure you want to check out to the store?",
+            icon: "info",
+            closeModal: false,
+            buttons: true,
+            dangerMode: true,
+            buttons: ["Cancel", "Check out"]
+
+        }).then((willDelete) => {
+            if (willDelete) {
+                initGeolocation2();
+            } else {
+
+            }
+        });
+    }
+
+
+    var options2 = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success2(pos) {
+        var crd = pos.coords;
+        $("#loading").show();
+
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+        //console.log(now.toLocaleString("en-US", { hour12: true }));
+        $.ajax({
+            url: '/VisitsMs/check_out',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': lat, 'lng': lng },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+
+
+
+
+    };
+
+    function error2(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+        $("#loading").show();
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+
+        $.ajax({
+            url: '/VisitsMs/check_out',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': "", 'lng': "" },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+    };
+
+    function initGeolocation2() {
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success2, error2, options2);
+        } else {
+            console.log('Geolocation is not supported');
+        }
+    }
+
+
+
+
+    //CANCEL VISIT
+    function cancelVisit() {
+
+
+        swal({
+            title: "Cancel visit",
+            text: "Are you sure you want to cancel this visit?",
+            icon: "info",
+            closeModal: false,
+            buttons: true,
+            dangerMode: true,
+            buttons: ["Cancel", "Confirm"]
+
+        }).then((willDelete) => {
+            if (willDelete) {
+                initGeolocation3();
+            } else {
+
+            }
+        });
+    }
+
+
+    var options3 = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success3(pos) {
+        var crd = pos.coords;
+
+
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+        //console.log(now.toLocaleString("en-US", { hour12: true }));
+        $.ajax({
+            url: '/VisitsMs/cancel_visit',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': lat, 'lng': lng },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+
+
+
+
+    };
+
+    function error3(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+
+        var idvisita = "";
+        idvisita = document.getElementById('ID_visita').value;
+        var now = new Date();
+
+        $.ajax({
+            url: '/VisitsMs/cancel_visit',
+            type: 'POST',
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': "", 'lng': "" },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    //showSuccessToast();
+
+                    window.location.reload(true);
+                } else {
+                    //showWarning2Toast();
+                }
+
+
+            },
+            error: function (request) {
+                //showWarning2Toast();
+
+            }
+        });
+    };
+
+    function initGeolocation3() {
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success2, error2, options2);
+        } else {
+            console.log('Geolocation is not supported');
+        }
+    }
+</script>
