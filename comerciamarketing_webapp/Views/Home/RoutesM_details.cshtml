@@ -6,7 +6,17 @@
     <div class="container-fluid page-body-wrapper">
         <div class="main-panel">
             <div class="content-wrapper">
+
                 <div class="container">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10 text-right">
+
+                                <a href="@Url.Action("RoutesM", "Home")" class="btn btn-info">Back</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-around">
@@ -18,7 +28,7 @@
                                 </div>
                             </div>
 
-                            
+
 
                         </div>
 
@@ -31,7 +41,7 @@
                                         <i class="mdi mdi-seat-recline-extra icon-lg"></i>
                                         <div class="d-flex flex-column ml-2">
                                             <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
+                                                <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
                                                 <p class="font-weight-bold">@ViewBag.onhold</p>
                                             </span>
                                             <small>@ViewBag.onholdP.ToString("F") % total</small>
@@ -285,60 +295,60 @@
                                     <h4 class="card-title">Visits list</h4>
 
                                     <div class="row">
-                                        <div class="col-lg-12 table-responsive">
-                                            <table id="order-listing" class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Store</th>
-                                                        <th>Representatives</th>
-                                                        <th>Status</th>
-                                                        
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var itemVisita in ViewBag.visitas)
-                                    {
-                                        <tr>
-                                            <td>
-                                                 @itemVisita.ID_visit
-                                                
+                                        <table id="order-listing" class="table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Store</th>
+                                                    <th scope="col">Representatives</th>
+                                                    <th scope="col">Status</th>
 
-                                            </td>
 
-                                            <td>
-                                                <a class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to visit" href="@Url.Action("Details", "VisitsMs", new { id=itemVisita.ID_visit})">
-                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                    <span class="text-primary">@itemVisita.address</span>
-                                                </a>
-                                            </td>
-                                            <td>@itemVisita.city</td>
-
-                                            <td>
-                                                @switch (itemVisita.ID_visitstate)
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var itemVisita in ViewBag.visitas)
                                 {
-                                    case 1: //Canceled
-                                        <label class="badge badge-danger">Canceled</label>
-                        break;
-                    case 2: //In Progress
-                        <label class="badge badge-success">In progress</label>
-        break;
-    case 3: //On Hold
-                <label class="badge badge-warning">On hold</label>
+                                    <tr>
+                                        <td scope="row" data-label="ID">
+                                            @itemVisita.ID_visit
+
+
+                                        </td>
+
+                                        <td data-label="Store">
+                                            <a class="text-black" href="@Url.Action("Details", "VisitsMs", new { id=itemVisita.ID_visit})">
+                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                <span class="text-primary">@itemVisita.address</span>
+                                            </a>
+                                        </td>
+                                        <td data-label="Representatives">@itemVisita.city .</td>
+
+                                        <td data-label="Status">
+                                            @switch (itemVisita.ID_visitstate)
+                            {
+                                case 1: //Canceled
+                                    <label class="badge badge-danger">Canceled</label>
+                    break;
+                case 2: //In Progress
+                    <label class="badge badge-success">In progress</label>
+    break;
+case 3: //On Hold
+                <label class="badge badge-warning">Scheduled</label>
 break;
 case 4: //Finished
                 <label class="badge badge-primary">Finished</label>
 break;
 }
 
-                                            </td>
-                                           
-                                        </tr>
-                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        </td>
+
+                                    </tr>
+                }
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
                             </div>

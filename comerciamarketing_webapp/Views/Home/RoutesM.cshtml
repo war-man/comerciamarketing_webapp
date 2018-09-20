@@ -36,19 +36,28 @@
                                             <div class="col-md-4 grid-margin stretch-card">
                                                 <div class="card">
                                                     <div class="card-body">
-                                                        <h4 class="card-title">By Customer</h4>
-                                                        <div class="form-group">
-                                                            <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
-                                                                @foreach (var itemCustomer in ViewBag.customers)
-                                                    {
-                                                        <option value="@itemCustomer.CardCode">@itemCustomer.CardCode - @itemCustomer.CardName</option>
-                                        }
-                                                            </select>
-                                                        </div>
+                                                        <a href="#" class="btn btn-primary" id="click_filter">Apply<i class="mdi mdi-check-all"></i></a>
 
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--
+        <div class="col-md-4 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">By Customer</h4>
+                    <div class="form-group">
+                        <select id="multicus" style="width:100%">
+                            foreach (var itemCustomer in ViewBag.customers)
+                {
+                    <option value="itemCustomer.CardCode">itemCustomer.CardCode - itemCustomer.CardName</option>
+    }
+                        </select>
+                    </div>
+
+                </div>
+            </div>-->
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +65,7 @@
 
                         </div>
                     </div>
-                </div>
+                
                 <div class="row">
                     <div class="col-md-12 grid-margin">
                         <div class="card">           
@@ -64,13 +73,17 @@
                                         <ul class="nav nav-tabs tab-simple-styled" role="tablist">
                                             <li class="nav-item">
                                                 <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-truck"></i>Routes list</a>
-                                            </li>
+                                            </li><!--
                                             <li class="nav-item">
                                                 <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-calendar"></i>Calendar</a>
-                                            </li>
-                                            <li class="nav-item">
+                                            </li>-->
+                                            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                            { }
+                                            else {
+                                                <li class="nav-item">
                                                 <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
                                             </li>
+                                            }
                                         </ul>
                                         <div class="tab-content tab-content-basic">
                                             <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
@@ -84,15 +97,18 @@
                                                     <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add Route<i class="mdi mdi-plus"></i></a>
                                                         }
                                                     <div class="row">
-                                                        <div class="col-lg-12 table-responsive">
-                                                            <table id="order-listing" class="table table-striped">
+                                                       
+                                                            <table id="order-listing" class="table-striped">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>ID</th>
-                                                                        <th>Name</th>
-                                                                        <th>Date</th>
-                                                                        <th>Estimated completion date</th>
-                                                                        <th>Status</th>
+                                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                                        {
+                                                                    <th scope="col">ID</th>
+                                                                        }
+                                                                    <th scope="col">Name</th>
+                                                                    <th scope="col">Date</th>
+                                                                    <th scope="col">Estimated completion date</th>
+                                                                    <th scope="col">Status</th>
 
                                                                     </tr>
                                                                 </thead>
@@ -100,21 +116,23 @@
                                                                     @foreach (var itemRuta in Model)
                 {
                                                     <tr>
-                                                        <td>
+                                                          @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                          {
+                                                        <td  scope="row" data-label="ID">
                                                             @itemRuta.ID_route
 
-                                                        </td>
-                                                        <td>
+                                                        </td>}
+                                                        <td data-label="Name">
                                                             <i class="mdi mdi-truck-delivery icon-sm text-info"></i>
-                                                            <a class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to route" href="@Url.Action("RoutesM_details", "Home", new { id=itemRuta.ID_route})">
+                                                            <a class="text-black" href="@Url.Action("RoutesM_details", "Home", new { id=itemRuta.ID_route})">
                                                                 @itemRuta.query2
                                                             </a>
                                                         </td>
 
-                                                        <td>@itemRuta.date.ToLongDateString()</td>
-                                                        <td>@itemRuta.end_date.ToLongDateString()</td>
+                                                        <td data-label="Date">@itemRuta.date.ToLongDateString()</td>
+                                                        <td data-label="Estimated completion date">@itemRuta.end_date.ToLongDateString()</td>
 
-                                                        <td>
+                                                        <td data-label="Status">
                                                             <div class="d-flex justify-content-between mt-2">
 
                                                                 <small>@Convert.ToDecimal(itemRuta.query3).ToString("F") %</small>
@@ -127,13 +145,13 @@
 }
                                                                 </tbody>
                                                             </table>
-                                                        </div>
+                                                      
                                                     </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                            </div>
+                                            </div><!--
                                             <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
                                                 <div class="row">
 
@@ -148,10 +166,99 @@
                                                     </div>
 
                                                 </div>
+                                            </div>-->
+                                             @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                             { }
+                                             else {
+                                                 <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="card">
+                                                            
+                                                          
+                                                           
+                                                                    <div class="vertical-timeline">
+
+                                                                        @foreach (var itemtime in ViewBag.log) {
+
+                                                                            if (itemtime.action.Contains("SAVE ACTIVITY")) {
+                                                                         <div class="timeline-wrapper timeline-inverted timeline-wrapper-info">
+                                                                            <div class="timeline-badge"></div>
+                                                                            <div class="timeline-panel">
+                                                                                <div class="timeline-heading">
+                                                                                    <h6 class="timeline-title">@itemtime.action</h6>
+                                                                                </div>
+                                                                                <div class="timeline-body">
+                                                                                    <p>ID Activity : @itemtime.ID_activity</p>
+                                                                                </div>
+                                                                                <div class="timeline-footer d-flex align-items-center">
+                                                                                    <span class="ml-auto font-weight-bold">@itemtime.fecha_conexion</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                            }
+                                                                        if (itemtime.action.Contains("CHECK IN")) {
+                                                                         <div class="timeline-wrapper timeline-wrapper-success">
+                                                                            <div class="timeline-badge"></div>
+                                                                            <div class="timeline-panel">
+                                                                                <div class="timeline-heading">
+                                                                                    <h6 class="timeline-title">@itemtime.action</h6>
+                                                                                </div>
+                                                                                <div class="timeline-body">
+                                                                                    <p>ID Visit : @itemtime.query1</p>
+                                                                                </div>
+                                                                                <div class="timeline-footer d-flex align-items-center">
+                                                                                    <span class="ml-auto font-weight-bold">@itemtime.fecha_conexion</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                            }
+                                                                          if (itemtime.action.Contains("CHECK OUT")) {
+                                                                         <div class="timeline-wrapper timeline-wrapper-danger">
+                                                                            <div class="timeline-badge"></div>
+                                                                            <div class="timeline-panel">
+                                                                                <div class="timeline-heading">
+                                                                                    <h6 class="timeline-title">@itemtime.action</h6>
+                                                                                </div>
+                                                                                <div class="timeline-body">
+                                                                                    <p>ID Visit : @itemtime.query1</p>
+                                                                                </div>
+                                                                                <div class="timeline-footer d-flex align-items-center">
+                                                                                    <span class="ml-auto font-weight-bold">@itemtime.fecha_conexion</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                            }
+                                                                         if (itemtime.action.Contains("FINISH ACTIVITY")) {
+                                                                         <div class="timeline-wrapper timeline-inverted timeline-wrapper-primary">
+                                                                            <div class="timeline-badge"></div>
+                                                                            <div class="timeline-panel">
+                                                                                <div class="timeline-heading">
+                                                                                    <h6 class="timeline-title">@itemtime.action</h6>
+                                                                                </div>
+                                                                                <div class="timeline-body">
+                                                                                    <p>ID Activity : @itemtime.ID_activity</p>
+                                                                                </div>
+                                                                                <div class="timeline-footer d-flex align-items-center">
+                                                                                    <span class="ml-auto font-weight-bold">@itemtime.fecha_conexion</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                            }
+                                                                        }
+                   
+                                                                    </div>
+                                                           
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia quibusdam assumenda fugit velit quis hic nulla necessitatibus? Nulla, possimus rerum quia sapiente necessitatibus!
-                                            </div>
+                                             }
                                         </div>
                                     </div>
                              
@@ -183,7 +290,7 @@
                     <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-truck"></i> Add New Route</h5>
                     
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -204,7 +311,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                              
 
 
                                 <p class="card-description">
@@ -215,15 +322,10 @@
                                         <div class="form-group row">
 
                                             <div class="col-sm-12">
-                                                <input class="form-control" type="hidden" name="listatiendas" id="storesmulti" value="" style="width:100%;" />
-
-                                                <input type="checkbox" id="checkbox" hidden />
+                                                <input class="form-control"  type="hidden" name="listatiendas" id="storesmulti" value="" style="width:100%;" />
 
 
-                                                <button type="button" id="showValue" hidden>Show Value</button>
-
-                                                <div id="output" hidden>
-                                                </div>
+                                             
                                             </div>
                                         </div>
                                     </div>
@@ -291,7 +393,7 @@
                                 </div>
                                 -->
 
-
+                                </div>
                             </div>
                         </div>
                     </div>

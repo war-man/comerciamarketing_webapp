@@ -1,0 +1,219 @@
+﻿@model IEnumerable<comerciamarketing_webapp.Models.Items_displays>
+@{
+    ViewBag.Title = "Comercia Marketing - Display items";
+}
+
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="display-4">Display items</h4>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add Item<i class="mdi mdi-plus"></i></button>
+                                <div class="row">
+                                    <div class="col-md-12 table-responsive">
+                                        <table id="order-listing" class="table table-striped">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>ID</th>
+                                                    <th>Description</th>
+                                                    <th>Active</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @item.ID_item
+                                            </td>
+                                            <td>
+
+                                                <h6>
+                                                    <i class="mdi mdi-ballot-outline icon-sm text-info"></i> <a class="text-black" href="@Url.Action("Item_stats", "Home", new { id=item.ID_item})">
+                                                        @item.description
+                                                    </a>
+                                                </h6>
+                                                <p class="font-weight-light">
+                                                    <i class="mdi mdi-email icon-sm text-warning"></i> @item.SKU
+                                                </p>
+
+                                            </td>
+                                            <td>
+                                                @if (item.active == true)
+                                    {
+                                        <div class="badge badge-pill badge-success"><i class="mdi mdi-check ml-1"></i></div>
+                        }
+                        else
+                        {
+                            <div class="badge badge-pill badge-danger"><i class="mdi mdi-cancel ml-1"></i></div>
+            }
+                                            </td>
+                                            <td align="left">
+                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#editModal" data-nombre="@item.description" data-sku="@item.SKU" data-estado="@item.active"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>
+                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
+                                            </td>
+                                        </tr>
+
+                        }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+           
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+</div>
+<!-- page-body-wrapper ends -->
+<!--CRESTE USER DATA STARTS-->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+               @using (Html.BeginForm("CreateRep", "usuarios", FormMethod.Post))
+               {
+    @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-account"></i>Add new representative</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <label for="recipient-name" class="col-form-label">Last Name:</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="correo" name="correo" required>
+                        <label for="recipient-name" class="col-form-label">Telephone:</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info">Save</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+               }
+        </div>
+    </div>
+</div>
+<!--CREATE USER DATA ENDS-->
+<!--EDIT USER DATA STARTS-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-account"></i> Edit representative data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="nombreE" name="nombreE">
+                        <label for="recipient-name" class="col-form-label">Last Name:</label>
+                        <input type="text" class="form-control" id="apellidoE" name="apellidoE">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="text" class="form-control" id="correoE" name="correoE">
+                        <label for="recipient-name" class="col-form-label">Telephone:</label>
+                        <input type="text" class="form-control" id="telefonoE" name="telefonoE">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Active:</label>
+                        <div class="form-radio">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="" checked>
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-radio">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info">Save</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--EDITA USER DATA ENDS-->
+<!--DELETE USER DATA STARTS-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete representative data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label">Are you sure you want to delete Representative data?</label>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--DELETE USER DATA ENDS-->
+<script>
+    window.onload = function () {
+
+        (function ($) {
+            'use strict';
+            $('#editModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);// Button that triggered the modal
+                var nombreE = button.data('nombre');// Extract info from data-* attributes
+                var skuE = button.data('sku');
+                var estadoE = button.data('estado');
+                
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+                modal.find('.modal-body input[name="nombreE"]').val(nombreE);
+                modal.find('.modal-body input[name="skuE"]').val(skuE);
+            })
+        })(jQuery);
+    }
+</script>

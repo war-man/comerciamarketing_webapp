@@ -449,7 +449,6 @@
     <Content Include="Content\css\bootstrap-select.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
-    <Content Include="Content\images\activities\8_activity_12.jpg" />
     <Content Include="Content\landingpage\css\base.css" />
     <Content Include="Content\landingpage\css\blocks.css" />
     <Content Include="Content\landingpage\css\crumina-fonts.css" />
@@ -1021,6 +1020,7 @@
     <Content Include="Content\lib\jquery\dist\jquery.min.js" />
     <Content Include="Content\lib\jquery\LICENSE.txt" />
     <Content Include="Content\newstyle2\images\visits.png" />
+    <Content Include="Content\newstyle2\images\White-Background-9B1-min-min_0.jpg" />
     <Content Include="Content\newstyle2\js\ace.js" />
     <Content Include="Content\newstyle2\js\alerts.js" />
     <Content Include="Content\newstyle2\js\avgrund.js" />
@@ -1082,6 +1082,7 @@
     <Content Include="Content\newstyle2\js\paginate.js" />
     <Content Include="Content\newstyle2\js\popover.js" />
     <Content Include="Content\newstyle2\js\progress-bar.js" />
+    <Content Include="Content\newstyle2\js\screenfull.js" />
     <Content Include="Content\newstyle2\js\select2.js" />
     <Content Include="Content\newstyle2\js\settings.js" />
     <Content Include="Content\newstyle2\js\sparkline.js" />
@@ -3188,9 +3189,13 @@
     <Content Include="Views\FormsM\Activityra.cshtml" />
     <Content Include="Views\Shared\ActivityraScripts.cshtml" />
     <Content Include="Views\Shared\visitScript.cshtml" />
+    <Content Include="Views\FormsM\Template_preview4.cshtml" />
+    <Content Include="Views\FormsM\Activityresume.cshtml" />
+    <Content Include="Views\Home\Displayitems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\images\activities\" />
     <Folder Include="Reportes\pdf\" />
   </ItemGroup>
   <ItemGroup>

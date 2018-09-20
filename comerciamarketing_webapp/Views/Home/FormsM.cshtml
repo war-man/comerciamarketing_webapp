@@ -15,16 +15,16 @@
                                 <h4 class="display-4">Forms</h4>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createModal" data-action="create">Add Form<i class="mdi mdi-plus"></i></button>
                                 <div class="row">
-                                    <div class="col-md-12 table-responsive">
-                                        <table id="order-listing" class="table table-striped">
+                                    
+                                        <table id="order-listing" class="table-striped">
                                             <thead>
 
                                                 <tr>
 
-                                                    <th>ID #</th>
-                                                    <th>Name</th>
-                                                    <th>Type of document</th>
-                                                    <th>Actions</th>
+                                                    <th scope="col">ID #</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Type of document</th>
+                                                    <th scope="col">Actions</th>
                                                 </tr>
 
                                             </thead>
@@ -32,7 +32,7 @@
                                                 @foreach (var itemForms in ViewBag.formslist)
                                                 {
                                                     <tr>
-                                                        <td>
+                                                        <td scope="row" data-label="ID">
 
                                                             <h6>
                                                                 <i class="mdi mdi-file-document icon-sm text-info"></i>
@@ -41,11 +41,11 @@
                                                             </h6>
 
                                                         </td>
-                                                        <td>@itemForms.name</td>
-                                                        <td>
+                                                        <td data-label="Name">@itemForms.name</td>
+                                                        <td data-label="Type of document">
                                                             @itemForms.query1
                                                         </td>
-                                                        <td align="left">
+                                                        <td align="left" data-label="Actions">
                                                             <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#createModal" data-action="edit" data-idform="@itemForms.ID_form" data-name="@itemForms.name" data-description="@itemForms.description" data-activity="@itemForms.ID_activity"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>
                                                             <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
                                                             @if (itemForms.ID_activity == 1) {//Forms
@@ -53,17 +53,18 @@
                                                             
                                                             } else if (itemForms.ID_activity == 2) {//Retail Audit
                                                                 <a href="@Url.Action("Template_preview2", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
-                                                            
+
+                                                            }else if(itemForms.ID_activity == 4)//Inventory
+                                                            {
+ <a href="@Url.Action("Template_preview4", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
                                                             }
-                                                             
-                                                            
                                                         </td>
                                                     </tr>
                                                 }
 
                                             </tbody>
                                         </table>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

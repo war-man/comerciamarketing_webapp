@@ -27,11 +27,11 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Home(string idioma)
         {
-            
+
             return View();
         }
 
-            public ActionResult Main(string startdate, string finishdate)
+        public ActionResult Main(string fstartd, string fendd, string store)
         {
 
             if (Session["IDusuario"] != null)
@@ -40,125 +40,75 @@ namespace comerciamarketing_webapp.Controllers
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
                 //var registro_conexiones = (from b in db.historial_conexiones where (b.ID_usuario == ID) select b).OrderByDescending(b=> b.fecha_conexion).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.nombre + " " +  datosUsuario.apellido;
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
                 ViewBag.tipomembresia = datosUsuario.Tipo_membresia.descripcion;
                 ViewBag.ultimavisita = Session["ultimaconexion"].ToString();//datosUsuario.fultima_visita.ToString();
                 ViewBag.bloquearcontenido = "no";
 
+                //FILTROS VARIABLES
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
 
-                //var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                //var saturday = sunday.AddDays(6).AddHours(23);
-
-                //if (startdate == null)
-                //{
-                //    if (finishdate == null)
-                //    {
+                
 
 
-                //    }
+                //FILTROS**************
 
-                //}
-                //else {
-                //    if (finishdate == null)
-                //    {
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = DateTime.Today;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
 
-                //    }
-                //    else {
-                //        try
-                //        {
-                //            sunday = Convert.ToDateTime(startdate);
-                //            saturday = Convert.ToDateTime(finishdate);
-                //            saturday = saturday.AddHours(23);
-                //        }
-                //        catch {
-                //            sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                //            saturday = sunday.AddDays(6).AddHours(23);
-                //        }
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = DateTime.Today.AddHours(23).AddMinutes(59);
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
 
-
-                //    }
-
-                //}
-
-
-
-                //int onhold = (from e in db.Demos where (e.ID_demostate == 3 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                //int inprogress = (from e in db.Demos where (e.ID_demostate == 2 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                //int canceled = (from e in db.Demos where (e.ID_demostate == 1 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-                //int finished = (from e in db.Demos where (e.ID_demostate == 4 && e.visit_date >= sunday && e.end_date <= saturday) select e).Count();
-
-
-                //var demos_map = (from a in db.Demos where (a.visit_date >= sunday && a.end_date <= saturday) select a).ToList();
-
-
-                ////Asignamos la geoubicacion
-                //foreach (var item in demos_map) {
-
-
-                //    var usuario = (from h in CMKdb.OCRD where (h.CardCode == item.ID_usuario) select h).FirstOrDefault();
-                //    if (usuario == null) { } else { item.ID_usuario = usuario.CardName; }
-
-
-                //}
-
-
-                //// Convertimos la lista a array
-                //ArrayList myArrList = new ArrayList();
-                //myArrList.AddRange((from p in demos_map
-                //                    select new
-                //                    {
-                //                        id = p.ID_demo,
-                //                        nombre = p.ID_usuario,
-                //                        PlaceName = p.store,
-                //                        GeoLong = p.geoLong,
-                //                        GeoLat = p.geoLat,
-                //                        demo_state = p.Demo_state.sdescription,
-                //                        vendor = p.vendor,
-                //                        date = p.visit_date,
-                //                        comment = p.comments
-                //                    }).ToList());
-
-
-                //ViewBag.demos_map = JsonConvert.SerializeObject(myArrList);
-
-
-
-                //ViewBag.bloquearcontenido = "no";
-                //ViewBag.desdehasta = "From " + sunday.ToShortDateString() + " to " + saturday.ToShortDateString(); 
-                //ViewBag.onhold_demos = onhold;
-                //ViewBag.inprogress_demos = inprogress;
-                //ViewBag.canceled_demos = canceled;
-                //ViewBag.finished_demos = finished;
-                //Actualizamos datos del usuario
-                //Usuarios actualizardatosUsuario = new Usuarios();
-
-                //actualizardatosUsuario = (from u in db.Usuarios where (u.ID_usuario == ID) select u).FirstOrDefault();
-
-                //actualizardatosUsuario.contador_visitas = actualizardatosUsuario.contador_visitas + 1;
-                //actualizardatosUsuario.fultima_visita = DateTime.Now;
-
-                //db.Entry(actualizardatosUsuario).State = EntityState.Modified;
-                //db.SaveChanges();
-                //**************************
                 //VISITAS
                 //SELECCIONAMOS RUTAS
 
                 var rutas = new List<VisitsM>();
-
+                int[] visitasarray = new int[] { };
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
-                    rutas = db.VisitsM.ToList();
+                    if (store == null || store == "") {
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).Select(d=>d.ID_visit).ToArray();
+                    }
+                    else {
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).ToList();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).Select(d=>d.ID_visit).ToArray();
+                    }
+                   
                 }
                 else
                 {
                     var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
 
-                    
-                    rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit)) select r).ToList();
+                    if (store == null || store == "")
+                    {
+                       
+                        rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r).ToList();
+                       visitasarray = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r.ID_visit).ToArray();
+                    }
+                    else {
+                        rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate && r.ID_store == store) select r).ToList();
+                        visitasarray = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate && r.ID_store == store) select r.ID_visit).ToArray();
+                    }
+                        
                 }
 
-               
+
 
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();
@@ -204,7 +154,7 @@ namespace comerciamarketing_webapp.Controllers
                 //MAPA DE RUTAS
                 var demos_map = rutas;
 
-                
+
 
 
                 // Convertimos la lista a array
@@ -240,10 +190,14 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.visitas = rutas;
 
-                var activities = (from a in db.ActivitiesM select a).ToList();
+                var activities = (from a in db.ActivitiesM where(visitasarray.Contains(a.ID_visit)) select a).ToList();
                 ViewBag.actlist = activities;
-               
 
+                //Filtros viewbag
+
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                //*****************
                 return View();
             }
             else
@@ -262,7 +216,7 @@ namespace comerciamarketing_webapp.Controllers
             return View();
         }
 
-        public ActionResult RoutesM()
+        public ActionResult RoutesM(string fstartd,string fendd)
         {
             if (Session["IDusuario"] != null)
             {
@@ -275,23 +229,46 @@ namespace comerciamarketing_webapp.Controllers
                 var visitas = new List<VisitsM>();
                 var rutas = new List<RoutesM>();
 
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = DateTime.Today;
+                }
+                else {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = DateTime.Today.AddHours(23).AddMinutes(59);
+                }
+                else {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
+
+
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
-                    visitas = db.VisitsM.ToList();
-                    rutas = db.RoutesM.OrderByDescending(d => d.date).ToList();
+                    visitas = db.VisitsM.Where(d=> d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
+                    rutas = db.RoutesM.Where(d => d.date >= filtrostartdate && d.end_date <= filtroenddate).OrderByDescending(d => d.date).ToList();
                 }
                 else
                 {
                     var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
 
 
-                    visitas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit)) select r).ToList();
+                    visitas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r).ToList();
 
                     var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
                     rutas = (from rut in db.RoutesM where (arrayVisiID.Contains(rut.ID_route)) select rut).ToList();
                 }
-          
-                
+
+
                 //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
                 decimal totalRutas = visitas.Count();
                 foreach (var rutait in rutas)
@@ -300,7 +277,7 @@ namespace comerciamarketing_webapp.Controllers
                     //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
                     decimal finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4) && e.ID_route == rutait.ID_route) select e).Count();
                     decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2 && e.ID_route == rutait.ID_route) select e).Count();
-                    totalRutas = (from e in visitas where ( e.ID_route == rutait.ID_route) select e).Count();
+                    totalRutas = (from e in visitas where (e.ID_route == rutait.ID_route) select e).Count();
 
                     ViewBag.finished = finishedorCanceled;
 
@@ -310,12 +287,12 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             decimal n = (finishedorCanceled / totalRutas) * 100;
                             decimal m = (inprogressv / totalRutas) * 50;
-                            rutait.query3 = (n+m).ToString();
+                            rutait.query3 = (n + m).ToString();
 
                         }
                         else if (inprogressv == 0 && finishedorCanceled != 0)
                         {
-                            
+
                             rutait.query3 = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
                         }
                         else if (inprogressv != 0 && finishedorCanceled == 0)
@@ -351,31 +328,31 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 ////LISTADO DE REPRESENTANTES
-                
+
                 //ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
                 //LISTADO DE RUTAS
                 var rutass = CMKdb.C_ROUTES.OrderBy(c => c.Code);
                 ViewBag.rutass = rutass.ToList();
                 //LISTADO DE TIENDAS
 
-                List<MyObj_tablapadre> listapadres = (from p in CMKdb.C_ROUTES select 
-                                                      new MyObj_tablapadre{
-                                                          id= p.Code,
+                List<MyObj_tablapadre> listapadres = (from p in CMKdb.C_ROUTES select
+                                                      new MyObj_tablapadre {
+                                                          id = p.Code,
                                                           text = p.Name
                                                       }
                                                       ).ToList();
 
                 List<tablahijospadre> listahijas = (from p in CMKdb.C_ROUTE
-                                             join store in CMKdb.OCRD on p.U_CardCode equals store.CardCode   
-                                            select new tablahijospadre{
-                                                id = p.U_CardCode,
-                                                text = store.CardName.Replace("\"", "\\\""),
-                                                parent = p.U_Route
-                                            }).ToList();
+                                                    join store in CMKdb.OCRD on p.U_CardCode equals store.CardCode
+                                                    select new tablahijospadre {
+                                                        id = p.U_CardCode,
+                                                        text = store.CardName.Replace("\"", "\\\""),
+                                                        parent = p.U_Route
+                                                    }).ToList();
 
 
                 List<MyObj_tablapadre> categoriasList = ObtenerCategoriarJerarquiaByName(listapadres, listahijas);
-  
+
                 //var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.stores = JsonConvert.SerializeObject(categoriasList);
                 //FIN LISTADO DE TIENDAS
@@ -383,21 +360,21 @@ namespace comerciamarketing_webapp.Controllers
                 //LISTADO DE ACTIVIDADES
 
                 List<MyObj_tablapadre> listapadresActivities = (from a in db.ActivitiesM_types
-                                                      select
-                                                         new MyObj_tablapadre
-                                                         {
-                                                             id = a.ID_activity.ToString(),
-                                                             text = a.description
-                                                         }
+                                                                select
+                                                                   new MyObj_tablapadre
+                                                                   {
+                                                                       id = a.ID_activity.ToString(),
+                                                                       text = a.description
+                                                                   }
                                       ).ToList();
 
                 List<tablahijospadre> listahijasActivities = (from p in db.FormsM
-                                                    select new tablahijospadre
-                                                    {
-                                                        id = p.ID_form.ToString(),
-                                                        text = p.name,
-                                                        parent = p.ID_activity.ToString()
-                                                    }).ToList();
+                                                              select new tablahijospadre
+                                                              {
+                                                                  id = p.ID_form.ToString(),
+                                                                  text = p.name,
+                                                                  parent = p.ID_activity.ToString()
+                                                              }).ToList();
 
 
                 List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
@@ -408,8 +385,29 @@ namespace comerciamarketing_webapp.Controllers
                 //LISTADO DE CLIENTES
                 var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.customers = customers.ToList();
+                //LISTADO DE ACTIVIDAD (TIMELINE)
 
+                var log = new List<ActivitiesM_log>();
 
+                 
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    log = (from l in db.ActivitiesM_log where(l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate)  select l).ToList();
+                }
+                else
+                {
+                    log = (from l in db.ActivitiesM_log where (l.ID_usuario == ID && l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate) select l).OrderBy(l => l.fecha_conexion).ToList();
+                }
+
+                ViewBag.log = log;
+
+                //Filtros Viewbag
+                //Filtros viewbag
+
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString(); ;
+                //*****************
                 return View(rutas.ToList());
             }
             else
@@ -417,7 +415,7 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
-       
+
         public ActionResult RoutesM_details(int? id)
         {
             if (Session["IDusuario"] != null)
@@ -432,7 +430,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
-                    rutas = db.VisitsM.Where(c=> c.ID_route == id).ToList();
+                    rutas = db.VisitsM.Where(c => c.ID_route == id).ToList();
                 }
                 else
                 {
@@ -441,14 +439,14 @@ namespace comerciamarketing_webapp.Controllers
 
                     rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_route == id) select r).ToList();
                 }
-                
+
 
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();
 
-                int onhold = (from e in rutas where (e.ID_visitstate == 3 ) select e).Count();
-                int inprogress = (from e in rutas where (e.ID_visitstate == 2 ) select e).Count();
-                int canceled = (from e in rutas where (e.ID_visitstate == 1 ) select e).Count();
+                int onhold = (from e in rutas where (e.ID_visitstate == 3) select e).Count();
+                int inprogress = (from e in rutas where (e.ID_visitstate == 2) select e).Count();
+                int canceled = (from e in rutas where (e.ID_visitstate == 1) select e).Count();
                 int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
 
 
@@ -532,6 +530,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 //LISTADO DE CLIENTES
                 var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
                 ViewBag.customers = customers.ToList();
 
                 var ruta = (from r in db.RoutesM where (r.ID_route == id) select r).FirstOrDefault();
@@ -539,6 +538,11 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.routename = ruta.query2;
 
                 ViewBag.visitas = rutas;
+
+
+
+
+
                 return View();
             }
             else
@@ -690,12 +694,12 @@ namespace comerciamarketing_webapp.Controllers
                         }
 
 
-                        
+
                     }
-                    }
+                }
 
 
-                    //return RedirectToAction("Main");
+                //return RedirectToAction("Main");
                 else
                 {
                     //Si ingreso mal la contraseña o el usuario no existe
@@ -786,13 +790,13 @@ namespace comerciamarketing_webapp.Controllers
                     return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                 }
 
-               
+
             }
             else {
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
 
-           
+
         }
 
         public string GetExternalIp()
@@ -836,7 +840,7 @@ namespace comerciamarketing_webapp.Controllers
         }
 
 
-            public static string GetIPAddress(string HttpVia, string HttpXForwardedFor, string RemoteAddr)
+        public static string GetIPAddress(string HttpVia, string HttpXForwardedFor, string RemoteAddr)
         {
             // Use a default address if all else fails.
             string result = "127.0.0.1";
@@ -911,7 +915,7 @@ namespace comerciamarketing_webapp.Controllers
 
             return result;
         }
- 
+
 
         public ActionResult Settings()
         {
@@ -938,7 +942,7 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-        public ActionResult Change_password(string password, string newpassword,string retrypassword)
+        public ActionResult Change_password(string password, string newpassword, string retrypassword)
         {
             if (Session["IDusuario"] != null)
             {
@@ -1009,8 +1013,8 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Consultamos los Vendors de SAP dependiendo el usuario
 
-                    ViewBag.ID_vendor = new SelectList(CMKdb.OCRD.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
-                    ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
+                ViewBag.ID_vendor = new SelectList(CMKdb.OCRD.Where(b => b.Series == 61 && b.CardName != null && b.CardName != "").OrderBy(b => b.CardName), "CardCode", "CardName");
+                ViewBag.ID_demos = new SelectList(db.Demos.Where(b => b.ID_Vendor == "444445481"), "ID_demo", "visit_date");
 
 
 
@@ -1056,7 +1060,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.ID_demos = new SelectList(selectList, "Value", "Text", ID_demos);
 
-                var demo_details_items = (from a in db.Forms_details where (a.ID_demo==ID_demos && a.ID_formresourcetype == 5) select a).ToList();
+                var demo_details_items = (from a in db.Forms_details where (a.ID_demo == ID_demos && a.ID_formresourcetype == 5) select a).ToList();
 
                 for (int i = demo_details_items.Count - 1; i >= 0; i--)
                 {
@@ -1076,7 +1080,7 @@ namespace comerciamarketing_webapp.Controllers
                     if (ID_demos != null) {
                         TempData["advertencia"] = "No images to show.";
                     }
-                    
+
                     return View();
                 }
             }
@@ -1090,10 +1094,10 @@ namespace comerciamarketing_webapp.Controllers
         {
             //List<Demos> lstdemos = new List<Demos>();
             //lstdemos = (db.Demos.Where(x => x.ID_Vendor == vendoriD)).ToList();
-            
+
             //JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             //string result = javaScriptSerializer.Serialize(lstdemos);
-            return this.Json((from obj in db.Demos where(obj.ID_Vendor == vendorID) select new { ID_demo = obj.ID_demo, visit_date = obj.visit_date, store = obj.store }), JsonRequestBehavior.AllowGet);
+            return this.Json((from obj in db.Demos where (obj.ID_Vendor == vendorID) select new { ID_demo = obj.ID_demo, visit_date = obj.visit_date, store = obj.store }), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -1137,7 +1141,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
                 //GENERAL END
                 //2 es la empresa DEFAULT
-                var customers = (from b in CMKdb.OCRD where(b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
 
                 ViewBag.customers = customers.ToList();
 
@@ -1244,23 +1248,23 @@ namespace comerciamarketing_webapp.Controllers
 
                 var forms = (from a in db.FormsM select a
 
-                             
+
                              );
 
                 foreach (var item in forms) {
-                   var tp = (from b in db.ActivitiesM_types where(b.ID_activity == item.ID_activity) select b).FirstOrDefault();
+                    var tp = (from b in db.ActivitiesM_types where (b.ID_activity == item.ID_activity) select b).FirstOrDefault();
                     if (tp == null) { item.query1 = ""; } else {
                         item.query1 = tp.description;
-                    } 
+                    }
                 }
 
 
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6","8","9","12","13","14","15","16","17","18","19","20","21" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22" };
 
-                ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c=> uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c=>c.fdescription), "ID_formresourcetype", "fdescription");
+                ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
                 ViewBag.vendors = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
 
                 ViewBag.formslist = forms.ToList();
@@ -1274,7 +1278,7 @@ namespace comerciamarketing_webapp.Controllers
         //MERCHANDISING
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRoute(string descriptionN,DateTime date,DateTime enddate, string listatiendas, string listarepresentantes, string idform,string listatiposactividades)
+        public ActionResult CreateRoute(string descriptionN, DateTime date, DateTime enddate, string listatiendas, string listarepresentantes, string idform, string listatiposactividades)
         {
             try
             {
@@ -1301,7 +1305,7 @@ namespace comerciamarketing_webapp.Controllers
                 List<string> storeIds = listatiendas.Split(',').ToList();
 
                 foreach (var store in storeIds) {
-                    var storeSAP =(from s in CMKdb.OCRD where(s.CardCode==store) select s).FirstOrDefault();
+                    var storeSAP = (from s in CMKdb.OCRD where (s.CardCode == store) select s).FirstOrDefault();
                     if (storeSAP != null)
                     {
                         VisitsM visita = new VisitsM();
@@ -1316,7 +1320,7 @@ namespace comerciamarketing_webapp.Controllers
                             visita.zipcode = "";
                         }
                         else { visita.zipcode = storeSAP.MailZipCod; }
-                        
+
                         if (storeSAP.State2 == null) {
                             visita.state = "";
                         }
@@ -1326,7 +1330,7 @@ namespace comerciamarketing_webapp.Controllers
                         visita.comments = "";
                         visita.check_in = date;
                         visita.check_out = date;
-                        visita.end_date = date;
+                        visita.end_date = enddate;
                         visita.extra_hours = 0;
                         visita.ID_route = rutamaestra.ID_route;
                         visita.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
@@ -1382,9 +1386,9 @@ namespace comerciamarketing_webapp.Controllers
 
                     }
 
-                //FIN detalle visita
+                    //FIN detalle visita
 
-                   
+
 
 
                 }
@@ -1399,7 +1403,7 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("RoutesM", "Home", null);
             }
 
-            
+
 
         }
 
@@ -1428,12 +1432,12 @@ namespace comerciamarketing_webapp.Controllers
 
             List<MyObj_tablapadre> query = (from item in Categoriaspadre
 
-                                 select new MyObj_tablapadre
-                                 {
-                                     id = "", //SI QUEREMOS AGRUPAR POR ID SE LO PONEMOS, SINO SE LO QUITAMOS PARA QUE NOS CARGUE LAS TIENDAS DESPLEGADAS
-                                     text = item.text.Replace("'", ""),
-                                     children = ObtenerHijos(item.text, categoriashijas)
-                                 }).ToList();
+                                            select new MyObj_tablapadre
+                                            {
+                                                id = "", //SI QUEREMOS AGRUPAR POR ID SE LO PONEMOS, SINO SE LO QUITAMOS PARA QUE NOS CARGUE LAS TIENDAS DESPLEGADAS
+                                                text = item.text.Replace("'", ""),
+                                                children = ObtenerHijos(item.text, categoriashijas)
+                                            }).ToList();
 
             return query;
 
@@ -1450,13 +1454,13 @@ namespace comerciamarketing_webapp.Controllers
 
             List<MyObj_tablapadre> query = (from item in categoriashijas
 
-                                 where item.parent == Categoria
-                                 select new MyObj_tablapadre
-                                 {
-                                     id = item.id,
-                                     text = item.text.Replace("'", ""),
-                                     children = null
-                                 }).ToList();
+                                            where item.parent == Categoria
+                                            select new MyObj_tablapadre
+                                            {
+                                                id = item.id,
+                                                text = item.text.Replace("'", ""),
+                                                children = null
+                                            }).ToList();
 
             return query;
 
@@ -1518,19 +1522,221 @@ namespace comerciamarketing_webapp.Controllers
             public IList<MyObj> children { get; set; }
         }
 
-        public ActionResult Getformdata(string IDform)
+        public ActionResult Getformdata(string id_activity)
         {
 
-            FormsM form = db.FormsM.Find(Convert.ToInt32(IDform));
+            ActivitiesM activity = db.ActivitiesM.Find(Convert.ToInt32(id_activity));
 
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            string result = form.query2;
 
+            //NUEVO
+            //ID VISIT SE UTILIZA COMO RELACION
+            List<MyObj_tablapadrev2> listapadresActivities = (from item in db.FormsM_details
+                                                              where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false)
+                                                              select
+                                                                 new MyObj_tablapadrev2
+                                                                 {
+                                                                     ID_details = item.ID_details,
+                                                                     id_resource = item.ID_formresourcetype,
+                                                                     fsource = item.fsource,
+                                                                     fdescription = item.fdescription,
+                                                                     fvalue = item.fvalue,
+                                                                     fvalueDecimal = item.fvalueDecimal,
+                                                                     fvalueText = item.fvalueText,
+                                                                     ID_formM = item.ID_formM,
+                                                                     ID_visit = item.ID_visit,
+                                                                     original = item.original,
+                                                                     obj_order = item.obj_order,
+                                                                     obj_group = item.obj_group,
+                                                                     idkey = item.idkey,
+                                                                     parent = item.parent,
+                                                                     query1 = item.query1,
+                                                                     query2 = item.query2,
+                                                                     ID_empresa = item.ID_empresa
+                                                                 }
+                                  ).ToList();
+
+
+
+
+
+            List<tablahijospadrev2> listahijasActivities = (from item in db.FormsM_details
+                                                            where (item.ID_visit == activity.ID_activity && item.original == false)
+                                                            select new tablahijospadrev2
+                                                            {
+                                                                ID_details = item.ID_details,
+                                                                id_resource = item.ID_formresourcetype,
+                                                                fsource = item.fsource,
+                                                                fdescription = item.fdescription,
+                                                                fvalue = item.fvalue,
+                                                                fvalueDecimal = item.fvalueDecimal,
+                                                                fvalueText = item.fvalueText,
+                                                                ID_formM = item.ID_formM,
+                                                                ID_visit = item.ID_visit,
+                                                                original = item.original,
+                                                                obj_order = item.obj_order,
+                                                                obj_group = item.obj_group,
+                                                                idkey = item.idkey,
+                                                                parent = item.parent,
+                                                                query1 = item.query1,
+                                                                query2 = item.query2,
+                                                                ID_empresa = item.ID_empresa
+
+                                                            }).ToList();
+
+
+            List<MyObj_tablapadrev2> categoriasListActivities = ObtenerCategoriarJerarquiaByIDv2(listapadresActivities, listahijasActivities);
+
+ 
             //Deserealizamos  los datos
             JavaScriptSerializer js = new JavaScriptSerializer();
-            MyObj[] details = js.Deserialize<MyObj[]>(form.query2);
 
-            return Json(details, JsonRequestBehavior.AllowGet);
+
+            return Json(categoriasListActivities, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //Estas se utilizan para las vistas previas en modales
+
+
+        public class tablahijospadrev2
+    {
+        public int ID_details { get; set; }
+        public int id_resource { get; set; }
+        public string fsource { get; set; }
+        public string fdescription { get; set; }
+        public int fvalue { get; set; }
+        public decimal fvalueDecimal { get; set; }
+        public string fvalueText { get; set; }
+        public int ID_formM { get; set; }
+        public int ID_visit { get; set; }
+        public bool original { get; set; }
+        public int obj_order { get; set; }
+        public int obj_group { get; set; }
+        public int idkey { get; set; }
+        public int parent { get; set; }
+        public string query1 { get; set; }
+        public string query2 { get; set; }
+        public int ID_empresa { get; set; }
+
+    }
+
+    public class MyObj_tablapadrev2
+    {
+        public int ID_details { get; set; }
+        public int id_resource { get; set; }
+        public string fsource { get; set; }
+        public string fdescription { get; set; }
+        public int fvalue { get; set; }
+        public decimal fvalueDecimal { get; set; }
+        public string fvalueText { get; set; }
+        public int ID_formM { get; set; }
+        public int ID_visit { get; set; }
+        public bool original { get; set; }
+        public int obj_order { get; set; }
+        public int obj_group { get; set; }
+        public int idkey { get; set; }
+        public int parent { get; set; }
+        public string query1 { get; set; }
+        public string query2 { get; set; }
+        public int ID_empresa { get; set; }
+        public List<MyObj_tablapadrev2> children { get; set; }
+    }
+
+    public static List<MyObj_tablapadrev2> ObtenerCategoriarJerarquiaByIDv2(List<MyObj_tablapadrev2> Categoriaspadre, List<tablahijospadrev2> Categoriashijas)
+    {
+
+
+        List<MyObj_tablapadrev2> query = (from item in Categoriaspadre
+
+                                        select new MyObj_tablapadrev2
+                                        {
+                                            ID_details = item.ID_details,
+                                            id_resource = item.id_resource,
+                                            fsource = item.fsource,
+                                            fdescription = item.fdescription,
+                                            fvalue = item.fvalue,
+                                            fvalueDecimal = item.fvalueDecimal,
+                                            fvalueText = item.fvalueText,
+                                            ID_formM = item.ID_formM,
+                                            ID_visit = item.ID_visit,
+                                            original = item.original,
+                                            obj_order = item.obj_order,
+                                            obj_group = item.obj_group,
+                                            idkey = item.idkey,
+                                            parent = item.parent,
+                                            query1 = item.query1,
+                                            query2 = item.query2,
+                                            ID_empresa = item.ID_empresa,
+                                            children = ObtenerHijosByIDv2(item.idkey, Categoriashijas)
+
+                                        }).ToList();
+
+        return query;
+
+
+
+
+
+    }
+
+    private static List<MyObj_tablapadrev2> ObtenerHijosByIDv2(int ID_parent, List<tablahijospadrev2> categoriashijas)
+    {
+
+
+
+        List<MyObj_tablapadrev2> query = (from item in categoriashijas
+
+                                          where item.parent == ID_parent
+                                          select new MyObj_tablapadrev2
+                                          {
+                                              ID_details = item.ID_details,
+                                              id_resource = item.id_resource,
+                                              fsource = item.fsource,
+                                              fdescription = item.fdescription,
+                                              fvalue = item.fvalue,
+                                              fvalueDecimal = item.fvalueDecimal,
+                                              fvalueText = item.fvalueText,
+                                              ID_formM = item.ID_formM,
+                                              ID_visit = item.ID_visit,
+                                              original = item.original,
+                                              obj_order = item.obj_order,
+                                              obj_group = item.obj_group,
+                                              idkey = item.idkey,
+                                              parent = item.parent,
+                                              query1 = item.query1,
+                                              query2 = item.query2,
+                                              ID_empresa = item.ID_empresa,
+                                              children = ObtenerHijosByIDv2(item.idkey, categoriashijas)
+                                          }).ToList();
+
+        return query;
+
+    }
+
+        public ActionResult Displayitems()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                //GENERAL
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                //GENERAL END
+                //2 es la empresa DEFAULT
+                var items = db.Items_displays.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
+
+
+                return View(items.ToList());
+
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }

@@ -165,8 +165,20 @@
                     //showSuccessToast();
 
                     window.location.reload(true);
+                    $("#loading").hide();
                 } else {
-                    //showWarning2Toast();
+                    $.toast({
+                        heading: 'Warning',
+                        text: result.Result,
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
+
+                    $("#loading").hide();
                 }
 
 
@@ -201,8 +213,20 @@
                     //showSuccessToast();
 
                     window.location.reload(true);
+                    $("#loading").hide();
                 } else {
-                    //showWarning2Toast();
+                    $.toast({
+                        heading: 'Warning',
+                        text: result.Result,
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
+
+                    $("#loading").hide();
                 }
 
 

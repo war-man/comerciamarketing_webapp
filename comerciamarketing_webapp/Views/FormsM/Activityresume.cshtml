@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey"/>
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" required/>
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
                             </div>
                         </div>
                     </div>
@@ -113,11 +113,11 @@
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" />
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" disabled/>
                             }
                             else
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked />
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked  disabled/>
                             }
                             @objeto.fsource
                         </label>
@@ -153,11 +153,11 @@
                                     <label class="form-check-label">
                                         @if (objeto.fvalue == 0)
                                         {
-                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource">
+                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" disabled>
                                         }
                                         else
                                         {
-                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" checked>
+                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" checked disabled>
                                         }
 
                                         @objeto.fsource
@@ -177,11 +177,11 @@
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
-                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" disabled>
                             }
                             else
                             {
-                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
+                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked disabled>
                             }
 
                             @objeto.fsource
@@ -217,11 +217,11 @@
                                     <label class="form-check-label">
                                         @if (objeto.fvalue == 0)
                                         {
-                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey">
+                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" disabled>
                                         }
                                         else
                                         {
-                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" checked>
+                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" checked disabled>
                                         }
 
                                         @objeto.fsource
@@ -245,11 +245,11 @@
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
                         {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)">
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" disabled="disabled">
                         }
                         else
                         {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey">
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" disabled="disabled">
                         }
                     </div>
 
@@ -264,11 +264,11 @@
                             <div class="col-md-12">
                                 @if (objeto.fsource != "")
                                 {
-                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)">
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" disabled="disabled">
                                 }
                                 else
                                 {
-                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey">
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" disabled="disabled">
                                 }
                             </div>
 
@@ -312,7 +312,7 @@
                             <p class="control-label col-md-10">Free - @objeto.fdescription (*)</p>
                             }
                             <div class="col-md-12">
-                                <textarea id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
+                                <textarea disabled id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
 
                             </div>
                         </div>
@@ -329,7 +329,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal"/>
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" disabled/>
 
 
                             </div>
@@ -347,7 +347,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" disabled/>
 
 
                             </div>
@@ -365,15 +365,14 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
-                                    
+                                <select id="customer_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getBrands()' disabled>
+                                    <option value="0">Seleccione un cliente</option>
                                     @if (ViewBag.customers.Count == 1)
                                     {
                                         <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
                                     }
                                     else
                                     {
-                                        <option value="0">Seleccione un cliente</option>
                                         foreach (var itemCustomer in ViewBag.customers)
                                         {
                                             if (objeto.fvalueText == itemCustomer.CardCode)
@@ -407,7 +406,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
+                                <select id="brands_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getProductsline()' disabled>
                                     <option value="0">Seleccione una marca</option>
 
                                 </select>
@@ -428,7 +427,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="productline_list" name="@objeto.idkey" class="form-control" style="width:100%">
+                                <select id="productline_list" name="@objeto.idkey" class="js-example-basic-multiple" style="width:100%" disabled>
                                     <option value="0">Seleccione un linea de producto</option>
 
                                 </select>
@@ -449,7 +448,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="@objeto.idkey" name="@objeto.idkey" class="form-control" style="width:100%">
+                                <select id="@objeto.idkey" name="@objeto.idkey" class="js-example-basic-multiple" style="width:100%" disabled>
                                     <option value="0">Seleccione un elemento</option>
                                     @if (objeto.children.Count > 0)
                                     {
@@ -481,7 +480,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select class="form-control" id="@objeto.idkey" name="@objeto.idkey" style="width:100%">
+                                <select class="js-example-basic-multiple" id="@objeto.idkey" name="@objeto.idkey" style="width:100%">
                                     <option value="0">Seleccione competidor de la marca</option>
 
                                 </select>
@@ -508,7 +507,7 @@
 
 
 
-                        <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();">
+                        <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();" disabled>
                             Get a better browser, bro.
                         </canvas>
 
@@ -585,8 +584,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10 text-right">
-                    <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
-                    <input type="submit" value="Finish activity" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
+
                     <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
                 </div>
             </div>

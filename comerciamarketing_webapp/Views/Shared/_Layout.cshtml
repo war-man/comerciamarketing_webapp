@@ -8,63 +8,421 @@
     <title>@ViewData["Title"]</title>
 
     @Html.Partial("~/Views/Shared/Styles2.cshtml")
-    <style>
-        #rightss {
-            height: 500px;
-            overflow-y: scroll;
-        }
 
-        .modal {
-            overflow: auto !important;
-        }
+    @if (ViewBag.Title == "Comercia Marketing - Template preview2")
+    {
+        <style>
 
-        #sig-canvas {
-            width: 200px;
-            height: 150px;
-            border-style: dashed;
-            border-radius: 0.50px;
-            border-color: lightgray;
-        }
+            #rightss {
+                height: 500px;
+                overflow-y: scroll;
+            }
 
-        .currency {
-        }
+            .modal {
+                overflow: auto !important;
+            }
 
-        .currency-symbol {
-            position: absolute;
-            padding: 7px 4px 0px;
-            font-size: 13px;
-        }
+            #sig-canvas {
+                width: 200px;
+                height: 150px;
+                border-style: dashed;
+                border-radius: 0.50px;
+                border-color: lightgray;
+            }
 
-        .currency-symbolv2 {
-            position: absolute;
-            padding: 1px 4px 0px;
-            font-size: 13px;
-        }
+            .currency {
+            }
 
-        #loading {
-            width: 100%;
-            height: 100%;
-            top: 0px;
-            left: 0px;
-            position: fixed;
-            display: block;
-            opacity: 0.7;
-            background-color: #fff;
-            z-index: 99;
-            text-align: center;
-        }
+            .currency-symbol {
+                position: absolute;
+                padding: 7px 4px 0px;
+                font-size: 13px;
+            }
 
-        #loading-content {
-            margin-top:20%;
-            
+            .currency-symbolv2 {
+                position: absolute;
+                padding: 1px 4px 0px;
+                font-size: 13px;
+            }
 
-        }
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                opacity: 0.7;
+                background-color: #fff;
+                z-index: 99;
+                text-align: center;
+            }
 
-        .hide {
-            display: none;
-        }
+            #loading-content {
+                margin-top: 20%;
+            }
 
-    </style>
+            .hide {
+                display: none;
+            }
+
+
+            /*DATATABLES*/
+            table {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table tr {
+                    padding: .35em;
+                }
+
+                table th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table td {
+                    font-size: .7em;
+                }
+            }
+
+            /**/
+            /**/
+
+
+            @@media screen and (max-width: 400px) {
+
+                table {
+                    border: 0;
+                }
+
+                    table thead {
+                        display: none;
+                    }
+
+                    table tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: left;
+                    }
+
+                        table td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
+
+        </style>
+    }
+    @if (ViewBag.Title != "Comercia Marketing - Template preview2")
+    {
+        <style>
+            .disable {
+                opacity: 0.4;
+            }
+
+                /*Disable scrolling on child elements*/
+                .disable div,
+                .disable textarea {
+                    overflow: hidden;
+                }
+
+            #rightss {
+                height: 500px;
+                overflow-y: scroll;
+            }
+
+            .modal {
+                overflow: auto !important;
+            }
+
+            #sig-canvas {
+                width: 250px;
+                height: 150px;
+                border-style: dashed;
+                border-radius: 0.50px;
+                border-color: lightgray;
+            }
+
+            .currency {
+            }
+
+            .currency-symbol {
+                position: absolute;
+                padding: 7px 4px 0px;
+                font-size: 13px;
+            }
+
+            .currency-symbolv2 {
+                position: absolute;
+                padding: 1px 4px 0px;
+                font-size: 13px;
+            }
+
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                opacity: 0.7;
+                background-color: #fff;
+                z-index: 99;
+                text-align: center;
+            }
+
+            #loading-content {
+                margin-top: 20%;
+            }
+
+            .hide {
+                display: none;
+            }
+
+
+            /*DATATABLES*/
+            table#order-listing {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table#order-listing tr {
+                    padding: .35em;
+                }
+
+                table#order-listing th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table#order-listing th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table#order-listing td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table#order-listing th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing td {
+                    font-size: .7em;
+                }
+            }
+
+
+
+            /**/
+            @@media screen and (max-width: 530px) {
+
+                table#order-listing {
+                    border: 0;
+                }
+
+                    table#order-listing thead {
+                        display: none;
+                    }
+
+                    table#order-listing tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#order-listing td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#order-listing td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table#order-listing td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
+
+
+
+            /**PARA MODALS*/
+
+            /*DATATABLES*/
+            table#resultsRetail {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table#resultsRetail tr {
+                    padding: .35em;
+                }
+
+                table#resultsRetail th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table#resultsRetail th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#resultsRetail td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table#resultsRetail td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 992px) {
+                table#resultsRetail {
+                    border: 0;
+                }
+
+                    table#resultsRetail thead {
+                        display: none;
+                    }
+
+                    table#resultsRetail tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#resultsRetail td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#resultsRetail td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: normal;
+                            text-transform: uppercase;
+                        }
+
+                        table#resultsRetail td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+
+            /**/
+            /**/
+
+
+            @@media screen and (max-width: 400px) {
+
+                table#resultsRetail {
+                    border: 0;
+                }
+
+                    table#resultsRetail thead {
+                        display: none;
+                    }
+
+                    table#resultsRetail tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#resultsRetail td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#resultsRetail td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: normal;
+                            text-transform: uppercase;
+                        }
+
+                        table#resultsRetail td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
+
+
+        </style>
+    }
 </head>
 <body class="horizontal-menu-2">
     <!--GLOBAL LOADER-->
@@ -98,8 +456,13 @@
     <script type="text/javascript">
         $(function () {
 
-            var start = moment();
-            var end = moment();
+            var t1 = "@ViewBag.filtrofechastart";
+            var t2 = "@ViewBag.filtrofechaend";
+
+            var start = moment(t1, "MM-DD-YYYY");
+        var end = moment(t2, "MM-DD-YYYY");
+            //var start = moment();
+            //var end = moment();
 
             function cb(start, end) {
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -109,6 +472,7 @@
 
                 startDate: start,
                 endDate: end,
+                autoApply: true,
                 ranges: {
                     'Today': [moment(), moment()],
                     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -131,6 +495,7 @@
             $('input[name="dailyStatsM"]').daterangepicker({
                 startDate: start,
                 endDate: end,
+                autoApply: true,
                 minDate: moment().startOf('month'),
                 maxDate: moment().endOf('month')
             });
@@ -248,16 +613,16 @@
 
 
         // Make the marker-pin blue!
-        if (item.demo_state == "On Hold") {
+        if (item.demo_state == "3") {
             marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
         }
-        if (item.demo_state == "In progress") {
+        if (item.demo_state == "2") {
             marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
         }
-        if (item.demo_state == "Canceled") {
+        if (item.demo_state == "1") {
             marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
         }
-        if (item.demo_state == "Finished") {
+        if (item.demo_state == "4") {
             marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
         }
 
@@ -304,6 +669,10 @@
     var markerCluster = new MarkerClusterer(map, markers,
         { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
+
+
+
+
 }
 
 
@@ -326,9 +695,9 @@
 
         id_mapitem.innerText = "Visit ID: " + ID;
         store_mapitem.innerText = "Store: " + store;
-        store_customeritem.innerText = "Customer: " + customer;
+        //store_customeritem.innerText = "Customer: " + customer;
         store_dateitem.innerText = "Date: " + date;
-        store_representativeitem.innerText = "Representatives: " + representatives;
+        store_representativeitem.innerText = "Route: " + representatives;
         store_commentitem.innerText = "Comment: " + comment;
 
         var x = document.getElementById("RouteDetails");
@@ -351,6 +720,47 @@
         };
 
     </script>
+
+
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Main", "Home", new { fstartd = "START", fendd = "FINISH", store="STORE"})';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+            url = url.replace('STORE', idstore);
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
+
+
+
 }
 <!--FORM BUILDER-->
 @if (ViewBag.Title == "Comercia Marketing - FormsM")
@@ -469,7 +879,7 @@
 
         id_mapitem.innerText = "Visit ID: " + ID;
         store_mapitem.innerText = "Store: " + store;
-        store_customeritem.innerText = "Customer: " + customer;
+        //store_customeritem.innerText = "Customer: " + customer;
         store_dateitem.innerText = "Date: " + date;
         store_representativeitem.innerText = "Representatives: " + representatives;
         store_commentitem.innerText = "Comment: " + comment;
@@ -515,58 +925,36 @@
 {
     <script>
 
+    $(document).ready(function () {
+
+
+
+
 
         var json = JSON.parse('@Html.Raw(ViewBag.stores)')
 
-    var FRUIT_GROUPS = $.map(json, function (obj) {
-        obj.id = obj.id; // replace pk with your identifier
-        obj.text = obj.text;
-        obj.children = obj.children;
-        return obj;
-    });
+        var FRUIT_GROUPS = $.map(json, function (obj) {
+            obj.id = obj.id; // replace pk with your identifier
+            obj.text = obj.text;
+            obj.children = obj.children;
+            return obj;
+        });
 
 
-    $('#storesmulti').select2({
-        multiple: true,
-        placeholder: "Select stores...",
-        data: FRUIT_GROUPS,
-        query: function (options) {
-            var selectedIds = options.element.select2('val');
-            var selectableGroups = $.map(this.data, function (group) {
-                var areChildrenAllSelected = true;
-                $.each(group.children, function (i, child) {
-                    if (selectedIds.indexOf(child.id) < 0) {
-                        areChildrenAllSelected = false;
-                        return false; // Short-circuit $.each()
-                    }
-                });
-                return !areChildrenAllSelected ? group : null;
-            });
-            options.callback({ results: selectableGroups });
-        }
-    }).on('select2-selecting', function (e) {
-        var $select = $(this);
-        if (e.val == '') {
-            e.preventDefault();
-            $select.select2('data', $select.select2('data').concat(e.choice.children));
-            $select.select2('close');
-        }
-    });
-
-    $('#showValue').click(function () {
-        $('#output').text($('#storesmulti').val());
-    });
-
-    $("#checkbox").click(function () {
-        if ($("#checkbox").is(':checked')) {
-            $('#storesmulti').select2("val", "");
-            for (var index in FRUIT_GROUPS) {
-                $('#storesmulti').select2('data', $('#storesmulti').select2('data').concat(FRUIT_GROUPS[index].children));
+        $('#storesmulti').select2({
+            multiple: true,
+            placeholder: "Select stores...",
+            data: FRUIT_GROUPS,
+            theme: 'bootstrap'
+        }).on('select2-selecting', function (e) {
+            var $select = $(this);
+            if (e.val == '') {
+                e.preventDefault();
+                $select.select2('data', $select.select2('data').concat(e.choice.children));
+                $select.select2('close');
             }
-        } else {
-            $('#storesmulti').select2("val", "");
-        }
-    });
+        });
+
 
     @*var json = JSON.parse('@Html.Raw(ViewBag.usuarios)')
 
@@ -576,8 +964,6 @@
         return obj;
     });
 
-
-
     $("#repmulti").select2({
         multiple: true,
         placeholder: "Select representatives...",
@@ -585,7 +971,9 @@
 
     });*@
 
-    var json = JSON.parse('@Html.Raw(ViewBag.activitieslist)')
+
+
+        @*var json = JSON.parse('@Html.Raw(ViewBag.activitieslist)')
 
     var data = $.map(json, function (obj) {
         obj.id = obj.id; // replace pk with your identifier
@@ -620,9 +1008,46 @@
                 $select.select2('data', $select.select2('data').concat(e.choice.children));
                 $select.select2('close');
             }
+        });*@
+
+
+    });
+    </script>
+
+
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("RoutesM", "Home", new { fstartd = "START", fendd = "FINISH"})';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
         });
+    });
+
+
+
+
 
     </script>
+
 }
 <!--NOTIFICACIONES GLOBALES-->
 
@@ -675,6 +1100,7 @@
                     text: '@(TempData["exito"])',
                     showHideTransition: 'slide',
                     icon: 'success',
+                    loader: false,
                     loaderBg: '#004d00',
                     position: 'top-right'
                 })
@@ -691,6 +1117,7 @@
                 $.toast({
                     heading: 'Success',
                     text: 'Saved.',
+                    loader: false,
                     showHideTransition: 'slide',
                     icon: 'success',
                     loaderBg: '#004d00',
@@ -838,11 +1265,215 @@
 </script>
 
 <script>
+
+
+
     $(document).ajaxStart(function () {
         $("#loading").show();
     }).ajaxStop(function () {
         $("#loading").hide();
     }).ajaxError(function () {
-            $("#loading").hide();
+        $("#loading").hide();
     });
 </script>
+
+<script>
+    $(function () {
+        $('#clickdiv').click(function () {
+            screenfull.request($('#contain22')[0]);
+        });
+    });
+</script>
+
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+    <script>
+
+            function BuildEditorHeader(array) {
+
+                array.forEach(function (element, root) {
+                    var $th;
+                    var $tr = "<tr id='headerR'></tr>";
+                    $("#resultsRetail thead").append($tr);
+                    // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                    if (element.id_resource == "8") {
+
+                        $th = "<th>" + element.fsource + "</th>";
+                    }
+
+                    $('#headerR').append($th);
+                });
+            };
+
+            function BuildEditorRows(array) {
+
+                array.forEach(function (element) {
+                    var $tr = "<tr></tr>";
+                    var $td;
+                    // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                    if (element.id_resource == "3") { //Products
+
+                        $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
+                        $("#resultsRetail tbody").append($tr);
+                        $("#resultsRetail tr:last").append($td);
+
+                        if (element.children != null) {
+                            BuildEditorRows(element.children);
+                        }
+                    }
+
+                    if (element.id_resource == "16") { //Multiple_choice
+
+                        $td = "<td data-label='" + element.fsource + "'>";
+
+                        if (element.fvalue != 0) {
+
+                            $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
+                        } else {
+                            $td += "</td>";
+                        }
+
+
+                        $('#resultsRetail tr:last').append($td);
+                    }
+                    if (element.id_resource == "18") { //Input_number
+
+                        $td = "<td data-label='" + element.fsource + "'>";
+
+                        $td += "<label>" + element.fvalue + "</label>";
+                        $td += "</td>";
+
+                        $('#resultsRetail tr:last').append($td);
+                    }
+                    if (element.id_resource == "21") { //Currency
+
+                        $td = "<td data-label='" + element.fsource + "'>";
+
+                        $td += "$ <label>" + element.fvalueDecimal + "</label>";
+                        $td += "</td>";
+
+                        $('#resultsRetail tr:last').append($td);
+                    }
+                    if (element.id_resource == "6") { ///Input_text
+
+                        $td = "<td data-label='" + element.fsource + "'>";
+
+                        $td += "<label>" + element.fsource + "</label>";
+                        $td += "</td>";
+
+                        $('#resultsRetail tr:last').append($td);
+                    }
+                });
+            };
+
+            (function ($) {
+                'use strict';
+                $('#infoRetailModal').on('show.bs.modal', function (event) {
+
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
+                    var DesAct = $(event.relatedTarget).data("name");
+                    
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+
+                    $.ajax
+                        ({
+                            url: '/Home/Getformdata',
+                            type: 'POST',
+                            datatype: 'application/json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                id_activity: IDform
+                            }),
+                            success: function (result) {
+
+
+                                $("#resultsRetail").find("tr").remove();
+                                $("#descriptionUD").text(DesAct);
+
+                                BuildEditorHeader(result);
+                                BuildEditorRows(result);
+
+                            },
+                            error: function () {
+                                alert("Whooaaa! Something went wrong..")
+                            },
+                        });
+
+
+
+
+                })
+            })(jQuery);
+        
+    </script>
+    <script>
+        window.onload = function () {
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDAct = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
+                    $("#descriptionD").text(DesAct);
+
+                })
+            })(jQuery);
+
+            (function ($) {
+                'use strict';
+                $('#deleteRepModal').on('show.bs.modal', function (event) {
+
+
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDRep = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_repUD"]').val(IDRep);
+                    $("#descriptionUD").text(DesAct);
+
+                })
+            })(jQuery);
+        }
+
+
+
+    </script>
+    if (ViewBag.estadovisita == 3)
+    {
+        if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+        { }
+        else
+        {
+            <script>
+                window.onload = function () {
+                    $("#activitiesdiv").addClass("disable")
+                        .click(function () {
+                            return false;
+                        });
+                }
+            </script>
+        }
+
+    }
+}

@@ -53,58 +53,90 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!--
                                                 <div class="col-md-4 grid-margin stretch-card">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <h4 class="card-title">By Customer</h4>
                                                             <div class="form-group">
-                                                                <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
-                                                                    @foreach (var itemCustomers in ViewBag.customers)
-                                                                    {
-                                                                        <option value="@itemCustomers.CardCode">@itemCustomers.CardCode - @itemCustomers.CardName</option>
-                                                                    }
+                                                                <select class="js-example-basic-single" style="width:100%">
+                                                                    <option value="0">Select a customer</option>
+                                                                    foreach (var itemCustomers in ViewBag.customers)
+                        {
+                                            <option value="itemCustomers.CardCode">itemCustomers.CardCode - itemCustomers.CardName</option>
+}
                                                                 </select>
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                                 <div class="col-md-4 grid-margin stretch-card">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <h4 class="card-title">By Store</h4>
                                                             <div class="form-group">
-                                                                <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
+                                                                <select class="js-example-basic-single" id="filterstore" style="width:100%">
+                                                                    <option value="">Select a store</option>
                                                                     @foreach (var itemStores in ViewBag.stores)
-                                                                    {
-                                                                        <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
-                                                                    }
+                        {
+                                            <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
+}
                                                                 </select>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!--
+                                                if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Representative</h4>
+                                                        <div class="form-group">
+                                                            <select class="js-example-basic-single" style="width:100%">
+                                                                <option value="0">Select a representative</option>
+                                                                foreach (var itemUsuarios in ViewBag.usuarios)
+                    {
+                                            <option value="itemUsuarios.ID_usuario">itemUsuarios.nombre itemUsuarios.apellido</option>
+}
+                                                            </select>
+                                                        </div>
 
-                                                @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8")
-                                                {
-                                                    <div class="col-md-4 grid-margin stretch-card">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h4 class="card-title">By Representative</h4>
-                                                                <div class="form-group">
-                                                                    <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
-                                                                        @foreach (var itemUsuarios in ViewBag.usuarios)
-                                                                        {
-                                                                            <option value="@itemUsuarios.ID_usuario">@itemUsuarios.nombre @itemUsuarios.apellido</option>
-                                                                        }
-                                                                    </select>
-                                                                </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+}
+                                                -->
+                                                <!--
+                                                if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1" || Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+    {
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Strategic Partner</h4>
+                                                        <div class="form-group">
+                                                            <select class="js-example-basic-single" style="width:100%">
+                                                                <option value="0">Select a strategic partner</option>
+                                                                <option value="LTN">Limena TN</option>
+                                                                <option value="LGA">Limena GA</option>
+                                                            </select>
+                                                        </div>
 
-                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+}-->
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <a href="#" class="btn btn-primary" id="click_filter">Apply<i class="mdi mdi-check-all"></i></a>
+
                                                         </div>
                                                     </div>
-                                                }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +157,7 @@
                                         <i class="mdi mdi-seat-recline-extra icon-lg"></i>
                                         <div class="d-flex flex-column ml-2">
                                             <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
+                                                <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
                                                 <p class="font-weight-bold">@ViewBag.onhold</p>
                                             </span>
                                             <small>@ViewBag.onholdP.ToString("F") % total</small>
@@ -186,10 +218,10 @@
                     <!--MAPA-->
                     <div class="row">
                         <div class="col-md-12 grid-margin">
-                            <div class="card">
+                            <div class="card" >
                                 <div class="card-body">
-
-                                    <div class="map-containerVisits">
+                                    <a class="text-warning" id="clickdiv" href="javascript:void(0)" hidden>Full Screen</a>
+                                    <div class="map-containerVisits" id="contain22">
                                         <div id="map-with-marker" class="google-map"></div>
 
                                         <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 10px;display:none;" id="RouteDetails">
@@ -209,9 +241,12 @@
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
                                                                 </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
-                                                                </li>
+                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                                {
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
+                                                            </li>
+                                                                }
                                                             </ul>
                                                             <div class="tab-content tab-content-basic">
                                                                 <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
@@ -224,139 +259,142 @@
                                                                 <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
                                                                     <p id="map_comment"></p>
                                                                 </div>
-                                                                <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
+                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                                            <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
 
-                                                                    <div class="card" style="height: 220px; bottom:10px;display:block">
-                                                                        <div class="card-body" style="height: 220px;overflow: auto; bottom:10px;display:block">
-                                                                            <p class="text-gray">TUESDAY, APR 9, 2018</p>
-                                                                            <ul class="bullet-line-list pb-3">
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                <div class="card" style="height: 220px; bottom:10px;display:block">
+                                                                    <div class="card-body" style="height: 220px;overflow: auto; bottom:10px;display:block">
+                                                                        <p class="text-gray">TUESDAY, APR 9, 2018</p>
+                                                                        <ul class="bullet-line-list pb-3">
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Check in</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Start
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">02</small>
-                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Check in</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Start
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">02</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">03</small>
-                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">03</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">04</small>
-                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                            </ul>
-                                                                            <p class="text-gray mt-4">TUESDAY, APR 10, 2018</p>
-                                                                            <ul class="bullet-line-list">
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">04</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <p class="text-gray mt-4">TUESDAY, APR 10, 2018</p>
+                                                                        <ul class="bullet-line-list">
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">08</small>
-                                                                                            <small class="text-muted d-block">am</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">08</small>
+                                                                                        <small class="text-muted d-block">am</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">10</small>
-                                                                                            <small class="text-muted d-block">am</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">10</small>
+                                                                                        <small class="text-muted d-block">am</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Retail Audit</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">11</small>
-                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Retail Audit</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">11</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
 
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Check out</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Finish
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">11</small>
-                                                                                            <small class="text-muted d-block">pm</small>
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Check out</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Finish
+                                                                                            </small>
                                                                                         </div>
                                                                                     </div>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </div>
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">11</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
-
                                                                 </div>
+
+                                                            </div>
+}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -379,16 +417,21 @@
                                     <h4 class="card-title">Visits list</h4>
 
                                     <div class="row">
-                                        <div class="col-lg-12 table-responsive">
-                                            <table id="order-listing" class="table table-striped">
+                                        
+                                            <table id="order-listing" class="table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>ID </th>
-                                                        <th>Store</th>
-                                                        <th>Date</th>
+                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                                    <th scope="col">ID </th>
+}
+                                                        <th scope="col">Route</th>
 
-                                                        <th>Route</th>
-                                                        <th>Status</th>
+                                                        <th scope="col">Store</th>
+                                                        <th scope="col">Date</th>
+
+
+                                                        <th scope="col">Status</th>
 
                                                     </tr>
                                                 </thead>
@@ -396,21 +439,26 @@
                                                     @foreach (var itemVisita in ViewBag.visitas)
                                                     {
                                                         <tr>
-                                                            <td>
+                                                                                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                              {
+                                                            <td scope="row" data-label="ID">
                                                                 @itemVisita.ID_visit
 
                                                             </td>
-                                                            <td>
-                                                                <a class="text-black" data-toggle="tooltip" data-placement="bottom" title="Go to visit" href="@Url.Action("Details", "VisitsMs", new { id = itemVisita.ID_visit })">
+                                                              }
+                                                            <td data-label="Route">@itemVisita.city</td>
+  
+                                                            <td data-label="Store">
+                                                                <a class="text-black" href="@Url.Action("Details", "VisitsMs", new { id = itemVisita.ID_visit })">
                                                                     <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
                                                                     <span class="text-primary">@itemVisita.address</span>
                                                                 </a>
                                                             </td>
-                                                            <td>@itemVisita.visit_date.ToShortDateString()</td>
+                                                            <td data-label="Date">@itemVisita.visit_date.ToShortDateString()</td>
 
-                                                            <td>@itemVisita.city</td>
+                                                            
 
-                                                            <td>
+                                                            <td data-label="Status">
                                                                 @switch (itemVisita.ID_visitstate)
                                                                 {
                                                                     case 1: //Canceled
@@ -419,8 +467,8 @@
                                                                     case 2: //In Progress
                                                                         <label class="badge badge-success">In progress</label>
                                                                         break;
-                                                                    case 3: //On Hold
-                                                                        <label class="badge badge-warning">On hold</label>
+                                                                    case 3: //Scheduled
+                                                                        <label class="badge badge-warning">Scheduled</label>
                                                                         break;
                                                                     case 4: //Finished
                                                                         <label class="badge badge-primary">Finished</label>
@@ -432,7 +480,7 @@
                                                     }
                                                 </tbody>
                                             </table>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +498,7 @@
                                 </div>
                             </div>
                         </div>*@
-                    @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8")
+                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
                     {
                         <div class="row">
                             <div class="col-12 grid-margin">
@@ -506,7 +554,7 @@
                                                                                     }
                                                                                     else if (activity.ID_activitytype == 2)
                                                                                     {
-                                                                                        <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
+                                                                                        <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
                                                                                     }
                                                                                     else if (activity.ID_activitytype == 3)
                                                                                     {
@@ -515,23 +563,24 @@
 
 
                                                                                     <p class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Last Update">
+                                                                                        @activity.Customer <br />
                                                                                         @Convert.ToDateTime(activity.date).ToShortDateString() @Convert.ToDateTime(activity.date).ToShortTimeString()
-                                                                                        <br /> by @activity.ID_usuarioEnd
+                                                                                        
                                                                                     </p>
                                                                                 </div>
                                                                                 <div class="ml-auto align-content-lg-stretch">
                                                                                     @if (activity.ID_activitytype == 1)
-                                                                                    {
-                                                                                        <i class="mdi mdi-file-document text-primary icon-lg"></i>
-                                                                                    }
-                                                                                    else if (activity.ID_activitytype == 2)
-                                                                                    {
-                                                                                        <i class="mdi mdi-file-document text-warning icon-lg"></i>
-                                                                                    }
-                                                                                    else if (activity.ID_activitytype == 3)
-                                                                                    {
-                                                                                        <i class="mdi mdi-file-document text-success icon-lg"></i>
-                                                                                    }
+    {
+                                                                                <a href="#" data-toggle="modal" data-target="#infoFormModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><i class="mdi mdi-file-document text-primary icon-lg"></i></a>
+}
+else if (activity.ID_activitytype == 2)
+{
+                                                                                <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><i class="mdi mdi-file-document text-warning icon-lg"></i></a>
+}
+else if (activity.ID_activitytype == 3)
+{
+                                                                                <a href="#" data-toggle="modal" data-target="#infoSalesModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6><i class="mdi mdi-file-document text-success icon-lg"></i></h6></a> 
+}
 
                                                                                 </div>
                                                                             </div>
@@ -582,7 +631,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file"></i> Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span style="font-size: 40px" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -606,7 +655,7 @@
             <div class="modal-header">
                 <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUD" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span style="font-size: 40px" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -616,13 +665,11 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-12 table-responsive">
-                                        <table class="table table-striped" id="resultsRetail">
+                                        <table class="table table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
                                             <thead>
-          
-                                            </thead>
-                                            <tbody>
 
-                                            </tbody>
+                                            </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -649,7 +696,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file"></i> Sales</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span style="font-size: 40px" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -690,9 +737,9 @@
                 var $tr = "<tr></tr>";
                 var $td;
                 // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                if (element.id_resource == "3") {
+                if (element.id_resource == "3") { //Products
 
-                    $td = "<td><strong>" + element.fdescription + "</strong></td>";
+                    $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
                     $("#resultsRetail tbody").append($tr);
                     $("#resultsRetail tr:last").append($td);
 
@@ -701,28 +748,47 @@
                     }
                 }
 
-                if (element.id_resource == "16") {
+                if (element.id_resource == "16") { //Multiple_choice
             
-                    $td = "<td>";
-                    $td += "<div class='form-check'>";
-                    $td += "<label class='form-check-label'>";
-                    $td += "<input type='checkbox' class='form-check-input' name='radio_" + element.parent + "' id='" + element.idkey + "'>";
-                    $td += "&nbsp;</label></div>";
-                    $td += "</td>";
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    if (element.fvalue != 0) {
+
+                        $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
+                    } else {
+                        $td += "</td>";
+                    }
+                    
          
                     $('#resultsRetail tr:last').append($td);
                 }
-                if (element.id_resource == "18") {
+                if (element.id_resource == "18") { //Input_number
 
-                    $td = "<td>";
-                    $td += "<div class='form-group'>";                      
-                    $td += "<div class='col-md-12'>";
-                    $td += "<input type='number' id='" + element.idkey + "' class='form-control form-control-sm' />";        
-                    $td += "</div></div></td>";         
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    $td += "<label>" + element.fvalue + "</label>";
+                    $td += "</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
+                if (element.id_resource == "21") { //Currency
 
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    $td += "$ <label>" + element.fvalueDecimal + "</label>";
+                    $td += "</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "6") { ///Input_text
+
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    $td += "<label>" + element.fsource + "</label>";
+                    $td += "</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
             });
         };
 
@@ -747,7 +813,7 @@
                         datatype: 'application/json',
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            IDform: IDform
+                            id_activity: IDform
                         }),
                         success: function (result) {
 

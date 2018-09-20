@@ -18,19 +18,19 @@
                 $('.childdiv' + parent).hide();
                 $('#radiodiv_' + id).show();
             } else {
-      
+
             }
         });
 
         $('.parentdiv').on('change', '.chk', function () {
-     
+
             var id = $(this).attr('id');
             var parent = $(this).attr('name');
 
 
 
             if ($(this).is(':checked')) {
-               
+
                 $('#radiodiv_' + id).show();
             } else {
                 $('#radiodiv_' + id).hide();
@@ -40,10 +40,10 @@
         if (document.getElementById("brands_list")) {
             getBrands();
         } else {
-     
+
         }
-      
-       
+
+
     };
 
 
@@ -77,7 +77,7 @@
                             $("#brands_list").append
                                 ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
                         }
-                        
+
 
                     }
 
@@ -144,12 +144,13 @@
 <!--SCRIPT FORM_TEMPLATE SAVE-->
 <script>
     (function ($) {
-        showSuccessToast = function () {
+        showSuccessToast2 = function () {
             'use strict';
             resetToastPosition();
             $.toast({
                 heading: 'Success',
                 text: 'Data saved.',
+                loader: false,
                 showHideTransition: 'slide',
                 icon: 'success',
                 loaderBg: '#f96868',
@@ -226,7 +227,7 @@
 
         $.each($('input.form-control[type = "number"]'), function () {
 
-            
+
             objects.push({
                 id: $(this).attr('id'),
                 value: $(this).val(),
@@ -242,7 +243,7 @@
             objects.push({
                 id: $(this).attr('id'),
                 value: $(this).prop('checked'),
-                text:""
+                text: ""
             });
 
 
@@ -253,22 +254,22 @@
             objects.push({
                 id: $(this).attr('id'),
                 value: $(this).prop('checked'),
-                text:""
+                text: ""
             });
 
 
         });
 
-        $.each($('input.dropifyIMG[type = "file"]'), function () { 
-           
-                    objects.push({
-                        id: $(this).attr('id'),
-                        value: $(this).attr('data-changeflag'),
-                        text: ""
-                    });
+        $.each($('input.dropifyIMG[type = "file"]'), function () {
 
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).attr('data-changeflag'),
+                text: ""
             });
-           
+
+        });
+
 
 
         $.each($('textarea.form-control'), function () {
@@ -278,7 +279,7 @@
             objects.push({
                 id: $(this).attr('id'),
                 value: $(this).val(),
-                text:""
+                text: ""
             });
 
 
@@ -288,7 +289,7 @@
 
             //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
             var str = $(this).find('option:selected').text();
-              str = str.substring(str.indexOf("-")+1);
+            str = str.substring(str.indexOf("-") + 1);
 
             var final = "";
             objects.push({
@@ -299,7 +300,7 @@
 
 
         });
-  
+
         //var canvas = document.getElementById("sig-canvas");
         $.each($('canvas'), function () {
             var canvas = document.getElementById($(this).attr("id"));
@@ -309,7 +310,7 @@
             objects.push({
                 id: $(this).attr("data-id"),
                 value: dataUrl,
-                text:""
+                text: ""
             });
         });
 
@@ -328,25 +329,27 @@
             success: function (result) {
 
                 if (result.Result == "Success") {
-                    showSuccessToast();
+                    showSuccessToast2();
 
-                    //var x = document.getElementById("finish_activity");
-                    //if (x.style.display === "none") {
-                    //    x.style.display = "inline-block";
-                    //} else {
-                    //    //x.style.display = "none";
-                    //}
-
-                    window.location.reload(true);
-                //window.location.reload(true);
+                    var x = document.getElementById("finish_activity");
+                    if (x.style.display === "none") {
+                        x.style.display = "inline-block";
+                    } else {
+                        //x.style.display = "none";
+                    }
+                    $("#loading").hide();
+                    //window.location.reload(true);
+                    //window.location.reload(true);
                 } else {
                     showWarning2Toast();
+                    $("#loading").hide();
                 }
 
 
             },
             error: function (request) {
                 showWarning2Toast();
+                $("#loading").hide();
 
             }
         });
@@ -481,24 +484,25 @@
                 if (result.Result == "Success") {
                     showSuccessToast();
 
-                    ////var x = document.getElementById("finish_activity");
-                    ////if (x.style.display === "none") {
-                    ////    x.style.display = "inline-block";
-                    ////} else {
-                    ////    x.style.display = "none";
-                    ////}
-                    window.location.reload(true);
-
+                    var x = document.getElementById("finish_activity");
+                    if (x.style.display === "none") {
+                        x.style.display = "inline-block";
+                    } else {
+                        x.style.display = "none";
+                    }
+                    //window.location.reload(true);
+                    $("#loading").hide();
                     //window.location.reload(true);
                 } else {
                     showWarning2Toast();
+                    $("#loading").hide();
                 }
 
 
             },
             error: function (request) {
                 showWarning2Toast();
-
+                $("#loading").hide();
             }
         });
     };
@@ -517,49 +521,91 @@
 
     $(function () {
         $("#finish_activity").click(function () {
-
-            var now = new Date();
-            // var MS_PER_MINUTE = 60000;
-            //var offset = new Date().getTimezoneOffset();
-
-            //var date = new Date(now - offset * MS_PER_MINUTE);
-            //var localDate = new Date($(this).html());
-
-            //console.log(now);
-            console.log(now.toLocaleString());
-            console.log(now.toLocaleString("en-US", { hour12: true }));
+            var flag = true;
 
 
+            $.each($('input.form-control[type = "text"]'), function () {
 
-            var idvisita = "";
-            idvisita = document.getElementById('idvisita').value;
-
-
-
-
-
-            $.ajax({
-                url: '/FormsM/Finish_activity',
-                type: 'POST',
-                data: '{"id":"' + idvisita + '"}',
-                contentType: 'application/json; charset=utf-8',
-                async: true,
-                cache: false,
-                global: false,
-                complete: function () {
-
-                },
-                success: function (result) {
-                    showSuccessToast();
-                    window.location.reload(true);
-
-                },
-                error: function (request) {
-
-
-                    window.location.reload(true);
+                if ($(this).val() == "" || $(this).val() == null) {
+                    flag = false;
+                    $(this).addClass("border-danger");
                 }
             });
+
+            $.each($('input.form-control[type = "number"]'), function () {
+                if ($(this).val() == "" || $(this).val() == null) {
+                    flag = false;
+                    $(this).addClass("border-danger");
+                }
+            });
+
+            $.each($('input.form-check-input[type = "radio"]'), function () {
+
+
+            });
+
+            $.each($('input.form-check-input[type = "checkbox"]'), function () {
+
+            });
+
+            $.each($('input.dropifyIMG[type = "file"]'), function () {
+
+            });
+
+
+
+            $.each($('textarea.form-control'), function () {
+
+
+                if ($(this).val() == "" || $(this).val() == null) {
+                    flag = false;
+                    $(this).addClass("border-danger");
+                }
+
+
+            });
+
+            $.each($('select'), function () {
+
+
+                if ($(this).val() == "0" || $(this).val() == null) {
+                    flag = false;
+                    
+                    $(this).addClass("border-danger");
+                }
+
+
+            });
+
+            //var canvas = document.getElementById("sig-canvas");
+            $.each($('canvas'), function () {
+
+            });
+
+            if (flag == true) {
+                initGeolocation2();
+            } else {
+                //Alerta de que no se han guardado los campos obligatorios
+                $.toast({
+                    heading: 'Warning',
+                    text: 'Please fill in all required fields (*) in this form',
+                    loader: false,        // Change it to false to disable loader
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#ff9900',
+                    hideAfter: 5000,
+                    position: 'top-right'
+                });
+
+                $("#loading").hide();
+
+
+                var x = document.getElementById("finish_activity");
+                x.style.display = "none";
+
+
+            }
+
 
         }
         );
@@ -570,7 +616,7 @@
         var imgdiv = $(this).prev();
 
         var drevent = $(imgdiv).dropify();
-     
+
         //Cambiamos el estado para verificar si se removio y si se mantiene en 100 entonces no se selecciono nada luego
         //con esto validamos cuando no han cargado nada al server, suben una pero luego la quitaan y como no actualizaba
         //el sistema no borraba la foto
@@ -587,49 +633,50 @@
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
             //$.each($('input[type="file"]'), function () {
-             
+
             var ID = $(this).attr('id');
             $("#loading").show();
             $(this).attr('data-changeflag', '0');
 
-                var idvisita = "";
+            var idvisita = "";
             idvisita = document.getElementById('idvisita').value;
 
-                var fileUpload = $("#" + ID).get(0);
+            var fileUpload = $("#" + ID).get(0);
 
-                var files = fileUpload.files;
-                
-                // Create FormData object
-                var fileData = new FormData();
+            var files = fileUpload.files;
 
-                // Looping over all files and add it to FormData object
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append(files[i].name, files[i]);
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            // Adding one more key to FormData object
+            fileData.append('id', ID);
+            fileData.append('idvisita', idvisita);
+
+
+
+            $.ajax({
+                url: '/FormsM/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                //async: true,
+                timeout: 80000,
+                data: fileData,
+                success: function (result) {
+                    //$("#modal_demoform_saving").modal('hide');
+                    $("#loading").hide();
+                },
+                error: function (err) {
+                    //$("#modal_demoform_saving").modal('hide');
+                    alert("An error is reported.");
+                    $("#loading").hide();
                 }
-
-                // Adding one more key to FormData object
-                fileData.append('id', ID);
-                fileData.append('idvisita', idvisita);
-                
-
-                
-                $.ajax({
-                    url: '/FormsM/UploadFiles',
-                    type: "POST",
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                    //async: true,
-                    timeout: 80000,
-                    data: fileData,
-                    success: function (result) {
-                        //$("#modal_demoform_saving").modal('hide');
-                    },
-                    error: function (err) {
-                        //$("#modal_demoform_saving").modal('hide');
-                        alert("An error is reported.");
-
-                    }
-                });
+            });
             //});
 
 
@@ -670,3 +717,93 @@
     });
 
 </script>
+
+<script>
+//FINISH TEMPLATE
+    var options2 = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success2(pos) {
+        var crd = pos.coords;
+        $("#loading").show();
+
+        var lat = crd.latitude;
+        var lng = crd.longitude;
+
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+
+        var now = new Date();
+        $.ajax({
+            url: '/FormsM/Finish_activity',
+            type: 'POST',
+            data: { 'id': idvisita, 'lat': lat, 'lng': lng, 'check_out': now.toLocaleString("en-US", { hour12: true }) },
+            complete: function () {
+
+            },
+            success: function (result) {
+
+                 var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                $("#loading").hide();
+                    window.location.href = url;
+
+            },
+            error: function (request) {
+
+                $("#loading").hide();
+                window.location.reload(true);
+            }
+        });
+
+
+
+
+    };
+
+    function error2(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+        $("#loading").show();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+
+        var now = new Date();
+        $.ajax({
+            url: '/FormsM/Finish_activity',
+            type: 'POST',
+            data: { 'id': idvisita, 'lat': "", 'lng': "", 'check_out': now.toLocaleString("en-US", { hour12: true }) },
+            complete: function () {
+
+            },
+            success: function (result) {
+
+                 var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                $("#loading").hide();
+                    window.location.href = url;
+
+            },
+            error: function (request) {
+
+                $("#loading").hide();
+                window.location.reload(true);
+            }
+        });
+    };
+
+
+
+    function initGeolocation2() {
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success2, error2, options2);
+        } else {
+            console.log('Geolocation is not supported');
+        }
+    }
+
+</script>
+
+     

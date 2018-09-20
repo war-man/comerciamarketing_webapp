@@ -40,12 +40,12 @@
     {
         foreach (var objeto in parentList)
         {
-            <!--PARA PRODUCTOS -->
-            if (objeto.id_resource == "3")
+            <!--PARA PRODUCTOS O EN ESTE CASO EL SELECT DE PRO -->
+            if (objeto.id_resource == "17")
             {
                 <tr>
 
-                    <td style="text-align:left;"><small>@objeto.fdescription</small></td>
+                    <td><input type="text" class="form-control"/></td>
                     @if (objeto.children != null)
                     {
                         @OrderedListRetail(objeto.children, objeto.idkey)
@@ -84,7 +84,7 @@
                         <div class="form-group">
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" class="form-control" />
+                                <input type="number" id="@objeto.idkey" class="form-control form-control-sm" />
 
 
                             </div>
@@ -105,7 +105,7 @@
                         <div class="form-group">
 
                             <div class="col-md-12">
-                                <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control currency" />
+                                <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control form-control-sm currency" />
 
 
                             </div>
@@ -114,8 +114,8 @@
                 }
 
             }
-            <!--PARA INPUT TEXT -->
-            if (objeto.id_resource == "6")
+            <!--PARA DATE-->
+            if (objeto.id_resource == "22")
             {
                 if (objeto.parent != 0)
                 {
@@ -123,7 +123,7 @@
                         <div class="form-group">
 
                             <div class="col-md-12">
-                                <input type="text" id="@objeto.idkey" class="form-control" />
+                                <input type="date" id="@objeto.idkey" class="form-control" />
 
 
                             </div>
@@ -140,44 +140,44 @@
 <div class="container-fluid page-body-wrapper">
     <div class="main-panel">
         <div class="content-wrapper">
+           
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
 
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10 text-right">
-
-                        <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
+                            <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            @OrderedList(ViewBag.details)
+                @OrderedList(ViewBag.details)
 
-            <div class="row">
-                <div class="col-md-12 grid-margin">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-12 table-responsive">
-                                    <table id="retailaudit" class="table-striped" style="width:100%;">
-                                        <thead>
-                                            <tr>
-                                                @OrderedListHeadertable(ViewBag.details)
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @OrderedListRetail(ViewBag.details)
-                                        </tbody>
-                                    </table>
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table id="retailaudit" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    @OrderedListHeadertable(ViewBag.details)
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @OrderedListRetail(ViewBag.details)
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div><br />
+                    </div><br />
 
-            </div>
-            @Html.Partial("~/Views/Shared/Footer2.cshtml")
-
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+         
 
         </div>
         <!-- content-wrapper ends -->

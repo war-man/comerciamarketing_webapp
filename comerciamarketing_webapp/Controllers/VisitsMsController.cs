@@ -100,6 +100,11 @@ namespace comerciamarketing_webapp.Controllers
                 var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
 
                 ViewBag.customers = customers.ToList();
+
+
+                //Route
+                ViewBag.route = visitsM.ID_route;
+
                 return View(visitsM);
 
             }
@@ -183,15 +188,26 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Por ultimo asignamos el usuario a la visita
+                //Pero verificamos si ya existe
 
-                VisitsM_representatives repvisita = new VisitsM_representatives();
+                var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
 
-                        repvisita.ID_visit = nuevaActivida.ID_visit;
-                        repvisita.ID_usuario = IDRep;
-                        repvisita.query1 = "";
-                        repvisita.ID_empresa= nuevaActivida.ID_empresa;
-                        db.VisitsM_representatives.Add(repvisita);
-                        db.SaveChanges();
+                if (existeenvisita > 0)
+                {
+
+                }
+                else
+                {
+
+                    VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                    repvisita.ID_visit = nuevaActivida.ID_visit;
+                    repvisita.ID_usuario = IDRep;
+                    repvisita.query1 = "";
+                    repvisita.ID_empresa = nuevaActivida.ID_empresa;
+                    db.VisitsM_representatives.Add(repvisita);
+                    db.SaveChanges();
+                }
                 //************
 
                 TempData["exito"] = "Activity created successfully.";
@@ -333,49 +349,66 @@ namespace comerciamarketing_webapp.Controllers
         {
             try
             {
-                int IDU = Convert.ToInt32(Session["IDusuario"]);
-                VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
-                if (visita != null)
-                {
-                    visita.ID_visitstate = 4; //FINALIZADO
-                    visita.check_in = Convert.ToDateTime(check_in);
-                    db.Entry(visita).State = EntityState.Modified;
-                    db.SaveChanges();
+                int idid = Convert.ToInt32(ID_visit);
+                bool flagok = true;
+                var actvities = (from ac in db.ActivitiesM where (ac.ID_visit == idid) select ac).ToList();
 
+                foreach (var item in actvities) {
+                    if (item.isfinished == false) { flagok = false; }
 
-                    if (lat != null || lat != "")
-                    {
-                        //Guardamos el log de la actividad
-                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
-                        nuevoLog.latitude = lat;
-                        nuevoLog.longitude = lng;
-                        nuevoLog.ID_usuario = IDU;
-                        nuevoLog.ID_activity = 0;
-                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
-                        nuevoLog.query1 = ID_visit;
-                        nuevoLog.query2 = "";
-                        nuevoLog.action = "CHECK IN  - " + visita.store;
-                        nuevoLog.ip = "";
-                        nuevoLog.hostname = "";
-                        nuevoLog.typeh = "";
-                        nuevoLog.continent_name = "";
-                        nuevoLog.country_code = "";
-                        nuevoLog.country_name = "";
-                        nuevoLog.region_code = "";
-                        nuevoLog.region_name = "";
-                        nuevoLog.city = "";
-
-                        db.ActivitiesM_log.Add(nuevoLog);
-                        db.SaveChanges();
-                    }
-
-                    return Json(new { Result = "Success" });
                 }
-                return Json(new { Result = "Fail" });
+
+
+                if (flagok != false) {
+
+                    int IDU = Convert.ToInt32(Session["IDusuario"]);
+                    VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+                    if (visita != null)
+                    {
+                        visita.ID_visitstate = 4; //FINALIZADO
+                        visita.check_in = Convert.ToDateTime(check_in);
+                        db.Entry(visita).State = EntityState.Modified;
+                        db.SaveChanges();
+
+
+                        if (lat != null || lat != "")
+                        {
+                            //Guardamos el log de la actividad
+                            ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                            nuevoLog.latitude = lat;
+                            nuevoLog.longitude = lng;
+                            nuevoLog.ID_usuario = IDU;
+                            nuevoLog.ID_activity = 0;
+                            nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                            nuevoLog.query1 = ID_visit;
+                            nuevoLog.query2 = "";
+                            nuevoLog.action = "CHECK OUT  - " + visita.store;
+                            nuevoLog.ip = "";
+                            nuevoLog.hostname = "";
+                            nuevoLog.typeh = "";
+                            nuevoLog.continent_name = "";
+                            nuevoLog.country_code = "";
+                            nuevoLog.country_name = "";
+                            nuevoLog.region_code = "";
+                            nuevoLog.region_name = "";
+                            nuevoLog.city = "";
+
+                            db.ActivitiesM_log.Add(nuevoLog);
+                            db.SaveChanges();
+                        }
+
+                        return Json(new { Result = "Success" });
+                    }
+                }
+
+
+
+
+                return Json(new { Result = "There are some incomplete activities. Please check and try again" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { Result = "Error" });
+                return Json(new { Result = "Error: " + ex.Message });
             }
 
 
