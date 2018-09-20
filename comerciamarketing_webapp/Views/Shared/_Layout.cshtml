@@ -1289,128 +1289,128 @@
 {
     <script>
 
-            function BuildEditorHeader(array) {
+        function BuildEditorHeader(array) {
 
-                array.forEach(function (element, root) {
-                    var $th;
-                    var $tr = "<tr id='headerR'></tr>";
-                    $("#resultsRetail thead").append($tr);
-                    // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                    if (element.id_resource == "8") {
+            array.forEach(function (element, root) {
+                var $th;
+                var $tr = "<tr id='headerR'></tr>";
+                $("#resultsRetail thead").append($tr);
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "8") {
 
-                        $th = "<th>" + element.fsource + "</th>";
+                    $th = "<th>" + element.fsource + "</th>";
+                }
+
+                $('#headerR').append($th);
+            });
+        };
+
+        function BuildEditorRows(array) {
+
+            array.forEach(function (element) {
+                var $tr = "<tr></tr>";
+                var $td;
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "3") { //Products
+
+                    $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
+                    $("#resultsRetail tbody").append($tr);
+                    $("#resultsRetail tr:last").append($td);
+
+                    if (element.children != null) {
+                        BuildEditorRows(element.children);
                     }
+                }
 
-                    $('#headerR').append($th);
-                });
-            };
+                if (element.id_resource == "16") { //Multiple_choice
 
-            function BuildEditorRows(array) {
+                    $td = "<td data-label='" + element.fsource + "'>";
 
-                array.forEach(function (element) {
-                    var $tr = "<tr></tr>";
-                    var $td;
-                    // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                    if (element.id_resource == "3") { //Products
+                    if (element.fvalue != 0) {
 
-                        $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
-                        $("#resultsRetail tbody").append($tr);
-                        $("#resultsRetail tr:last").append($td);
-
-                        if (element.children != null) {
-                            BuildEditorRows(element.children);
-                        }
-                    }
-
-                    if (element.id_resource == "16") { //Multiple_choice
-
-                        $td = "<td data-label='" + element.fsource + "'>";
-
-                        if (element.fvalue != 0) {
-
-                            $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
-                        } else {
-                            $td += "</td>";
-                        }
-
-
-                        $('#resultsRetail tr:last').append($td);
-                    }
-                    if (element.id_resource == "18") { //Input_number
-
-                        $td = "<td data-label='" + element.fsource + "'>";
-
-                        $td += "<label>" + element.fvalue + "</label>";
+                        $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
+                    } else {
                         $td += "</td>";
-
-                        $('#resultsRetail tr:last').append($td);
                     }
-                    if (element.id_resource == "21") { //Currency
-
-                        $td = "<td data-label='" + element.fsource + "'>";
-
-                        $td += "$ <label>" + element.fvalueDecimal + "</label>";
-                        $td += "</td>";
-
-                        $('#resultsRetail tr:last').append($td);
-                    }
-                    if (element.id_resource == "6") { ///Input_text
-
-                        $td = "<td data-label='" + element.fsource + "'>";
-
-                        $td += "<label>" + element.fsource + "</label>";
-                        $td += "</td>";
-
-                        $('#resultsRetail tr:last').append($td);
-                    }
-                });
-            };
-
-            (function ($) {
-                'use strict';
-                $('#infoRetailModal').on('show.bs.modal', function (event) {
-
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-
-                    var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
-                    var DesAct = $(event.relatedTarget).data("name");
-                    
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-
-                    $.ajax
-                        ({
-                            url: '/Home/Getformdata',
-                            type: 'POST',
-                            datatype: 'application/json',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                id_activity: IDform
-                            }),
-                            success: function (result) {
 
 
-                                $("#resultsRetail").find("tr").remove();
-                                $("#descriptionUD").text(DesAct);
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "18") { //Input_number
 
-                                BuildEditorHeader(result);
-                                BuildEditorRows(result);
+                    $td = "<td data-label='" + element.fsource + "'>";
 
-                            },
-                            error: function () {
-                                alert("Whooaaa! Something went wrong..")
-                            },
-                        });
+                    $td += "<label>" + element.fvalue + "</label>";
+                    $td += "</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "21") { //Currency
+
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    $td += "$ <label>" + element.fvalueDecimal + "</label>";
+                    $td += "</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "6") { ///Input_text
+
+                    $td = "<td data-label='" + element.fsource + "'>";
+
+                    $td += "<label>" + element.fsource + "</label>";
+                    $td += "</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+            });
+        };
+
+        (function ($) {
+            'use strict';
+            $('#infoRetailModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget);// Button that triggered the modal
+
+                var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
+                var DesAct = $(event.relatedTarget).data("name");
+
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+
+                $.ajax
+                    ({
+                        url: '/Home/Getformdata',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            id_activity: IDform
+                        }),
+                        success: function (result) {
+
+
+                            $("#resultsRetail").find("tr").remove();
+                            $("#descriptionUD").text(DesAct);
+
+                            BuildEditorHeader(result);
+                            BuildEditorRows(result);
+
+                        },
+                        error: function () {
+                            alert("Whooaaa! Something went wrong..")
+                        },
+                    });
 
 
 
 
-                })
-            })(jQuery);
-        
+            })
+        })(jQuery);
+
     </script>
     <script>
         window.onload = function () {
@@ -1476,4 +1476,50 @@
         }
 
     }
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Brand competitors")
+{
+    <script>
+
+        function getbrands() {
+            var customerId = $("#customer_list").val();
+
+
+
+            $.ajax
+                ({
+                    url: '/Home/Getbrands',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        customerID: customerId
+
+                    }),
+                    success: function (result) {
+
+                        $("#brands_list").html("");
+                        $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
+                        $.each($.parseJSON(result), function (i, brands) {
+
+                                $("#brands_list").append
+                                    ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+                            
+
+
+                        }
+
+                        )
+                       
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+
+
+
+        }
+    </script>
 }

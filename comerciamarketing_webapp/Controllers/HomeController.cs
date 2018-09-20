@@ -1712,7 +1712,7 @@ namespace comerciamarketing_webapp.Controllers
         return query;
 
     }
-
+        //DISPLAY ITEMS
         public ActionResult Displayitems()
         {
             if (Session["IDusuario"] != null)
@@ -1724,13 +1724,10 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
                 //GENERAL END
                 //2 es la empresa DEFAULT
-                var items = db.Items_displays.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
+                var items = db.Items_displays.Where(c => c.ID_empresa == 2);
 
 
                 return View(items.ToList());
-
-
-
 
             }
             else
@@ -1738,5 +1735,110 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateDisplayItem(string sku, string description)
+        {
+            Items_displays item = new Items_displays();
+
+            if (sku == null || sku == "") {
+                sku = "";
+            }
+
+            item.SKU = sku;
+            item.description = description;
+            item.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+            item.active = true;
+
+            if (ModelState.IsValid)
+            {
+                db.Items_displays.Add(item);
+                db.SaveChanges();
+                TempData["exito"] = "Item created successfully.";
+                return RedirectToAction("Displayitems", "Home", null);
+            }
+            TempData["advertencia"] = "Something wrong happened, try again.";
+            return RedirectToAction("Displayitems", "Home", null);
+        }
+        //********************************FIN DISPLAY ITEMS
+        //BRAND COMPETITORS
+        public ActionResult Brandcompetitors()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                //GENERAL
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                //GENERAL END
+                //2 es la empresa DEFAULT
+                var items = db.Brand_competitors.Where(c => c.ID_empresa == 2);
+
+                //Customers
+                var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.customers = customers.ToList();
+                //*************
+                return View(items.ToList());
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        public class brands
+        {
+            public string FirmCode { get; set; }
+            public string FirmName { get; set; }
+            public string Customer { get; set; }
+            public Boolean isselected { get; set; }
+        }
+        public ActionResult Getbrands(string customerID)
+        {
+            if (customerID != null)
+            {
+
+                var lstbrands = CMKdb.view_CMKEditorB
+                        .Where(i => i.U_CustomerCM == customerID)
+                        .Select(i => new brands { FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName, isselected = false, Customer = "" })
+                        .Distinct()
+                        .OrderByDescending(i => i.FirmName)
+                        .ToList();
+
+                //}
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(lstbrands);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json("error", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBrandCompetitor(string name, string ID_customer, string idbrand)
+        {
+            Brand_competitors item = new Brand_competitors();
+
+            item.Name = name;
+            item.ID_customer = ID_customer;
+            item.Costumer_name = "";
+            item.ID_brand = idbrand;
+            item.Brand_name = "";
+            item.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+    
+
+            if (ModelState.IsValid)
+            {
+                db.Brand_competitors.Add(item);
+                db.SaveChanges();
+                TempData["exito"] = "Brand competitor created successfully.";
+                return RedirectToAction("Brandcompetitors", "Home", null);
+            }
+            TempData["advertencia"] = "Something wrong happened, try again.";
+            return RedirectToAction("Brandcompetitors", "Home", null);
+        }
+        //********************************FIN Brandcompetitors
     }
 }

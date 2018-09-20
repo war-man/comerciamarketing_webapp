@@ -29,7 +29,7 @@ namespace comerciamarketing_webapp.Models
         public string latitude { get; set; }
         public string longitude { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime fecha_conexion { get; set; }
         public string action { get; set; }
         public int ID_usuario { get; set; }

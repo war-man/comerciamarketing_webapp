@@ -20,5 +20,6 @@ namespace comerciamarketing_webapp.Models
         public string Costumer_name { get; set; }
         public string ID_brand { get; set; }
         public string Brand_name { get; set; }
+        public int ID_empresa { get; set; }
     }
 }

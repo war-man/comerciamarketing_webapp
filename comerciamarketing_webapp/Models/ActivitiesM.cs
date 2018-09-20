@@ -28,10 +28,10 @@ namespace comerciamarketing_webapp.Models
         public string Customer { get; set; }
         public string comments { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime check_in { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime check_out { get; set; }
         public string query1 { get; set; }
         public int ID_empresa { get; set; }
@@ -40,7 +40,7 @@ namespace comerciamarketing_webapp.Models
         public int ID_usuarioCreate { get; set; }
         public int ID_usuarioEnd { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime date { get; set; }
         public int ID_activitytype { get; set; }
     

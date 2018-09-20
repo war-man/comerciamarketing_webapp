@@ -952,7 +952,7 @@ namespace comerciamarketing_webapp.Controllers
                 usuarios.estados_influencia = "";
             }
             usuarios.cargo = "Representative";
-            usuarios.ID_empresa = 2;
+            usuarios.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
             usuarios.ID_tipomembresia = 8;
             usuarios.ID_rol = 9;
             usuarios.fcreacion_usuario = DateTime.UtcNow;

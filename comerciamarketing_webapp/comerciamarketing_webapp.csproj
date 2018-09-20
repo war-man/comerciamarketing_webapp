@@ -3192,6 +3192,7 @@
     <Content Include="Views\FormsM\Template_preview4.cshtml" />
     <Content Include="Views\FormsM\Activityresume.cshtml" />
     <Content Include="Views\Home\Displayitems.cshtml" />
+    <Content Include="Views\Home\Brandcompetitors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

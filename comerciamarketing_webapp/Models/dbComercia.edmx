@@ -67,6 +67,7 @@
           <Property Name="Costumer_name" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="ID_brand" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Brand_name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="demo_log">
           <Key>
@@ -213,8 +214,9 @@
           </Key>
           <Property Name="ID_item" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SKU" Type="varchar" MaxLength="90" Nullable="false" />
-          <Property Name="description" Type="varbinary" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
@@ -1165,6 +1167,7 @@
           <Property Name="Costumer_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ID_brand" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Brand_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Items_displays">
           <Key>
@@ -1172,8 +1175,9 @@
           </Key>
           <Property Name="ID_item" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SKU" Type="String" Nullable="false" MaxLength="90" FixedLength="false" Unicode="false" />
-          <Property Name="description" Type="Binary" Nullable="false" MaxLength="100" FixedLength="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
           <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1536,6 +1540,7 @@
           <EntitySetMapping Name="Brand_competitors">
             <EntityTypeMapping TypeName="dbComerciaModel.Brand_competitors">
               <MappingFragment StoreEntitySet="Brand_competitors">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
                 <ScalarProperty Name="Brand_name" ColumnName="Brand_name" />
                 <ScalarProperty Name="ID_brand" ColumnName="ID_brand" />
                 <ScalarProperty Name="Costumer_name" ColumnName="Costumer_name" />
@@ -1548,6 +1553,7 @@
           <EntitySetMapping Name="Items_displays">
             <EntityTypeMapping TypeName="dbComerciaModel.Items_displays">
               <MappingFragment StoreEntitySet="Items_displays">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
                 <ScalarProperty Name="active" ColumnName="active" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />

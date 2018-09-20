@@ -16,7 +16,8 @@ namespace comerciamarketing_webapp.Models
     {
         public int ID_item { get; set; }
         public string SKU { get; set; }
-        public byte[] description { get; set; }
+        public string description { get; set; }
         public bool active { get; set; }
+        public int ID_empresa { get; set; }
     }
 }
