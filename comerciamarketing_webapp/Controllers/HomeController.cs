@@ -50,14 +50,16 @@ namespace comerciamarketing_webapp.Controllers
                 DateTime filtrostartdate;
                 DateTime filtroenddate;
 
-                
 
 
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
                 {
-                    filtrostartdate = DateTime.Today;
+                    filtrostartdate = sunday;
                 }
                 else
                 {
@@ -66,7 +68,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 if (fendd == null || fendd == "")
                 {
-                    filtroenddate = DateTime.Today.AddHours(23).AddMinutes(59);
+                    filtroenddate = saturday;
                 }
                 else
                 {
@@ -83,13 +85,13 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     if (store == null || store == "") {
                         rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
-                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).Select(d=>d.ID_visit).ToArray();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).Select(d => d.ID_visit).ToArray();
                     }
                     else {
                         rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).ToList();
-                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).Select(d=>d.ID_visit).ToArray();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).Select(d => d.ID_visit).ToArray();
                     }
-                   
+
                 }
                 else
                 {
@@ -97,15 +99,15 @@ namespace comerciamarketing_webapp.Controllers
 
                     if (store == null || store == "")
                     {
-                       
+
                         rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r).ToList();
-                       visitasarray = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r.ID_visit).ToArray();
+                        visitasarray = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r.ID_visit).ToArray();
                     }
                     else {
                         rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate && r.ID_store == store) select r).ToList();
                         visitasarray = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate && r.ID_store == store) select r.ID_visit).ToArray();
                     }
-                        
+
                 }
 
 
@@ -190,7 +192,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.visitas = rutas;
 
-                var activities = (from a in db.ActivitiesM where(visitasarray.Contains(a.ID_visit)) select a).ToList();
+                var activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit)) select a).ToList();
                 ViewBag.actlist = activities;
 
                 //Filtros viewbag
@@ -216,7 +218,7 @@ namespace comerciamarketing_webapp.Controllers
             return View();
         }
 
-        public ActionResult RoutesM(string fstartd,string fendd)
+        public ActionResult RoutesM(string fstartd, string fendd)
         {
             if (Session["IDusuario"] != null)
             {
@@ -232,11 +234,14 @@ namespace comerciamarketing_webapp.Controllers
                 DateTime filtrostartdate;
                 DateTime filtroenddate;
 
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
                 {
-                    filtrostartdate = DateTime.Today;
+                    filtrostartdate = sunday;
                 }
                 else {
                     filtrostartdate = Convert.ToDateTime(fstartd);
@@ -244,7 +249,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 if (fendd == null || fendd == "")
                 {
-                    filtroenddate = DateTime.Today.AddHours(23).AddMinutes(59);
+                    filtroenddate = saturday;
                 }
                 else {
                     filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
@@ -254,7 +259,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
-                    visitas = db.VisitsM.Where(d=> d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
+                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
                     rutas = db.RoutesM.Where(d => d.date >= filtrostartdate && d.end_date <= filtroenddate).OrderByDescending(d => d.date).ToList();
                 }
                 else
@@ -389,11 +394,11 @@ namespace comerciamarketing_webapp.Controllers
 
                 var log = new List<ActivitiesM_log>();
 
-                 
+
 
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
-                    log = (from l in db.ActivitiesM_log where(l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate)  select l).ToList();
+                    log = (from l in db.ActivitiesM_log where (l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate) select l).ToList();
                 }
                 else
                 {
@@ -1116,7 +1121,14 @@ namespace comerciamarketing_webapp.Controllers
                 //2 es la empresa DEFAULT
                 var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
 
+                var lstCustomer = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { ID = b.CardCode, Name=b.CardName.Replace("\"", "\\\"") }).OrderBy(b=>b.Name).ToList();
 
+               
+
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(lstCustomer);
+
+                ViewBag.customers = result;
                 return View(usuarios.ToList());
 
 
@@ -1262,10 +1274,18 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24" };
 
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
+
+                //PARA RECURSOS DE RETAIL AUDIT O COLUMN
+                List<string> uidsColumn = new List<string>() { "16","21","3" };
+
+                ViewBag.ID_formresourcetypeRetail = new SelectList(db.form_resource_type.Where(c => uidsColumn.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
+
                 ViewBag.vendors = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
+                ViewBag.displaylist = (from d in db.Items_displays where (d.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO) select d).ToList();
 
                 ViewBag.formslist = forms.ToList();
                 return View();
@@ -1761,6 +1781,32 @@ namespace comerciamarketing_webapp.Controllers
             TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Displayitems", "Home", null);
         }
+
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDisplayItem(string iditemD)
+        {
+            try
+            {
+                int IDitem = Convert.ToInt32(iditemD);
+
+                Items_displays brand = db.Items_displays.Find(IDitem);
+                db.Items_displays.Remove(brand);
+                db.SaveChanges();
+
+
+                TempData["exito"] = "Item deleted successfully.";
+                return RedirectToAction("Displayitems", "Home", null);
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("Displayitems", "Home", null);
+            }
+
+
+
+        }
+
         //********************************FIN DISPLAY ITEMS
         //BRAND COMPETITORS
         public ActionResult Brandcompetitors()
@@ -1823,9 +1869,16 @@ namespace comerciamarketing_webapp.Controllers
 
             item.Name = name;
             item.ID_customer = ID_customer;
-            item.Costumer_name = "";
+
+            //GET customer name
+            var custom = (from b in CMKdb.OCRD where (b.CardCode == ID_customer) select b).FirstOrDefault();
+            if (custom == null) { item.Costumer_name = ""; } else { item.Costumer_name = custom.CardName; }
+            
             item.ID_brand = idbrand;
-            item.Brand_name = "";
+            //GET brand name
+            var brandn = (from a in CMKdb.view_CMKEditorB where (a.FirmCode.ToString() == idbrand) select a).FirstOrDefault();
+            if (brandn == null) { item.Brand_name = ""; } else { item.Brand_name = brandn.FirmName; }
+
             item.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
     
 
@@ -1838,6 +1891,33 @@ namespace comerciamarketing_webapp.Controllers
             }
             TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Brandcompetitors", "Home", null);
+        }
+
+
+
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteBrandCompetitor(string idbrandD)
+        {
+            try
+            {
+                int IDbrand = Convert.ToInt32(idbrandD);
+
+                Brand_competitors brand = db.Brand_competitors.Find(IDbrand);
+                db.Brand_competitors.Remove(brand);
+                db.SaveChanges();
+
+
+
+                TempData["exito"] = "Brand competitor deleted successfully.";
+                return RedirectToAction("Brandcompetitors", "Home", null);
+            }
+            catch {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("Brandcompetitors", "Home", null);
+            }
+
+            
+     
         }
         //********************************FIN Brandcompetitors
     }

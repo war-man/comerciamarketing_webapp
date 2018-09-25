@@ -15,16 +15,16 @@
                                 <h4 class="display-4">Representatives</h4>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add Representative<i class="mdi mdi-plus"></i></button>
                                 <div class="row">
-                                    <div class="col-md-12 table-responsive">
-                                        <table id="order-listing" class="table table-striped">
+                                
+                                        <table id="order-listing" class="table-striped">
                                             <thead>
                                                 <tr>
 
-                                                    <th>Name</th>
-                                                    <th>Registration date</th>
-                                                    <th>Telephone</th>
-                                                    <th>Active</th>
-                                                    <th>Actions</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Registration date</th>
+                                                    <th scope="col">Telephone</th>
+                                                    <th scope="col">Active</th>
+                                                    <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -33,7 +33,7 @@
                                         <tr>
 
 
-                                            <td>
+                                            <td scope="row" data-label="Name">
 
                                                 <h6>
                                                     <i class="mdi mdi-account-circle icon-sm text-info"></i> <a class="text-black" href="@Url.Action("Representative_stats", "Home", new { id=item.ID_usuario})">
@@ -45,11 +45,11 @@
                                                 </p>
 
                                             </td>
-                                            <td>@Convert.ToDateTime(item.fcreacion_usuario).ToLongDateString()</td>
-                                            <td>
+                                            <td data-label="Registration date">@Convert.ToDateTime(item.fcreacion_usuario).ToLongDateString()</td>
+                                            <td data-label="Telephone">
                                                 @item.telefono
                                             </td>
-                                            <td>
+                                            <td data-label="Active">
                                                 @if (item.activo == true)
                                     {
                                         <div class="badge badge-pill badge-success"><i class="mdi mdi-check ml-1"></i></div>
@@ -59,16 +59,16 @@
                             <div class="badge badge-pill badge-danger"><i class="mdi mdi-cancel ml-1"></i></div>
             }
                                             </td>
-                                            <td align="left">
-                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#editModal" data-nombre="@item.nombre" data-apellido="@item.apellido" data-correo="@item.correo" data-tel="@item.telefono" data-estado="@item.activo"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>
-                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
+                                            <td align="left" data-label="Actions">
+                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#editModal" data-usuario="@item.ID_usuario" data-nombre="@item.nombre" data-apellido="@item.apellido" data-correo="@item.correo" data-tel="@item.telefono" data-estado="@item.activo" data-customers="@item.estados_influencia"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>
+                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal"  data-usuario="@item.ID_usuario" data-nombre="@item.nombre" data-apellido="@item.apellido"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
                                             </td>
                                         </tr>
 
                         }
                                             </tbody>
                                         </table>
-                                    </div>
+                               
                                 </div>
                             </div>
                         </div>
@@ -112,7 +112,11 @@
                         <label for="recipient-name" class="col-form-label">Telephone:</label>
                         <input type="text" class="form-control" id="telefono" name="telefono" required>
                     </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Customers:</label>
+                       <input class="form-control" type="hidden" name="listaCustomers" id="Customersmulti" value="" style="width:100%;" />
 
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-info">Save</button>
@@ -127,6 +131,9 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+                           @using (Html.BeginForm("EditRep", "usuarios", FormMethod.Post))
+                           {
+    @Html.AntiForgeryToken()
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-account"></i> Edit representative data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -134,7 +141,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <input type="text" id="IDrepEdit" name="IDrepEdit" hidden />
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Name:</label>
                         <input type="text" class="form-control" id="nombreE" name="nombreE">
@@ -147,6 +154,12 @@
                         <label for="recipient-name" class="col-form-label">Telephone:</label>
                         <input type="text" class="form-control" id="telefonoE" name="telefonoE">
                     </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Customers:</label>
+                        <input class="form-control" type="hidden" name="listaCustomersE" id="CustomersmultiE" value="" style="width:100%;" />
+
+                    </div>
+                    <!--
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Active:</label>
                         <div class="form-radio">
@@ -161,13 +174,14 @@
                                 No
                             </label>
                         </div>
-                    </div>
-                </form>
+                    </div>-->
+          
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info">Save</button>
+                <button type="submit" class="btn btn-info">Save</button>
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
             </div>
+                           }
         </div>
     </div>
 </div>
@@ -176,6 +190,9 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+                                       @using (Html.BeginForm("DeleteRep", "usuarios", FormMethod.Post))
+                                       {
+    @Html.AntiForgeryToken()
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete representative data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,18 +200,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+               
                     <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to delete Representative data?</label>
-
+                        <label class="col-form-label">Are you sure you want to delete Representative data?</label><br />
+                        <input type="text" id="IDrepDelete" name="IDrepDelete" hidden/>
+                        <strong><label id="repDelete"></label></strong>
                     </div>
 
-                </form>
+          
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
             </div>
+                                       }
         </div>
     </div>
 </div>
@@ -211,16 +230,44 @@
                 var correoE = button.data('correo');
                 var telE = button.data('tel');
                 var estadoE = button.data('estado');
-                
+                var customers = button.data('customers');
+                var ID = button.data('usuario');
+    
                 // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                 // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                 var modal = $(this);
                 //modal.find('.modal-title').text('Edit data: ' + recipient)
+                modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
                 modal.find('.modal-body input[name="nombreE"]').val(nombreE);
                 modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
                 modal.find('.modal-body input[name="correoE"]').val(correoE);
                 modal.find('.modal-body input[name="telefonoE"]').val(telE);
+                modal.find('.modal-body input[name="listaCustomersE"]').val(telE);
+                $('#CustomersmultiE').val([customers]);
+                $('#CustomersmultiE').trigger('change');
             })
         })(jQuery);
+
+        (function ($) {
+            'use strict';
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);// Button that triggered the modal
+                var nombreE = button.data('nombre');// Extract info from data-* attributes
+                var apellidoE = button.data('apellido');
+                var ID = button.data('usuario');
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+                modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
+    
+                modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
+            })
+        })(jQuery);
+
+
+
+
     }
 </script>

@@ -36,6 +36,7 @@
         $('#retailaudit').DataTable({
             dom: '',
             ordering: false,
+            paging: false,
             responsive: true,
             columnDefs: [
                 { responsivePriority: 1, targets: 0 }

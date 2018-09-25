@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled/>
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
                             </div>
                         </div>
                     </div>
@@ -113,11 +113,11 @@
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" disabled/>
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" disabled />
                             }
                             else
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked  disabled/>
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked disabled />
                             }
                             @objeto.fsource
                         </label>
@@ -211,7 +211,8 @@
                 else
                 {
                     <div class="card">
-                        <div class=""><!--card-body-->
+                        <div class="">
+                            <!--card-body-->
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="form-check-label">
@@ -289,27 +290,27 @@
                         <div class="form-group">
                             @if (objeto.fvalue == 0)
                             {
-                            <p class="control-label col-md-10">@objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             }
                             else if (objeto.fvalue == 1)
                             {
-                            <p class="control-label col-md-10">Flavor - @objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">Flavor - @objeto.fdescription (*)</p>
                             }
                             else if (objeto.fvalue == 2)
                             {
-                            <p class="control-label col-md-10">Quality - @objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">Quality - @objeto.fdescription (*)</p>
                             }
                             else if (objeto.fvalue == 3)
                             {
-                            <p class="control-label col-md-10">Price - @objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">Price - @objeto.fdescription (*)</p>
                             }
                             else if (objeto.fvalue == 4)
                             {
-                            <p class="control-label col-md-10">Packing - @objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">Packing - @objeto.fdescription (*)</p>
                             }
                             else if (objeto.fvalue == 5)
                             {
-                            <p class="control-label col-md-10">Free - @objeto.fdescription (*)</p>
+                                <p class="control-label col-md-10">Free - @objeto.fdescription (*)</p>
                             }
                             <div class="col-md-12">
                                 <textarea disabled id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
@@ -329,7 +330,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" disabled/>
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" disabled />
 
 
                             </div>
@@ -347,7 +348,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" disabled/>
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" disabled />
 
 
                             </div>
@@ -466,8 +467,32 @@
             <!--PARA ITEMS DE SELECT GENERAL -->
             if (objeto.id_resource == 20)
             {
+                IList<comerciamarketing_webapp.Models.FormsM_details> mainlist = ViewBag.detailssql;
 
-                <option value="@objeto.idkey">@objeto.fsource</option>
+                var idparent = mainlist.Where(c => c.idkey == objeto.parent).FirstOrDefault();
+
+                if (idparent != null)
+                {
+                    if (idparent.ID_formresourcetype == 17)
+                    {
+                        if (idparent.fvalueText == objeto.idkey.ToString())
+                        {
+                            <option value="@objeto.idkey" selected>@objeto.fsource</option>
+                        }
+                        else
+                        {
+                            <option value="@objeto.idkey">@objeto.fsource</option>
+                        }
+                    }
+                }
+                else
+                {
+                    <option value="@objeto.idkey">@objeto.fsource</option>
+
+                }
+
+
+
 
             }
 
@@ -480,7 +505,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select class="js-example-basic-multiple" id="@objeto.idkey" name="@objeto.idkey" style="width:100%">
+                                <select class="js-example-basic-multiple" id="brandcompetitors_list" disabled name="@objeto.idkey" style="width:100%">
                                     <option value="0">Seleccione competidor de la marca</option>
 
                                 </select>
@@ -499,7 +524,7 @@
                     <div class="card-body">
 
                         <p class="control-label col-md-10">@objeto.fdescription</p>
-                        
+
 
                         <!-- Content -->
 

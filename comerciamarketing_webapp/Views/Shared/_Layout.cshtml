@@ -42,7 +42,7 @@
             .currency-symbolv2 {
                 position: absolute;
                 padding: 1px 4px 0px;
-                font-size: 13px;
+                font-size: 12px;
             }
 
             #loading {
@@ -1013,9 +1013,41 @@
 
     });
     </script>
-
-
+}
+<!--SELECT MULTI ROUTES-->
+@if (ViewBag.Title == "Comercia Marketing - Representatives")
+{
     <script>
+
+    $(document).ready(function () {
+
+
+    var json = JSON.parse('@Html.Raw(ViewBag.customers)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.ID; // replace pk with your identifier
+        obj.text = obj.Name;
+        return obj;
+    });
+
+        $("#Customersmulti").select2({
+        multiple: true,
+        placeholder: "Select customers...",
+        data: data
+
+    });
+
+
+        $("#CustomersmultiE").select2({
+            multiple: true,
+            placeholder: "Select customers...",
+            data: data
+
+        });
+  });
+    </script>
+}
+<script>
     $(function () {
         $('#click_filter').click(function () {
 
@@ -1041,14 +1073,9 @@
 
         });
     });
+</script>
 
 
-
-
-
-    </script>
-
-}
 <!--NOTIFICACIONES GLOBALES-->
 
 @if (TempData["error"] != null)
@@ -1394,7 +1421,7 @@
 
 
                             $("#resultsRetail").find("tr").remove();
-                            $("#descriptionUD").text(DesAct);
+                            $("#descriptionUDM").text(DesAct);
 
                             BuildEditorHeader(result);
                             BuildEditorRows(result);
@@ -1503,15 +1530,15 @@
                         $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
                         $.each($.parseJSON(result), function (i, brands) {
 
-                                $("#brands_list").append
-                                    ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
-                            
+                            $("#brands_list").append
+                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+
 
 
                         }
 
                         )
-                       
+
                     },
                     error: function () {
                         alert("Whooaaa! Something went wrong..")
@@ -1521,5 +1548,78 @@
 
 
         }
+
+        (function ($) {
+            'use strict';
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);// Button that triggered the modal
+
+                var ID = button.data("id");// Extract info from data-* attributes
+
+
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+                modal.find('.modal-body input[name="idbrandD"]').val(ID);
+
+
+            })
+        })(jQuery);
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+    <script>
+
+            function getCustomers() {
+                var Idrep = $("#ID_rep").val();
+
+                if (Idrep == "0" || Idrep == null) {
+
+                } else {
+
+                    $.ajax
+                        ({
+                            url: '/VisitsMs/GetCustomer_reps',
+                            type: 'POST',
+                            datatype: 'application/json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                ID_usuario: Idrep
+                            }),
+                            success: function (result) {
+
+                                $("#ID_customer").html("");
+                                $("#ID_customer").append($('<option></option>').val(0).html("Select a customer"))
+                                $.each($.parseJSON(result), function (i, brands) {
+                                    if (brands.isselected) {//si esta seleccionado
+                                        $("#ID_customer").append
+                                            ($('<option selected></option>').val(brands.ID).html(brands.Name));
+
+
+                                    } else {
+                                        $("#ID_customer").append
+                                            ($('<option></option>').val(brands.ID).html(brands.Name));
+                                    }
+
+
+                                }
+
+                                )
+                                $("#loading").hide();
+
+                            },
+                            error: function () {
+                                alert("Whooaaa! Something went wrong..")
+                                $("#loading").hide();
+                            },
+                        });
+                }
+
+
+            }
+
     </script>
 }

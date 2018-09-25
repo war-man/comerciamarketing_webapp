@@ -3,12 +3,12 @@
     ViewBag.Title = "Comercia Marketing - Template preview2";
 }
 
-@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
         foreach (var objeto in parentList)
         {
             <!--PARA TITULOS (AUN QUE EN ESTE CASO SOLO TENDRIA QUE HABER 1 SOLO TITULO-->
-            if (objeto.id_resource == "1")
+            if (objeto.id_resource == 1)
             {
                 <div class="row">
                     <hr />
@@ -23,29 +23,29 @@
             }
         }
 }
-@helper OrderedListHeadertable(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+@helper OrderedListHeadertable(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
         foreach (var objeto in parentList)
         {
             <!--PARA SUBTITULOS -->
-            if (objeto.id_resource == "8")
+            if (objeto.id_resource == 24)
             {
 
-                <th class="none"><strong>@objeto.fsource</strong></th>
+                <th class="none">@objeto.fdescription</th>
 
             }
         }
 }
-@helper OrderedListRetail(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj> parentList, int parent = 0)
+@helper OrderedListRetail(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
         foreach (var objeto in parentList)
         {
             <!--PARA PRODUCTOS -->
-            if (objeto.id_resource == "3")
+            if (objeto.id_resource == 3)
             {
                 <tr>
 
-                    <td style="text-align:left;"><small>@objeto.fdescription</small></td>
+                    <td style="text-align:left"><small>@objeto.fdescription</small></td>
                     @if (objeto.children != null)
                     {
                         @OrderedListRetail(objeto.children, objeto.idkey)
@@ -56,14 +56,22 @@
 
 
             <!--CHECK SELECCION MULTIPLE -->
-            if (objeto.id_resource == "16")
+            if (objeto.id_resource == 16)
             {
                 if (objeto.parent != 0)
                 {
-                    <td>
+                    <td style="text-align:left">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                                @if (objeto.fvalue == 0)
+                                {<input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
+
+                                }
                                 &nbsp;
                             </label>
                         </div>
@@ -76,18 +84,16 @@
 
 
             <!--PARA INPUT NUMBER -->
-            if (objeto.id_resource == "18")
+            if (objeto.id_resource == 18)
             {
                 if (objeto.parent != 0)
                 {
-                    <td>
+                    <td style="text-align:left">
                         <div class="form-group">
 
-                            <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" class="form-control" />
+                            <input type="number" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
 
 
-                            </div>
                         </div>
                     </td>
                 }
@@ -97,25 +103,25 @@
 
 
             <!--PARA INPUT NUMBER (CURRENCY)-->
-            if (objeto.id_resource == "21")
+            if (objeto.id_resource == 21)
             {
                 if (objeto.parent != 0)
                 {
-                    <td>
+                    <td style="text-align:left">
                         <div class="form-group">
 
-                            <div class="col-md-12">
-                                <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control currency" />
+
+                            <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control form-control-sm currency" value="@objeto.fvalueDecimal" />
 
 
-                            </div>
+
                         </div>
                     </td>
                 }
 
             }
             <!--PARA INPUT TEXT -->
-            if (objeto.id_resource == "6")
+            if (objeto.id_resource == 6)
             {
                 if (objeto.parent != 0)
                 {
@@ -136,7 +142,6 @@
         }
 }
 
-
 <div class="container-fluid page-body-wrapper">
     <div class="main-panel">
         <div class="content-wrapper">
@@ -151,6 +156,8 @@
             </div>
 
 
+            <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
+
             @OrderedList(ViewBag.details)
 
             <div class="row">
@@ -158,27 +165,33 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-12 table-responsive">
-                                    <table id="retailaudit" class="table-striped" style="width:100%;">
-                                        <thead>
-                                            <tr>
-                                                @OrderedListHeadertable(ViewBag.details)
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @OrderedListRetail(ViewBag.details)
-                                        </tbody>
-                                    </table>
-                                </div>
+
+                                <table id="retailaudit" class="table-striped" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            @OrderedListHeadertable(ViewBag.details)
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @OrderedListRetail(ViewBag.details)
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
                 </div><br />
 
             </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 text-right">
+                    <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
+                    <input type="submit" value="Check out" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
+                    <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
+                </div>
+            </div>
+
             @Html.Partial("~/Views/Shared/Footer2.cshtml")
-
-
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -186,4 +199,3 @@
     </div>
     <!-- main-panel ends -->
 </div>
-<!-- page-body-wrapper ends -->

@@ -178,8 +178,10 @@
                                                     }
                                                 }
                                             </div>
-                                            <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5><div class="add-items d-flex">
-                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                            <!--
+                                            <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
+                                            <div class="add-items d-flex">
+                                                if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
                                                 {
                                                     <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
                                                     <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
@@ -194,7 +196,7 @@
                                                                 Example
                                                             </label>
                                                         </div>
-                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                        if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
                                                         {
                                                             <i class="remove mdi mdi-close-circle-outline"></i>
                                                         }
@@ -206,7 +208,7 @@
                                                                 Example completed
                                                             </label>
                                                         </div>
-                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                        if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
                                                         {
                                                             <i class="remove mdi mdi-close-circle-outline"></i>
                                                         }
@@ -214,7 +216,7 @@
 
                                                 </ul>
                                             </div>
-
+                                            -->
 
 
                                         </div>
@@ -308,7 +310,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_rep" class="js-example-basic-single" style="width:100%">
+                                            <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()' >
                                                 <option id="0">Select a representative</option>
                                                 @foreach (var rep in ViewBag.representatives)
                                                 {
@@ -328,16 +330,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_customer" class="js-example-basic-single" style="width:100%">
-                                                <option id="0">Select a customer</option>
-                                                @foreach (var customer in ViewBag.customers)
-                                                {
-
-                                                    <option value="@customer.CardCode">@customer.CardName</option>
-                                                }
-
-
-
+                                            <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%">
+                                              
                                             </select>
                                         </div>
                                     </div>
@@ -434,7 +428,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUD" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
+                <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUDM" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span style="font-size: 40px" aria-hidden="true">&times;</span>
                 </button>

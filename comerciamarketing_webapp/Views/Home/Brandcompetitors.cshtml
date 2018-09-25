@@ -15,13 +15,13 @@
                                 <h4 class="display-4">Brand competitors</h4>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add Brand<i class="mdi mdi-plus"></i></button>
                                 <div class="row">
-                                    <div class="col-md-12 table-responsive">
-                                        <table id="order-listing" class="table table-striped">
+                                
+                                        <table id="order-listing" class="table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Brand competitor</th>
-                                                    <th>Customer</th>
-                                                    <th>Actions</th>
+                                                    <th scope="col">Brand competitor</th>
+                                                    <th scope="col">Customer</th>
+                                                    <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -29,12 +29,12 @@
                                     {
                                         <tr>
 
-                                            <td>
+                                            <td scope="row" data-label="Brand competitor">
                                                 <i class="mdi mdi-account-card-details icon-sm text-info"></i> <a class="text-black" href="@Url.Action("Item_stats", "Home", new { id=item.ID_competitor})">
                                                         @item.Name
                                                     </a>
                                             </td>
-                                            <td>
+                                            <td data-label="Customer">
 
                                                 <h6>
                                                    
@@ -46,16 +46,16 @@
                                                 </p>
 
                                             </td>
-                                            <td align="left">
+                                            <td align="left" data-label="Actions">
                                                 <!--<button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#editModal" data-nombre="item.description" data-sku="item.SKU" data-estado="item.active"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>-->
-                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
+                                                <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal" data-id="@item.ID_competitor"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
                                             </td>
                                         </tr>
 
                         }
                                             </tbody>
                                         </table>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -129,26 +129,28 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-codepen"></i> Edit Brand data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">SKU(optional):</label>
-                        <input type="text" class="form-control" id="skuE" name="skuE">
-                        <label for="recipient-name" class="col-form-label">Description (*):</label>
-                        <input type="text" class="form-control" id="descriptionE" name="descriptionE">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info">Save</button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-            </div>
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-codepen"></i> Edit Brand data</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">SKU(optional):</label>
+                    <input type="text" class="form-control" id="skuE" name="skuE">
+                    <label for="recipient-name" class="col-form-label">Description (*):</label>
+                    <input type="text" class="form-control" id="descriptionE" name="descriptionE">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info">Save</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+        </div>
+            
         </div>
     </div>
 </div>
@@ -157,47 +159,31 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Brand data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to delete this Brand competitor?</label>
+            @using (Html.BeginForm("DeleteBrandCompetitor", "Home", FormMethod.Post))
+            {
+        @Html.AntiForgeryToken()
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Brand data</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+   
+                <div class="form-group">
+                    <label class="col-form-label">Are you sure you want to delete this Brand competitor?</label>
+                    <input type="text" class="form-control" id="idbrandD" name="idbrandD" hidden>
+                </div>
 
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger">Delete</button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-            </div>
+        
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+        </div>
+            }
         </div>
     </div>
 </div>
 <!--DELETE USER DATA ENDS-->
-<script>
-    window.onload = function () {
 
-        (function ($) {
-            'use strict';
-            $('#editModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);// Button that triggered the modal
-                var nombreE = button.data('nombre');// Extract info from data-* attributes
-                var skuE = button.data('sku');
-                var estadoE = button.data('estado');
-                
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                var modal = $(this);
-                //modal.find('.modal-title').text('Edit data: ' + recipient)
-                modal.find('.modal-body input[name="descriptionE"]').val(nombreE);
-                modal.find('.modal-body input[name="skuE"]').val(skuE);
-            })
-        })(jQuery);
-    }
-</script>

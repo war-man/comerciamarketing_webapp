@@ -333,9 +333,16 @@
                     break;
                 case 2: //In Progress
                     <label class="badge badge-success">In progress</label>
-    break;
-case 3: //On Hold
-                <label class="badge badge-warning">Scheduled</label>
+                                                    break;
+                                                case 3: //On Hold
+                                                    if (itemVisita.city == "" || itemVisita.city == null)
+                                                    {
+                    <label class="badge badge-warning">Not assigned</label>
+                                                    }
+                                                    else {
+                    <label class="badge badge-warning">Scheduled</label>
+                                                    }
+                
 break;
 case 4: //Finished
                 <label class="badge badge-primary">Finished</label>

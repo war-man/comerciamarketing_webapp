@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using comerciamarketing_webapp.Models;
 
 namespace comerciamarketing_webapp.Controllers
@@ -122,8 +123,27 @@ namespace comerciamarketing_webapp.Controllers
             public string email { get; set; }
         }
 
+        public ActionResult GetCustomer_reps(string ID_usuario)
+        {
+            try
+            {
+                int IDusuario = Convert.ToInt32(ID_usuario);
+                var usuario = (from a in db.Usuarios where (a.ID_usuario == IDusuario) select a).FirstOrDefault();
 
-      
+
+
+                var lstCustomer = (from b in CMKdb.OCRD where (usuario.estados_influencia.Contains(b.CardCode)) select new { ID=b.CardCode, Name= b.CardName }).OrderBy(b => b.Name).ToList();
+
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(lstCustomer);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita, string ID_rep)

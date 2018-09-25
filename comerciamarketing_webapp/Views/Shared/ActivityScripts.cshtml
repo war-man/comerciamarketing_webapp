@@ -66,7 +66,7 @@
                 success: function (result) {
 
                     $("#brands_list").html("");
-                    $("#brands_list").append($('<option></option>').val(0).html("Seleccione una marca"))
+                    $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
                     $.each($.parseJSON(result), function (i, brands) {
                         if (brands.isselected) {//si esta seleccionado
                             $("#brands_list").append
@@ -83,6 +83,7 @@
 
                     )
                     getProductsline();
+                    
                 },
                 error: function () {
                     alert("Whooaaa! Something went wrong..")
@@ -112,7 +113,7 @@
                 success: function (result) {
 
                     $("#productline_list").html("");
-                    $("#productline_list").append($('<option></option>').val(0).html("Seleccione una linea de producto"))
+                    $("#productline_list").append($('<option></option>').val(0).html("Select a Product Line"))
                     $.each($.parseJSON(result), function (i, productline) {
 
                         if (productline.isselected) {//si esta seleccionado
@@ -122,6 +123,47 @@
                         } else {
                             $("#productline_list").append
                                 ($('<option></option>').val(productline.Id_subcategory).html(productline.SubCategory));
+                        }
+                    }
+                    )
+                    getBrandcompetitor();
+
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
+
+    }
+
+    function getBrandcompetitor() {
+        var brandId = $("#brands_list").val();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+        $.ajax
+            ({
+                url: '/FormsM/Getbrandcompetitors',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    brandID: brandId,
+                    idvisit: idvisita
+                }),
+                success: function (result) {
+
+                    $("#brandcompetitors_list").html("");
+                    $("#brandcompetitors_list").append($('<option></option>').val(0).html("Select a Brand Competitor"))
+                    $.each($.parseJSON(result), function (i, productline) {
+
+                        if (productline.isselected) {//si esta seleccionado
+                            $("#brandcompetitors_list").append
+                                ($('<option selected></option>').val(productline.Id_brandc).html(productline.namec));
+
+                        } else {
+                            $("#brandcompetitors_list").append
+                                ($('<option></option>').val(productline.Id_brandc).html(productline.namec));
                         }
                     }
                     )
@@ -320,6 +362,7 @@
         //});
 
         var now = new Date();
+
         $.ajax({
             url: '/FormsM/Save_activity',
             type: 'POST',
@@ -471,7 +514,6 @@
         //$.each(objects, function (propName, propVal) {
         //    console.log(propName, propVal);
         //});
-
         var now = new Date();
         $.ajax({
             url: '/FormsM/Save_activity',
@@ -525,53 +567,186 @@
 
 
             $.each($('input.form-control[type = "text"]'), function () {
+                if ($(this).parent().closest('.parentdiv').prev().attr('class') == null) { //Si es un item independiente
+                   
+                    if ($(this).val() == "" || $(this).val() == null) {
+                        flag = false;
+                        $(this).addClass("border-danger");
+                    }
+                    else {
+                        $(this).removeClass("border-danger");
+                    }
 
-                if ($(this).val() == "" || $(this).val() == null) {
-                    flag = false;
-                    $(this).addClass("border-danger");
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-radio") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-check") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'checkbox']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
                 }
             });
 
             $.each($('input.form-control[type = "number"]'), function () {
-                if ($(this).val() == "" || $(this).val() == null) {
-                    flag = false;
-                    $(this).addClass("border-danger");
+                if ($(this).parent().closest('.parentdiv').prev().attr('class') == null) { //Si es un item independiente
+           
+                    if ($(this).val() == "" || $(this).val() == null) {
+                        flag = false;
+                        $(this).addClass("border-danger");
+                    }
+                    else {
+                        $(this).removeClass("border-danger");
+                    }
+
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-radio") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-check") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'checkbox']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
                 }
             });
 
-            $.each($('input.form-check-input[type = "radio"]'), function () {
+            //$.each($('input.form-check-input[type = "radio"]'), function () {
+            //    //Para seleccion unica que le siga otro seleccion unica
+            //    if ($(this).is(":checked") && $(this).next().find("input.form-check-input[type = 'radio']").length > 0) {
+            //        if ($(this).is(":checked") && $(this).next().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+            //            flag = false;
+            //        }
+            //    }
+            //    //Para seleccion unica que le siga uno de seleccion multiple
+            //    if ($(this).is(":checked") && $(this).next().find("input.form-check-input[type = 'checkbox']").length > 0) {
+            //        if ($(this).is(":checked") && $(this).next().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+            //            flag = false;
+            //        }
+            //    }
+                   
+            //});
 
+            
 
-            });
+            //$.each($('input.form-check-input[type = "checkbox"]'), function () {
 
-            $.each($('input.form-check-input[type = "checkbox"]'), function () {
+            //});
 
-            });
+            //$.each($('input.dropifyIMG[type = "file"]'), function () {
 
-            $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-            });
+            //});
 
 
 
             $.each($('textarea.form-control'), function () {
+                if ($(this).parent().closest('.parentdiv').prev().attr('class') == null) { //Si es un item independiente
+         
+                    if ($(this).val() == "" || $(this).val() == null) {
+                        flag = false;
+                        $(this).addClass("border-danger");
+                    }
+                    else {
+                        $(this).removeClass("border-danger");
+                    }
 
-
-                if ($(this).val() == "" || $(this).val() == null) {
-                    flag = false;
-                    $(this).addClass("border-danger");
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-radio") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-check") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'checkbox']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
                 }
+
+
 
 
             });
 
             $.each($('select'), function () {
+                if ($(this).parent().closest('.parentdiv').prev().attr('class') == null) { //Si es un item independiente
+ 
+                        if ($(this).val() == "0" || $(this).val() == null) {
+                        flag = false;
+                        $(this).addClass("border-danger");
+                        }
+                        else {
+                                $(this).removeClass("border-danger");
+                            }
 
-
-                if ($(this).val() == "0" || $(this).val() == null) {
-                    flag = false;
-                    
-                    $(this).addClass("border-danger");
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') =="form-radio") {             
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'radio']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {                  
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "0" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
+                } else if ($(this).parent().closest('.parentdiv').prev().attr('class') == "form-check") {
+                    if ($(this).parent().closest('.parentdiv').prev().find("input.form-check-input[type = 'checkbox']:checked").length <= 0) {
+                        //Entonces no lo evaluamos para validacion ya que no han chequeado al parent
+                    } else {
+                        //Evaluamos para validacion ya que chequearon al padre
+                        if ($(this).val() == "0" || $(this).val() == null) {
+                            flag = false;
+                            $(this).addClass("border-danger");
+                        } else {
+                            $(this).removeClass("border-danger");
+                        }
+                    }
                 }
 
 
@@ -584,6 +759,7 @@
 
             if (flag == true) {
                 initGeolocation2();
+             
             } else {
                 //Alerta de que no se han guardado los campos obligatorios
                 $.toast({
