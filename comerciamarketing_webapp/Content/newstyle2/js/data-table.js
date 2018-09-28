@@ -37,10 +37,8 @@
             dom: '',
             ordering: false,
             paging: false,
-            responsive: true,
-            columnDefs: [
-                { responsivePriority: 1, targets: 0 }
-            ]
+            responsive: true
+     
         });
     });
 })(jQuery);

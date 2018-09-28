@@ -28,18 +28,37 @@
             {
                 if (objeto.children.Count > 0)
                 {
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <p class="control-label">@objeto.fsource</p>
-                                <!--VERIFICAMOS SI TIENE HIJOS-->
-                                <div class="parentdiv">
-                                    @OrderedList(objeto.children, objeto.idkey)
-                                </div>
+                    if (objeto.children[0].id_resource == 19)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label">@objeto.fsource</p>
+                                    <!--VERIFICAMOS SI TIENE HIJOS-->
+                                    <div class="parentdiv flexRadio">
+                                        @OrderedList(objeto.children, objeto.idkey)
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label">@objeto.fsource</p>
+                                    <!--VERIFICAMOS SI TIENE HIJOS-->
+                                    <div class="parentdiv">
+                                        @OrderedList(objeto.children, objeto.idkey)
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                 }
                 else
                 {
@@ -68,7 +87,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
                             </div>
                         </div>
                     </div>
@@ -84,7 +103,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
                             </div>
                         </div>
                     </div>
@@ -98,7 +117,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" disabled />
+                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" required />
                             </div>
                         </div>
                     </div>
@@ -109,32 +128,35 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <div class="form-radio">
+
+                    <div class="form-radio hRadio col-6">
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" disabled />
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" />
                             }
                             else
                             {
-                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked disabled />
+                                <input type="radio" class="form-check-input rad" name="@("radio_" + objeto.parent)" id="@objeto.idkey" value="@objeto.fsource" checked />
                             }
                             @objeto.fsource
                         </label>
                     </div>
                     if (objeto.children.Count > 0)
                     {
-                        <div class="parentdiv">
-                            <hr />
+                        <div class="parentdiv fRadio col-12">
+
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
                             else
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
@@ -147,17 +169,17 @@
                 else
                 {
                     <div class="card">
-                        <div class="card-body">
+                        <div class="">
                             <div class="form-group">
                                 <div class="form-radio">
                                     <label class="form-check-label">
                                         @if (objeto.fvalue == 0)
                                         {
-                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" disabled>
+                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource">
                                         }
                                         else
                                         {
-                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" checked disabled>
+                                            <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" checked>
                                         }
 
                                         @objeto.fsource
@@ -177,30 +199,33 @@
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
-                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" disabled>
+                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
                             }
                             else
                             {
-                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked disabled>
+                                <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
                             }
 
                             @objeto.fsource
                         </label>
+
                     </div>
 
                     if (objeto.children.Count > 0)
                     {
                         <div class="col-md-12 parentdiv">
-                            <hr />
+
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
                             else
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
@@ -218,11 +243,11 @@
                                     <label class="form-check-label">
                                         @if (objeto.fvalue == 0)
                                         {
-                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" disabled>
+                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey">
                                         }
                                         else
                                         {
-                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" checked disabled>
+                                            <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" checked>
                                         }
 
                                         @objeto.fsource
@@ -313,7 +338,7 @@
                                 <p class="control-label col-md-10">Free - @objeto.fdescription (*)</p>
                             }
                             <div class="col-md-12">
-                                <textarea disabled id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
+                                <textarea id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
 
                             </div>
                         </div>
@@ -324,19 +349,37 @@
             <!--PARA INPUT NUMBER -->
             if (objeto.id_resource == 18)
             {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                if (objeto.parent != 0)
+                {
 
-                            <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" disabled />
+                    <div class="form-group">
+                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+
+                        <div class="col-md-12">
+                            <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+
+                                <div class="col-md-12">
+                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+
 
             }
             <!--PARA INPUT NUMBER (CURRENCY)-->
@@ -348,7 +391,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" disabled />
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
 
 
                             </div>
@@ -366,14 +409,15 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="customer_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getBrands()' disabled>
-                                    <option value="0">Seleccione un cliente</option>
+                                <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%">
+
                                     @if (ViewBag.customers.Count == 1)
                                     {
                                         <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
                                     }
                                     else
                                     {
+                                        <option value="0">Seleccione un cliente</option>
                                         foreach (var itemCustomer in ViewBag.customers)
                                         {
                                             if (objeto.fvalueText == itemCustomer.CardCode)
@@ -407,7 +451,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="brands_list" class="js-example-basic-multiple" name="@objeto.idkey" style="width:100%" onChange='getProductsline()' disabled>
+                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%">
                                     <option value="0">Seleccione una marca</option>
 
                                 </select>
@@ -428,7 +472,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="productline_list" name="@objeto.idkey" class="js-example-basic-multiple" style="width:100%" disabled>
+                                <select id="productline_list" name="@objeto.idkey" class="form-control" style="width:100%">
                                     <option value="0">Seleccione un linea de producto</option>
 
                                 </select>
@@ -449,8 +493,8 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select id="@objeto.idkey" name="@objeto.idkey" class="js-example-basic-multiple" style="width:100%" disabled>
-                                    <option value="0">Seleccione un elemento</option>
+                                <select id="@objeto.idkey" name="@objeto.idkey" class="form-control" style="width:100%">
+                                    <option value="0">Select an item</option>
                                     @if (objeto.children.Count > 0)
                                     {
                                         @OrderedList(objeto.children, objeto.idkey)
@@ -505,7 +549,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <select class="js-example-basic-multiple" id="brandcompetitors_list" disabled name="@objeto.idkey" style="width:100%">
+                                <select class="form-control" id="brandcompetitors_list" name="@objeto.idkey" style="width:100%">
                                     <option value="0">Seleccione competidor de la marca</option>
 
                                 </select>
@@ -532,7 +576,7 @@
 
 
 
-                        <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();" disabled>
+                        <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();">
                             Get a better browser, bro.
                         </canvas>
 

@@ -28,18 +28,37 @@
             {
                 if (objeto.children.Count > 0)
                 {
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <p class="control-label">@objeto.fsource</p>
-                                <!--VERIFICAMOS SI TIENE HIJOS-->
-                                <div class="parentdiv">
-                                    @OrderedList(objeto.children, objeto.idkey)
-                                </div>
+                    if (objeto.children[0].id_resource == 19)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label">@objeto.fsource</p>
+                                    <!--VERIFICAMOS SI TIENE HIJOS-->
+                                    <div class="parentdiv flexRadio">
+                                        @OrderedList(objeto.children, objeto.idkey)
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label">@objeto.fsource</p>
+                                    <!--VERIFICAMOS SI TIENE HIJOS-->
+                                    <div class="parentdiv">
+                                        @OrderedList(objeto.children, objeto.idkey)
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                 }
                 else
                 {
@@ -109,7 +128,8 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <div class="form-radio">
+
+                    <div class="form-radio hRadio col-6">
                         <label class="form-check-label">
                             @if (objeto.fvalue == 0)
                             {
@@ -124,17 +144,19 @@
                     </div>
                     if (objeto.children.Count > 0)
                     {
-                        <div class="parentdiv">
-                            <hr />
+                        <div class="parentdiv fRadio col-12">
+
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
                             else
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
@@ -186,21 +208,24 @@
 
                             @objeto.fsource
                         </label>
+
                     </div>
 
                     if (objeto.children.Count > 0)
                     {
                         <div class="col-md-12 parentdiv">
-                            <hr />
+
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
                             else
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)">
+                                    <hr />
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
@@ -324,19 +349,37 @@
             <!--PARA INPUT NUMBER -->
             if (objeto.id_resource == 18)
             {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                if (objeto.parent != 0)
+                {
 
-                            <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                    <div class="form-group">
+                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+
+                        <div class="col-md-12">
+                            <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+
+                                <div class="col-md-12">
+                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+
 
             }
             <!--PARA INPUT NUMBER (CURRENCY)-->

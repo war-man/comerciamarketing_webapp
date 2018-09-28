@@ -735,6 +735,7 @@
     <Content Include="Content\landingpage\svg\youtube.svg" />
     <Content Include="Content\newstyle2\css\owl.carousel.css" />
     <Content Include="Content\newstyle2\css\owl.theme.css" />
+    <Content Include="Content\newstyle2\css\retailauditresponsive.css" />
     <Content Include="Content\newstyle2\css\style.css" />
     <Content Include="Content\newstyle2\fonts\Roboto\LICENSE.txt" />
     <Content Include="Content\newstyle2\images\auth\login_1.jpg" />
@@ -3193,6 +3194,7 @@
     <Content Include="Views\FormsM\Activityresume.cshtml" />
     <Content Include="Views\Home\Displayitems.cshtml" />
     <Content Include="Views\Home\Brandcompetitors.cshtml" />
+    <Content Include="Views\VisitsMs\Gallery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

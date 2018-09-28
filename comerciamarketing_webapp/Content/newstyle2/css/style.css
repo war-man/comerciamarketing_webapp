@@ -19751,16 +19751,17 @@ ul {
 
 /* Portfolio */
 .portfolio-grid figure {
-  position: relative;
-  float: left;
-  overflow: hidden;
-  width: 100%;
-  background: #ffaf00;
-  text-align: center;
-  cursor: pointer; }
+    position: relative;
+    float: left;
+    overflow: hidden;
+    width: 100%;
+    background: #793e7c;
+    text-align: center;
+    cursor: pointer;
+}
   @media (max-width: 767px) {
     .portfolio-grid figure {
-      width: 270px; } }
+       } }
   .portfolio-grid figure img {
     position: relative;
     display: block;

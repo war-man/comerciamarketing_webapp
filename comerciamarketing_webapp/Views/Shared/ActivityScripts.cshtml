@@ -154,7 +154,8 @@
                 success: function (result) {
 
                     $("#brandcompetitors_list").html("");
-                    $("#brandcompetitors_list").append($('<option></option>').val(0).html("Select a Brand Competitor"))
+                    $("#brandcompetitors_list").append($('<option></option>').val(0).html("Select a Brand Competitor"));
+                    $("#brandcompetitors_list").append($('<option></option>').val('NA001').html("NOT ASSIGNED"));
                     $.each($.parseJSON(result), function (i, productline) {
 
                         if (productline.isselected) {//si esta seleccionado
@@ -372,6 +373,7 @@
             success: function (result) {
 
                 if (result.Result == "Success") {
+                    $("#loading").hide();
                     showSuccessToast2();
 
                     var x = document.getElementById("finish_activity");
@@ -380,19 +382,21 @@
                     } else {
                         //x.style.display = "none";
                     }
-                    $("#loading").hide();
+                   
                     //window.location.reload(true);
                     //window.location.reload(true);
                 } else {
-                    showWarning2Toast();
                     $("#loading").hide();
+                    showWarning2Toast();
+                    
                 }
 
 
             },
             error: function (request) {
-                showWarning2Toast();
                 $("#loading").hide();
+                showWarning2Toast();
+                
 
             }
         });
@@ -524,6 +528,7 @@
             success: function (result) {
 
                 if (result.Result == "Success") {
+                    $("#loading").hide();
                     showSuccessToast();
 
                     var x = document.getElementById("finish_activity");
@@ -533,18 +538,20 @@
                         x.style.display = "none";
                     }
                     //window.location.reload(true);
-                    $("#loading").hide();
+                  
                     //window.location.reload(true);
                 } else {
-                    showWarning2Toast();
                     $("#loading").hide();
+                    showWarning2Toast();
+                   
                 }
 
 
             },
             error: function (request) {
-                showWarning2Toast();
                 $("#loading").hide();
+                showWarning2Toast();
+               
             }
         });
     };
@@ -553,6 +560,7 @@
         if (navigator && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error, options);
         } else {
+            $("#loading").hide();
             console.log('Geolocation is not supported');
         }
     }
@@ -761,6 +769,10 @@
                 initGeolocation2();
              
             } else {
+                $("#loading").hide();
+
+                var x = document.getElementById("finish_activity");
+                x.style.display = "none";
                 //Alerta de que no se han guardado los campos obligatorios
                 $.toast({
                     heading: 'Warning',
@@ -773,11 +785,10 @@
                     position: 'top-right'
                 });
 
-                $("#loading").hide();
+               
 
 
-                var x = document.getElementById("finish_activity");
-                x.style.display = "none";
+    
 
 
             }
@@ -976,6 +987,7 @@
         if (navigator && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success2, error2, options2);
         } else {
+            $("#loading").hide();
             console.log('Geolocation is not supported');
         }
     }

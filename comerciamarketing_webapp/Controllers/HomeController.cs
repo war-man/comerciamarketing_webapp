@@ -110,6 +110,59 @@ namespace comerciamarketing_webapp.Controllers
 
                 }
 
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+                if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                {
+
+
+                    foreach (var itemVisita in rutas)
+                    {
+                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+                        var nombreRuta = "";
+                        var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
+
+                        nombreRuta = rutitalist.query2;
+                        //utiliamos esta variable para el nombre del representante
+                        itemVisita.city = nombreRuta;
+
+                        itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
+                    }
+                }
+                else
+                {
+                    foreach (var itemVisita in rutas)
+                    {
+                        var nombreRuta = "";
+                        var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
+
+                        nombreRuta = rutitalist.query2;
+                        //utiliamos esta variable para el nombre del representante
+                        itemVisita.city = nombreRuta;
+                    }
+                }
+
+
+                //Agregamos los representantes
+                foreach (var itemVisita in rutas)
+                {
+                    var nombreRep = "";
+                    var reps = (from e in db.VisitsM_representatives where (e.ID_visit == itemVisita.ID_visit) select e).ToList();
+
+                    foreach (var itemrep in reps)
+                    {
+                        var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
+                        if (reps.Count() == 1)
+                        {
+                            nombreRep = usuario.nombre + " " + usuario.apellido;
+                        }
+                        else if (reps.Count() > 1)
+                        {
+                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                        }
+                    }
+                    //utiliamos esta variable para el nombre del representante
+                    itemVisita.customer = nombreRep;
+                }
 
 
                 //ESTADISTICA DE RUTAS POR ESTADO
@@ -141,15 +194,8 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.canceledP = 0;
                     ViewBag.finishedP = 0;
                 }
-                //Agregamos los representantes
-                foreach (var itemVisita in rutas) {
-                    var nombreRuta = "";
-                    var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
 
-                    nombreRuta = rutitalist.query2;
-                    //utiliamos esta variable para el nombre del representante
-                    itemVisita.city = nombreRuta;
-                }
+
 
 
 
@@ -193,6 +239,13 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.visitas = rutas;
 
                 var activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit)) select a).ToList();
+                foreach (var itemac in activities)
+                {
+                    var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+
+                    itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+
+                }
                 ViewBag.actlist = activities;
 
                 //Filtros viewbag
@@ -271,6 +324,19 @@ namespace comerciamarketing_webapp.Controllers
 
                     var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
                     rutas = (from rut in db.RoutesM where (arrayVisiID.Contains(rut.ID_route)) select rut).ToList();
+                }
+
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+                if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                {
+
+
+                    foreach (var itemVisita in visitas)
+                    {
+                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+
+                        itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
+                    }
                 }
 
 
@@ -444,7 +510,18 @@ namespace comerciamarketing_webapp.Controllers
 
                     rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_route == id) select r).ToList();
                 }
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+                if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                {
 
+
+                    foreach (var itemVisita in rutas)
+                    {
+                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+
+                        itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
+                    }
+                }
 
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();

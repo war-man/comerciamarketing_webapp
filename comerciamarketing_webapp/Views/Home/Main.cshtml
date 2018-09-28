@@ -468,7 +468,13 @@
                                                                         <label class="badge badge-success">In progress</label>
                                                                         break;
                                                                     case 3: //Scheduled
-                                                                        <label class="badge badge-warning">Scheduled</label>
+                        if (itemVisita.customer == "" || itemVisita.customer == null)
+                                                    {
+                    <label class="badge badge-warning">Not assigned</label>
+                                                    }
+                                                    else {
+                    <label class="badge badge-warning">Scheduled</label>
+                                                    }
                                                                         break;
                                                                     case 4: //Finished
                                                                         <label class="badge badge-primary">Finished</label>
@@ -564,7 +570,9 @@
 
                                                                                     <p class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Last Update">
                                                                                         @activity.Customer <br />
-                                                                                        @Convert.ToDateTime(activity.date).ToShortDateString() @Convert.ToDateTime(activity.date).ToShortTimeString()
+                                                                                        
+                                                                                        @Convert.ToDateTime(activity.check_out).ToShortDateString() @Convert.ToDateTime(activity.check_out).ToShortTimeString()
+                                                                                        by @activity.ID_customer
                                                                                         
                                                                                     </p>
                                                                                 </div>
@@ -664,14 +672,14 @@ else if (activity.ID_activitytype == 3)
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-12 table-responsive">
-                                        <table class="table table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
+                                   
+                                        <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
                                             <thead>
 
                                             </thead>
                                             <tbody></tbody>
                                         </table>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -722,9 +730,9 @@ else if (activity.ID_activitytype == 3)
                 var $tr = "<tr id='headerR'></tr>";
                 $("#resultsRetail thead").append($tr);
                 // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                if (element.id_resource == "8") {
+                if (element.id_resource == "24") {
 
-                    $th = "<th>" + element.fsource + "</th>";
+                    $th = "<th>" + element.fdescription + "</th>";
                 }
 
                 $('#headerR').append($th);
@@ -750,13 +758,13 @@ else if (activity.ID_activitytype == 3)
 
                 if (element.id_resource == "16") { //Multiple_choice
             
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     if (element.fvalue != 0) {
 
                         $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
                     } else {
-                        $td += "</td>";
+                        $td += "&nbsp;</td>";
                     }
                     
          
@@ -764,28 +772,28 @@ else if (activity.ID_activitytype == 3)
                 }
                 if (element.id_resource == "18") { //Input_number
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "<label>" + element.fvalue + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
                 if (element.id_resource == "21") { //Currency
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "$ <label>" + element.fvalueDecimal + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
                 if (element.id_resource == "6") { ///Input_text
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "<label>" + element.fsource + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }

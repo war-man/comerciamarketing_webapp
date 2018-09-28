@@ -67,16 +67,42 @@ namespace comerciamarketing_webapp.Controllers
                 if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
                 {
                     var activities = (from a in db.ActivitiesM where (a.ID_visit == id) select a).ToList();
+
+                    foreach (var itemac in activities) {
+                        var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+
+                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+
+                    }
+                   
+
                     ViewBag.activities = activities;
                 }
                 else {
                     var activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_usuarioEnd==ID) select a).ToList();
+
+                    foreach (var itemac in activities)
+                    {
+                        var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+
+                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+
+                    }
                     ViewBag.activities = activities;
                 }
+                //CHECK OUT POR USUARIO
+                if (datosUsuario.ID_rol == 9 && datosUsuario.ID_tipomembresia == 8)
+                {
+                    var rep = (from a in db.VisitsM_representatives
+                                where (a.ID_visit ==id && a.ID_usuario == datosUsuario.ID_usuario) select a
+                          ).FirstOrDefault();
+                    ViewBag.estadovisita = Convert.ToInt32(rep.query1);//Utilizaremos este campo para filtrar el estado por usuario
+                }
+                else {
+                    ViewBag.estadovisita = visitsM.ID_visitstate;
+                }
 
-
-
-                ViewBag.estadovisita = visitsM.ID_visitstate;
+                
 
                 ViewBag.idvisita = id;
 
@@ -223,7 +249,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     repvisita.ID_visit = nuevaActivida.ID_visit;
                     repvisita.ID_usuario = IDRep;
-                    repvisita.query1 = "";
+                    repvisita.query1 = "3";
                     repvisita.ID_empresa = nuevaActivida.ID_empresa;
                     db.VisitsM_representatives.Add(repvisita);
                     db.SaveChanges();
@@ -242,7 +268,88 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult copyActivity(string ID_activityCopy, string ID_visitCopy)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                int IDActivity = Convert.ToInt32(ID_activityCopy);
+                int IDVisit = Convert.ToInt32(ID_visitCopy);
+                try
+                {
+                    //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
+                    ActivitiesM nuevaActivida = new ActivitiesM();
+
+                    nuevaActivida = (from a in db.ActivitiesM where (a.ID_activity == IDActivity && a.ID_visit == IDVisit) select a).FirstOrDefault();
+
+                    if (nuevaActivida == null)
+                    {
+                        TempData["advertencia"] = "Something wrong happened, try again.";
+                        return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+                    }
+                    else
+                    {
+                        //COPIAMOS Y GUARDAMOS LA NUEVA ACTIVIDAD
+
+                        nuevaActivida.comments = "";
+                        nuevaActivida.check_in = DateTime.Today.Date;
+                        nuevaActivida.check_out = DateTime.Today.Date;
+                        nuevaActivida.isfinished = false;
+
+                        int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
+                        nuevaActivida.ID_usuarioCreate = ID_usuario;
+                        nuevaActivida.date = DateTime.Today.Date;
+
+                        db.ActivitiesM.Add(nuevaActivida);
+                        db.SaveChanges();
+
+                        //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
+                        //Guardamos el detalle
+                        var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == nuevaActivida.ID_form && a.original == true) select a).ToList();
+
+                        foreach (var item in detalles_acopiar)
+                        {
+                            FormsM_details nuevodetalle = new FormsM_details();
+                            nuevodetalle = item;
+                            nuevodetalle.original = false;
+                            nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
+
+                            db.FormsM_details.Add(nuevodetalle);
+                            db.SaveChanges();
+                        }
+
+
+                        TempData["exito"] = "Activity created successfully.";
+                        return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                    return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+                }
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+            
+
+
+
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -311,21 +418,90 @@ namespace comerciamarketing_webapp.Controllers
         }
 
 
+        public ActionResult Gallery(string id, string modulo)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                int IDV = Convert.ToInt32(id);
+
+                try
+                {
+                    var actividadesList = (from e in db.ActivitiesM where (e.ID_visit == IDV && e.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO) select e).ToList();
+                    var actividades = (from a in db.ActivitiesM where (a.ID_visit == IDV && a.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO) select a.ID_activity).ToArray();
+
+                    var detalles = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit) && b.ID_formresourcetype == 5) select b).ToList();
+
+
+                    foreach (var item in detalles) {
+                        var f = (from c in actividadesList where (c.ID_activity == item.ID_visit) select c).FirstOrDefault();
+
+                        item.fvalueText = f.Customer;
+                        item.fdescription = f.description;
+                        item.query1 = f.check_out.ToShortDateString();
+
+                    }
+
+
+                    ViewBag.imagenes = detalles;
+                    ViewBag.id_visita = id;
+                    return View();
+
+                }
+                catch (Exception ex)
+                {
+                    if (modulo == "visits")
+                    {
+                        TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                    }
+                    else
+                    {
+                        TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                    }
+
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
         //CHECK IN
         public ActionResult Check_in(string ID_visit, string check_in, string lat, string lng)
         {
             try
             {
                 int IDU = Convert.ToInt32(Session["IDusuario"]);
+                int IDvisita = Convert.ToInt32(ID_visit);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == IDU) select c).FirstOrDefault();
                 VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
                 if (visita != null)
                 {
+                    //Cambiamos estado de visita global
                     visita.ID_visitstate = 2;
                     visita.check_in = Convert.ToDateTime(check_in);
                     db.Entry(visita).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    
+                    //Cambios estado de visita por rep
+                    VisitsM_representatives rep = (from a in db.VisitsM_representatives
+                               where (a.ID_visit == IDvisita && a.ID_usuario == datosUsuario.ID_usuario)
+                               select a
+                         ).FirstOrDefault();
+                    rep.query1 = "2";
+                    db.Entry(rep).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
                     if (lat != null || lat != "")
                     {
                         //Guardamos el log de la actividad
@@ -370,18 +546,22 @@ namespace comerciamarketing_webapp.Controllers
             try
             {
                 int idid = Convert.ToInt32(ID_visit);
+                int IDU = Convert.ToInt32(Session["IDusuario"]);
+
+                //CON ESTO EVALUAMOS LA VISITA COMPLETA
                 bool flagok = true;
                 var actvities = (from ac in db.ActivitiesM where (ac.ID_visit == idid) select ac).ToList();
 
-                foreach (var item in actvities) {
+                foreach (var item in actvities)
+                {
                     if (item.isfinished == false) { flagok = false; }
 
                 }
 
 
-                if (flagok != false) {
+                if (flagok != false)
+                {
 
-                    int IDU = Convert.ToInt32(Session["IDusuario"]);
                     VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
                     if (visita != null)
                     {
@@ -417,14 +597,39 @@ namespace comerciamarketing_webapp.Controllers
                             db.SaveChanges();
                         }
 
-                        return Json(new { Result = "Success" });
+
                     }
                 }
 
 
+               bool flagokrep = true;
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == IDU) select c).FirstOrDefault();
+                //Cambios estado de visita por rep
+                VisitsM_representatives rep = (from a in db.VisitsM_representatives
+                                               where (a.ID_visit == idid && a.ID_usuario == datosUsuario.ID_usuario)
+                                               select a
+                     ).FirstOrDefault();
 
+                var actvitiesrep = (from ac in db.ActivitiesM where (ac.ID_visit == idid && ac.ID_usuarioEnd == datosUsuario.ID_usuario) select ac).ToList();
 
-                return Json(new { Result = "There are some incomplete activities. Please check and try again" });
+                foreach (var item in actvitiesrep)
+                {
+                    if (item.isfinished == false) { flagokrep = false; }
+
+                }
+
+                if (flagokrep != false)
+                {
+                    rep.query1 = "4";
+                    db.Entry(rep).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return Json(new { Result = "Success" });
+                }
+                else { 
+
+                 return Json(new { Result = "There are some incomplete activities. Please check and try again" });
+                } 
             }
             catch (Exception ex)
             {

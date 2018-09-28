@@ -416,10 +416,29 @@
                         table#resultsRetail td:last-child {
                             border-bottom: 0;
                         }
+
+
+
+
+
             }
             /**/
             /*END DATATABLES*/
+            .flexRadio {
+                display: flex;
+                /* Optional, if you want the DIVs 100% width: */
+                flex-wrap: wrap;
+                margin-right: -33.5px;
+                margin-left: -2.5px;
+            }
 
+                .flexRadio > .hRadio {
+                    order: 1;
+                }
+
+                .flexRadio > .fRadio {
+                    order: 2;
+                }
 
         </style>
     }
@@ -1439,6 +1458,7 @@
         })(jQuery);
 
     </script>
+
     <script>
         window.onload = function () {
 
@@ -1481,9 +1501,30 @@
 
                 })
             })(jQuery);
+        
+
+
+            (function ($) {
+                'use strict';
+                $('#copyModal').on('show.bs.modal', function (event) {
+
+
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDRep = button.data("activity");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityCopy"]').val(IDRep);
+                    $("#descriptionCopy").text(DesAct);
+
+                })
+            })(jQuery);
         }
-
-
 
     </script>
     if (ViewBag.estadovisita == 3)

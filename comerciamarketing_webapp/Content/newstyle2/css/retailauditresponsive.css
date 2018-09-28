@@ -1,0 +1,81 @@
+﻿.divtable .tr {
+    overflow: hidden;
+    clear: both;
+    border-top: 2px solid #dfdfdf;
+}
+
+.divtable .th,
+.divtable .td {
+    padding: 5px 10px;
+    float: left;
+}
+
+.divtable .th {
+    font-weight: bold;
+}
+
+
+@media (max-width: 1767px) {
+
+    .accordion-xs .headings {
+        display: none;
+    }
+
+    .accordion-xs .tr {
+        border-bottom-color: #dfdfdf;
+    }
+
+    .accordion-xs .th,
+    .accordion-xs .td {
+        float: none;
+        width: auto;
+        padding: 0;
+    }
+
+    .accordion-xs .accordion-xs-toggle {
+        background-color: white;
+        color: #000;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+        .accordion-xs .accordion-xs-toggle:hover {
+            background-color: #efedea;
+        }
+
+        .accordion-xs .accordion-xs-toggle:after {
+            content: '\2b';
+            float: right;
+        }
+
+        .accordion-xs .accordion-xs-toggle.collapsed:after {
+            content: '\2212';
+        }
+
+    .accordion-xs-collapse .inner {
+        padding: 10px;
+    }
+
+    .accordion-xs-collapse .td:before {
+        font-weight: bold;
+    }
+
+    .accordion-xs-collapse .lastname:before {
+        content: 'Last Name: ';
+    }
+
+    .accordion-xs-collapse .username:before {
+        content: 'Username: ';
+    }
+
+    .accordion-xs .accordion-xs-toggle:after {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 300;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+    }
+}

@@ -28,7 +28,7 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <div class="profile-header text-white">
+                                <div class="text-white">
 
                                     @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
                                     {
@@ -103,16 +103,17 @@
                                                                                     {
                                                                                         <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
                                                                                     }
-                                                                                    else {
+                                                                                    else
+                                                                                    {
                                                                                         <a href="@Url.Action("Activityra", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
                                                                                     }
-                                                                                    
+
                                                                                 }
                                                                                 else
                                                                                 {
                                                                                     <a href="#" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
                                                                                 }<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
-
+                                                                                <small class="text-gray d-block">Assigned rep : @activity.ID_customer</small>
                                                                                 <small class="text-gray d-block">Last update : @activity.check_out</small>
                                                                                 @if (activity.isfinished == true)
                                                                                 {
@@ -125,6 +126,16 @@
                                                                                     <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
                                                                                 </a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (ViewBag.estadovisita != 4) {
+                                                                                <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
+                                                                                    <i class="close ml-auto mdi mdi-content-copy"></i>
+
+                                                                                </a>
+                                                                                }
+
                                                                             }
                                                                         </div><br />
                                                                     }
@@ -217,7 +228,20 @@
                                                 </ul>
                                             </div>
                                             -->
+                                             @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                             {
+                                            <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
 
+                                            <div class="calendar-aside">
+
+                                                           
+                                                 <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark"> Gallery
+                                               
+                                                </a>
+                      
+                                           </div>
+
+                                             }
 
                                         </div>
                                         <!--CANCEL VIIT
@@ -304,13 +328,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                                                <p class="card-description">
+                                <p class="card-description">
                                     <h4 class="card-title">Representative</h4>
                                 </p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()' >
+                                            <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()'>
                                                 <option id="0">Select a representative</option>
                                                 @foreach (var rep in ViewBag.representatives)
                                                 {
@@ -330,9 +354,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%">
-                                              
-                                            </select>
+                                            <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -405,8 +427,8 @@
                     <div class="form-group">
                         <label class="col-form-label">Are you sure you want to remove this representative?</label>
                         <strong><label id="descriptionUD" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_repUD" name="ID_repUD"  value="" hidden/>
-                        <input type="text" id="ID_visitU" name="ID_visitU" value="@ViewBag.idvisita" hidden/>
+                        <input type="text" id="ID_repUD" name="ID_repUD" value="" hidden />
+                        <input type="text" id="ID_visitU" name="ID_visitU" value="@ViewBag.idvisita" hidden />
                     </div>
 
 
@@ -420,8 +442,39 @@
     </div>
 </div>
 <!--DELETE DATA ENDS-->
+<!--COPY DATA STARTS-->
+<div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("copyActivity", "VisitsMs", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i>Copy activity</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-form-label">Are you sure you want to copy this activity?</label>
+                        <strong><label id="descriptionCopy" class="col-form-label"></label></strong>
+                        <input type="text" id="ID_activityCopy" name="ID_activityCopy" value="" hidden />
+                        <input type="text" id="ID_visitCopy" name="ID_visitCopy" value="@ViewBag.idvisita" hidden />
+                    </div>
 
 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Copy</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!--COPY DATA ENDS-->
 <!--INFO RETAIL DATA STARTS-->
 <div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -463,4 +516,3 @@
     </div>
 </div>
 <!--END-->
-

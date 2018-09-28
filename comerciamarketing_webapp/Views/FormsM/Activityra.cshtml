@@ -31,7 +31,7 @@
             if (objeto.id_resource == 24)
             {
 
-                <th class="none">@objeto.fdescription</th>
+                <div class="th">@objeto.fdescription</div>
 
             }
         }
@@ -43,15 +43,22 @@
             <!--PARA PRODUCTOS -->
             if (objeto.id_resource == 3)
             {
-                <tr>
 
-                    <td style="text-align:left"><small>@objeto.fdescription</small></td>
+                <div class="tr">
+
+                    <div class="td accordion-xs-toggle"><small>@objeto.fdescription</small><div class="icondiv"></div></div>
                     @if (objeto.children != null)
-                    {
-                        @OrderedListRetail(objeto.children, objeto.idkey)
-                    }
+    {
+                <div class="accordion-xs-collapse">
+                   
+                    <div class="inner">
 
-                </tr>
+                        @OrderedListRetail(objeto.children, objeto.idkey)
+                    </div>
+                </div>
+}
+
+                </div>
             }
 
 
@@ -60,22 +67,25 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <td style="text-align:left">
+                <div class="td">
                         <div class="form-check">
+                           
                             <label class="form-check-label">
                                 @if (objeto.fvalue == 0)
-                                {<input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
-
-                                }
-                                else
-                                {
-                                    <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
-
-                                }
-                                &nbsp;
+    {
+                            <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                            @objeto.fdescription
+                            <i class="input-helper"></i>
+}
+else
+{
+                            <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
+                            @objeto.fdescription
+                            <i class="input-helper"></i>
+}
                             </label>
                         </div>
-                    </td>
+                    </div>
                 }
 
 
@@ -88,14 +98,14 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <td style="text-align:left">
-                        <div class="form-group">
+                <div class="td">
+                    <div class="form-group">
 
-                            <input type="number" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                        <input type="number" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                        @objeto.fdescription
 
-
-                        </div>
-                    </td>
+                    </div>
+                </div>
                 }
 
 
@@ -107,16 +117,20 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <td style="text-align:left">
-                        <div class="form-group">
+                <div class="td">
+                    <div class="form-group">
+                        <label>@objeto.fdescription</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
 
-
-                            <span class='currency-symbolv2'>$</span><input type="number" id="@objeto.idkey" class="form-control form-control-sm currency" value="@objeto.fvalueDecimal" />
-
+                            <input type="number" id="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal"  />
 
 
                         </div>
-                    </td>
+                    </div>
+                </div>
                 }
 
             }
@@ -125,16 +139,16 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <td>
-                        <div class="form-group">
+                <div class="td">
+                    <div class="form-group">
 
-                            <div class="col-md-12">
-                                <input type="text" id="@objeto.idkey" class="form-control" />
+                        <div class="col-md-12">
+                            <input type="text" id="@objeto.idkey" class="form-control" />
 
 
-                            </div>
                         </div>
-                    </td>
+                    </div>
+                </div>
                 }
 
             }
@@ -163,22 +177,16 @@
             <div class="row">
                 <div class="col-md-12 grid-margin">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-
-                                <table id="retailaudit" class="table-striped" style="width:100%;">
-                                    <thead>
-                                        <tr>
-                                            @OrderedListHeadertable(ViewBag.details)
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @OrderedListRetail(ViewBag.details)
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
+                        
+                            
+                                <div class="divtable accordion-xs">
+                                    <div class="tr headings">
+                                        @OrderedListHeadertable(ViewBag.details)
+                                    </div>
+                                    @OrderedListRetail(ViewBag.details)
+                                </div>
+                          
+                        
                     </div>
                 </div><br />
 
