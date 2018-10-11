@@ -93,152 +93,174 @@
     <div class="container">
         <div class="nav-bottom">
             <!--Si es usuario con membresia Merchandising pero rol Administrador-->
-@if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") | Session["tipousuario"].ToString() == "1" )
-{
-            <ul class="navbar-nav">
-                @if (ViewBag.Title == "Comercia Marketing - Home")
+            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") | Session["tipousuario"].ToString() == "1")
     {
-            <li class="nav-item active">
-                <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
-            </li>
-}
-                @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
-    {
-            <li class="nav-item active">
-                <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
-            </li>
-}
-                @if (ViewBag.Title == "Comercia Marketing - FormsM")
-    {
-            <li class="nav-item active">
-                <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
-            </li>
-}
-                @if (ViewBag.Title == "Comercia Marketing - Representatives")
-    {
-            <li class="nav-item active">
-                <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
-            </li>
-}
-                @if (ViewBag.Title == "Comercia Marketing - StoresM")
-    {
-            <li class="nav-item active">
-                <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
-            </li>
-}
-                @if (ViewBag.Title == "Comercia Marketing - CustomersM")
-    {
-            <li class="nav-item active">
-                <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
-            </li>
-}
-                @if (ViewBag.Title == "Comercia Marketing - Maintenance")
-    {
-            <li class="nav-item active">
-                <ul class="navbar-nav ml-auto dropdown-menus">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                            <span class="text-black-50 d-lg-inline-block text-black mr-2">Maintenance</span>
-                            
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                            <a href="@Url.Action("Displayitems", "Home")" class="dropdown-item mt-2">
-                                Displays items
-                            </a>
-                            <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
-                                Brand competitors
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-}
-else
-{
-            <li class="nav-item">
-                <ul class="navbar-nav ml-auto sub-menu">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                            <span class="text-black-50 d-lg-inline-block text-black mr-2">Maintenance</span>
-                           
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                            <a href="@Url.Action("Displayitems", "Home")" class="dropdown-item mt-2">
-                                Displays items
-                            </a>
-                            <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
-                                Brand competitors
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-}
-            </ul>
-            }
-            <!--Si es usuario con membresia Merchandising pero rol Usuario-->
-@if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
-            {
         <ul class="navbar-nav">
-             @if (ViewBag.Title == "Comercia Marketing - Home") {
-            <li class="nav-item active">
-                <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
-            </li>
-            } else {
-            <li class="nav-item">
-                <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
-            </li>
-            }
-                @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
+            @if (ViewBag.Title == "Comercia Marketing - Home")
     {
-            <li class="nav-item active">
-                <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
-            </li>
+        <li class="nav-item active">
+            <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
+        </li>
 }
 else
 {
-            <li class="nav-item">
-                <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
-            </li>
+        <li class="nav-item">
+            <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
+        </li>
+}
+            @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
+        </li>
+}
+            @if (ViewBag.Title == "Comercia Marketing - FormsM")
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
+        </li>
+}
+            @if (ViewBag.Title == "Comercia Marketing - Representatives")
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
+        </li>
+}
+            @if (ViewBag.Title == "Comercia Marketing - StoresM")
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
+        </li>
+}
+            @if (ViewBag.Title == "Comercia Marketing - CustomersM")
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
+        </li>
+}
+            @if (ViewBag.Title == "Comercia Marketing - Maintenance")
+    {
+        <li class="nav-item active">
+            <ul class="navbar-nav ml-auto dropdown-menus">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <span class="text-black-50 d-lg-inline-block text-black mr-2">Maintenance</span>
+
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <a href="@Url.Action("Displayitems", "Home")" class="dropdown-item mt-2">
+                            Displays items
+                        </a>
+                        <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
+                            Brand competitors
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <ul class="navbar-nav ml-auto sub-menu">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <span class="text-black-50 d-lg-inline-block text-black mr-2">Maintenance</span>
+
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <a href="@Url.Action("Displayitems", "Home")" class="dropdown-item mt-2">
+                            Displays items
+                        </a>
+                        <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
+                            Brand competitors
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </li>
 }
         </ul>
-            }
+}
+            <!--Si es usuario con membresia Merchandising pero rol Usuario-->
+            @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
+    {
+        <ul class="navbar-nav">
+            @if (ViewBag.Title == "Comercia Marketing - Home")
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
+        </li>
+}
+            @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
+    {
+        <li class="nav-item active">
+            <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
+        </li>
+}
+        </ul>
+}
+
+            <!--Si es CLIENTE-->
+            @if (Session["tipousuario"].ToString() == "2" && Session["tiporol"].ToString() == "4")
+    {
+        <ul class="navbar-nav">
+            @if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+    {
+        <li class="nav-item active">
+            <a href="#" class="nav-link">Home</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a href="#" class="nav-link">Home</a>
+        </li>
+}
+        </ul>
+}
         </div>
     </div>
 </nav>

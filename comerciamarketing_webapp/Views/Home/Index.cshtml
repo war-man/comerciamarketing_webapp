@@ -67,6 +67,15 @@
 
     </script>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116898086-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116898086-2');
+    </script>
 
 </head>
 <body class="horizontal-menu-2" onload="javascript:initGeolocation()">
@@ -155,7 +164,7 @@
             success: function (data) {
                 if (data.success) {
                     //SI ES UN USUARIO DEMO
-                    if (data.redireccion != "") {
+                    if (data.redireccion == "userform") {
                         console.log("Incomplete form")
 
                         var href = '@Url.Action("Edit", "user_form_w9", new { id = "id" })';
@@ -164,7 +173,16 @@
                         
                         window.location.href = href;
 
-                    } else {
+                    } else if( data.redireccion =="customer" ){
+                        console.log("Login success")
+                      var url = '@Url.Action("CustomerM_stats", "Home", new { id="CM" })';
+
+
+                        url = url.replace('CM', data.cm);
+                        window.location.href = url
+
+
+                    }else {
                         console.log("Login success")
                       
                         window.location.href = '@Url.Action("Main", "Home")';

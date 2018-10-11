@@ -587,7 +587,7 @@ namespace comerciamarketing_webapp.Controllers
                 myArrList.AddRange((from p in demos_map
                                     select new
                                     {
-                                        id = p.ID_route,
+                                        id = p.ID_visit,
                                         representatives = p.city,
                                         store = p.store,
                                         address = p.address,
@@ -595,12 +595,24 @@ namespace comerciamarketing_webapp.Controllers
                                         GeoLat = p.geoLat,
                                         demo_state = p.ID_visitstate,
                                         customer = p.customer,
-                                        date = p.visit_date.ToShortDateString(),
+                                        date = p.visit_date.ToLongDateString(),
                                         comment = p.comments
                                     }).ToList());
 
                 ViewBag.routes_map = JsonConvert.SerializeObject(myArrList);
 
+                //Para ruta animada
+                ArrayList myArrList2 = new ArrayList();
+                myArrList2.AddRange((from p in demos_map where (p.ID_visitstate == 4 || p.ID_visitstate == 2)
+                                     select new
+                                     {
+                                         GeoLong = p.geoLong,
+                                         GeoLat = p.geoLat,
+                                         demo_state = p.ID_visitstate,
+                                         check_ind = p.check_in,
+                                     }).OrderByDescending(c => c.demo_state).ThenBy(c => c.check_ind).ToList());
+
+                ViewBag.routes_animated = JsonConvert.SerializeObject(myArrList2);
                 //LISTADO DE REPRESENTANTES
                 var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
                 ViewBag.usuarios = usuarios.ToList();
@@ -621,7 +633,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.visitas = rutas;
 
-
+                ViewBag.id_route = id;
 
 
 
@@ -666,7 +678,14 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult Test_barcode()
+        {
 
+            return View();
+
+            
+    
+        }
         public ActionResult Dashboard_demos()
         {
             if (Session["IDusuario"] != null)
@@ -716,68 +735,85 @@ namespace comerciamarketing_webapp.Controllers
                     //PARA MERCHANDISING
                     //((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
 
-                    if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
+                    //if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
+                    //{
+                    //    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                    //}
+                    //else
+                    //{
+                    Session["IDusuario"] = obj.ID_usuario.ToString();
+                    Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+                    Session["tiporol"] = obj.ID_rol.ToString();
+                    Session["ultimaconexion"] = "";
+                    GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+
+                    //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
+                    //6 demos ,rol: 7 demo_user
+                    //if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
+                    //    var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
+
+                    //    if (formw9 != null)
+                    //    {
+                    //        if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
+                    //        {
+                    //            return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
+                    //        }
+                    //        else if (formw9.iscomplete = false && formw9.name != "")
+                    //        {
+                    //            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+
+                    //        }
+
+
+                    //    }
+                    //    else {
+                    //        return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                    //    }
+
+
+                    //}
+
+
+                    //Verificamos si el usuario esta activo
+                    if (obj.activo != false)
                     {
-                        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        Session["IDusuario"] = obj.ID_usuario.ToString();
-                        Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-                        Session["tiporol"] = obj.ID_rol.ToString();
-                        Session["ultimaconexion"] = "";
-                        GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
-
-                        //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
-                        //6 demos ,rol: 7 demo_user
-                        //if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
-                        //    var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
-
-                        //    if (formw9 != null)
-                        //    {
-                        //        if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
-                        //        {
-                        //            return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
-                        //        }
-                        //        else if (formw9.iscomplete = false && formw9.name != "")
-                        //        {
-                        //            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-
-                        //        }
-
-
-                        //    }
-                        //    else {
-                        //        return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                        //    }
-
-
-                        //}
-
-
-                        //Verificamos si el usuario esta activo
-                        if (obj.activo != false)
+                        var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
+                        if (ultimaconexion == null)
                         {
-                            var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
-                            if (ultimaconexion == null)
+                            if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4) {
+                                Session["ultimaconexion"] = "";
+                                return Json(new { success = true, redireccion = "customer", cm = obj.Empresas.ID_SAP }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
                             {
                                 Session["ultimaconexion"] = "";
                                 return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                            }
+
+                        }
+                        else
+                        {
+                            if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
+                            {
+                                Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
+                                return Json(new { success = true, redireccion = "customer", cm = obj.Empresas.ID_SAP }, JsonRequestBehavior.AllowGet);
                             }
                             else
                             {
                                 Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
                                 return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
                             }
+
                         }
-                        else {
-
-                            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                        }
-
-
-
                     }
+                    else {
+
+                        return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                    }
+
+
+
+                    //}
                 }
 
 
@@ -1198,9 +1234,9 @@ namespace comerciamarketing_webapp.Controllers
                 //2 es la empresa DEFAULT
                 var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
 
-                var lstCustomer = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { ID = b.CardCode, Name=b.CardName.Replace("\"", "\\\"") }).OrderBy(b=>b.Name).ToList();
+                var lstCustomer = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { ID = b.CardCode, Name = b.CardName.Replace("\"", "\\\"") }).OrderBy(b => b.Name).ToList();
 
-               
+
 
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
                 string result = javaScriptSerializer.Serialize(lstCustomer);
@@ -1271,7 +1307,12 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult Representative_stats(int? id)
+        public class customerList{
+            public string id { get; set; }
+            public string name { get; set; }
+            public string address { get; set; }
+        }
+        public ActionResult Representative_stats(int? id, string fstartd, string fendd)
         {
             if (Session["IDusuario"] != null)
             {
@@ -1280,16 +1321,116 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
 
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = sunday;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = saturday;
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
 
 
-                return View();
+
+                var rep = (from a in db.Usuarios where (a.ID_usuario == id) select a).FirstOrDefault();
+                if (rep != null)
+                {
+                    ViewBag.nombre = rep.nombre + " " + rep.apellido;
+                    ViewBag.correo = rep.correo;
+
+                    ViewBag.ID_rep = rep.ID_usuario;
+
+                    //LISTADO DE CUSTOMERS
+
+                    List<customerList> clist = new List<customerList>();
+                    List<string> customerIds = rep.estados_influencia.Split(',').ToList();
+
+                    foreach (var it in customerIds)
+                    {
+                        var customer = (from s in CMKdb.OCRD where (s.CardCode == it) select new customerList { id=s.CardCode, name =s.CardName, address = (s.MailCity + ", " + s.State2 + ", " + s.Country)  }).FirstOrDefault();
+                        if (customer != null) {
+                            
+                            clist.Add(customer);
+                        }
+                    }                
+                    ViewBag.customers = clist.OrderBy(c=> c.name);
+                    ///***********************
+                   
+                    //LOG (TIMELINE)
+                    var log = new List<ActivitiesM_log>();
+                    log = (from l in db.ActivitiesM_log where (l.ID_usuario == rep.ID_usuario) select l).OrderByDescending(l => l.fecha_conexion).Take(5).ToList();
+                    
+                    ViewBag.log = log;
+                    //********
+
+                    //Activities 
+                    var activity = new List<ActivitiesM>();
+                    activity = (from l in db.ActivitiesM where (l.ID_usuarioEnd == rep.ID_usuario && l.date >= filtrostartdate && l.date <= filtroenddate) select l).OrderByDescending(l => l.date).ToList();
+                    //Contamos y definimos por tipo
+                    int totalActivities = activity.Count();
+                    //1.Forms - 2.Audit - 3.SalesOrder - 4.Demos
+                    int totalForms = (from a in activity where (a.ID_activitytype == 1) select a).Count();
+                    int totalAudits = (from a in activity where (a.ID_activitytype == 2) select a).Count();
+                    int totalSales = (from a in activity where (a.ID_activitytype == 3) select a).Count();
+                    int totalDemos = (from a in activity where (a.ID_activitytype == 4) select a).Count();
+
+                    
+                    ViewBag.totalAct = totalActivities;
+                    ViewBag.totalForm = totalForms;
+                    ViewBag.totalAudit = totalAudits;
+                    ViewBag.totalSale = totalSales;
+                    ViewBag.totalDemo = totalDemos;
+                    //********
+                    //VISITS
+                    var visitas = new List<VisitsM>();
+
+                    var asv = (from e in db.VisitsM_representatives where (e.ID_usuario == rep.ID_usuario) select e.ID_visit).ToArray();
+
+                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && asv.Contains(d.ID_visit)).ToList();
+
+                    int totalVisits = visitas.GroupBy(d => d.ID_store).Count();
+                    ViewBag.totalVisitas = totalVisits;
+
+                    //LISTADO DE TIENDAS
+                    var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).Count();
+                    ViewBag.stores = stores;
+
+                    ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                    ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                    return View();
+                }
+                else {
+                    TempData["advertencia"] = "No data to show.";
+                    return View("Representatives");
+                }
+
+                
             }
             else
             {
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult StoreM_stats(string id)
+        public ActionResult StoreM_stats(string id, string fstartd, string fendd)
         {
             if (Session["IDusuario"] != null)
             {
@@ -1298,16 +1439,105 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
 
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = sunday;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = saturday;
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
 
 
-                return View();
+
+                var store = (from a in CMKdb.OCRD where (a.CardCode == id) select a).FirstOrDefault();
+                if (store != null)
+                {
+                    ViewBag.name = store.CardName;
+                    ViewBag.address = store.MailAddres + ", " + store.MailCity +", "+ store.State2 + ", " + store.MailCounty;
+
+                    ViewBag.ID_store = store.CardCode;
+
+                    //VISITS
+                    var visitas = new List<VisitsM>();
+
+                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store==id).ToList();
+                    var visitsarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == id).Select(d=>d.ID_visit).ToArray();
+                    int totalVisits = visitas.Count();
+                 
+
+
+                    int totalScheduled = (from c in visitas where (c.ID_visitstate == 3) select c).Count();
+                    int totalInpro = (from c in visitas where (c.ID_visitstate == 2) select c).Count();
+                    int totalFini = (from c in visitas where (c.ID_visitstate == 4) select c).Count();
+                    int totalCancl = (from c in visitas where (c.ID_visitstate == 1) select c).Count();
+
+                    ViewBag.totalVisitas = totalVisits;
+                    ViewBag.totalSD = totalScheduled;
+                    ViewBag.totalFS = totalFini;
+                    ViewBag.totalInpro = totalInpro;
+                    ViewBag.totalCanc = totalCancl;
+
+
+                    //**************
+                    //Activities 
+                    var activity = new List<ActivitiesM>();
+                    activity = (from l in db.ActivitiesM where (visitsarray.Contains(l.ID_visit)) select l).OrderByDescending(l => l.date).ToList();
+                    //Contamos y definimos por tipo
+                    int totalActivities = activity.Count();
+                    //1.Forms - 2.Audit - 3.SalesOrder - 4.Demos
+                    int totalForms = (from a in activity where (a.ID_activitytype == 1) select a).Count();
+                    int totalAudits = (from a in activity where (a.ID_activitytype == 2) select a).Count();
+                    int totalSales = (from a in activity where (a.ID_activitytype == 3) select a).Count();
+                    int totalDemos = (from a in activity where (a.ID_activitytype == 4) select a).Count();
+
+
+                    ViewBag.totalAct = totalActivities;
+                    ViewBag.totalForm = totalForms;
+                    ViewBag.totalAudit = totalAudits;
+                    ViewBag.totalSale = totalSales;
+                    ViewBag.totalDemo = totalDemos;
+                    //********
+
+
+
+                    ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                    ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                    return View();
+                }
+                else
+                {
+                    TempData["advertencia"] = "No data to show.";
+                    return View("StoresM");
+                }
+
+
             }
             else
             {
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult CustomerM_stats(string id)
+        public ActionResult CustomerM_stats(string id, string fstartd, string fendd, string store)
         {
             if (Session["IDusuario"] != null)
             {
@@ -1316,6 +1546,194 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
 
+                var customer = (from a in CMKdb.OCRD where (a.CardCode == id) select a).FirstOrDefault();
+
+
+                //Precargamos los filtros, comenzando por el de fecha
+                //FILTROS VARIABLES
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+
+
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = sunday;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = saturday;
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
+
+                //VISITAS
+                //SELECCIONAMOS RUTAS
+
+                var rutas = new List<VisitsM>();
+                int[] visitasarray = new int[] { };
+
+                    if (store == null || store == "")
+                    {
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).Select(d => d.ID_visit).ToArray();
+                    }
+                    else
+                    {
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).ToList();
+                        visitasarray = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).Select(d => d.ID_visit).ToArray();
+                    }
+
+                //Buscamos en las actividades para filtrar por rutas
+
+                var activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a.ID_visit).Distinct().ToArray();
+                var activitiesCount = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a).Count();
+
+                rutas = (from r in rutas where (activities.Contains(r.ID_visit)) select r).ToList();
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+
+                foreach (var itemVisita in rutas)
+                    {
+                        var nombreRuta = "";
+                        var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
+
+                        nombreRuta = rutitalist.query2;
+                        //utiliamos esta variable para el nombre del representante
+                        itemVisita.city = nombreRuta;
+                    }
+                
+
+
+                //Agregamos los representantes
+                foreach (var itemVisita in rutas)
+                {
+                    var nombreRep = "";
+                    var reps = (from e in db.VisitsM_representatives where (e.ID_visit == itemVisita.ID_visit) select e).ToList();
+
+                    foreach (var itemrep in reps)
+                    {
+                        var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
+                        if (reps.Count() == 1)
+                        {
+                            nombreRep = usuario.nombre + " " + usuario.apellido;
+                        }
+                        else if (reps.Count() > 1)
+                        {
+                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                        }
+                    }
+                    //utiliamos esta variable para el nombre del representante
+                    itemVisita.customer = nombreRep;
+                }
+
+
+                //ESTADISTICA DE RUTAS POR ESTADO
+                int totalRutas = rutas.Count();
+
+                int onhold = (from e in rutas where (e.ID_visitstate == 3) select e).Count();
+                int inprogress = (from e in rutas where (e.ID_visitstate == 2) select e).Count();
+                int canceled = (from e in rutas where (e.ID_visitstate == 1) select e).Count();
+                int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
+
+
+                ViewBag.onhold = onhold;
+                ViewBag.inprogress = inprogress;
+                ViewBag.canceled = canceled;
+                ViewBag.finished = finished;
+
+                if (totalRutas != 0)
+                {
+                    ViewBag.onholdP = ((Convert.ToDecimal(onhold) / totalRutas) * 100);
+                    ViewBag.inprogressP = ((Convert.ToDecimal(inprogress) / totalRutas) * 100);
+                    ViewBag.canceledP = ((Convert.ToDecimal(canceled) / totalRutas) * 100);
+                    ViewBag.finishedP = ((Convert.ToDecimal(finished) / totalRutas) * 100);
+                }
+                else
+                {
+
+                    ViewBag.onholdP = 0;
+                    ViewBag.inprogressP = 0;
+                    ViewBag.canceledP = 0;
+                    ViewBag.finishedP = 0;
+                }
+
+
+
+                //LISTADO DE REPRESENTANTES
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
+
+                List <Usuarios> listau = new List<Usuarios>();
+
+                foreach (var user in usuarios) {
+                    List<string> storeIds = user.estados_influencia.Split(',').ToList();
+
+                    foreach (var it in storeIds) {
+                        if (it == id) {
+                            listau.Add(user);
+                        }
+                    }
+
+                }
+                ViewBag.usuarios =listau;
+
+
+                //MAPA DE RUTAS
+                var demos_map = rutas;
+
+
+
+
+                // Convertimos la lista a array
+                ArrayList myArrList = new ArrayList();
+                myArrList.AddRange((from p in demos_map
+                                    select new
+                                    {
+                                        id = p.ID_visit,
+                                        representatives = p.city,
+                                        store = p.store,
+                                        address = p.address,
+                                        GeoLong = p.geoLong,
+                                        GeoLat = p.geoLat,
+                                        demo_state = p.ID_visitstate,
+                                        customer = p.customer,
+                                        date = p.visit_date.ToLongDateString(),
+                                        comment = p.comments
+                                    }).ToList());
+
+                ViewBag.routes_map = JsonConvert.SerializeObject(myArrList);
+
+                //LISTADO DE TIENDAS
+                var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.stores = stores.ToList();
+
+
+                ViewBag.visitas = rutas;
+
+
+                //COUNTERS
+                ViewBag.rutascount = rutas.Count();
+                ViewBag.actlist = activitiesCount;
+
+                //Filtros viewbag
+
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                ViewData["customerName"] = customer.CardName;
+                ViewBag.customerID = customer.CardCode;
 
 
                 return View();
@@ -1970,7 +2388,91 @@ namespace comerciamarketing_webapp.Controllers
             return RedirectToAction("Brandcompetitors", "Home", null);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateVisitRoute(string id_store, string ID_route)
+        {
+            int IDR = Convert.ToInt32(ID_route);
+            var route = db.RoutesM.Find(IDR);
 
+
+            try
+            {
+            if (route != null)
+            {
+                    var storeSAP = (from a in CMKdb.OCRD where (a.CardCode == id_store) select a).FirstOrDefault();
+
+                    VisitsM visita = new VisitsM();
+                    visita.ID_customer = "";
+                    visita.customer = "";
+                    visita.ID_store = id_store;
+                    visita.store = storeSAP.CardName;
+                    visita.address = storeSAP.MailAddres;
+                    visita.city = storeSAP.MailCity;
+                    if (storeSAP.MailZipCod == null)
+                    {
+                        visita.zipcode = "";
+                    }
+                    else { visita.zipcode = storeSAP.MailZipCod; }
+
+                    if (storeSAP.State2 == null)
+                    {
+                        visita.state = "";
+                    }
+                    else { visita.state = storeSAP.State2; }
+                    visita.visit_date = route.date;
+                    visita.ID_visitstate = 3; //On Hold
+                    visita.comments = "";
+                    visita.check_in = route.date;
+                    visita.check_out = route.date;
+                    visita.end_date = route.end_date;
+                    visita.extra_hours = 0;
+                    visita.ID_route = IDR;
+                    visita.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+                    //GEOLOCALIZACION
+                    try
+                    {
+                        string address = storeSAP.CardName.ToString() + ", " + storeSAP.MailAddres.ToString() + ", " + storeSAP.MailCity.ToString() + ", " + storeSAP.MailZipCod.ToString();
+                        string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                        WebRequest request = WebRequest.Create(requestUri);
+                        WebResponse response = request.GetResponse();
+                        XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                        XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                        XElement locationElement = result.Element("geometry").Element("location");
+                        XElement lat = locationElement.Element("lat");
+                        XElement lng = locationElement.Element("lng");
+                        //NO SE PORQUE LO TIRA AL REVEZ
+                        visita.geoLat = lng.Value;
+                        visita.geoLong = lat.Value;
+                        //FIN
+
+                    }
+                    catch
+                    {
+                        visita.geoLong = "";
+                        visita.geoLat = "";
+                    }
+
+                    db.VisitsM.Add(visita);
+                    db.SaveChanges();
+
+                    TempData["exito"] = "Visit created successfully.";
+                return RedirectToAction("RoutesM_details", "Home", new { id=IDR });
+            }
+            else {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                    return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
+                }
+            }
+            catch {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
+            }
+
+           
+        }
 
         [ValidateAntiForgeryToken]
         public ActionResult DeleteBrandCompetitor(string idbrandD)

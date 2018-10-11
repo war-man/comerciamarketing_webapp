@@ -66,3 +66,23 @@
     </div>
 </div>
 <!-- page-body-wrapper ends -->
+
+<script>
+    window.onload = function () {
+
+        if ($.fn.dataTable.isDataTable('#order-listing')) {
+            table = $('#order-listing').DataTable();
+            table
+                .order([1, 'asc'])
+                .draw();
+        }
+        else {
+            table = $('#order-listing').DataTable({
+             
+            });
+        }
+
+ 
+
+    };
+</script>

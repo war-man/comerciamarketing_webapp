@@ -269,13 +269,17 @@
                     <p class="control-label col-md-10">@objeto.fdescription</p>
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
-                        {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)">
-                        }
-                        else
-                        {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey">
-                        }
+    {
+                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden/>
+                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"   hidden/>
+}
+else
+{
+                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                    <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
+                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
+}
                     </div>
 
 
@@ -288,13 +292,17 @@
                             <p class="control-label col-md-10">@objeto.fdescription</p>
                             <div class="col-md-12">
                                 @if (objeto.fsource != "")
-                                {
-                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)">
-                                }
-                                else
-                                {
-                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey">
-                                }
+    {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
+}
+else
+{
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" src="#" alt="your image"  hidden/>
+                            <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image"  hidden/>
+}
                             </div>
 
                         </div>

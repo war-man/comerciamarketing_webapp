@@ -14,34 +14,147 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <a href="@Url.Action("CustomersM", "Home")"><i class="mdi mdi-arrow-left-bold-circle-outline icon-lg" title="Back"></i></a>
+                                       <!-- <a href="Url.Action("CustomersM", "Home")" class="btn btn-info">Back</a>-->
+
                                     </div>
                                     <div class="text-right col-md-10">
-                                        <h4 class="display-4">Nombre de cliente</h4>
+                                        <h4 class="display-4">@ViewData["customerName"]</h4>
                                     </div>
+
                                 </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-12 grid-margin">
 
-                                <div class="profile-header text-black">
-                                    <div class="d-flex justify-content-around">
-                                        <div class="profile-info d-flex align-items-center">
+                                        <div class="accordion basic-accordion" id="accordion" role="tablist">
+                                            <div class="card">
+                                                <div class="card-header" role="tab" id="headingOne">
+                                                    <h6 class="mb-0">
+                                                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                            <i class="card-icon mdi mdi-filter"></i>Filters
+                                                        </a>
+                                                    </h6>
+                                                </div>
+                                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-4 grid-margin stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">By Date</h4>
+                                                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                                                            <i class="mdi mdi-calendar"></i>&nbsp;
+                                                                            <span></span> <i class="fa fa-caret-down"></i>
+                                                                        </div>
 
-                                            <div class="wrapper pl-4">
-                                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                                                    <i class="mdi mdi-calendar"></i>&nbsp;
-                                                    <span></span> <i class="fa fa-caret-down"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--
+                                                                                                <div class="col-md-4 grid-margin stretch-card">
+                                                                                                    <div class="card">
+                                                                                                        <div class="card-body">
+                                                                                                            <h4 class="card-title">By Customer</h4>
+                                                                                                            <div class="form-group">
+                                                                                                                <select class="js-example-basic-single" style="width:100%">
+                                                                                                                    <option value="0">Select a customer</option>
+                                                                                                                    foreach (var itemCustomers in ViewBag.customers)
+                                                                        {
+                                                                                            <option value="itemCustomers.CardCode">itemCustomers.CardCode - itemCustomers.CardName</option>
+                                                }
+                                                                                                                </select>
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>-->
+                                                            <div class="col-md-4 grid-margin stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">By Store</h4>
+                                                                        <div class="form-group">
+                                                                            <select class="js-example-basic-single" id="filterstore" style="width:100%">
+                                                                                <option value="">Select a store</option>
+                                                                                @foreach (var itemStores in ViewBag.stores)
+                                                                    {
+                                                                        <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
+                                                        }
+                                                                            </select>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--
+                                                                                                if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                    {
+                                                                                            <div class="col-md-4 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <h4 class="card-title">By Representative</h4>
+                                                                                                        <div class="form-group">
+                                                                                                            <select class="js-example-basic-single" style="width:100%">
+                                                                                                                <option value="0">Select a representative</option>
+                                                                                                                foreach (var itemUsuarios in ViewBag.usuarios)
+                                                                    {
+                                                                                            <option value="itemUsuarios.ID_usuario">itemUsuarios.nombre itemUsuarios.apellido</option>
+                                                }
+                                                                                                            </select>
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                }
+                                                                                                -->
+                                                            <!--
+                                                                                                if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1" || Session["tipousuario"].ToString() == "2" || Session["tipousuario"].ToString() == "3" || Session["tipousuario"].ToString() == "4")
+                                                    {
+                                                                                            <div class="col-md-4 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <h4 class="card-title">By Strategic Partner</h4>
+                                                                                                        <div class="form-group">
+                                                                                                            <select class="js-example-basic-single" style="width:100%">
+                                                                                                                <option value="0">Select a strategic partner</option>
+                                                                                                                <option value="LTN">Limena TN</option>
+                                                                                                                <option value="LGA">Limena GA</option>
+                                                                                                            </select>
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                }-->
+                                                            <div class="col-md-4 grid-margin stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <a href="#" class="btn btn-primary" id="click_filterStoresStats">Apply<i class="mdi mdi-check-all"></i></a>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
+
+
                                     </div>
+
                                 </div>
+
                                 <div class="profile-body">
                                     <ul class="nav tab-switch" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="user-profile-info-tab" data-toggle="pill" href="#user-profile-info" role="tab" aria-controls="user-profile-info" aria-selected="true">Routes</a>
+                                            <a class="nav-link active" id="user-profile-info-tab" data-toggle="pill" href="#user-profile-info" role="tab" aria-controls="user-profile-info" aria-selected="true">Activity</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="user-profile-activity-tab" data-toggle="pill" href="#user-profile-activity" role="tab" aria-controls="user-profile-activity" aria-selected="false">Activity</a>
-                                        </li>
+                                        <!--
+                            <li class="nav-item">
+                                <a class="nav-link" id="user-profile-activity-tab" data-toggle="pill" href="#user-profile-activity" role="tab" aria-controls="user-profile-activity" aria-selected="false">Activity</a>
+                            </li>-->
                                         <li class="nav-item">
                                             <a class="nav-link" id="user-profile-data-tab" data-toggle="pill" href="#user-profile-data" role="tab" aria-controls="user-profile-data" aria-selected="false">Analytics</a>
                                         </li>
@@ -58,10 +171,10 @@
                                                                         <i class="mdi mdi-seat-recline-extra icon-lg"></i>
                                                                         <div class="d-flex flex-column ml-2">
                                                                             <span class="d-flex flex-column">
-                                                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
-                                                                                <p class="font-weight-bold">0</p>
+                                                                                <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
+                                                                                <p class="font-weight-bold">@ViewBag.onhold</p>
                                                                             </span>
-                                                                            <small>% total</small>
+                                                                            <small>@ViewBag.onholdP.ToString("F") % total</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -75,9 +188,9 @@
                                                                         <div class="d-flex flex-column ml-2">
                                                                             <span class="d-flex flex-column">
                                                                                 <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
-                                                                                <p class="font-weight-bold">0</p>
+                                                                                <p class="font-weight-bold">@ViewBag.inprogress</p>
                                                                             </span>
-                                                                            <small>% total</small>
+                                                                            <small>@ViewBag.inprogressP.ToString("F") % total</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -91,9 +204,9 @@
                                                                         <div class="d-flex flex-column ml-2">
                                                                             <span class="d-flex flex-column">
                                                                                 <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
-                                                                                <p class="font-weight-bold">0</p>
+                                                                                <p class="font-weight-bold">@ViewBag.finished</p>
                                                                             </span>
-                                                                            <small>% total</small>
+                                                                            <small>@ViewBag.finishedP.ToString("F") % total</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -107,10 +220,202 @@
                                                                         <div class="d-flex flex-column ml-2">
                                                                             <span class="d-flex flex-column">
                                                                                 <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
-                                                                                <p class="font-weight-bold">0</p>
+                                                                                <p class="font-weight-bold">@ViewBag.canceled</p>
                                                                             </span>
-                                                                            <small>0.0% total</small>
+                                                                            <small>@ViewBag.canceledP.ToString("F") % total</small>
                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--MAPA-->
+                                                    <div class="row">
+                                                        <div class="col-md-12 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <a class="text-warning" id="clickdiv" href="javascript:void(0)" hidden>Full Screen</a>
+                                                                    <div class="map-containerVisits" id="contain22">
+                                                                        <div id="map-with-marker" class="google-map"></div>
+
+                                                                        <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 10px;display:none;" id="RouteDetails">
+                                                                            <div class="card">
+                                                                                <div class="card-body">
+                                                                                    <button type="button" class="close" aria-label="Close" id="close_divmap">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                    <div class="row mt-4">
+                                                                                        <div class="col-md-12">
+                                                                                            <h5>Visit details</h5>
+
+                                                                                            <ul class="nav nav-tabs tab-simple-styled" role="tablist">
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
+                                                                                                </li>
+                                                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                {
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
+                                                    </li>
+}
+                                                                                            </ul>
+                                                                                            <div class="tab-content tab-content-basic">
+                                                                                                <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
+                                                                                                    <p class="mb-0" id="map_id"></p>
+                                                                                                    <p id="map_customername"></p>
+                                                                                                    <p id="map_storename"></p>
+                                                                                                    <p id="map_date"></p>
+                                                                                                    <p id="map_representatives"></p>
+                                                                                                </div>
+                                                                                                <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
+                                                                                                    <p id="map_comment"></p>
+                                                                                                </div>
+                                                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                {
+                                                    <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
+
+                                                        <div class="card" style="height: 220px; bottom:10px;display:block">
+                                                            <div class="card-body" style="height: 220px;overflow: auto; bottom:10px;display:block">
+                                                                <p class="text-gray">TUESDAY, APR 9, 2018</p>
+                                                                <ul class="bullet-line-list pb-3">
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Check in</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Start
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">02</small>
+                                                                                <small class="text-muted d-block">pm</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Form</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Data saved
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">03</small>
+                                                                                <small class="text-muted d-block">pm</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Form</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Data saved
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">04</small>
+                                                                                <small class="text-muted d-block">pm</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                                <p class="text-gray mt-4">TUESDAY, APR 10, 2018</p>
+                                                                <ul class="bullet-line-list">
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Form</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Data saved
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">08</small>
+                                                                                <small class="text-muted d-block">am</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Form</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Data saved
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">10</small>
+                                                                                <small class="text-muted d-block">am</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Retail Audit</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Data saved
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">11</small>
+                                                                                <small class="text-muted d-block">pm</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex">
+
+                                                                                <div class="ml-3">
+                                                                                    <h6 class="mb-0">Check out</h6>
+                                                                                    <small class="text-muted">
+                                                                                        Finish
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="d-block mb-0">11</small>
+                                                                                <small class="text-muted d-block">pm</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -118,55 +423,90 @@
                                                     </div>
 
                                                     <hr />
+                                                    <!--VISITS LIST-->
                                                     <div class="row">
                                                         <div class="col-md-12 grid-margin">
                                                             <div class="card">
                                                                 <div class="card-body">
+                                                                    <h4 class="card-title">Visits list</h4>
 
                                                                     <div class="row">
-                                                                        <div class="col-lg-12 table-responsive">
-                                                                            <table id="order-listing" class="table table-striped">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Route #</th>
-                                                                                        <th>Date</th>
-                                                                                        <th>Store</th>
-                                                                                        <th>Representatives</th>
-                                                                                        <th>Status</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td>1</td>
-                                                                                        <td> May 15, 2015</td>
-                                                                                        <td>
-                                                                                            CHAPINLANDIA<br />
-                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
-                                                                                        </td>
-                                                                                        <td>Stanley Valenzuela, Aldo Quijano</td>
 
-                                                                                        <td>
-                                                                                            <label class="badge badge-warning">On hold</label>
-                                                                                        </td>
+                                                                        <table id="order-listing" class="table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                    {
+                                                <th scope="col">ID </th>
+                                                <th scope="col">Route</th>
+}
 
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td>2</td>
-                                                                                        <td> May 15, 2015</td>
-                                                                                        <td>
-                                                                                            CHAPINLANDIA<br />
-                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
-                                                                                        </td>
-                                                                                        <td>Francisco Velasquez</td>
 
-                                                                                        <td>
-                                                                                            <label class="badge badge-danger">Canceled</label>
-                                                                                        </td>
-                                                                                    </tr>
+                                                                                    <th scope="col">Store</th>
+                                                                                    <th scope="col">Date</th>
 
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
+
+                                                                                    <th scope="col">Status</th>
+
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var itemVisita in ViewBag.visitas)
+                                {
+                                                <tr>
+                                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                                <td scope="row" data-label="ID">
+                                                    @itemVisita.ID_visit
+
+                                                </td>
+                                                <td data-label="Route">@itemVisita.city</td>
+}
+
+                                                    <td data-label="Store">
+                                                        <a class="text-black" href="@Url.Action("DetailsC", "VisitsMs", new { id = itemVisita.ID_visit, ID_customer = ViewBag.customerID })">
+                                                            <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                            <span class="text-primary">@itemVisita.address</span>
+                                                        </a>
+                                                    </td>
+
+
+
+
+                                                    <td data-label="Date">@itemVisita.visit_date.ToShortDateString()</td>
+
+
+
+                                                    <td data-label="Status">
+                                                        @switch (itemVisita.ID_visitstate)
+        {
+            case 1: //Canceled
+                                                <label class="badge badge-danger">Canceled</label>
+break;
+case 2: //In Progress
+                                                <label class="badge badge-success">In progress</label>
+break;
+case 3: //Scheduled
+if (itemVisita.customer == "" || itemVisita.customer == null)
+{
+                                                <label class="badge badge-warning">Not assigned</label>
+}
+else
+{
+                                                <label class="badge badge-warning">Scheduled</label>
+}
+break;
+case 4: //Finished
+                                                <label class="badge badge-primary">Finished</label>
+break;
+}
+
+                                                    </td>
+                                                </tr>
+}
+                                                                            </tbody>
+                                                                        </table>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -212,9 +552,9 @@
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="d-inline-block pt-3">
                                                                             <div class="d-flex">
-                                                                                <h2 class="mb-0">17</h2>
+                                                                                <h2 class="mb-0">@ViewBag.rutascount</h2>
                                                                             </div>
-                                                                            <small class="text-gray">of 89 stores.</small>
+                                                                            <small class="text-gray">.</small>
                                                                         </div>
                                                                         <div class="d-inline-block">
                                                                             <div class="bg-success px-4 py-2 rounded">
@@ -232,9 +572,9 @@
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="d-inline-block pt-3">
                                                                             <div class="d-flex">
-                                                                                <h2 class="mb-0">256</h2>
+                                                                                <h2 class="mb-0">@ViewBag.actlist</h2>
                                                                             </div>
-                                                                            <small class="text-gray">Forms, Retail Audits, Sales Orders</small>
+                                                                            <small class="text-gray">Forms, Retail Audits, Sales Orders, Demos</small>
                                                                         </div>
                                                                         <div class="d-inline-block">
                                                                             <div class="bg-warning px-4 py-2 rounded">
@@ -261,7 +601,7 @@
                                                         <div class="col-lg-6 grid-margin stretch-card">
                                                             <div class="card">
                                                                 <div class="card-body">
-                                                                    <h4 class="card-title">Store Stats</h4>
+                                                                    <h4 class="card-title">Activities by type</h4>
                                                                     <div class="map-container">
                                                                         <div id="Donut-chart" class="google-map"></div>
                                                                     </div>
@@ -274,167 +614,148 @@
                                                     <div class="col-md-12 grid-margin stretch-card">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <h4 class="card-title"></h4>
-                                                                <div class="row ml-md-0 mr-md-0 vertical-tab tab-minimal">
-                                                                    <ul class="nav nav-tabs col-md-3 justify-content-between" role="tablist">
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link active" id="tab-2-1" data-toggle="tab" href="#dashboard-2-1" role="tab" aria-controls="dashboard-2-1" aria-selected="true"><i class="mdi mdi-speedometer"></i>Activities by type</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" id="tab-2-2" data-toggle="tab" href="#message-2-2" role="tab" aria-controls="message-2-2" aria-selected="false"><i class="mdi mdi-message-outline"></i>Routes by states</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" id="tab-2-3" data-toggle="tab" href="#campaigns-2-3" role="tab" aria-controls="campaigns-2-3" aria-selected="false"><i class="mdi mdi-bell-outline"></i>Stores details</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" id="tab-2-4" data-toggle="tab" href="#influencers-2-4" role="tab" aria-controls="influencers-2-4" aria-selected="false"><i class="mdi mdi-account-outline"></i>Representatives</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" id="tab-2-5" data-toggle="tab" href="#payments-2-5" role="tab" aria-controls="payments-2-5" aria-selected="false"><i class="mdi mdi-lightbulb-outline"></i>Sales and Merchandising</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" id="tab-2-6" data-toggle="tab" href="#analytics-2-6" role="tab" aria-controls="analytics-2-6" aria-selected="false"><i class="mdi mdi-airplay"></i>Team Effort</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div class="tab-content col-md-9">
-                                                                        <div class="tab-pane fade show active" id="dashboard-2-1" role="tabpanel" aria-labelledby="tab-2-1">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <div class="list-wrapper">
-                                                                                        <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                                                                                            <li>
-                                                                                                <div class="form-check form-check-flat">
-                                                                                                    <label class="form-check-label">
-                                                                                                        <input class="checkbox" type="checkbox">
-                                                                                                        Forms
-                                                                                                    </label>
+                                                                <h3 class="card-title">Reports</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                
+                                                                        <ul class="nav nav-tabs tab-simple-styled" role="tablist">
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link active" id="tab-2-1" data-toggle="tab" href="#dashboard-2-1" role="tab" aria-controls="dashboard-2-1" aria-selected="true"><i class="mdi mdi-speedometer"></i>Activities by type</a>
+                                                                            </li>
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link" id="tab-2-2" data-toggle="tab" href="#message-2-2" role="tab" aria-controls="message-2-2" aria-selected="false"><i class="mdi mdi-alert"></i>Visits by states</a>
+                                                                            </li>
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link" id="tab-2-3" data-toggle="tab" href="#campaigns-2-3" role="tab" aria-controls="campaigns-2-3" aria-selected="false"><i class="mdi mdi-store"></i>Stores details</a>
+                                                                            </li>
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link" id="tab-2-4" data-toggle="tab" href="#influencers-2-4" role="tab" aria-controls="influencers-2-4" aria-selected="false"><i class="mdi mdi-account-outline"></i>Representatives</a>
+                                                                            </li>
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link" id="tab-2-5" data-toggle="tab" href="#payments-2-5" role="tab" aria-controls="payments-2-5" aria-selected="false"><i class="mdi mdi-lightbulb-outline"></i>Sales and Merchandising</a>
+                                                                            </li>
+
+                                                                        </ul>
+                                                                        <div class="tab-content tab-content-basic">
+                                                                            <div class="tab-pane fade show active" id="dashboard-2-1" role="tabpanel" aria-labelledby="tab-2-1">
+                                                                                <div class="row">
+                                                                                    <p class="text-muted">Not available</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="tab-pane fade" id="message-2-2" role="tabpanel" aria-labelledby="tab-2-2">
+                                                                                <div class="row">
+             
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="row">
+                                                                                            <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <div class="d-flex">
+                                                                                                            <i class="mdi mdi-seat-recline-extra icon-lg"></i>
+                                                                                                            <div class="d-flex flex-column ml-2">
+                                                                                                                <span class="d-flex flex-column">
+                                                                                                                    <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
+                                                                                                                    <p class="font-weight-bold">@ViewBag.onhold</p>
+                                                                                                                </span>
+                                                                                                                <small>@ViewBag.onholdP.ToString("F") % total</small>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
-
-                                                                                            </li>
-                                                                                            <li class="completed">
-                                                                                                <div class="form-check form-check-flat">
-                                                                                                    <label class="form-check-label">
-                                                                                                        <input class="checkbox" type="checkbox" checked>
-                                                                                                        Audits
-                                                                                                    </label>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <div class="d-flex">
+                                                                                                            <i class="mdi mdi-truck-delivery icon-lg"></i>
+                                                                                                            <div class="d-flex flex-column ml-2">
+                                                                                                                <span class="d-flex flex-column">
+                                                                                                                    <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
+                                                                                                                    <p class="font-weight-bold">@ViewBag.inprogress</p>
+                                                                                                                </span>
+                                                                                                                <small>@ViewBag.inprogressP.ToString("F") % total</small>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
-
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <div class="form-check form-check-flat">
-                                                                                                    <label class="form-check-label">
-                                                                                                        <input class="checkbox" type="checkbox">
-                                                                                                        Sales Order
-                                                                                                    </label>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <div class="d-flex">
+                                                                                                            <i class="mdi mdi-clipboard-check icon-lg"></i>
+                                                                                                            <div class="d-flex flex-column ml-2">
+                                                                                                                <span class="d-flex flex-column">
+                                                                                                                    <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
+                                                                                                                    <p class="font-weight-bold">@ViewBag.finished</p>
+                                                                                                                </span>
+                                                                                                                <small>@ViewBag.finishedP.ToString("F") % total</small>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                                                                                                <div class="card">
+                                                                                                    <div class="card-body">
+                                                                                                        <div class="d-flex">
+                                                                                                            <i class="mdi mdi-alert-octagon icon-lg"></i>
+                                                                                                            <div class="d-flex flex-column ml-2">
+                                                                                                                <span class="d-flex flex-column">
+                                                                                                                    <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
+                                                                                                                    <p class="font-weight-bold">@ViewBag.canceled</p>
+                                                                                                                </span>
+                                                                                                                <small>@ViewBag.canceledP.ToString("F") % total</small>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="tab-pane fade" id="campaigns-2-3" role="tabpanel" aria-labelledby="tab-2-3">
+                                                                                <div class="row">
+                                                                                    <p class="text-muted">Not available</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="tab-pane fade" id="influencers-2-4" role="tabpanel" aria-labelledby="tab-2-4">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-5">
+                                                                                        @foreach (var item in ViewBag.usuarios)
+        {
+                                                                                <div class="wrapper mb-4">
+                                                                                    <h4 class="mb-3"><i class="mdi mdi-account mr-3"></i>@item.nombre @item.apellido</h4>
+                                                                                    <p><i class="mdi mdi-email icon-sm text-warning"></i>@item.correo</p>
+                                                                                </div>
+}
+                                                                                    </div>
+                                                                                    <div class="col-md-7 pl-md-5">
+                                                                                        <div class="wrapper mb-4">
+                                                                                            <div class="google-chart-container d-flex align-items-center justify-content-center h-100">
+                                                                                                <div id="Bar-chart" class="google-charts"></div>
+                                                                                            </div>
+                                                                                        </div>
 
-                                                                                            </li>
+                                                                                    </div>
 
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="message-2-2" role="tabpanel" aria-labelledby="tab-2-2">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
+                                                                            <div class="tab-pane fade" id="payments-2-5" role="tabpanel" aria-labelledby="tab-2-5">
+                                                                                <div class="row">
+                                                                                    <p class="text-muted">Not available</p>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="campaigns-2-3" role="tabpanel" aria-labelledby="tab-2-3">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="influencers-2-4" role="tabpanel" aria-labelledby="tab-2-4">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="payments-2-5" role="tabpanel" aria-labelledby="tab-2-5">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="tab-pane fade" id="analytics-2-6" role="tabpanel" aria-labelledby="tab-2-6">
-                                                                            <div class="row">
-                                                                                <div class="col-md-5">
-                                                                                    <img class="img-fluid rounded" src="../../images/samples/tab_preview/04.png" alt="tab Preview">
-                                                                                </div>
-                                                                                <div class="col-md-7 pl-md-5">
-                                                                                    <div class="wrapper mb-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Anonymous Proxy</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                    <div class="wrapper mt-4 pt-4">
-                                                                                        <h4 class="mb-3"><i class="mdi mdi-speedometer mr-3"></i>Addiction When Gambling</h4>
-                                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                      
                                                                         </div>
                                                                     </div>
+            
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+          
                                                 </div>
                                             </div>
                                         </div>
@@ -445,8 +766,9 @@
                         </div>
                     </div>
                 </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
             </div>
-            @Html.Partial("~/Views/Shared/Footer2.cshtml")
+        
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->

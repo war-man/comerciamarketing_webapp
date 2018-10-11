@@ -1637,7 +1637,7 @@ namespace comerciamarketing_webapp.Controllers
 
         }
         [HttpPost]
-        public ActionResult UploadFiles(string id,string idvisita)
+        public ActionResult UploadFiles(string id,string idvisita, string orientation)
         {
 
 
@@ -1676,10 +1676,9 @@ namespace comerciamarketing_webapp.Controllers
                         Image TargetImg = Image.FromStream(file.InputStream, true, true);
                         try
                         {
-                            if (TargetImg.PropertyIdList.Contains(0x0112))
-                            {
-                                int rotationValue = TargetImg.GetPropertyItem(0x0112).Value[0];
-                                switch (rotationValue)
+                            int or = Convert.ToInt32(orientation);
+                                
+                                switch (or)
                                 {
                                     case 1: // landscape, do nothing
                                         break;
@@ -1697,7 +1696,7 @@ namespace comerciamarketing_webapp.Controllers
                                         TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate90FlipNone);
                                         break;
                                 }
-                            }
+                            
                         }
                         catch
                         {
@@ -1731,7 +1730,27 @@ namespace comerciamarketing_webapp.Controllers
                             //pb2.Image = (Image)TargetImg.Clone();
                             Image imagenfinal = (Image)TargetImg.Clone();
                             var path = Path.Combine(Server.MapPath("~/Content/images/activities"), id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg");
-                            imagenfinal.Save(path, ImageFormat.Jpeg);
+
+
+                            var tam = file.ContentLength;
+
+                            //if (tam < 600000)
+                            //{
+                                imagenfinal.Save(path, ImageFormat.Jpeg);
+                            //}
+                            //else {
+                            //    //Antes de guardar cambiamos el tamano de la imagen
+                            //    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                            //    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                            //    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                            //    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 10L);
+                            //    myEncoderParameters.Param[0] = myEncoderParameter;
+
+
+                            //    imagenfinal.Save(path, jpgEncoder, myEncoderParameters);
+                            //}
+
+
 
                         }
 
@@ -1774,6 +1793,20 @@ namespace comerciamarketing_webapp.Controllers
                 return Json("No files selected.");
             }
         }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
         //CREACION DE JERARQUIAS Y OBJETOS
         //FORMULARIOS Y DETALLES DE FORMULARIOS (Se utiliza en Activities)
         public class tablahijospadre

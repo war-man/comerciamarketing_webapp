@@ -446,9 +446,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\barcode\css\colors.css" />
+    <Content Include="Content\barcode\css\fonts.css" />
+    <Content Include="Content\barcode\css\styles.css" />
+    <Content Include="Content\barcode\file_input.js" />
+    <Content Include="Content\barcode\quagga.js" />
+    <Content Include="Content\barcode\vendor\jquery-1.9.0.min.js" />
     <Content Include="Content\css\bootstrap-select.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\dist\css\map-icons.css" />
+    <Content Include="Content\dist\css\map-icons.min.css" />
+    <Content Include="Content\dist\fonts\map-icons.svg" />
+    <Content Include="Content\dist\js\map-icons.js" />
+    <Content Include="Content\dist\js\map-icons.min.js" />
     <Content Include="Content\landingpage\css\base.css" />
     <Content Include="Content\landingpage\css\blocks.css" />
     <Content Include="Content\landingpage\css\crumina-fonts.css" />
@@ -791,6 +802,10 @@
     <Content Include="Content\newstyle2\images\faces\face8.jpg" />
     <Content Include="Content\newstyle2\images\faces\face9.jpg" />
     <Content Include="Content\newstyle2\images\faces\profile\profile.jpg" />
+    <Content Include="Content\newstyle2\images\faces\rating.png" />
+    <Content Include="Content\newstyle2\images\faces\talent.png" />
+    <Content Include="Content\newstyle2\images\faces\user.png" />
+    <Content Include="Content\newstyle2\images\faces\factory.png" />
     <Content Include="Content\newstyle2\images\favicon-16x16.png" />
     <Content Include="Content\newstyle2\images\favicon.ico" />
     <Content Include="Content\newstyle2\images\favicon.png" />
@@ -838,6 +853,10 @@
     <Content Include="Content\newstyle2\images\logoIcon.png" />
     <Content Include="Content\newstyle2\images\LogoCMK.png" />
     <Content Include="Content\newstyle2\images\logo_star_white.svg" />
+    <Content Include="Content\newstyle2\images\mapmarker.png" />
+    <Content Include="Content\newstyle2\images\marker16x16.png" />
+    <Content Include="Content\newstyle2\images\marker24x24.png" />
+    <Content Include="Content\newstyle2\images\marker32x32.png" />
     <Content Include="Content\newstyle2\images\samples\1280x768\1.jpg" />
     <Content Include="Content\newstyle2\images\samples\1280x768\10.jpg" />
     <Content Include="Content\newstyle2\images\samples\1280x768\11.jpg" />
@@ -870,6 +889,7 @@
     <Content Include="Content\newstyle2\images\samples\300x300\9.jpg" />
     <Content Include="Content\newstyle2\images\samples\angular-4.png" />
     <Content Include="Content\newstyle2\images\samples\bootstrap-stack.png" />
+    <Content Include="Content\newstyle2\images\samples\browser.png" />
     <Content Include="Content\newstyle2\images\samples\charts.png" />
     <Content Include="Content\newstyle2\images\samples\dashboard.png" />
     <Content Include="Content\newstyle2\images\samples\e-commerce.png" />
@@ -883,6 +903,7 @@
     <Content Include="Content\newstyle2\images\samples\Login_bg2.jpg" />
     <Content Include="Content\newstyle2\images\samples\Mac.png" />
     <Content Include="Content\newstyle2\images\samples\modal.png" />
+    <Content Include="Content\newstyle2\images\samples\online-store.png" />
     <Content Include="Content\newstyle2\images\samples\popup.png" />
     <Content Include="Content\newstyle2\images\samples\profile_page\banner_01.jpg" />
     <Content Include="Content\newstyle2\images\samples\profile_page\banner_02.jpg" />
@@ -902,12 +923,15 @@
     <Content Include="Content\newstyle2\images\samples\profile_page\thumbnail\10.jpg" />
     <Content Include="Content\newstyle2\images\samples\profile_page\thumbnail\11.jpg" />
     <Content Include="Content\newstyle2\images\samples\profile_page\thumbnail\12.jpg" />
+    <Content Include="Content\newstyle2\images\samples\schedule.png" />
+    <Content Include="Content\newstyle2\images\samples\smartphone.png" />
     <Content Include="Content\newstyle2\images\samples\tab_preview\01.png" />
     <Content Include="Content\newstyle2\images\samples\tab_preview\02.png" />
     <Content Include="Content\newstyle2\images\samples\tab_preview\03.png" />
     <Content Include="Content\newstyle2\images\samples\tab_preview\04.png" />
     <Content Include="Content\newstyle2\images\samples\tab_preview\05.png" />
     <Content Include="Content\newstyle2\images\samples\weather.svg" />
+    <Content Include="Content\newstyle2\images\samples\web-design.png" />
     <Content Include="Content\newstyle2\images\samples\widgets.png" />
     <Content Include="Content\newstyle2\images\shutterstock_251629510-3-768x537.jpg" />
     <Content Include="Content\newstyle2\images\sprites\blue.png" />
@@ -1061,6 +1085,7 @@
     <Content Include="Content\newstyle2\js\hoverable-collapse.js" />
     <Content Include="Content\newstyle2\js\iCheck.js" />
     <Content Include="Content\newstyle2\js\ion-range-slider.js" />
+    <Content Include="Content\newstyle2\js\JIC.js" />
     <Content Include="Content\newstyle2\js\jq.tablesort.js" />
     <Content Include="Content\newstyle2\js\jquery-file-upload.js" />
     <Content Include="Content\newstyle2\js\jquery.sticky.js" />
@@ -1083,6 +1108,7 @@
     <Content Include="Content\newstyle2\js\paginate.js" />
     <Content Include="Content\newstyle2\js\popover.js" />
     <Content Include="Content\newstyle2\js\progress-bar.js" />
+    <Content Include="Content\newstyle2\js\resizeimg.js" />
     <Content Include="Content\newstyle2\js\screenfull.js" />
     <Content Include="Content\newstyle2\js\select2.js" />
     <Content Include="Content\newstyle2\js\settings.js" />
@@ -3062,6 +3088,11 @@
     <Content Include="Content\landingpage\js\Uncompressed\swiper\js\maps\swiper.jquery.min.js.map" />
     <Content Include="Content\landingpage\js\Uncompressed\swiper\js\maps\swiper.jquery.umd.min.js.map" />
     <Content Include="Content\landingpage\js\Uncompressed\swiper\js\maps\swiper.min.js.map" />
+    <Content Include="Content\dist\fonts\map-icons.eot" />
+    <Content Include="Content\dist\fonts\map-icons.ttf" />
+    <Content Include="Content\dist\fonts\map-icons.woff" />
+    <Content Include="Content\dist\less\map-icons-variables.less" />
+    <Content Include="Content\dist\sass\map-icons-variables.scss" />
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
     <Content Include="Models\dbComercia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -3195,6 +3226,9 @@
     <Content Include="Views\Home\Displayitems.cshtml" />
     <Content Include="Views\Home\Brandcompetitors.cshtml" />
     <Content Include="Views\VisitsMs\Gallery.cshtml" />
+    <Content Include="Views\VisitsMs\DetailsC.cshtml" />
+    <Content Include="Views\VisitsMs\GalleryC.cshtml" />
+    <Content Include="Views\Home\Test_barcode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

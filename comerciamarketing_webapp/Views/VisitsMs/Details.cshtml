@@ -8,26 +8,22 @@
         <div class="content-wrapper">
             <div class="container">
 
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10 text-right">
 
-                            <a href="@Url.Action("RoutesM_details", "Home", new { id= ViewBag.route})" class="btn btn-info">Back</a>
-                        </div>
-                    </div>
-                </div>
                 <div class="row profile-page">
                     <div class="col-12">
-                        <div class="d-flex justify-content-around">
-                            <div class="profile-info d-flex align-items-center">
-
-                                <div class="wrapper pl-4">
-                                    <h2 class="display-3 text-warning">@ViewBag.storename</h2>
-                                </div>
-                            </div>
-                        </div>
                         <div class="card">
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <a href="@Url.Action("RoutesM_details", "Home", new { id= ViewBag.route})" class="btn btn-info">Back</a>
+
+                                    </div>
+                                    <div class="text-right col-md-10">
+                                        <h4 class="display-4 text-warning">@ViewBag.storename</h4>
+                                    </div>
+
+                                </div>
+                                <hr />
                                 <div class="text-white">
 
                                     @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
@@ -74,9 +70,12 @@
                                                                     {
                                                                         <div class="item-wrapper d-flex pb-4 border-bottom">
                                                                             <div class="status-wrapper d-flex align-items-start pr-3">
-                                                                                @if (activity.isfinished == true)
+                                                                                @if (activity.isfinished == true && activity.query1 != "cancel")
                                                                                 {
                                                                                     <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
+                                                                                }else if(activity.isfinished ==true && activity.query1 =="cancel")
+                                                                                {
+                                                                                    <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
                                                                                 }
                                                                                 else
                                                                                 {
@@ -117,7 +116,15 @@
                                                                                 <small class="text-gray d-block">Last update : @activity.check_out</small>
                                                                                 @if (activity.isfinished == true)
                                                                                 {
-                                                                                    <small class="text-gray d-block">Finished</small>
+                                                                                    if (activity.query1 == "cancel")
+                                                                                    {
+                                                                                <small class="text-gray d-block">Canceled</small>
+                                                                                <small class="text-gray d-block">Reason: @activity.comments</small>
+                                                                                    }
+                                                                                    else {
+                                                                                        <small class="text-gray d-block">Finished</small>
+                                                                                    }
+                                                                                    
                                                                                 }
                                                                             </div>
                                                                             @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
@@ -129,11 +136,20 @@
                                                                             }
                                                                             else
                                                                             {
-                                                                                if (ViewBag.estadovisita != 4) {
-                                                                                <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
-                                                                                    <i class="close ml-auto mdi mdi-content-copy"></i>
+                                                                                if (ViewBag.estadovisita != 4)
+                                                                                {
+                                                                                    if(activity.isfinished !=true && activity.query1 !="cancel")
+                                                                                {
+                                                                                                                  <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                                                                                        <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
-                                                                                </a>
+                                                                                    </a>                                                      
+                                                                                }
+
+                                                                                    <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
+                                                                                        <i class="close ml-auto mdi mdi-content-copy"></i>
+
+                                                                                    </a>
                                                                                 }
 
                                                                             }
@@ -228,20 +244,21 @@
                                                 </ul>
                                             </div>
                                             -->
-                                             @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                                             {
-                                            <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
+                                            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                            {
+                                                <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
 
-                                            <div class="calendar-aside">
+                                                <div class="calendar-aside">
 
-                                                           
-                                                 <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark"> Gallery
-                                               
-                                                </a>
-                      
-                                           </div>
 
-                                             }
+                                                    <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark">
+                                                        Gallery
+
+                                                    </a>
+
+                                                </div>
+
+                                            }
 
                                         </div>
                                         <!--CANCEL VIIT
@@ -262,8 +279,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div><!-- partial:../../partials/_footer.html -->@Html.Partial("~/Views/Shared/Footer2.cshtml")
+                </div>@Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div><!-- partial:../../partials/_footer.html -->
         </div>
 
     </div>
@@ -410,6 +427,43 @@
 
 <!--DELETE DATA ENDS-->
 <!--DELETE DATA STARTS-->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("CancelActivity", "VisitsMs", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Cancel Activity</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-form-label">Are you sure you want to cancel this activity?</label><br />
+                        <strong><label id="descriptionCa" class="col-form-label"></label></strong>
+                        <input type="text" id="ID_activityCa" name="ID_activityCa" hidden />
+                        <br />
+                        <label>Reason:</label>
+                        <input type="text" id="comment" name="comment" class="form-control" required/>
+                        <input type="text" id="ID_visitCa" name="ID_visitCa" value="@ViewBag.idvisita" hidden />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Cancel</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!--DELETE DATA ENDS-->
+<!--DELETE DATA STARTS-->
 <div class="modal fade" id="deleteRepModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -467,7 +521,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Copy</button>
+                    <button type="submit" class="btn btn-danger" onClick="this.form.submit(); this.disabled=true; this.value='Copying…'; ">Copy</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
                 </div>
             }

@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Comercia Marketing - Gallery";
+}
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
+
+                            <a href="@Url.Action("DetailsC", "VisitsMs", new { id= ViewBag.id_visita, ID_customer = ViewBag.customerID})" class="btn btn-info">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row portfolio-grid">
+                                            @foreach (var item in ViewBag.imagenes)
+                                {
+                                    if (item.fsource == null || item.fsource == "")
+                                    {
+                                    }
+                                    else
+                                    {
+                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+                                            <figure class="effect-text-in">
+                                                <img src="@Url.Content(item.fsource)" alt="image" />
+                                                <figcaption>
+                                                    <h4>@item.fdescription</h4>
+                                                    <p>@item.fvalueText<br />@item.query1</p>
+
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                        }
+
+                    }
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- content-wrapper ends -->
+                            <!-- partial:../../partials/_footer.html -->
+                            <!-- partial -->
+                        </div>
+                        <!-- main-panel ends -->
+                    </div>
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-body-wrapper ends -->

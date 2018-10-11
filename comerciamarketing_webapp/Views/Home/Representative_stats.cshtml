@@ -8,198 +8,180 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="container">
-                <div class="row profile-page">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="profile-header text-black">
-                                    <div class="d-flex justify-content-around">
-                                        <div class="profile-info d-flex align-items-center">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
 
-                                            <div class="wrapper pl-4">
-                                                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                                                    <i class="mdi mdi-calendar"></i>&nbsp;
-                                                    <span></span> <i class="fa fa-caret-down"></i>
+                        <div class="accordion basic-accordion" id="accordion" role="tablist">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <h6 class="mb-0">
+                                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <i class="card-icon mdi mdi-filter"></i>Filters
+                                        </a>
+                                    </h6>
+                                </div>
+                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Date</h4>
+                                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                                            <i class="mdi mdi-calendar"></i>&nbsp;
+                                                            <span></span> <i class="fa fa-caret-down"></i>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <a href="#" class="btn btn-primary" id="click_filterR">Apply<i class="mdi mdi-check-all"></i></a>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="profile-body">
-                                    <ul class="nav tab-switch" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="user-profile-info-tab" data-toggle="pill" href="#user-profile-info" role="tab" aria-controls="user-profile-info" aria-selected="true">Routes</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="user-profile-activity-tab" data-toggle="pill" href="#user-profile-activity" role="tab" aria-controls="user-profile-activity" aria-selected="false">Activity</a>
-                                        </li>
-                                    </ul>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="tab-content tab-body" id="profile-log-switch">
-                                                <div class="tab-pane fade show active pr-3" id="user-profile-info" role="tabpanel" aria-labelledby="user-profile-info-tab">
-                                                    <div class="row">
-                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex">
-                                                                        <i class="mdi mdi-seat-recline-extra icon-lg"></i>
-                                                                        <div class="d-flex flex-column ml-2">
-                                                                            <span class="d-flex flex-column">
-                                                                                <small class="mb-0"><div class="badge badge-warning"></div>ON HOLD</small>
-                                                                                <p class="font-weight-bold">0</p>
-                                                                            </span>
-                                                                            <small>% total</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex">
-                                                                        <i class="mdi mdi-truck-delivery icon-lg"></i>
-                                                                        <div class="d-flex flex-column ml-2">
-                                                                            <span class="d-flex flex-column">
-                                                                                <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
-                                                                                <p class="font-weight-bold">0</p>
-                                                                            </span>
-                                                                            <small>% total</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex">
-                                                                        <i class="mdi mdi-clipboard-check icon-lg"></i>
-                                                                        <div class="d-flex flex-column ml-2">
-                                                                            <span class="d-flex flex-column">
-                                                                                <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
-                                                                                <p class="font-weight-bold">0</p>
-                                                                            </span>
-                                                                            <small>% total</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="d-flex">
-                                                                        <i class="mdi mdi-alert-octagon icon-lg"></i>
-                                                                        <div class="d-flex flex-column ml-2">
-                                                                            <span class="d-flex flex-column">
-                                                                                <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
-                                                                                <p class="font-weight-bold">0</p>
-                                                                            </span>
-                                                                            <small>0.0% total</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                            </div>
 
-                                                    <hr />
-                                                    <div class="row">
-                                                        <div class="col-md-12 grid-margin">
-                                                            <div class="card">
-                                                                <div class="card-body">
+                        </div>
 
-                                                                    <div class="row">
-                                                                        <div class="col-lg-12 table-responsive">
-                                                                            <table id="order-listing" class="table table-striped">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Route #</th>
-                                                                                        <th>Date</th>
-                                                                                        <th>Store</th>
-                                                                                        <th>Representatives</th>
-                                                                                        <th>Status</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td>1</td>
-                                                                                        <td> May 15, 2015</td>
-                                                                                        <td>
-                                                                                            CHAPINLANDIA<br />
-                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
-                                                                                        </td>
-                                                                                        <td>Stanley Valenzuela, Aldo Quijano</td>
 
-                                                                                        <td>
-                                                                                            <label class="badge badge-warning">On hold</label>
-                                                                                        </td>
+                    </div>
 
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td>2</td>
-                                                                                        <td> May 15, 2015</td>
-                                                                                        <td>
-                                                                                            CHAPINLANDIA<br />
-                                                                                            <span class="text-primary">1209 MC CAWLEY RD, LOUISVILLE, KY 40219, US</span>
-                                                                                        </td>
-                                                                                        <td>Francisco Velasquez</td>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-0">Activities</h4>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-inline-block pt-3">
+                                        <div class="d-flex">
+                                            <h2 class="mb-0">@ViewBag.totalAct</h2>
+                                            <div class="d-flex align-items-center ml-2">
 
-                                                                                        <td>
-                                                                                            <label class="badge badge-danger">Canceled</label>
-                                                                                        </td>
-                                                                                    </tr>
 
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade" id="user-profile-activity" role="tabpanel" aria-labelledby="user-profile-activity-tab">
-                                                    <div class="horizontal-timeline">
-                                                        <section class="time-frame">
-                                                            <h4 class="section-time-frame">Today</h4>
-                                                            <div class="event">
-                                                                <p class="event-text">We’re big on real names around here, so people know who’s who</p>
-                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
-                                                                <div class="event-info">New Dashboard Design - 9:24 PM</div>
-                                                            </div>
-                                                            <div class="event">
-                                                                <p class="event-text">It is a fully responsive bootstrap admin template / bootstrap admin dashboard</p>
-                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
-                                                                <div class="event-info">New Dashboard Design - 9:24 PM</div>
-                                                            </div>
-                                                        </section>
-                                                        <section class="time-frame">
-                                                            <h4 class="section-time-frame">Yesterday</h4>
-                                                            <div class="event">
-                                                                <p class="event-text">Night fill together itself. Midst. Beginning. Behold living god had.</p>
-                                                                <div class="event-alert">You have added task #26 Successfully to the project “Agile CRM”</div>
-                                                                <div class="event-info">New Dashboard Design - 11:24 PM</div>
-                                                            </div>
-                                                            <div class="event">
-                                                                <p class="event-text">Why waste time starting from scratch; try out our admin dashboard template</p>
-                                                                <div class="event-info">New Dashboard Design - 11:30 PM</div>
-                                                            </div>
-                                                        </section>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
+                                        <small class="text-gray">Forms, Audits, Sales Orders, Demos</small>
+                                    </div>
+                                    <div class="d-inline-block">
+                                        <div class="bg-success px-4 py-2 rounded">
+                                            <i class="mdi mdi-file-document text-white icon-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-0">Visited stores</h4>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-inline-block pt-3">
+                                        <div class="d-flex">
+                                            <h2 class="mb-0">@ViewBag.totalVisitas</h2>
+                                            <div class="d-flex align-items-center ml-2">
 
+                                            </div>
+                                        </div>
+                                        <small class="text-gray">of @ViewBag.stores stores</small>
+                                    </div>
+                                    <div class="d-inline-block">
+                                        <div class="bg-warning px-4 py-2 rounded">
+                                            <i class="mdi mdi-store text-white icon-lg"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Assigned customers</h4>
+                                @foreach (var item in ViewBag.customers)
+                    {
+                        <div class="wrapper d-flex align-items-center py-2 border-bottom">
+                            <img class="img-sm rounded-circle" src="~/Content/newstyle2/images/faces/factory.png" alt="profile">
+                            <div class="wrapper ml-3">
+                                <h6 class="ml-1 mb-1">@item.name</h6>
+                                <small class="text-muted mb-0"><i class="mdi mdi-map-marker-outline mr-1"></i>@item.address</small>
+                            </div>
+
+                        </div>
+        }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <img src="~/Content/newstyle2/images/faces/user.png" class="img-lg rounded-circle mb-2" alt="profile image" />
+                                <h4>@ViewBag.nombre</h4>
+                                <p class="text-muted">Sales Representative</p>
+                                <p class="mt-4 card-text">
+                                    @ViewBag.correo
+                                </p>
+                                <button class="btn btn-info btn-sm mt-3 mb-4">Activities</button>
+                                <div class="border-top pt-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h6>@ViewBag.totalForm</h6>
+                                            <p>Forms</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6>@ViewBag.totalAudit</h6>
+                                            <p>Retail Audits</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6>@ViewBag.totalSale</h6>
+                                            <p>Sales Orders</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h6>@ViewBag.totalDemo</h6>
+                                            <p>Demos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Last updates</h4>
+                                <ul class="bullet-line-list">
+                                    @foreach (var log in ViewBag.log)
+                        {
+
+                            <li>
+                                <h6>@log.action</h6>
+
+                                <p class="text-muted">
+                                    <i class="mdi mdi-clock"></i>
+                                    @log.fecha_conexion
+                                </p>
+                            </li>
+            }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+               
             </div>
         </div>
         <!-- content-wrapper ends -->
@@ -208,5 +190,3 @@
         <!-- partial -->
     </div>
     <!-- main-panel ends -->
-
-    </div>

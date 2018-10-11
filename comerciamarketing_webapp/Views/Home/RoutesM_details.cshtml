@@ -3,388 +3,356 @@
     ViewBag.Title = "Comercia Marketing - RoutesM details";
 }
 
-    <div class="container-fluid page-body-wrapper">
-        <div class="main-panel">
-            <div class="content-wrapper">
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
 
-                <div class="container">
+            <div class="container">
 
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10 text-right">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
 
-                                <a href="@Url.Action("RoutesM", "Home")" class="btn btn-info">Back</a>
-                            </div>
+                            <a href="@Url.Action("RoutesM", "Home")" class="btn btn-info">Back</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="d-flex justify-content-around">
-                                <div class="profile-info d-flex align-items-center">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-around">
+                            <div class="profile-info d-flex align-items-center">
 
-                                    <div class="wrapper pl-4">
-                                        <h2 class="display-3 text-warning">@ViewBag.routename</h2>
-                                    </div>
+                                <div class="wrapper pl-4">
+                                    <h2 class="display-3 text-warning">@ViewBag.routename</h2>
                                 </div>
                             </div>
-
-
-
                         </div>
+
+
 
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <i class="mdi mdi-seat-recline-extra icon-lg"></i>
-                                        <div class="d-flex flex-column ml-2">
-                                            <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
-                                                <p class="font-weight-bold">@ViewBag.onhold</p>
-                                            </span>
-                                            <small>@ViewBag.onholdP.ToString("F") % total</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <i class="mdi mdi-truck-delivery icon-lg"></i>
-                                        <div class="d-flex flex-column ml-2">
-                                            <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
-                                                <p class="font-weight-bold">@ViewBag.inprogress</p>
-                                            </span>
-                                            <small>@ViewBag.inprogressP.ToString("F") % total</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <i class="mdi mdi-clipboard-check icon-lg"></i>
-                                        <div class="d-flex flex-column ml-2">
-                                            <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
-                                                <p class="font-weight-bold">@ViewBag.finished</p>
-                                            </span>
-                                            <small>@ViewBag.finishedP.ToString("F") % total</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <i class="mdi mdi-alert-octagon icon-lg"></i>
-                                        <div class="d-flex flex-column ml-2">
-                                            <span class="d-flex flex-column">
-                                                <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
-                                                <p class="font-weight-bold">@ViewBag.canceled</p>
-                                            </span>
-                                            <small>@ViewBag.canceledP.ToString("F") % total</small>
-                                        </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <i class="mdi mdi-seat-recline-extra icon-lg"></i>
+                                    <div class="d-flex flex-column ml-2">
+                                        <span class="d-flex flex-column">
+                                            <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
+                                            <p class="font-weight-bold">@ViewBag.onhold</p>
+                                        </span>
+                                        <small>@ViewBag.onholdP.ToString("F") % total</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--MAPA-->
-                    <div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
+                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <i class="mdi mdi-truck-delivery icon-lg"></i>
+                                    <div class="d-flex flex-column ml-2">
+                                        <span class="d-flex flex-column">
+                                            <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
+                                            <p class="font-weight-bold">@ViewBag.inprogress</p>
+                                        </span>
+                                        <small>@ViewBag.inprogressP.ToString("F") % total</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <i class="mdi mdi-clipboard-check icon-lg"></i>
+                                    <div class="d-flex flex-column ml-2">
+                                        <span class="d-flex flex-column">
+                                            <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
+                                            <p class="font-weight-bold">@ViewBag.finished</p>
+                                        </span>
+                                        <small>@ViewBag.finishedP.ToString("F") % total</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <i class="mdi mdi-alert-octagon icon-lg"></i>
+                                    <div class="d-flex flex-column ml-2">
+                                        <span class="d-flex flex-column">
+                                            <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
+                                            <p class="font-weight-bold">@ViewBag.canceled</p>
+                                        </span>
+                                        <small>@ViewBag.canceledP.ToString("F") % total</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--MAPA-->
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- <a href="#map-with-marker" id="click_animation">Iniciar animacion</a>-->
+                                <div class="map-container">
+                                    <div id="map-with-marker" class="google-map"></div>
 
-                                    <div class="map-container">
-                                        <div id="map-with-marker" class="google-map"></div>
+                                    <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 100px;display:none;" id="RouteDetails">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <button type="button" class="close" aria-label="Close" id="close_divmap">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="row mt-4">
+                                                    <div class="col-md-12">
+                                                        <h5>Visit details</h5>
 
-                                        <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 100px;display:none;" id="RouteDetails">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <button type="button" class="close" aria-label="Close" id="close_divmap">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <div class="row mt-4">
-                                                        <div class="col-md-12">
-                                                            <h5>Visit details</h5>
-
-                                                            <ul class="nav nav-tabs tab-simple-styled" role="tablist">
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
-                                                                </li>
-                                                            </ul>
-                                                            <div class="tab-content tab-content-basic">
-                                                                <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
-                                                                    <p class="mb-0" id="map_id"></p>
-                                                                    <p id="map_customername"></p>
-                                                                    <p id="map_storename"></p>
-                                                                    <p id="map_date"></p>
-                                                                    <p id="map_representatives"></p>
-                                                                </div>
-                                                                <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
-                                                                    <p id="map_comment"></p>
-                                                                </div>
-                                                                <div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
-
-                                                                    <div class="card" style="height: 500px; bottom:10px;display:block">
-                                                                        <div class="card-body" style="height: 500px;overflow: auto; bottom:10px;display:block">
-                                                                            <p class="text-gray">TUESDAY, APR 9, 2018</p>
-                                                                            <ul class="bullet-line-list pb-3">
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Check in</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Start
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">02</small>
-                                                                                            <small class="text-muted d-block">pm</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">03</small>
-                                                                                            <small class="text-muted d-block">pm</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">04</small>
-                                                                                            <small class="text-muted d-block">pm</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </ul>
-                                                                            <p class="text-gray mt-4">TUESDAY, APR 10, 2018</p>
-                                                                            <ul class="bullet-line-list">
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">08</small>
-                                                                                            <small class="text-muted d-block">am</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Form</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">10</small>
-                                                                                            <small class="text-muted d-block">am</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Retail Audit</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Data saved
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">11</small>
-                                                                                            <small class="text-muted d-block">pm</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <div class="d-flex align-items-center justify-content-between">
-                                                                                        <div class="d-flex">
-
-                                                                                            <div class="ml-3">
-                                                                                                <h6 class="mb-0">Check out</h6>
-                                                                                                <small class="text-muted">
-                                                                                                    Finish
-                                                                                                </small>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <small class="d-block mb-0">11</small>
-                                                                                            <small class="text-muted d-block">pm</small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
+                                                        <ul class="nav nav-tabs tab-simple-styled" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
+                                                            </li>
+                                                            <!--
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
+                                                            </li>-->
+                                                        </ul>
+                                                        <div class="tab-content tab-content-basic">
+                                                            <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
+                                                                <p class="mb-0" id="map_id"></p>
+                                                                <p id="map_customername"></p>
+                                                                <p id="map_storename"></p>
+                                                                <p id="map_date"></p>
+                                                                <p id="map_representatives"></p>
                                                             </div>
+                                                            <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
+                                                                <p id="map_comment"></p>
+                                                            </div>
+                                                            <!--<div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
+
+                                                                <div class="card" style="height: 500px; bottom:10px;display:block">
+                                                                    <div class="card-body" style="height: 500px;overflow: auto; bottom:10px;display:block">
+
+                                                                        <ul class="bullet-line-list pb-3" id="timelinemap">
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
+
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Check in</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Start
+                                                                                            </small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">02</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
+
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">03</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <div class="d-flex">
+
+                                                                                        <div class="ml-3">
+                                                                                            <h6 class="mb-0">Form</h6>
+                                                                                            <small class="text-muted">
+                                                                                                Data saved
+                                                                                            </small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <small class="d-block mb-0">04</small>
+                                                                                        <small class="text-muted d-block">pm</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+
+
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>-->
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!--FIN-->
-                    <!--VISITS LIST-->
-                    <div class="row">
+                <!--FIN-->
+                <!--VISITS LIST-->
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Visits list</h4>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add visit<i class="mdi mdi-plus"></i></button>
+                                <div class="row">
+
+                                    <table id="order-listing" class="table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Store</th>
+                                                <th scope="col">Representatives</th>
+                                                <th scope="col">Status</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var itemVisita in ViewBag.visitas)
+                                            {
+                                                <tr>
+                                                    <td scope="row" data-label="ID">
+                                                        @itemVisita.ID_visit
+
+
+                                                    </td>
+
+                                                    <td data-label="Store">
+                                                        <a class="text-black" href="@Url.Action("Details", "VisitsMs", new { id=itemVisita.ID_visit})">
+                                                            <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                            <span class="text-primary">@itemVisita.address</span>
+                                                        </a>
+                                                    </td>
+                                                    <td data-label="Representatives">@itemVisita.city .</td>
+
+                                                    <td data-label="Status">
+                                                        @switch (itemVisita.ID_visitstate)
+                                                        {
+                                                            case 1: //Canceled
+                                                                <label class="badge badge-danger">Canceled</label>
+                                                                break;
+                                                            case 2: //In Progress
+                                                                <label class="badge badge-success">In progress</label>
+                                                                break;
+                                                            case 3: //On Hold
+                                                                if (itemVisita.city == "" || itemVisita.city == null)
+                                                                {
+                                                                    <label class="badge badge-warning">Not assigned</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="badge badge-warning">Scheduled</label>
+                                                                }
+
+                                                                break;
+                                                            case 4: //Finished
+                                                                <label class="badge badge-primary">Finished</label>
+                                                                break;
+                                                        }
+
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--CALENDAR-->
+                @*<div class="row">
                         <div class="col-md-12 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Visits list</h4>
-
-                                    <div class="row">
-
-                                        <table id="order-listing" class="table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">Store</th>
-                                                    <th scope="col">Representatives</th>
-                                                    <th scope="col">Status</th>
-
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var itemVisita in ViewBag.visitas)
-                                {
-                                    <tr>
-                                        <td scope="row" data-label="ID">
-                                            @itemVisita.ID_visit
-
-
-                                        </td>
-
-                                        <td data-label="Store">
-                                            <a class="text-black" href="@Url.Action("Details", "VisitsMs", new { id=itemVisita.ID_visit})">
-                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                <span class="text-primary">@itemVisita.address</span>
-                                            </a>
-                                        </td>
-                                        <td data-label="Representatives">@itemVisita.city .</td>
-
-                                        <td data-label="Status">
-                                            @switch (itemVisita.ID_visitstate)
-                            {
-                                case 1: //Canceled
-                                    <label class="badge badge-danger">Canceled</label>
-                    break;
-                case 2: //In Progress
-                    <label class="badge badge-success">In progress</label>
-                                                    break;
-                                                case 3: //On Hold
-                                                    if (itemVisita.city == "" || itemVisita.city == null)
-                                                    {
-                    <label class="badge badge-warning">Not assigned</label>
-                                                    }
-                                                    else {
-                    <label class="badge badge-warning">Scheduled</label>
-                                                    }
-                
-break;
-case 4: //Finished
-                <label class="badge badge-primary">Finished</label>
-break;
-}
-
-                                        </td>
-
-                                    </tr>
-                }
-                                            </tbody>
-                                        </table>
-
+                                    <div class="col-md-12">
+                                        <div id="calendar"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--CALENDAR-->
-                    @*<div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <div id="calendar"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                    </div>*@
 
-                    @Html.Partial("~/Views/Shared/Footer2.cshtml")
-                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <!-- partial -->
     </div>
-    <!-- page-body-wrapper ends -->
-
-
-
-
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+<!--CRESTE USER DATA STARTS-->
+<div class="modal fade" id="createModal"  role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("CreateVisitRoute", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-account"></i>Add new visit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="ID_route" name="ID_route" value="@ViewBag.id_route" hidden/>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Store:</label>
+          
+                                    <div class="form-group">
+                                        <select class="js-example-basic-single" name="id_store" id="id_store" style="width:100%">
+                                            <option value="">Select a store</option>
+                                            @foreach (var itemStores in ViewBag.stores)
+                        {
+                            <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
+    }
+                                        </select>
+                                    </div>                 
+                 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Save</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!--CREATE USER DATA ENDS-->

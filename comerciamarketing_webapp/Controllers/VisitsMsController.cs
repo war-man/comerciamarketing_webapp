@@ -143,12 +143,141 @@ namespace comerciamarketing_webapp.Controllers
 
             
         }
+
+        public ActionResult DetailsC(int? id, string ID_Customer)
+        {
+
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                VisitsM visitsM = db.VisitsM.Find(id);
+                if (visitsM == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //Seleccionamos representantes que estan incluidos
+                var reps = (from rep in db.VisitsM_representatives
+                            where (rep.ID_visit == id)
+                            select new representativesVisit2
+                            {
+                                ID = rep.ID_usuario,
+                                name = "",
+                                email = "",
+                                customer = ""
+                            }
+                           ).ToList();
+
+                foreach (var itemR in reps)
+                {
+                    var user = (from u in db.Usuarios where (u.ID_usuario == itemR.ID) select u).FirstOrDefault();
+                    if (user != null) { itemR.name = user.nombre + " " + user.apellido; itemR.email = user.correo; itemR.customer = user.estados_influencia; } else { itemR.name = ""; itemR.email = ""; itemR.customer = ""; }
+                }
+
+                List<representativesVisit2> listau = new List<representativesVisit2>();
+
+                foreach (var user in reps)
+                {
+                    List<string> storeIds = user.customer.Split(',').ToList();
+
+                    foreach (var it in storeIds)
+                    {
+                        if (it == ID_Customer)
+                        {
+                            listau.Add(user);
+                        }
+                    }
+
+                }
+           
+
+
+                ViewBag.repslist = listau.ToList();
+                //FIN representantes
+                //ACTIVITIES
+
+                    var activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_customer==ID_Customer) select a).ToList();
+
+                    foreach (var itemac in activities)
+                    {
+                        var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+
+                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+
+                    }
+
+
+                    ViewBag.activities = activities;
+                
+
+
+                
+                    ViewBag.estadovisita = visitsM.ID_visitstate;
+                
+
+
+
+                ViewBag.idvisita = id;
+
+                ViewBag.storename = visitsM.store;
+                ViewBag.storead = visitsM.address;
+                //FIN ACTIVITIES
+                //representantes
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                ViewBag.representatives = usuarios.ToList();
+                //Cargamos ruta 
+                var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
+                //FORMULARIOS
+
+                //List<int> FormsIds = ruta.query1.Split(',').Select(int.Parse).ToList();
+
+                //var activeForms = (from at in db.FormsM where (FormsIds.Contains(at.ID_form)) select at).ToList();
+
+                var activeForms = (from at in db.FormsM where (at.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO) select at).ToList();
+                ViewBag.activeForms = activeForms;
+                //FIN FORMULARIOS
+
+                var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
+                ViewBag.customers = customers.ToList();
+
+
+                //Route
+             
+                ViewBag.customerID = ID_Customer;
+                return View(visitsM);
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+
+
+        }
+
         public class representativesVisit{
               public int ID { get; set; }
             public string name { get; set; }
             public string email { get; set; }
         }
-
+        public class representativesVisit2
+        {
+            public int ID { get; set; }
+            public string name { get; set; }
+            public string email { get; set; }
+            public string customer { get; set; }
+        }
         public ActionResult GetCustomer_reps(string ID_usuario)
         {
             try
@@ -343,7 +472,7 @@ namespace comerciamarketing_webapp.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home", null);
             }
             
 
@@ -382,7 +511,35 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelActivity(int ID_activityCa, int ID_visitCa, string comment)
+        {
+            try
+            {
 
+                ActivitiesM activity = db.ActivitiesM.Find(ID_activityCa);
+
+                activity.isfinished = true;
+                activity.query1 = "cancel";
+                activity.comments = comment;
+
+                db.Entry(activity).State = EntityState.Modified;
+                db.SaveChanges();
+           
+
+                TempData["exito"] = "Activity canceled successfully.";
+                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitCa });
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitCa });
+            }
+
+
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRepfromActivity(int ID_repUD, int ID_visitU)
@@ -417,7 +574,64 @@ namespace comerciamarketing_webapp.Controllers
             base.Dispose(disposing);
         }
 
+        public ActionResult GalleryC(string id, string modulo, string IDcustomer)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+
+                int IDV = Convert.ToInt32(id);
+
+                try
+                {
+                    var actividadesList = (from e in db.ActivitiesM where (e.ID_visit == IDV && e.ID_customer == IDcustomer) select e).ToList();
+                    var actividades = (from a in db.ActivitiesM where (a.ID_visit == IDV && a.ID_customer == IDcustomer) select a.ID_activity).ToArray();
+
+                    var detalles = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit) && b.ID_formresourcetype == 5) select b).ToList();
+
+
+                    foreach (var item in detalles)
+                    {
+                        var f = (from c in actividadesList where (c.ID_activity == item.ID_visit) select c).FirstOrDefault();
+
+                        item.fvalueText = f.Customer;
+                        item.fdescription = f.description;
+                        item.query1 = f.check_out.ToShortDateString();
+
+                    }
+
+
+                    ViewBag.imagenes = detalles;
+                    ViewBag.id_visita = id;
+                    ViewBag.customerID = IDcustomer;
+                    return View();
+
+                }
+                catch (Exception ex)
+                {
+                    if (modulo == "visits")
+                    {
+                        TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                    }
+                    else
+                    {
+                        TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                        return RedirectToAction("DetailsC", "VisitsMs", new { id = IDV, ID_customer = IDcustomer });
+                    }
+
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+        }
         public ActionResult Gallery(string id, string modulo)
         {
             if (Session["IDusuario"] != null)
@@ -470,7 +684,7 @@ namespace comerciamarketing_webapp.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home", null);
             }
 
         }
