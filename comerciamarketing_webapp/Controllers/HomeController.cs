@@ -52,9 +52,12 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-                //filtros de fecha
-                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                var saturday = sunday.AddDays(6).AddHours(23);
+                //filtros de fecha (DIARIO)
+                var sunday = DateTime.Today;
+                var saturday = sunday.AddHours(23);
+                ////filtros de fecha (SEMANAL)
+                //var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                //var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
@@ -267,7 +270,31 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Index()
         {
             ViewBag.IPLOCAL = "";
-            Session["ip_user"] = GetExternalIp();
+            //Session["ip_user"] = GetExternalIp();
+
+            if (Request.Cookies["GLOBALUSERID"] != null) //remember me active
+            {
+                //cookies
+                HttpCookie aCookie = Request.Cookies["GLOBALUSERID"];
+                if (Session["IDusuario"] != null)
+                {
+                   
+                }
+                else {//Como tiene activado remember me, iniciamos sesion automaticamente
+                   int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
+                   var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+
+                    Session["IDusuario"] = obj.ID_usuario.ToString();
+                    Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+                    Session["tiporol"] = obj.ID_rol.ToString();
+                    Session["ultimaconexion"] = "";
+                    GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+
+                   
+                }
+                ////
+                return RedirectToAction("Main");
+            }
             return View();
         }
 
@@ -645,7 +672,6 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-
         public ActionResult Dashboard_merchandising()
         {
             if (Session["IDusuario"] != null)
@@ -718,34 +744,52 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult Iniciar_sesion(string usuariocorreo, string password)
+        public ActionResult Iniciar_sesion(string usuariocorreo, string password, bool rememberme)
         {
             //Validamos del lado del cliente que ambos parametros no vengan vacios
             try
             {
                 var obj = (from c in db.Usuarios where (c.correo == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
-                if (obj != null)
-                {
-                    //PARA DASHBOARD
-                    //(obj.Tipo_membresia.descripcion == "Demo")
+                if (obj != null) { 
+                //PARA DASHBOARD
+                //(obj.Tipo_membresia.descripcion == "Demo")
 
-                    //PARA DEMOS
-                    //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                //PARA DEMOS
+                //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
 
-                    //PARA MERCHANDISING
-                    //((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
+                //PARA MERCHANDISING
+                //((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
 
-                    //if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
-                    //{
-                    //    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-                    //}
-                    //else
-                    //{
-                    Session["IDusuario"] = obj.ID_usuario.ToString();
+                //if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
+                //{
+                //    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+                Session["IDusuario"] = obj.ID_usuario.ToString();
                     Session["tipousuario"] = obj.ID_tipomembresia.ToString();
                     Session["tiporol"] = obj.ID_rol.ToString();
                     Session["ultimaconexion"] = "";
                     GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+
+
+                    ///PARA RECORDAR DATOS
+                    if (rememberme == true) {
+                    if (Request.Cookies["GLOBALUSERID"] != null)
+                    {
+                        //COMO YA EXISTE NO NECESITAMOS RECREARLA
+                    }
+                    else { 
+                        HttpCookie aCookie = new HttpCookie("GLOBALUSERID");
+                        aCookie.Value =  obj.ID_usuario.ToString();
+                        aCookie.Expires = DateTime.Now.AddMonths(3);
+                        Response.Cookies.Add(aCookie);
+                    }
+                }
+
+
+                    ///
+
 
                     //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
                     //6 demos ,rol: 7 demo_user
@@ -841,6 +885,12 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Cerrar_sesion()
         {
             Session.RemoveAll();
+            if (Request.Cookies["GLOBALUSERID"] != null)
+            {
+                var c = new HttpCookie("GLOBALUSERID");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
             return RedirectToAction("Index");
         }
 
@@ -1522,6 +1572,36 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
                     ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
 
+                    var geoLong="";
+                    var geoLat = "";
+
+                    try
+                    {
+                        string address = store.CardName.ToString() + ", " + store.MailAddres.ToString() + ", " + store.MailCity.ToString() + ", " + store.MailZipCod.ToString();
+                        string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                        WebRequest request = WebRequest.Create(requestUri);
+                        WebResponse response = request.GetResponse();
+                        XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                        XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                        XElement locationElement = result.Element("geometry").Element("location");
+                        XElement lat = locationElement.Element("lat");
+                        XElement lng = locationElement.Element("lng");
+                        //NO SE PORQUE LO TIRA AL REVEZ
+                        geoLat = lng.Value;
+                       geoLong = lat.Value;
+                        //FIN
+
+                    }
+                    catch
+                    {
+                        geoLong = "";
+                        geoLat = "";
+                    }
+
+                    ViewBag.glong = geoLong;
+                    ViewBag.glat = geoLat;
                     return View();
                 }
                 else

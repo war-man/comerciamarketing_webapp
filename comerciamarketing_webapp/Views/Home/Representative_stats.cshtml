@@ -109,16 +109,18 @@
                             <div class="card-body">
                                 <h4 class="card-title">Assigned customers</h4>
                                 @foreach (var item in ViewBag.customers)
-                    {
-                        <div class="wrapper d-flex align-items-center py-2 border-bottom">
-                            <img class="img-sm rounded-circle" src="~/Content/newstyle2/images/faces/factory.png" alt="profile">
-                            <div class="wrapper ml-3">
-                                <h6 class="ml-1 mb-1">@item.name</h6>
-                                <small class="text-muted mb-0"><i class="mdi mdi-map-marker-outline mr-1"></i>@item.address</small>
-                            </div>
+                                {
+                                    <div class="wrapper d-flex align-items-center py-2 border-bottom">
 
-                        </div>
-        }
+                                        <img class="img-sm rounded" src="~/Content/newstyle2/images/faces/factory.png" alt="profile">
+                                        
+                                            <div class="wrapper ml-3">
+                                                <h6 class="ml-1 mb-1">@item.name</h6>
+                                                <small class="text-muted mb-0"><i class="mdi mdi-map-marker-outline mr-1"></i>@item.address</small>
+                                            </div>
+                                        
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -163,17 +165,17 @@
                                 <h4 class="card-title">Last updates</h4>
                                 <ul class="bullet-line-list">
                                     @foreach (var log in ViewBag.log)
-                        {
+                                    {
 
-                            <li>
-                                <h6>@log.action</h6>
+                                        <li>
+                                            <h6>@log.action</h6>
 
-                                <p class="text-muted">
-                                    <i class="mdi mdi-clock"></i>
-                                    @log.fecha_conexion
-                                </p>
-                            </li>
-            }
+                                            <p class="text-muted">
+                                                <i class="mdi mdi-clock"></i>
+                                                @log.fecha_conexion
+                                            </p>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -181,12 +183,12 @@
                 </div>
                 @Html.Partial("~/Views/Shared/Footer2.cshtml")
             </div>
-               
-            </div>
+
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:../../partials/_footer.html -->
-  
-        <!-- partial -->
     </div>
-    <!-- main-panel ends -->
+    <!-- content-wrapper ends -->
+    <!-- partial:../../partials/_footer.html -->
+    <!-- partial -->
+</div>
+ 
+<!-- main-panel ends -->

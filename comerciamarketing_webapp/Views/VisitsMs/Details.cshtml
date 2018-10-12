@@ -316,6 +316,15 @@
                                         <div class="form-group row">
                                             <select name="ID_form" class="js-example-basic-single" style="width:100%">
                                                 <option value="0">Select an activity</option>
+                                                <optgroup label="Demos">
+                                                    @foreach (var form in ViewBag.activeforms)
+                                                    {
+                                                        if (form.ID_activity == 4)
+                                                        {
+                                                            <option value="@form.ID_form">@form.name</option>
+                                                        }
+                                                    }
+                                                </optgroup>
                                                 <optgroup label="Forms"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
                                                 {
@@ -324,7 +333,7 @@
                                                         <option value="@form.ID_form">@form.name</option>
                                                     }
                                                 }
-                                                <optgroup label="Retail Audit"></optgroup>
+                                                <optgroup label="Audits"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
                                                 {
                                                     if (form.ID_activity == 2)

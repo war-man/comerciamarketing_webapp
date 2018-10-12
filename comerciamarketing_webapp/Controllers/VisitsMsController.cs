@@ -111,7 +111,18 @@ namespace comerciamarketing_webapp.Controllers
                 //FIN ACTIVITIES
                 //representantes
                 var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+
                 ViewBag.representatives = usuarios.ToList();
+
+                var usuariosdemo = CMKdb.OCRD.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType == "s").OrderBy(b => b.CardName).ToList();
+
+                var selectList_usuarios = from st in usuariosdemo
+                                                                  select new
+                                                                  {
+                                                                      Value = Convert.ToString(st.CardCode),
+                                                                      Text = st.CardName.ToString() + " - " + st.E_Mail.ToString()
+                                                                  };
+                ViewBag.reps_demos = selectList_usuarios.ToList();
                 //Cargamos ruta 
                 var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
                 //FORMULARIOS
@@ -311,7 +322,7 @@ namespace comerciamarketing_webapp.Controllers
                 //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
                 ActivitiesM nuevaActivida = new ActivitiesM();
 
-                nuevaActivida.ID_form =  Convert.ToInt32(ID_form);
+                nuevaActivida.ID_form = Convert.ToInt32(ID_form);
                 nuevaActivida.ID_visit = Convert.ToInt32(ID_visita);
                 nuevaActivida.ID_customer = ID_customer;
                 nuevaActivida.Customer = "";
@@ -338,9 +349,21 @@ namespace comerciamarketing_webapp.Controllers
 
                 int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
                 nuevaActivida.ID_usuarioCreate = ID_usuario;
-                nuevaActivida.ID_usuarioEnd = IDRep;  //Usuario que sera asignado
+
+                //OJO ESTA PARTE SE AGREGO PARA COMERCIA ES PROPIA DE LA EMPRESA
+                if (nuevaActivida.ID_activitytype != 4)
+                {
+                    nuevaActivida.ID_usuarioEnd = IDRep;  //Usuario que sera asignado
+                }
+                else
+                {
+                    //Guardamos el usuario de SAP en la variable tipo String
+                    nuevaActivida.ID_usuarioEnd = 0;
+                }
+
+
                 nuevaActivida.date = DateTime.Today.Date;
-               
+
 
 
                 db.ActivitiesM.Add(nuevaActivida);
@@ -364,25 +387,31 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Por ultimo asignamos el usuario a la visita
                 //Pero verificamos si ya existe
-
-                var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
-
-                if (existeenvisita > 0)
+                if (nuevaActivida.ID_activitytype != 4)
                 {
+                    var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
 
+                    if (existeenvisita > 0)
+                    {
+
+                    }
+                    else
+                    {
+
+                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                        repvisita.ID_visit = nuevaActivida.ID_visit;
+                        repvisita.ID_usuario = IDRep;
+                        repvisita.query1 = "3";
+                        repvisita.ID_empresa = nuevaActivida.ID_empresa;
+                        db.VisitsM_representatives.Add(repvisita);
+                        db.SaveChanges();
+                    }
                 }
-                else
-                {
-
-                    VisitsM_representatives repvisita = new VisitsM_representatives();
-
-                    repvisita.ID_visit = nuevaActivida.ID_visit;
-                    repvisita.ID_usuario = IDRep;
-                    repvisita.query1 = "3";
-                    repvisita.ID_empresa = nuevaActivida.ID_empresa;
-                    db.VisitsM_representatives.Add(repvisita);
-                    db.SaveChanges();
+                else {
+                    //ENVIAMOS CORREO CON LINK DE ACCESO
                 }
+            
                 //************
 
                 TempData["exito"] = "Activity created successfully.";

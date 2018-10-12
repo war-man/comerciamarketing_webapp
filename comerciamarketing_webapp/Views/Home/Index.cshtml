@@ -122,6 +122,12 @@
                                         <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                                     </div>
                                 </div>
+                                <div class="form-check form-check-flat mt-0">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="ahahahahstayinalive" id="ahahahahstayinalive">
+                                        Keep me logged in
+                                    </label>
+                                </div>
                                 <div class="form-group">
                                     <button class="btn btn-info submit-btn">LOG IN</button>
                                 </div>
@@ -129,9 +135,9 @@
                                     <p class="footer-text">Copyright © 2018 Comercia Marketing. All rights reserved.</p>
                                     <ul class="auth-footer text-gray">
                                         <!--
-                                        <li><a href="#">Terms & Conditions</a></li>
-                                        <li><a href="#">Cookie Policy</a></li>
-                                            -->
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+                -->
                                     </ul>
                                 </div>
                             </form>
@@ -155,11 +161,18 @@
         var email = $('#usuariocorreo').val();
         var password = $('#password').val();
 
+        var rememberme = false;
+        if ($('#ahahahahstayinalive').is(":checked")) {
+            // it is checked
+            rememberme = true;
+        }
+
+
         $.ajax({
             type: "GET",
             url: '@Url.Action("Iniciar_sesion", "Home")',
             contentType: "application/json; charset=utf-8",
-            data: { usuariocorreo: email, password: password },
+            data: { usuariocorreo: email, password: password, rememberme:rememberme },
             dataType: "json",
             success: function (data) {
                 if (data.success) {
