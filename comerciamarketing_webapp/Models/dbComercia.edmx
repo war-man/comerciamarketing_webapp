@@ -25,6 +25,7 @@
           <Property Name="ID_usuarioEnd" Type="int" Nullable="false" />
           <Property Name="date" Type="datetime" Nullable="false" />
           <Property Name="ID_activitytype" Type="int" Nullable="false" />
+          <Property Name="ID_usuarioEndString" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ActivitiesM_log">
           <Key>
@@ -987,6 +988,7 @@
           <Property Name="ID_usuarioEnd" Type="Int32" Nullable="false" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ID_activitytype" Type="Int32" Nullable="false" />
+          <Property Name="ID_usuarioEndString" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FormsM">
           <Key>
@@ -1398,6 +1400,7 @@
           <EntitySetMapping Name="ActivitiesM">
             <EntityTypeMapping TypeName="dbComerciaModel.ActivitiesM">
               <MappingFragment StoreEntitySet="ActivitiesM">
+                <ScalarProperty Name="ID_usuarioEndString" ColumnName="ID_usuarioEndString" />
                 <ScalarProperty Name="ID_activitytype" ColumnName="ID_activitytype" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="ID_usuarioEnd" ColumnName="ID_usuarioEnd" />

@@ -246,7 +246,15 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
 
-                    itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+                    if (uassigned == null && itemac.ID_usuarioEnd == 0)
+                    {
+                        var usuario = (from a in CMKdb.OCRD where (a.CardCode == itemac.ID_usuarioEndString) select a).FirstOrDefault();
+                        itemac.ID_customer = usuario.CardName.ToString() + " - " + usuario.E_Mail.ToString();
+                    }
+                    else
+                    {
+                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+                    }
 
                 }
                 ViewBag.actlist = activities;
@@ -2470,7 +2478,7 @@ namespace comerciamarketing_webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateVisitRoute(string id_store, string ID_route)
+        public ActionResult CreateVisitRoute(string id_store, string ID_route, DateTime date)
         {
             int IDR = Convert.ToInt32(ID_route);
             var route = db.RoutesM.Find(IDR);
@@ -2500,12 +2508,12 @@ namespace comerciamarketing_webapp.Controllers
                         visita.state = "";
                     }
                     else { visita.state = storeSAP.State2; }
-                    visita.visit_date = route.date;
+                    visita.visit_date = date;
                     visita.ID_visitstate = 3; //On Hold
                     visita.comments = "";
-                    visita.check_in = route.date;
-                    visita.check_out = route.date;
-                    visita.end_date = route.end_date;
+                    visita.check_in = date;
+                    visita.check_out = date;
+                    visita.end_date = date;
                     visita.extra_hours = 0;
                     visita.ID_route = IDR;
                     visita.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;

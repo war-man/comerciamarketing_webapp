@@ -1476,7 +1476,7 @@ namespace comerciamarketing_webapp.Controllers
                     int act = Convert.ToInt32(id);
                     ActivitiesM activity = db.ActivitiesM.Find(act);
                     activity.check_out = Convert.ToDateTime(check_in);
-                    db.Entry(activity).State = EntityState.Modified;
+                    db.Entry(activity).State = EntityState.Modified;             
                     db.SaveChanges();
 
                     if (lat != null || lat != "")
@@ -1522,13 +1522,15 @@ namespace comerciamarketing_webapp.Controllers
                                 if (item.value == "" || item.value == null) { item.value = "0"; }
                                 detail.fvalue = Convert.ToInt32(item.value);
 
-                                db.Entry(detail).State = EntityState.Modified;
+                                db.Entry(detail).State = EntityState.Modified;                        
                                 db.SaveChanges();
 
                             }
                             else if (detail.ID_formresourcetype == 5) //Picture
                             {
-                                if (item.value == "100") {
+                                //
+                                if (item.value == "100")
+                                {
                                     var path = detail.fsource;
                                     //eliminamos la ruta
                                     detail.fsource = "";
@@ -1537,8 +1539,8 @@ namespace comerciamarketing_webapp.Controllers
                                     db.SaveChanges();
 
 
-                                    if(System.IO.File.Exists(Server.MapPath(path)))
-                                     {
+                                    if (System.IO.File.Exists(Server.MapPath(path)))
+                                    {
                                         try
                                         {
                                             System.IO.File.Delete(Server.MapPath(path));
@@ -1546,12 +1548,11 @@ namespace comerciamarketing_webapp.Controllers
                                         catch (System.IO.IOException e)
                                         {
                                             Console.WriteLine(e.Message);
-                                            
+
                                         }
                                     }
                                 }
-                                //Esta opcion se anulo, ya que las imagenes se guardan en tiempo real
-                                //Pero la habilitaremos para cuando el usuario remueva la foto seleccionada
+
 
 
 
@@ -1585,15 +1586,16 @@ namespace comerciamarketing_webapp.Controllers
 
                                 db.Entry(detail).State = EntityState.Modified;
                                 db.SaveChanges();
+                                //db.Entry(detail).State = EntityState.Modified;
+                                //db.SaveChanges();
                             }
                             //Select, Customer, Brands,Product line, Brand Competitors
                             else if (detail.ID_formresourcetype == 17 || detail.ID_formresourcetype == 12 || detail.ID_formresourcetype == 13 || detail.ID_formresourcetype == 14 || detail.ID_formresourcetype == 15) 
-                            {
-
-                                if (item.value == "" || item.value == null) { item.value = ""; }
-                                if (item.text == "" || item.text == null) { item.text = ""; }
+                            {                               
+                                
                                 detail.fvalueText = item.value; //Lo guardamos como texto por si colocan ID tipo cadena
                                 detail.fdescription = item.text;
+
                                 db.Entry(detail).State = EntityState.Modified;
                                 db.SaveChanges();
                             }

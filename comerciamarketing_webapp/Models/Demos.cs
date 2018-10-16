@@ -30,9 +30,7 @@ namespace comerciamarketing_webapp.Models
         public decimal extra_hours { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
-
         public System.DateTime end_date { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
 

@@ -480,7 +480,14 @@
 
 
 </script>
-
+<script>
+    function selectTest(ID) {
+        document.getElementById(ID).setAttribute('type', 'text');
+        document.getElementById(ID).selectionStart = 0
+        document.getElementById(ID).selectionEnd = 999
+        document.getElementById(ID).setAttribute('type', 'number');
+    };
+</script>
 <script>
 //FINISH TEMPLATE
 

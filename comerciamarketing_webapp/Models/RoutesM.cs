@@ -20,7 +20,7 @@ namespace comerciamarketing_webapp.Models
         {
             this.VisitsM = new HashSet<VisitsM>();
         }
-    
+
         public int ID_route { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
@@ -32,7 +32,7 @@ namespace comerciamarketing_webapp.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime end_date { get; set; }
         public int ID_empresa { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitsM> VisitsM { get; set; }
     }

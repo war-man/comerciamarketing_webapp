@@ -86,7 +86,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                                <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10">@objeto.fdescription (*)</p>
                             <div class="col-md-12">
-                                <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                                <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
                             </div>
                         </div>
                     </div>
@@ -363,7 +363,7 @@ else
                                 <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                                 <div class="col-md-12">
-                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                    <input type="number" onClick="this.select();" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
                                 </div>
@@ -378,7 +378,7 @@ else
                                 <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                                 <div class="col-md-12">
-                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                    <input type="number" onClick="this.select();" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
                                 </div>
@@ -398,7 +398,7 @@ else
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
+                                <input type="number" onClick="this.select();" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
 
 
                             </div>
@@ -647,7 +647,7 @@ else
 
 
             <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
-
+            
             <div class="row">
                 <div class="col-md-12 grid-margin">
 
@@ -658,6 +658,7 @@ else
                 </div><br />
 
             </div>
+           
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10 text-right">
                     <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />

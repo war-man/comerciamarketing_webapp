@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using comerciamarketing_webapp.Models;
+using Postal;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -21,7 +22,12 @@ namespace comerciamarketing_webapp.Controllers
             var visitsM = db.VisitsM.Include(v => v.RoutesM);
             return View(visitsM.ToList());
         }
+        public class demosReps
+        {
+            public string ID { get; set; }
+            public string name { get; set; }
 
+        }
         // GET: VisitsMs/Details/5
         public ActionResult Details(int? id)
         {
@@ -70,8 +76,16 @@ namespace comerciamarketing_webapp.Controllers
 
                     foreach (var itemac in activities) {
                         var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
-
-                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+                        if (uassigned == null && itemac.ID_usuarioEnd == 0)
+                        {
+                            var usuario = (from a in CMKdb.OCRD where (a.CardCode == itemac.ID_usuarioEndString) select a).FirstOrDefault();
+                            itemac.ID_customer = usuario.CardName.ToString() + " - " + usuario.E_Mail.ToString();
+                        }
+                        else {
+                            itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
+                        }
+                        
+                       
 
                     }
                    
@@ -116,13 +130,13 @@ namespace comerciamarketing_webapp.Controllers
 
                 var usuariosdemo = CMKdb.OCRD.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType == "s").OrderBy(b => b.CardName).ToList();
 
-                var selectList_usuarios = from st in usuariosdemo
-                                                                  select new
+                List<demosReps> selectList_usuarios = (from st in usuariosdemo
+                                                                  select new demosReps
                                                                   {
-                                                                      Value = Convert.ToString(st.CardCode),
-                                                                      Text = st.CardName.ToString() + " - " + st.E_Mail.ToString()
-                                                                  };
-                ViewBag.reps_demos = selectList_usuarios.ToList();
+                                                                      ID = Convert.ToString(st.CardCode),
+                                                                      name = st.CardName.ToString() + " - " + st.E_Mail.ToString()
+                                                                  }).ToList();
+                ViewBag.reps_demos = selectList_usuarios;
                 //Cargamos ruta 
                 var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
                 //FORMULARIOS
@@ -142,6 +156,17 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Route
                 ViewBag.route = visitsM.ID_route;
+
+
+                var geoLong = "";
+                var geoLat = "";
+
+                geoLong = visitsM.geoLong;
+                geoLat = visitsM.geoLat;
+
+                ViewBag.glong = geoLong;
+                ViewBag.glat = geoLat;
+                ViewBag.address = visitsM.address + ", " + visitsM.zipcode  + ", " + visitsM.city  + ", " + visitsM.state;
 
                 return View(visitsM);
 
@@ -291,18 +316,40 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult GetCustomer_reps(string ID_usuario)
         {
+            //Verificamos si se eligio un usuario Demo
+            int isDemoUser = 0;
+            int IDusuario = 0;
             try
             {
-                int IDusuario = Convert.ToInt32(ID_usuario);
-                var usuario = (from a in db.Usuarios where (a.ID_usuario == IDusuario) select a).FirstOrDefault();
+                IDusuario = Convert.ToInt32(ID_usuario);
+                isDemoUser = 0;
+            }
+            catch {
+                isDemoUser = 1;
+            }
+            try
+            {
+                if (isDemoUser == 0)//ES REPRESENTANTE, APLICAMOS FILTROS
+                {
+                    var usuario = (from a in db.Usuarios where (a.ID_usuario == IDusuario) select a).FirstOrDefault();
 
 
 
-                var lstCustomer = (from b in CMKdb.OCRD where (usuario.estados_influencia.Contains(b.CardCode)) select new { ID=b.CardCode, Name= b.CardName }).OrderBy(b => b.Name).ToList();
+                    var lstCustomer = (from b in CMKdb.OCRD where (usuario.estados_influencia.Contains(b.CardCode)) select new { ID = b.CardCode, Name = b.CardName }).OrderBy(b => b.Name).ToList();
 
-                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-                string result = javaScriptSerializer.Serialize(lstCustomer);
-                return Json(result, JsonRequestBehavior.AllowGet);
+                    JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                    string result = javaScriptSerializer.Serialize(lstCustomer);
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else {//NO ES ENTONCES MOSTRAMOS TODOS
+
+                    var lstCustomer = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { ID = b.CardCode, Name = b.CardName }).OrderBy(b => b.Name).ToList();
+
+                    JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                    string result = javaScriptSerializer.Serialize(lstCustomer);
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+
             }
             catch
             {
@@ -317,7 +364,19 @@ namespace comerciamarketing_webapp.Controllers
             try
             {
                 int IDForm = Convert.ToInt32(ID_form);
-                int IDRep = Convert.ToInt32(ID_rep);
+                int IDRep = 0;
+
+                int esDemoUser = 0;//Variable para identificar si el usuario seleccionado es demo o es un reps
+
+                try
+                {
+                    IDRep = Convert.ToInt32(ID_rep);
+                    esDemoUser = 0;
+                }
+                catch {
+                    esDemoUser = 1;
+                }
+             
 
                 //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
                 ActivitiesM nuevaActivida = new ActivitiesM();
@@ -346,6 +405,7 @@ namespace comerciamarketing_webapp.Controllers
                     nuevaActivida.ID_activitytype = form.ID_activity;
                     nuevaActivida.query1 = form.query2;
                 }
+                    
 
                 int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
                 nuevaActivida.ID_usuarioCreate = ID_usuario;
@@ -354,11 +414,20 @@ namespace comerciamarketing_webapp.Controllers
                 if (nuevaActivida.ID_activitytype != 4)
                 {
                     nuevaActivida.ID_usuarioEnd = IDRep;  //Usuario que sera asignado
+                    nuevaActivida.ID_usuarioEndString = "";
                 }
                 else
                 {
                     //Guardamos el usuario de SAP en la variable tipo String
-                    nuevaActivida.ID_usuarioEnd = 0;
+                    if (esDemoUser == 1)
+                    {
+                        nuevaActivida.ID_usuarioEnd = 0;
+                    }
+                    else {
+                        nuevaActivida.ID_usuarioEnd = IDRep;
+
+                    }
+                    nuevaActivida.ID_usuarioEndString = ID_rep;
                 }
 
 
@@ -387,17 +456,23 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Por ultimo asignamos el usuario a la visita
                 //Pero verificamos si ya existe
-                if (nuevaActivida.ID_activitytype != 4)
-                {
+
                     var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
 
-                    if (existeenvisita > 0)
+
+                if (existeenvisita > 0)
+
+                {
+                }
+                else
+                {
+
+                    if (esDemoUser == 1)
+
                     {
 
                     }
-                    else
-                    {
-
+                    else {
                         VisitsM_representatives repvisita = new VisitsM_representatives();
 
                         repvisita.ID_visit = nuevaActivida.ID_visit;
@@ -406,12 +481,66 @@ namespace comerciamarketing_webapp.Controllers
                         repvisita.ID_empresa = nuevaActivida.ID_empresa;
                         db.VisitsM_representatives.Add(repvisita);
                         db.SaveChanges();
+
+                    }
+
+                    }
+
+                //enviamoS correo SI ES UN USUARIO DEMO
+                if (esDemoUser == 1) {
+                    //Obtenemos el nombre de las marcas o brands por cada articulo
+                    var listadeItems = (from d in db.FormsM_details where (d.ID_visit == nuevaActivida.ID_activity && d.ID_formresourcetype == 3) select d).ToList();
+
+
+                    foreach (var itemd in listadeItems)
+                    {
+                        itemd.fdescription = (from k in CMKdb.OITM join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    }
+
+                    var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                    var brandstoshow = "";
+                    int count = 0;
+                    foreach (var items in brands)
+                    {
+                        if (count == 0)
+                        {
+                            brandstoshow = items.fdescription.ToString();
+                        }
+                        else
+                        {
+                            brandstoshow += ", " + items.fdescription.ToString();
+                        }
+                        count += 1;
+                    }
+                    //*******************************
+                    try
+                    {
+                        var usuario = (from a in CMKdb.OCRD where (a.CardCode == nuevaActivida.ID_usuarioEndString) select a).FirstOrDefault();
+
+                        var store = (from s in db.VisitsM where (s.ID_visit == nuevaActivida.ID_visit) select s).FirstOrDefault();
+
+                        //Enviamos correo para notificar
+                        dynamic email = new Email("newdemo_alert");
+                        email.To = usuario.E_Mail.ToString();
+                        email.From = "customercare@comerciamarketing.com";
+                        email.Vendor = brandstoshow;
+                        email.Date = Convert.ToDateTime(nuevaActivida.date).ToLongDateString();
+                        email.Time = Convert.ToDateTime(nuevaActivida.date).ToLongTimeString();
+                        email.Place = store.store + ", " + store.address;
+                        //email.link = "http://internal.comerciamarketing.com/Demos/Form_template?id_demo=" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                        email.link = "";
+                        email.enddate = Convert.ToDateTime(nuevaActivida.date).AddDays(1).ToLongDateString();
+                        email.Send();
+
+                        //FIN email
+                    }
+                    catch
+                    {
+
                     }
                 }
-                else {
-                    //ENVIAMOS CORREO CON LINK DE ACCESO
-                }
-            
+
                 //************
 
                 TempData["exito"] = "Activity created successfully.";

@@ -20,7 +20,7 @@ namespace comerciamarketing_webapp.Models
         {
             this.VisitsM_representatives = new HashSet<VisitsM_representatives>();
         }
-    
+
         public int ID_visit { get; set; }
         public string ID_customer { get; set; }
         public string customer { get; set; }
@@ -49,7 +49,7 @@ namespace comerciamarketing_webapp.Models
         public int extra_hours { get; set; }
         public int ID_route { get; set; }
         public int ID_empresa { get; set; }
-    
+
         public virtual RoutesM RoutesM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitsM_representatives> VisitsM_representatives { get; set; }

@@ -20,7 +20,7 @@ namespace comerciamarketing_webapp.Models
         {
             this.FormsM = new HashSet<FormsM>();
         }
-    
+
         public int ID_activity { get; set; }
         public int ID_visit { get; set; }
         public int ID_form { get; set; }
@@ -43,6 +43,7 @@ namespace comerciamarketing_webapp.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime date { get; set; }
         public int ID_activitytype { get; set; }
+        public string ID_usuarioEndString { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormsM> FormsM { get; set; }

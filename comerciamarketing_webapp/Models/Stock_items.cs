@@ -15,6 +15,7 @@ namespace comerciamarketing_webapp.Models
 
     public partial class Stock_items
     {
+
         public int ID_stock { get; set; }
         public string itemCode { get; set; }
         public string itemName { get; set; }
