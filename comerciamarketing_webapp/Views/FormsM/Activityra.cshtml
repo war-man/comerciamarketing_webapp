@@ -100,8 +100,13 @@ else
                 {
                 <div class="td">
                     <div class="form-group">
-
+                        @if (objeto.fvalueDecimal > 0)
+                        {
                         <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                        }
+                        else {
+                            <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="" />
+                        }
                         @objeto.fdescription
 
                     </div>
@@ -124,8 +129,15 @@ else
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
+                            @if (objeto.fvalueDecimal > 0)
+    {
+                        <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+}
+else
+{
+                         <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value=""  />
+}
 
-                            <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal"  />
 
 
                         </div>

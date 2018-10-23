@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Comercia Marketing App">
     <title>@ViewData["Title"]</title>
@@ -199,6 +199,7 @@
                     width: 100%;
                     position: absolute;
                 }
+
             .currency {
             }
 
@@ -333,71 +334,15 @@
                 width: 100%;
             }
 
-                table#resultsRetail tr {
-                    padding: .35em;
-                }
-
-                table#resultsRetail th, table td {
-                    padding: .625em;
-                    text-align: left;
-                }
-
-                table#resultsRetail th {
-                    font-size: .9em;
-                    letter-spacing: .1em;
-                    text-transform: uppercase;
-                }
-
-                table#resultsRetail td {
-                    font-size: .3em;
-                }
             /**/
-            @@media screen and (max-width: 2000px) {
+ 
 
-                table#resultsRetail td {
-                    font-size: .9em;
-                }
-            }
-
-            @@media screen and (max-width: 992px) {
-                table#resultsRetail {
-                    border: 0;
-                }
-
-                    table#resultsRetail thead {
-                        display: none;
-                    }
-
-                    table#resultsRetail tr {
-                        border-bottom: 3px solid #ddd;
-                        display: block;
-                        margin-bottom: .625em;
-                    }
-
-                    table#resultsRetail td {
-                        border-bottom: 1px solid #ddd;
-                        display: block;
-                        font-size: .8em;
-                        text-align: right;
-                    }
-
-                        table#resultsRetail td:before {
-                            content: attr(data-label);
-                            float: left;
-                            font-weight: normal;
-                            text-transform: uppercase;
-                        }
-
-                        table#resultsRetail td:last-child {
-                            border-bottom: 0;
-                        }
-            }
+        
 
             /**/
             /**/
 
 
-            @@media screen and (max-width: 400px) {
 
                 table#resultsRetail {
                     border: 0;
@@ -430,7 +375,7 @@
                         table#resultsRetail td:last-child {
                             border-bottom: 0;
                         }
-            }
+            
             /**/
             /*END DATATABLES*/
             .flexRadio {
@@ -486,9 +431,17 @@
     <div class="container-scroller">
         <!-- Horizontal Menu Start -->
         @if (ViewBag.Title != "Comercia Marketing")
+    {
+        if (ViewBag.Title == "Comercia Marketing - Activityea")
+        {
+
+        }
+        else
         {
             @Html.Partial("~/Views/Shared/Menu2.cshtml")
-        }
+    }
+
+}
         <!-- Horizontal Menu Ends -->
         @RenderBody()
 
@@ -551,7 +504,7 @@
 @if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
 {
     <script type="text/javascript">
-        google.charts.load('current', {
+        @*google.charts.load('current', {
             'packages': ['geochart'],
             // Note: you will need to get a mapsApiKey for your project.
             // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
@@ -624,7 +577,7 @@
             var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
 
             chart.draw(data, options);
-        }
+        }*@
     </script>
 }
 
@@ -893,7 +846,31 @@
 
 @if (ViewBag.Title == "Comercia Marketing - RoutesM details")
 {
+    <script>
+        window.onload = function () {
 
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDvisit = button.data("id");// Extract info from data-* attributes
+                    var Desvisit = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
+                    $("#descriptionD").text(Desvisit);
+
+                })
+            })(jQuery);
+
+        }
+
+    </script>
     @*<script>
 
            $(document).ready(function () {
@@ -1375,11 +1352,113 @@
 @if (ViewBag.Title == "Comercia Marketing - RoutesM")
 {
     <script>
+        window.onload = function () {
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDroute = button.data("id");// Extract info from data-* attributes
+                    var Desroute = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
+                    $("#descriptionD").text(Desroute);
+
+                })
+            })(jQuery);
+
+        }
+
+    </script>
+    <script>
 
     $(document).ready(function () {
+        function modelMatcher(params, data) {
+            data.parentText = data.parentText || "";
 
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
 
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
 
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+                    child.parentText += data.parentText + " " + data.text;
+
+                    var matches = modelMatcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return modelMatcher(params, match);
+            }
+            };
+        function matcher(params, data) {
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            var original = data.text.toUpperCase();
+            var term = params.term.toUpperCase();
+
+            // Check if the text contains the term
+            if (original.indexOf(term) > -1) {
+                return data;
+            }
+
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
+
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+
+                    var matches = matcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return matcher(params, match);
+            }
+
+            // If it doesn't contain the term, don't return anything
+            return null;
+        }
 
 
         var json = JSON.parse('@Html.Raw(ViewBag.stores)')
@@ -1396,7 +1475,40 @@
             multiple: true,
             placeholder: "Select stores...",
             data: FRUIT_GROUPS,
-            theme: 'bootstrap'
+            query: function (options) {
+                var selectedIds = options.element.select2('val');
+                var data = jQuery.extend(true, {}, FRUIT_GROUPS);
+                var selectableGroups = $.map(data, function (group) {
+                    var areAllChildrenSelected = true,
+                        parentMatchTerm = false,
+                        anyChildMatchTerm = false;
+                    if (group.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0) {
+                        parentMatchTerm = true;
+                    }
+                    var i = group.children.length
+                    while (i--) {
+                        var child = group.children[i];
+
+                        if (selectedIds.indexOf(child.id) < 0) {
+                            areAllChildrenSelected = false;
+                        };
+
+                        if (options.term == '' || (child.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0)) {
+                            anyChildMatchTerm = true;
+                        }
+                        else if (!parentMatchTerm) {
+                            var index = group.children.indexOf(child);
+                            if (index > -1) {
+                                group.children.splice(index, 1);
+                            };
+                        };
+                    };
+
+                    return (!areAllChildrenSelected && (parentMatchTerm || anyChildMatchTerm)) ? group : null;
+                });
+
+                options.callback({ results: selectableGroups });
+            }
         }).on('select2-selecting', function (e) {
             var $select = $(this);
             if (e.val == '') {
@@ -1663,7 +1775,11 @@
 
     @Html.Partial("~/Views/Shared/ActivityScripts.cshtml")
 }
+@if (ViewBag.Title == "Comercia Marketing - Activityea")
+{
 
+    @Html.Partial("~/Views/Shared/ActivityeaScripts.cshtml")
+}
 @if (ViewBag.Title == "Comercia Marketing - Template preview2")
 {
     @Html.Partial("~/Views/Shared/ActivityraScripts.cshtml")
@@ -1767,6 +1883,7 @@
 @if (ViewBag.Title == "Comercia Marketing - Store_stats")
 {
     <script>
+        document.getElementById("time").defaultValue = "2018-01-01T00:00:00";
 
         function BuildEditorHeader(array) {
 
@@ -1775,9 +1892,9 @@
                 var $tr = "<tr id='headerR'></tr>";
                 $("#resultsRetail thead").append($tr);
                 // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                if (element.id_resource == "8") {
+                if (element.id_resource == "24") {
 
-                    $th = "<th>" + element.fsource + "</th>";
+                    $th = "<th>" + element.fdescription + "</th>";
                 }
 
                 $('#headerR').append($th);
@@ -1803,13 +1920,13 @@
 
                 if (element.id_resource == "16") { //Multiple_choice
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     if (element.fvalue != 0) {
 
                         $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
                     } else {
-                        $td += "</td>";
+                        $td += "&nbsp;</td>";
                     }
 
 
@@ -1817,28 +1934,28 @@
                 }
                 if (element.id_resource == "18") { //Input_number
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "<label>" + element.fvalue + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
                 if (element.id_resource == "21") { //Currency
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "$ <label>" + element.fvalueDecimal + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
                 if (element.id_resource == "6") { ///Input_text
 
-                    $td = "<td data-label='" + element.fsource + "'>";
+                    $td = "<td data-label='" + element.fdescription + "'>";
 
                     $td += "<label>" + element.fsource + "</label>";
-                    $td += "</td>";
+                    $td += "&nbsp;</td>";
 
                     $('#resultsRetail tr:last').append($td);
                 }
@@ -2019,71 +2136,50 @@
     // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
     $.each(data, function (i, item) {
         var marker;
+             var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+            var marker;
 
-        if (item.demo_state == 3) {
-            marker = new mapIcons.Marker({
-                position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                map: map,
-                title: item.PlaceName,
-                icon: {
-                    path: mapIcons.shapes.SQUARE_PIN,
-                    fillColor: '#ff9900',
-                    fillOpacity: 1,
-                    strokeColor: '',
-                    strokeWeight: 0
-                },
-                map_icon_label: '<span class="map-icon map-icon-store"></span>'
 
-            });
-        }
-        if (item.demo_state == 2) {
-            marker = new mapIcons.Marker({
-                position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                map: map,
-                title: item.PlaceName,
-                icon: {
-                    path: mapIcons.shapes.SQUARE_PIN,
-                    fillColor: '#00b300',
-                    fillOpacity: 1,
-                    strokeColor: '',
-                    strokeWeight: 0
-                },
-                map_icon_label: '<span class="map-icon map-icon-store"></span>'
 
-            });
-        }
-        if (item.demo_state == 1) {
-            marker = new mapIcons.Marker({
-                position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                map: map,
-                title: item.PlaceName,
-                icon: {
-                    path: mapIcons.shapes.SQUARE_PIN,
-                    fillColor: '#cc0000',
-                    fillOpacity: 1,
-                    strokeColor: '',
-                    strokeWeight: 0
-                },
-                map_icon_label: '<span class="map-icon map-icon-store"></span>'
 
-            });
-        }
-        if (item.demo_state == 4) {
-            marker = new mapIcons.Marker({
-                position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                map: map,
-                title: item.PlaceName,
-                icon: {
-                    path: mapIcons.shapes.SQUARE_PIN,
-                    fillColor: '#1998F7',
-                    fillOpacity: 1,
-                    strokeColor: '',
-                    strokeWeight: 0
-                },
-                map_icon_label: '<span class="map-icon map-icon-store"></span>'
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
 
-            });
-        }
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image
+
+                });
+            }
 
 
 
@@ -2144,13 +2240,21 @@
         estructuradiv += '</div>';
         estructuradiv += '</div>';
 
-
         var infowindow = new google.maps.InfoWindow({
             content: estructuradiv
         });
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(4);
+            }
+        }
         // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
         google.maps.event.addListener(marker, 'click', function () {
             infowindow.open(map, marker);
+            toggleBounce();
             //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
         });
 
@@ -2336,6 +2440,8 @@
 @if (ViewBag.Title == "Comercia Marketing - Store_stats")
 {
     <script>
+        $("#demotimetitle").hide();
+        $("#demotimediv").hide();
 
         function getCustomers() {
             var Idrep = $("#ID_rep").val();
@@ -2384,6 +2490,38 @@
 
 
         }
+        function getActivity() {
+            var Idact = $("#ID_form").val();
+
+            $.ajax
+                ({
+                    url: '/VisitsMs/GetType',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        ID_type: Idact
+                    }),
+                    success: function (result) {
+
+                        if (result != "4") {
+                            $("#demotimetitle").hide();
+                            $("#demotimediv").hide();
+                        } else {
+                            $("#demotimetitle").show();
+                            $("#demotimediv").show();
+                        }
+
+                    },
+                    error: function () {
+                        //alert("Whooaaa! Something went wrong..")
+
+                    },
+                });
+
+
+
+        }
 
     </script>
 }
@@ -2423,7 +2561,37 @@
 
 
 }
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
 
+    <script>
+    $(function () {
+        $('#click_filterR').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH" })';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+    </script>
+}
 <!--FILTERS STORE STATS-->
 @if (ViewBag.Title == "Comercia Marketing - Store_stats")
 {
@@ -2467,8 +2635,8 @@
                 var img = $(this).parent().parent().parent().find('img[data-enlargable]');
                 img.addClass('img-enlargable');
 
-                    var src = img.attr('src');
-      
+                var src = img.attr('src');
+
                 $('<div>').css({
                     background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
                     backgroundSize: 'contain',

@@ -556,7 +556,7 @@
                                                                                 <div class="mr-auto">
                                                                                     @if (activity.ID_activitytype == 1)
                                                                                     {
-                                                                                        <a href="#" data-toggle="modal" data-target="#infoFormModal" data-idform="@activity.ID_form" data-name="@activity.description" class="text-black"><h6>@activity.description</h6></a>
+                                                                                        <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })"  class="text-black"><h6>@activity.description</h6></a>
                                                                                     }
                                                                                     else if (activity.ID_activitytype == 2)
                                                                                     {
@@ -657,7 +657,7 @@ else if (activity.ID_activitytype == 3)
 <!--END-->
 <!--INFO RETAIL DATA STARTS-->
 <div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
 
             <div class="modal-header">

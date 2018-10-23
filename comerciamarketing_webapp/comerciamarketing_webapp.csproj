@@ -3229,6 +3229,11 @@
     <Content Include="Views\VisitsMs\DetailsC.cshtml" />
     <Content Include="Views\VisitsMs\GalleryC.cshtml" />
     <Content Include="Views\Home\Test_barcode.cshtml" />
+    <Content Include="Views\Home\Users.cshtml" />
+    <Content Include="Views\Home\Analytics.cshtml" />
+    <Content Include="Views\Home\Internal.cshtml" />
+    <Content Include="Views\FormsM\Activity_ea.cshtml" />
+    <Content Include="Views\Shared\ActivityeaScripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -235,7 +235,10 @@
                                                 <th scope="col">Store</th>
                                                 <th scope="col">Representatives</th>
                                                 <th scope="col">Status</th>
-
+                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                {
+                                                    <th scope="col">Actions</th>
+                                                }
 
                                             </tr>
                                         </thead>
@@ -283,7 +286,16 @@
                                                         }
 
                                                     </td>
+                                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                    {
+                                                        <td data-label="Actions">
+                                                            &nbsp;
+                                                            <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@itemVisita.ID_visit" data-description="@itemVisita.store">
+                                                                <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
+                                                            </a>
+                                                        </td>
+                                                    }
                                                 </tr>
                                             }
                                         </tbody>
@@ -318,7 +330,7 @@
 </div>
 <!-- page-body-wrapper ends -->
 <!--CRESTE USER DATA STARTS-->
-<div class="modal fade" id="createModal"  role="dialog" aria-hidden="true">
+<div class="modal fade" id="createModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             @using (Html.BeginForm("CreateVisitRoute", "Home", FormMethod.Post))
@@ -331,24 +343,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="ID_route" name="ID_route" value="@ViewBag.id_route" hidden/>
+                    <input type="text" id="ID_route" name="ID_route" value="@ViewBag.id_route" hidden />
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Store:</label>
-          
-                                    <div class="form-group">
-                                        <select class="js-example-basic-single" name="id_store" id="id_store" style="width:100%">
-                                            <option value="">Select a store</option>
-                                            @foreach (var itemStores in ViewBag.stores)
-                        {
-                            <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
-    }
-                                        </select>
-                                    </div> 
-                         <label  class="col-form-label">Date:</label>
+
                         <div class="form-group">
-                            <input type="date" class="form-control" name="date" id="date"/>
+                            <select class="js-example-basic-single" name="id_store" id="id_store" style="width:100%">
+                                <option value="">Select a store</option>
+                                @foreach (var itemStores in ViewBag.stores)
+                                {
+                                    <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
+                                }
+                            </select>
                         </div>
-                 
+                        <label class="col-form-label">Date:</label>
+                        <div class="form-group">
+                            <input type="date" class="form-control" name="date" id="date" />
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -360,3 +372,35 @@
     </div>
 </div>
 <!--CREATE USER DATA ENDS-->
+<!--DELETE DATA STARTS-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("DeleteVisit", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Visit Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-form-label">Are you sure you want to delete this Visit?</label><br />
+                        <strong><label id="descriptionD" class="col-form-label"></label></strong>
+                        <input type="text" id="ID_visitD" name="ID_visitD" hidden />
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

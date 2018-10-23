@@ -86,10 +86,10 @@ else
 }
                             </div>
                             <div class="text-wrapper">
-                                @if (activity.ID_activitytype == 1)
-        {
-            if (activity.isfinished == true)
-            {
+                                @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
+                                {
+                                    if (activity.isfinished == true)
+                                    {
                         <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
 }
 else
@@ -329,46 +329,57 @@ else
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_form" class="js-example-basic-single" style="width:100%">
+                                            <select id="ID_form" name="ID_form" class="js-example-basic-single" style="width:100%" onChange='getActivity()'>
                                                 <option value="0">Select an activity</option>
                                                 <optgroup label="Demos">
                                                     @foreach (var form in ViewBag.activeforms)
-                                                    {
-                                                        if (form.ID_activity == 4)
-                                                        {
-                                                            <option value="@form.ID_form">@form.name</option>
-                                                        }
-                                                    }
+                        {
+                            if (form.ID_activity == 4)
+                            {
+                                <option value="@form.ID_form">@form.name</option>
+}
+}
                                                 </optgroup>
                                                 <optgroup label="Forms"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
-                                                {
-                                                    if (form.ID_activity == 1)
-                                                    {
-                                                        <option value="@form.ID_form">@form.name</option>
-                                                    }
-                                                }
+                    {
+                        if (form.ID_activity == 1)
+                        {
+                            <option value="@form.ID_form">@form.name</option>
+}
+}
                                                 <optgroup label="Audits"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
-                                                {
-                                                    if (form.ID_activity == 2)
-                                                    {
-                                                        <option value="@form.ID_form">@form.name</option>
-                                                    }
-                                                }
+                    {
+                        if (form.ID_activity == 2)
+                        {
+                            <option value="@form.ID_form">@form.name</option>
+}
+}
                                                 <optgroup label="Sales Order">
                                                     @foreach (var form in ViewBag.activeforms)
-                                                    {
-                                                        if (form.ID_activity == 3)
-                                                        {
-                                                            <option value="@form.ID_form">@form.name</option>
-                                                        }
-                                                    }
+                        {
+                            if (form.ID_activity == 3)
+                            {
+                                <option value="@form.ID_form">@form.name</option>
+}
+}
                                                 </optgroup>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+                                <p class="card-description" >
+                                    <h4 class="card-title" id="demotimetitle">Set start date</h4>
+                                </p>
+                                <div class="row" id="demotimediv">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">      
+                                                    <input type="datetime-local" class="form-control" name="time" id="time" />                                                                    
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <p class="card-description">
                                     <h4 class="card-title">Representative</h4>
                                 </p>
@@ -380,18 +391,18 @@ else
                                                 <optgroup label="Sales Representatives">
 
                                                     @foreach (var rep in ViewBag.representatives)
-                                                    {
+                        {
 
-                                                        <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
-                                                    }
+                            <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
+}
                                                 </optgroup>
                                                 <optgroup label="Demos Representatives">
 
                                                     @foreach (var rep2 in ViewBag.reps_demos)
-                                                    {
+                        {
 
-                                                        <option value="@rep2.ID">@rep2.name</option>
-                                                    }
+                            <option value="@rep2.ID">@rep2.name</option>
+}
                                                 </optgroup>
 
                                             </select>
@@ -564,7 +575,7 @@ else
 <!--COPY DATA ENDS-->
 <!--INFO RETAIL DATA STARTS-->
 <div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -579,14 +590,14 @@ else
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-12 table-responsive">
-                                        <table class="table table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
+                                    
+                                        <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
                                             <thead>
 
                                             </thead>
                                             <tbody></tbody>
                                         </table>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

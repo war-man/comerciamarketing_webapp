@@ -356,10 +356,29 @@ namespace comerciamarketing_webapp.Controllers
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult Gettype(string ID_type)
+        {
 
+            try
+            {
+                int id = Convert.ToInt32(ID_type);
+
+                FormsM form = db.FormsM.Find(id);
+
+
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(form.ID_activity);
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita, string ID_rep)
+        public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita, string ID_rep, DateTime time)
         {
             try
             {
@@ -398,12 +417,17 @@ namespace comerciamarketing_webapp.Controllers
                 nuevaActivida.isfinished = false;
                 nuevaActivida.description = "";
                 nuevaActivida.ID_activitytype = 0;
+
+                nuevaActivida.date = DateTime.Today.Date;
                 var form = (from c in db.FormsM where (c.ID_form == IDForm) select c).FirstOrDefault();
                 if (form != null)
                 {
                     nuevaActivida.description = form.name;
                     nuevaActivida.ID_activitytype = form.ID_activity;
                     nuevaActivida.query1 = form.query2;
+                    if (form.ID_activity == 4) {
+                        nuevaActivida.date = time;
+                    }
                 }
                     
 
@@ -431,7 +455,7 @@ namespace comerciamarketing_webapp.Controllers
                 }
 
 
-                nuevaActivida.date = DateTime.Today.Date;
+                
 
 
 
@@ -528,8 +552,8 @@ namespace comerciamarketing_webapp.Controllers
                         email.Date = Convert.ToDateTime(nuevaActivida.date).ToLongDateString();
                         email.Time = Convert.ToDateTime(nuevaActivida.date).ToLongTimeString();
                         email.Place = store.store + ", " + store.address;
-                        //email.link = "http://internal.comerciamarketing.com/Demos/Form_template?id_demo=" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
-                        email.link = "";
+                        //email.link = "https://comerciamarketing.com/Home/Internal" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                        email.link = "https://comerciamarketing.com/Home/Internal";
                         email.enddate = Convert.ToDateTime(nuevaActivida.date).AddDays(1).ToLongDateString();
                         email.Send();
 

@@ -78,27 +78,27 @@
 
         var objects = [];
 
-        $.each($('input.form-control[type = "text"]'), function () {
+        //$.each($('input.form-control[type = "text"]'), function () {
 
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).val(),
+        //        text: ""
+        //    });
 
 
-        });
+        //});
 
         $.each($('input.form-control[type = "number"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
+            //objects.push({
+            //    id: $(this).attr('id'),
+            //    value: $(this).val(),
+            //    text: ""
+            //});
 
             if ($(this).val() != "" || $(this).val() != null) {
                 if ($(this).val() > 0) {
@@ -117,28 +117,28 @@
 
         });
 
-        $.each($('input.form-check-input[type = "radio"]'), function () {
+        //$.each($('input.form-check-input[type = "radio"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).prop('checked'),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).prop('checked'),
+        //        text: ""
+        //    });
 
 
-        });
-        $.each($('input.form-check-input[type = "checkbox"]'), function () {
+        //});
+        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).prop('checked'),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).prop('checked'),
+        //        text: ""
+        //    });
 
 
-        });
+        //});
 
         $.each($('input.dropifyIMG[type = "file"]'), function () {
 
@@ -152,34 +152,34 @@
 
 
 
-        $.each($('textarea.form-control'), function () {
+        //$.each($('textarea.form-control'), function () {
 
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
-
-
-        });
-
-        $.each($('select'), function () {
-
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-            var str = $(this).find('option:selected').text();
-            str = str.substring(str.indexOf("-") + 1);
-
-            var final = "";
-            objects.push({
-                id: $(this).attr('name'),
-                value: $(this).val(),
-                text: str.trim()
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).val(),
+        //        text: ""
+        //    });
 
 
-        });
+        //});
+
+        //$.each($('select'), function () {
+
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    var str = $(this).find('option:selected').text();
+        //    str = str.substring(str.indexOf("-") + 1);
+
+        //    var final = "";
+        //    objects.push({
+        //        id: $(this).attr('name'),
+        //        value: $(this).val(),
+        //        text: str.trim()
+        //    });
+
+
+        //});
 
         //var canvas = document.getElementById("sig-canvas");
         $.each($('canvas'), function () {
@@ -209,7 +209,7 @@
             success: function (result) {
 
                 if (result.Result == "Success") {
-                    
+
                     $("#loading").hide();
                     var x = document.getElementById("finish_activity");
                     if (x.style.display === "none") {
@@ -218,7 +218,7 @@
                         //x.style.display = "none";
                     }
 
-                 
+
                     showSuccessToast();
                     // window.location.reload(true);
                     //window.location.reload(true);
@@ -252,27 +252,27 @@
 
         var objects = [];
 
-        $.each($('input.form-control[type = "text"]'), function () {
+        //$.each($('input.form-control[type = "text"]'), function () {
 
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).val(),
+        //        text: ""
+        //    });
 
 
-        });
+        //});
 
         $.each($('input.form-control[type = "number"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
+            //objects.push({
+            //    id: $(this).attr('id'),
+            //    value: $(this).val(),
+            //    text: ""
+            //});
 
             if ($(this).val() != "" || $(this).val() != null) {
                 if ($(this).val() > 0) {
@@ -292,56 +292,56 @@
 
         });
 
-        $.each($('input.form-check-input[type = "radio"]'), function () {
+        //$.each($('input.form-check-input[type = "radio"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).prop('checked'),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).prop('checked'),
+        //        text: ""
+        //    });
 
 
-        });
-        $.each($('input.form-check-input[type = "checkbox"]'), function () {
+        //});
+        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
 
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).prop('checked'),
-                text: ""
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).prop('checked'),
+        //        text: ""
+        //    });
 
 
-        });
-        $.each($('textarea.form-control'), function () {
+        //});
+        //$.each($('textarea.form-control'), function () {
 
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).val(),
-                text: ""
-            });
-
-
-        });
-
-        $.each($('select'), function () {
-
-            //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-            var str = $(this).find('option:selected').text();
-            str = str.substring(str.indexOf("-") + 1);
-
-            var final = "";
-            objects.push({
-                id: $(this).attr('name'),
-                value: $(this).val(),
-                text: str.trim()
-            });
+        //    objects.push({
+        //        id: $(this).attr('id'),
+        //        value: $(this).val(),
+        //        text: ""
+        //    });
 
 
-        });
+        //});
+
+        //$.each($('select'), function () {
+
+        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        //    var str = $(this).find('option:selected').text();
+        //    str = str.substring(str.indexOf("-") + 1);
+
+        //    var final = "";
+        //    objects.push({
+        //        id: $(this).attr('name'),
+        //        value: $(this).val(),
+        //        text: str.trim()
+        //    });
+
+
+        //});
 
         //var canvas = document.getElementById("sig-canvas");
         $.each($('canvas'), function () {
@@ -380,7 +380,7 @@
 
                 if (result.Result == "Success") {
                     $("#loading").hide();
-                    
+
 
                     var x = document.getElementById("finish_activity");
                     if (x.style.display === "none") {
@@ -505,11 +505,12 @@
             });
 
             $.each($('input.form-control[type = "number"]'), function () {
-                if ($(this).val() == "" || $(this).val() == null) {
-                    flag = false;
-                    $(this).addClass("border-danger");
-                  
-                }
+                //se quito para ayudar a los mercaderistas
+                //if ($(this).val() == "" || $(this).val() == null) {
+                //    flag = false;
+                //    $(this).addClass("border-danger");
+
+                //}
             });
 
             $.each($('input.form-check-input[type = "radio"]'), function () {
@@ -573,10 +574,10 @@
                     position: 'top-right'
                 });
 
-               
 
 
-                
+
+
 
 
             }
@@ -700,7 +701,7 @@
                     $accordionXSCollapse.removeClass('collapse');
                 }
             }, 100);
-        }).trigger('resize'); //trigger window resize on pageload    
+        }).trigger('resize'); //trigger window resize on pageload
 
         // Initialise the Bootstrap Collapse
         $accordionXSCollapse.each(function () {
@@ -743,7 +744,7 @@
                 if ($(this).val() > 0) {
                     //Agregamos la propiedad
 
-                    $(this).closest('.tr').addClass('border-success'); 
+                    $(this).closest('.tr').addClass('border-success');
                     $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
 
                 } else {
@@ -756,4 +757,314 @@
 
         });
     };
+</script>
+
+
+<!--GUARDAR OBJETOS POR SEPARADO-->
+<script type="text/javascript">
+    $('input.form-control[type = "text"]').on('focusout', function () {
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        objects.push({
+            id: $(this).attr('id'),
+            value: $(this).val(),
+            text: ""
+        });
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
+
+
+    $('textarea.form-control').on('focusout', function () {
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        objects.push({
+            id: $(this).attr('id'),
+            value: $(this).val(),
+            text: ""
+        });
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
+
+    $('input.form-control[type = "number"]').on('focusout', function () {
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        objects.push({
+            id: $(this).attr('id'),
+            value: $(this).val(),
+            text: ""
+        });
+
+        if ($(this).val() != "" || $(this).val() != null) {
+            if ($(this).val() > 0) {
+                //Agregamos la propiedad
+
+                $(this).closest('.tr').addClass('border-success');
+                $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
+
+            } else {
+                //Quitamos la propiedad
+
+                $(this).closest('.tr').removeClass('border-success');
+                $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+            }
+        } else {
+            $(this).closest('.tr').removeClass('border-success');
+            $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+        }
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
+
+    $('select').on('focusout', function () {
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+        var str = $(this).find('option:selected').text();
+        str = str.substring(str.indexOf("-") + 1);
+
+        var final = "";
+        objects.push({
+            id: $(this).attr('name'),
+            value: $(this).val(),
+            text: str.trim()
+        });
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
+
+    $('input:radio').click(function () {
+        //console.log($(this).attr('name'));
+        //console.log($(this).attr('id'));
+
+
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+
+
+        $.each($('input.form-check-input[name=' + $(this).attr('name') + ']'), function () {
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text: ""
+            });
+        });
+
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
+
+
+    $('input:checkbox').click(function () {
+        //console.log($(this).attr('name'));
+        //console.log($(this).attr('id'));
+
+
+        $("#loading").hide();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        //GUARDAMOS OBJETOS
+        var objects = [];
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+
+
+            objects.push({
+                id: $(this).attr('id'),
+                value: $(this).prop('checked'),
+                text: ""
+            });
+  
+        //if ($(this).prop('checked')) {
+        //    $(this).closest('.tr').addClass('border-success');
+        //    $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
+        //} else {
+        //    $(this).closest('.tr').removeClass('border-success');
+        //    $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+        //}
+
+        $.ajax({
+            url: '/FormsM/Save_activityByitem',
+            type: 'POST',
+            data: { 'id': idvisita, 'objects': objects },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+                if (result.Result == "Success") {
+                    $("#loading").hide();
+
+                } else {
+                    $("#loading").hide();
+
+
+                }
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+
+
+
+            }
+        });
+    });
 </script>

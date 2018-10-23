@@ -78,9 +78,9 @@
                         <i class="mdi mdi-account-settings"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                        <a href="@Url.Action("Settings", "Home")" class="dropdown-item mt-2">
+                       <!--<a href="Url.Action("Settings", "Home")" class="dropdown-item mt-2">
                             Settings
-                        </a>
+                        </a>-->
                         <a href="@Url.Action("Cerrar_sesion", "Home")" class="dropdown-item">
                             Sign Out
                         </a>
@@ -94,82 +94,82 @@
         <div class="nav-bottom">
             <!--Si es usuario con membresia Merchandising pero rol Administrador-->
             @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") | Session["tipousuario"].ToString() == "1")
-    {
+            {
             <ul class="navbar-nav">
                 @if (ViewBag.Title == "Comercia Marketing - Home")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
             </li>
-}
+                }
 
                 @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
     {
             <li class="nav-item active">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
             </li>
-}
+                }
 
                 @if (ViewBag.Title == "Comercia Marketing - FormsM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
             </li>
-}
+                }
                 @if (ViewBag.Title == "Comercia Marketing - Representatives")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
             </li>
-}
+                }
                 @if (ViewBag.Title == "Comercia Marketing - StoresM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
             </li>
-}
+                }
                 @if (ViewBag.Title == "Comercia Marketing - CustomersM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
             </li>
-}
+                }
                 @if (ViewBag.Title == "Comercia Marketing - Maintenance")
     {
             <li class="nav-item active">
@@ -190,16 +190,16 @@ else
                             <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
                                 Stock items
                             </a>
-                            <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
+                            <a href="@Url.Action("Users", "Home")" class="dropdown-item">
                                 Users
                             </a>
                         </div>
                     </li>
                 </ul>
             </li>
-}
-else
-{
+                }
+                else
+                {
             <li class="nav-item">
                 <ul class="navbar-nav ml-auto sub-menu">
                     <li class="nav-item dropdown">
@@ -218,61 +218,76 @@ else
                             <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
                                 Stock items
                             </a>
-                            <a href="@Url.Action("Brandcompetitors", "Home")" class="dropdown-item">
+                            <a href="@Url.Action("Users", "Home")" class="dropdown-item">
                                 Users
                             </a>
                         </div>
                     </li>
                 </ul>
             </li>
-}
+                }
             </ul>
 }
             <!--Si es usuario con membresia Merchandising pero rol Usuario-->
             @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
-    {
+            {
         <ul class="navbar-nav">
             @if (ViewBag.Title == "Comercia Marketing - Home")
     {
         <li class="nav-item active">
             <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
         </li>
-}
-else
-{
+            }
+            else
+            {
         <li class="nav-item">
             <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
         </li>
-}
+            }
             @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
     {
         <li class="nav-item active">
             <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
         </li>
-}
-else
-{
+            }
+            else
+            {
         <li class="nav-item">
             <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
         </li>
-}
+            }
         </ul>
 }
 
             <!--Si es CLIENTE-->
-            @if (Session["tipousuario"].ToString() == "2" && Session["tiporol"].ToString() == "4")
-    {
+            @if (Session["tipousuario"].ToString() == "2" && (Session["tiporol"].ToString() == "2" || Session["tiporol"].ToString() == "3"  || Session["tiporol"].ToString() == "4"))
+            {
         <ul class="navbar-nav">
             @if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
     {
         <li class="nav-item active">
-            <a href="#" class="nav-link">Home</a>
+            <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
         </li>
 }
-else
+else if (ViewBag.Title == "Comercia Marketing - Analytics")
 {
         <li class="nav-item">
-            <a href="#" class="nav-link">Home</a>
+            <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item active">
+            <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
+        </li>
+}
+else 
+{
+        <li class="nav-item">
+            <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
         </li>
 }
         </ul>

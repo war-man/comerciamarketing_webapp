@@ -273,7 +273,10 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
-
+        public ActionResult Internal()
+        {
+            return View();
+        }
 
         public ActionResult Index()
         {
@@ -1279,6 +1282,35 @@ namespace comerciamarketing_webapp.Controllers
 
         //MERCHANDISING
 
+        public ActionResult Users()
+        {
+            if (Session["IDusuario"] != null)
+            {
+                //GENERAL
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                //GENERAL END
+                //2 es la empresa DEFAULT
+
+                //List<string> uids_rol = new List<string>() { "1", "3", "5", "6", "8", "9", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24" };
+
+                var usuarios = db.Usuarios.Where(c => c.ID_rol !=9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
+
+
+    
+                return View(usuarios.ToList());
+
+
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
         public ActionResult Representatives()
         {
             if (Session["IDusuario"] != null)
@@ -1641,12 +1673,12 @@ namespace comerciamarketing_webapp.Controllers
                 //FILTROS VARIABLES
                 DateTime filtrostartdate;
                 DateTime filtroenddate;
-
-
-
-                //filtros de fecha
-                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                var saturday = sunday.AddDays(6).AddHours(23);
+                //filtros de fecha (DIARIO)
+                var sunday = DateTime.Today;
+                var saturday = sunday.AddHours(23);
+                ////filtros de fecha (SEMANAL)
+                //var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                //var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
@@ -1690,6 +1722,30 @@ namespace comerciamarketing_webapp.Controllers
                 var activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a.ID_visit).Distinct().ToArray();
                 var activitiesCount = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a).Count();
 
+
+
+
+                //**************
+                //Activities 
+                var activity = new List<ActivitiesM>();
+                activity = (from l in db.ActivitiesM where (activities.Contains(l.ID_visit)) select l).OrderByDescending(l => l.date).ToList();
+                //Contamos y definimos por tipo
+                int totalActivities = activity.Count();
+                //1.Forms - 2.Audit - 3.SalesOrder - 4.Demos
+                int totalForms = (from a in activity where (a.ID_activitytype == 1) select a).Count();
+                int totalAudits = (from a in activity where (a.ID_activitytype == 2) select a).Count();
+                int totalSales = (from a in activity where (a.ID_activitytype == 3) select a).Count();
+                int totalDemos = (from a in activity where (a.ID_activitytype == 4) select a).Count();
+
+
+                ViewBag.totalAct = totalActivities;
+                ViewBag.totalForm = totalForms;
+                ViewBag.totalAudit = totalAudits;
+                ViewBag.totalSale = totalSales;
+                ViewBag.totalDemo = totalDemos;
+                //********
+
+
                 rutas = (from r in rutas where (activities.Contains(r.ID_visit)) select r).ToList();
                 //Agregamos los representantes y tambien el estado de cada visita por REP filtro
 
@@ -1731,23 +1787,26 @@ namespace comerciamarketing_webapp.Controllers
                 //ESTADISTICA DE RUTAS POR ESTADO
                 int totalRutas = rutas.Count();
 
-                int onhold = (from e in rutas where (e.ID_visitstate == 3) select e).Count();
-                int inprogress = (from e in rutas where (e.ID_visitstate == 2) select e).Count();
-                int canceled = (from e in rutas where (e.ID_visitstate == 1) select e).Count();
-                int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
 
+                int totalScheduled = (from c in rutas where (c.ID_visitstate == 3) select c).Count();
+                int totalInpro = (from c in rutas where (c.ID_visitstate == 2) select c).Count();
+                int totalFini = (from c in rutas where (c.ID_visitstate == 4) select c).Count();
+                int totalCancl = (from c in rutas where (c.ID_visitstate == 1) select c).Count();
 
-                ViewBag.onhold = onhold;
-                ViewBag.inprogress = inprogress;
-                ViewBag.canceled = canceled;
-                ViewBag.finished = finished;
+                ViewBag.totalVisitas = totalRutas;
+                ViewBag.totalSD = totalScheduled;
+                ViewBag.totalFS = totalFini;
+                ViewBag.totalInpro = totalInpro;
+                ViewBag.totalCanc = totalCancl;
+
+       
 
                 if (totalRutas != 0)
                 {
-                    ViewBag.onholdP = ((Convert.ToDecimal(onhold) / totalRutas) * 100);
-                    ViewBag.inprogressP = ((Convert.ToDecimal(inprogress) / totalRutas) * 100);
-                    ViewBag.canceledP = ((Convert.ToDecimal(canceled) / totalRutas) * 100);
-                    ViewBag.finishedP = ((Convert.ToDecimal(finished) / totalRutas) * 100);
+                    ViewBag.onholdP = ((Convert.ToDecimal(totalScheduled) / totalRutas) * 100);
+                    ViewBag.inprogressP = ((Convert.ToDecimal(totalInpro) / totalRutas) * 100);
+                    ViewBag.canceledP = ((Convert.ToDecimal(totalCancl) / totalRutas) * 100);
+                    ViewBag.finishedP = ((Convert.ToDecimal(totalFini) / totalRutas) * 100);
                 }
                 else
                 {
@@ -1823,6 +1882,16 @@ namespace comerciamarketing_webapp.Controllers
                 ViewData["customerName"] = customer.CardName;
                 ViewBag.customerID = customer.CardCode;
 
+                //SOLO PARA CLIENTES
+                var recursos = (from b in db.Recursos_usuario where (b.ID_usuario == ID) select b).ToList(); ;
+
+                if (recursos != null)
+                {
+                    
+                    ViewBag.bloquearcontenido = "si";
+                    
+                }
+                ViewBag.recursos = recursos;
 
                 return View();
             }
@@ -1831,7 +1900,37 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult Analytics(string id)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+
+                var customer = (from a in CMKdb.OCRD where (a.CardCode == id) select a).FirstOrDefault();
+
+
+                ViewBag.customerID = customer.CardCode;
+                //SOLO PARA CLIENTES
+                var recursos = (from b in db.Recursos_usuario where (b.ID_usuario == ID) select b).ToList(); ;
+
+                if (recursos != null)
+                {
+
+                    ViewBag.bloquearcontenido = "si";
+
+                }
+                ViewBag.recursos = recursos;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
         public ActionResult FormsM()
         {
             if (Session["IDusuario"] != null)
@@ -2587,5 +2686,131 @@ namespace comerciamarketing_webapp.Controllers
      
         }
         //********************************FIN Brandcompetitors
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRoute(string ID_routeD)
+        {
+            try
+            {
+                int id = Convert.ToInt32(ID_routeD);
+
+                //Eliminamos las visitas
+                var visitas = (from a in db.VisitsM where(a.ID_empresa== GlobalVariables.ID_EMPRESA_USUARIO && a.ID_route== id) select a).ToList();
+                var visitasArray = (from b in db.VisitsM where (b.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && b.ID_route == id) select b.ID_visit).ToArray();
+
+                foreach (var visit in visitas) {
+                    VisitsM visita = db.VisitsM.Find(visit.ID_visit);
+                    if (visita != null){
+                        db.VisitsM.Remove(visita);
+                        db.SaveChanges();
+                    }
+                }
+
+                //Eliminamos las actividades
+                var actividades = (from e in db.ActivitiesM where (e.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && visitasArray.Contains(e.ID_visit)) select e).ToList();
+                var actividadesArray = (from f in db.ActivitiesM where (f.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && visitasArray.Contains(f.ID_visit)) select f.ID_activity).ToArray();
+
+
+                foreach (var act in actividades)
+                {
+                    ActivitiesM actividad = db.ActivitiesM.Find(act.ID_activity);
+                    if (actividad != null)
+                    {
+                        db.ActivitiesM.Remove(actividad);
+                        db.SaveChanges();
+                    }
+                }
+                //Eliminamos los detalles de formulario
+
+                var detalles = (from h in db.FormsM_details where (actividadesArray.Contains(h.ID_visit)) select h).ToList();
+                //var detallesArray = (from k in db.FormsM_details where (actividadesArray.Contains(k.ID_visit)) select k.ID_details).ToArray();
+                foreach (var det in detalles)
+                {
+                    FormsM_details detalle = db.FormsM_details.Find(det.ID_details);
+                    if (detalle != null)
+                    {
+                        db.FormsM_details.Remove(detalle);
+                        db.SaveChanges();
+                    }
+                }
+
+                //Eliminamos la ruta
+                RoutesM ruta = db.RoutesM.Find(id);
+                db.RoutesM.Remove(ruta);
+                db.SaveChanges();
+
+                TempData["exito"] = "Route deleted successfully.";
+                return RedirectToAction("RoutesM", "Home", null);
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("RoutesM", "Home", null);
+            }
+
+
+
+        }
+        //
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteVisit(string ID_visitD)
+        {
+            int routeid = 0;
+            try
+            {
+                
+                int id = Convert.ToInt32(ID_visitD);
+
+
+                    VisitsM visita = db.VisitsM.Find(id);
+                    if (visita != null)
+                    {
+                        routeid = visita.ID_route;
+                        db.VisitsM.Remove(visita);
+                        db.SaveChanges();
+                    }
+                
+
+                //Eliminamos las actividades
+                var actividades = (from e in db.ActivitiesM where (e.ID_visit==id) select e).ToList();
+                var actividadesArray = (from f in db.ActivitiesM where (f.ID_visit == id) select f.ID_activity).ToArray();
+
+
+                foreach (var act in actividades)
+                {
+                    ActivitiesM actividad = db.ActivitiesM.Find(act.ID_activity);
+                    if (actividad != null)
+                    {
+                        db.ActivitiesM.Remove(actividad);
+                        db.SaveChanges();
+                    }
+                }
+                //Eliminamos los detalles de formulario
+
+                var detalles = (from h in db.FormsM_details where (actividadesArray.Contains(h.ID_visit)) select h).ToList();
+                //var detallesArray = (from k in db.FormsM_details where (actividadesArray.Contains(k.ID_visit)) select k.ID_details).ToArray();
+                foreach (var det in detalles)
+                {
+                    FormsM_details detalle = db.FormsM_details.Find(det.ID_details);
+                    if (detalle != null)
+                    {
+                        db.FormsM_details.Remove(detalle);
+                        db.SaveChanges();
+                    }
+                }
+
+
+
+                TempData["exito"] = "Visit deleted successfully.";
+                return RedirectToAction("RoutesM_details", "Home", new { id=routeid});
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("RoutesM_details", "Home", new { id = routeid });
+            }
+
+
+
+        }
     }
 }
