@@ -3,7 +3,50 @@
     ViewBag.Title = "Comercia Marketing - Template preview";
 }
 
-@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10 text-right">
+
+                        <a href="@Url.Action("Details", "VisitsMs", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
+
+            <div class="row">
+                <div class="col-md-12 grid-margin" id="main_container">
+
+
+
+
+                </div><br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 text-right">
+                    <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
+                    <input type="submit" value="Finish activity" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
+                    <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
+                </div>
+            </div>
+
+            @Html.Partial("~/Views/Shared/Footer2.cshtml")
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+@*@helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
         foreach (var objeto in parentList)
         {
@@ -269,17 +312,17 @@
                     <p class="control-label col-md-10">@objeto.fdescription</p>
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
-    {
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden/>
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"   hidden/>
-}
-else
-{
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                    <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
-}
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
+                        else
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
                     </div>
 
 
@@ -292,17 +335,17 @@ else
                             <p class="control-label col-md-10">@objeto.fdescription</p>
                             <div class="col-md-12">
                                 @if (objeto.fsource != "")
-    {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                            <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
-                            <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
-}
-else
-{
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                            <img id="@("img_" + objeto.idkey)" src="#" alt="your image"  hidden/>
-                            <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image"  hidden/>
-}
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                                }
+                                else
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                                    <img id="@("img_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                }
                             </div>
 
                         </div>
@@ -359,15 +402,15 @@ else
                 if (objeto.parent != 0)
                 {
 
-                            <div class="form-group">
-                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                    <div class="form-group">
+                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
-                                <div class="col-md-12">
-                                    <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                        <div class="col-md-12">
+                            <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
-                                </div>
-                            </div>
+                        </div>
+                    </div>
 
                 }
                 else
@@ -378,7 +421,7 @@ else
                                 <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                                 <div class="col-md-12">
-                                    <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
 
                                 </div>
@@ -398,7 +441,7 @@ else
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
                             <div class="col-md-12">
-                                <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
 
 
                             </div>
@@ -491,6 +534,28 @@ else
                 </div>
 
             }
+
+            <!--PARA BRAND COMPETITORS -->
+            if (objeto.id_resource == 15)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+
+                            <div class="col-md-12">
+                                <select class="form-control" id="brandcompetitors_list" name="@objeto.idkey" style="width:100%">
+                                    <option value="0">Seleccione competidor de la marca</option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
             <!--PARA SELECT GENERAL -->
             if (objeto.id_resource == 17)
             {
@@ -547,27 +612,7 @@ else
 
             }
 
-            <!--PARA BRAND COMPETITORS -->
-            if (objeto.id_resource == 15)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
 
-                            <div class="col-md-12">
-                                <select class="form-control" id="brandcompetitors_list" name="@objeto.idkey" style="width:100%">
-                                    <option value="0">Seleccione competidor de la marca</option>
-
-                                </select>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
             <!--PARA FIRMA ELECTRONICA -->
             if (objeto.id_resource == 9)
             {
@@ -590,21 +635,21 @@ else
 
                         <script type="text/javascript">
 
-                                var canvas = document.getElementsByClassName("@("canvas_" + objeto.idkey)");
-                                //var canvas = document.getElementById("sig-canvas");
-                                var context = canvas[0].getContext("2d");
+                                    var canvas = document.getElementsByClassName("@("canvas_" + objeto.idkey)");
+                                    //var canvas = document.getElementById("sig-canvas");
+                                    var context = canvas[0].getContext("2d");
 
-                                // load image from data url
+                                    // load image from data url
 
-                                var imageObj = new Image();
+                                    var imageObj = new Image();
 
-                                imageObj.onload = function () {
+                                    imageObj.onload = function () {
 
-                                    context.drawImage(this, 0, 0);
+                                        context.drawImage(this, 0, 0);
 
-                                };
+                                    };
 
-                                imageObj.src = "@objeto.fsource";
+                                    imageObj.src = "@objeto.fsource";
 
 
                         </script>
@@ -647,7 +692,7 @@ else
 
 
             <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
-            
+
             <div class="row">
                 <div class="col-md-12 grid-margin">
 
@@ -658,7 +703,7 @@ else
                 </div><br />
 
             </div>
-           
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10 text-right">
                     <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
@@ -675,4 +720,4 @@ else
     </div>
     <!-- main-panel ends -->
 </div>
-<!-- page-body-wrapper ends -->
+<!-- page-body-wrapper ends -->*@

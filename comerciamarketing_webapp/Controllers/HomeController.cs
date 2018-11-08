@@ -31,6 +31,12 @@ namespace comerciamarketing_webapp.Controllers
             return View();
         }
 
+        public ActionResult Promotions()
+        {
+
+            return View();
+        }
+
         public ActionResult Main(string fstartd, string fendd, string store)
         {
 
@@ -153,14 +159,28 @@ namespace comerciamarketing_webapp.Controllers
 
                     foreach (var itemrep in reps)
                     {
-                        var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
-                        if (reps.Count() == 1)
+                        if (itemrep.ID_usuario == 0)//Es usuario demo
                         {
-                            nombreRep = usuario.nombre + " " + usuario.apellido;
+                            if (reps.Count() == 1)
+                            {
+                                nombreRep = itemrep.query1;
+                            }
+                            else if (reps.Count() > 1)
+                            {
+                                nombreRep += itemrep.query1 + ", ";
+                            }
                         }
-                        else if (reps.Count() > 1)
+                        else
                         {
-                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                            var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
+                            if (reps.Count() == 1)
+                            {
+                                nombreRep = usuario.nombre + " " + usuario.apellido;
+                            }
+                            else if (reps.Count() > 1)
+                            {
+                                nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                            }
                         }
                     }
                     //utiliamos esta variable para el nombre del representante
@@ -596,17 +616,33 @@ namespace comerciamarketing_webapp.Controllers
                     var nombreRep = "";
                     var reps = (from e in db.VisitsM_representatives where (e.ID_visit == itemVisita.ID_visit) select e).ToList();
 
+                    
+                    
                     foreach (var itemrep in reps)
                     {
-                        var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
-                        if (reps.Count() == 1)
+                        if (itemrep.ID_usuario == 0)//Es usuario demo
                         {
-                            nombreRep = usuario.nombre + " " + usuario.apellido;
+                            if (reps.Count() == 1)
+                            {
+                                nombreRep = itemrep.query1;
+                            }
+                            else if (reps.Count() > 1)
+                            {
+                                nombreRep += itemrep.query1 + ", ";
+                            }
                         }
-                        else if (reps.Count() > 1)
-                        {
-                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                        else {
+                            var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
+                            if (reps.Count() == 1)
+                            {
+                                nombreRep = usuario.nombre + " " + usuario.apellido;
+                            }
+                            else if (reps.Count() > 1)
+                            {
+                                nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                            }
                         }
+
                     }
                     //utiliamos esta variable para el nombre del representante
                     itemVisita.city = nombreRep;

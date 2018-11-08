@@ -1919,8 +1919,7 @@ body.author .blog-details-author {
   -webkit-transition: opacity .15s linear;
   transition: opacity .15s linear; }
 
-.fade.in {
-  opacity: 1; }
+
 
 .collapse {
   display: none; }

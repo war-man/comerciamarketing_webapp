@@ -105,7 +105,7 @@
                             </div>
                             <form method="post" id="form">
                                 <h3 class="mr-auto">Welcome!</h3>
-                                <p class="mb-5 mr-auto">Enter the code below.</p>
+                                <p class="mb-5 mr-auto">Enter the access code below.</p>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -121,9 +121,9 @@
                                     <p class="footer-text">Copyright © 2018 Comercia Marketing. All rights reserved.</p>
                                     <ul class="auth-footer text-gray">
                                         <!--
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-                -->
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Cookie Policy</a></li>
+                                            -->
                                     </ul>
                                 </div>
                             </form>
@@ -144,68 +144,15 @@
         $("#loading").show();
         e.preventDefault();
         //PRIMERO LLAMAMOS LA FUNCION LOGIN
-        var email = $('#usuariocorreo').val();
-        var password = $('#password').val();
-
-        var rememberme = false;
-        if ($('#ahahahahstayinalive').is(":checked")) {
-            // it is checked
-            rememberme = true;
-        }
+        var code= $('#usuariocode').val();
 
 
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("Iniciar_sesion", "Home")',
-            contentType: "application/json; charset=utf-8",
-            data: { usuariocorreo: email, password: password, rememberme:rememberme },
-            dataType: "json",
-            success: function (data) {
-                if (data.success) {
-                    //SI ES UN USUARIO DEMO
-                    if (data.redireccion == "userform") {
-                        console.log("Incomplete form")
-
-                        var href = '@Url.Action("Edit", "user_form_w9", new { id = "id" })';
-                        href = href.replace("id", data.redireccion);
-
-                        
-                        window.location.href = href;
-
-                    } else if( data.redireccion =="customer" ){
-                        console.log("Login success")
-                      var url = '@Url.Action("CustomerM_stats", "Home", new { id="CM" })';
-
-
-                        url = url.replace('CM', data.cm);
-                        window.location.href = url
-
-
-                    }else {
-                        console.log("Login success")
-                      
-                        window.location.href = '@Url.Action("Main", "Home")';
-
-
-                    }
+        var url = '@Url.Action("Activity_ea", "FormsM", new { codigo="CM" })';
+        url = url.replace('CM', code);
+        window.location.href = url
 
 
 
-                } else {
-                    showWarningToast();
-                    $('#usuariocorreo').val("");
-                    $('#usuariocorreo').focus();
-                    $('#password').val("");
-
-                }
-            },
-            error: function () {
-
-
-            }
-
-
-        });
 
     });
 </script>
@@ -302,4 +249,64 @@
     $(document).ajaxStop(function () {
         $("#loading").hide();
     });
+
 </script>
+
+<!--NOTIFICACIONES GLOBALES-->
+
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+                $.toast({
+                    heading: 'Danger',
+                    text: '@(TempData["error"])',
+                    showHideTransition: 'slide',
+                    icon: 'error',
+                    loaderBg: '#800000',
+                    position: 'top-right'
+                })
+
+        };
+    </script>
+}
+
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+                $.toast({
+                    heading: 'Warning',
+                    text: '@(TempData["advertencia"])',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#ff9900',
+                    position: 'top-right'
+                })
+
+        };
+    </script>
+}
+
+
+@if (TempData["exito"] != null)
+{
+    <script type="text/javascript">
+        console.log("Success");
+
+        $(document).ready(function () {
+
+                $.toast({
+                    heading: 'Success',
+                    text: '@(TempData["exito"])',
+                    showHideTransition: 'slide',
+                    icon: 'success',
+                    loader: false,
+                    loaderBg: '#004d00',
+                    position: 'top-right'
+                })
+        });
+    </script>
+}

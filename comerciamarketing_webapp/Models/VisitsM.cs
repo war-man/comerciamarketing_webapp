@@ -12,6 +12,7 @@ namespace comerciamarketing_webapp.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Script.Serialization;
 
     public partial class VisitsM
     {
@@ -50,7 +51,9 @@ namespace comerciamarketing_webapp.Models
         public int ID_route { get; set; }
         public int ID_empresa { get; set; }
 
+        [ScriptIgnore(ApplyToOverrides = true)]
         public virtual RoutesM RoutesM { get; set; }
+        [ScriptIgnore(ApplyToOverrides = true)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitsM_representatives> VisitsM_representatives { get; set; }
     }

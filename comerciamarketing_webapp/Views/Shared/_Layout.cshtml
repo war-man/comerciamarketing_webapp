@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html manifest="">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=0, shrink-to-fit=no">
@@ -335,47 +335,47 @@
             }
 
             /**/
- 
 
-        
+
+
 
             /**/
             /**/
 
 
 
-                table#resultsRetail {
-                    border: 0;
+            table#resultsRetail {
+                border: 0;
+            }
+
+                table#resultsRetail thead {
+                    display: none;
                 }
 
-                    table#resultsRetail thead {
-                        display: none;
+                table#resultsRetail tr {
+                    border-bottom: 3px solid #ddd;
+                    display: block;
+                    margin-bottom: .625em;
+                }
+
+                table#resultsRetail td {
+                    border-bottom: 1px solid #ddd;
+                    display: block;
+                    font-size: .8em;
+                    text-align: right;
+                }
+
+                    table#resultsRetail td:before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: normal;
+                        text-transform: uppercase;
                     }
 
-                    table#resultsRetail tr {
-                        border-bottom: 3px solid #ddd;
-                        display: block;
-                        margin-bottom: .625em;
+                    table#resultsRetail td:last-child {
+                        border-bottom: 0;
                     }
 
-                    table#resultsRetail td {
-                        border-bottom: 1px solid #ddd;
-                        display: block;
-                        font-size: .8em;
-                        text-align: right;
-                    }
-
-                        table#resultsRetail td:before {
-                            content: attr(data-label);
-                            float: left;
-                            font-weight: normal;
-                            text-transform: uppercase;
-                        }
-
-                        table#resultsRetail td:last-child {
-                            border-bottom: 0;
-                        }
-            
             /**/
             /*END DATATABLES*/
             .flexRadio {
@@ -431,17 +431,17 @@
     <div class="container-scroller">
         <!-- Horizontal Menu Start -->
         @if (ViewBag.Title != "Comercia Marketing")
-    {
-        if (ViewBag.Title == "Comercia Marketing - Activityea")
         {
+            if (ViewBag.Title == "Comercia Marketing - Activityea")
+            {
+
+            }
+            else
+            {
+                @Html.Partial("~/Views/Shared/Menu2.cshtml")
+            }
 
         }
-        else
-        {
-            @Html.Partial("~/Views/Shared/Menu2.cshtml")
-    }
-
-}
         <!-- Horizontal Menu Ends -->
         @RenderBody()
 
@@ -1775,6 +1775,11 @@
 
     @Html.Partial("~/Views/Shared/ActivityScripts.cshtml")
 }
+@if (ViewBag.Title == "Comercia Marketing - Template previewadmin")
+{
+
+    @Html.Partial("~/Views/Shared/ActivityadminScripts.cshtml")
+}
 @if (ViewBag.Title == "Comercia Marketing - Activityea")
 {
 
@@ -1789,6 +1794,10 @@
     @Html.Partial("~/Views/Shared/visitScript.cshtml")
 }
 
+@if (ViewBag.Title == "Comercia Marketing - Store_statsadmin")
+{
+    @Html.Partial("~/Views/Shared/visitScriptadmin.cshtml")
+}
 <script>
     $(document).ready(function () {
 
@@ -2437,7 +2446,7 @@
         })(jQuery);
     </script>
 }
-@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+@if (ViewBag.Title == "Comercia Marketing - Store_statsadmin")
 {
     <script>
         $("#demotimetitle").hide();

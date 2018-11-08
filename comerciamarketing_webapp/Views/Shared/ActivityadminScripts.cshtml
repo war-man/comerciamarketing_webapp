@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -1101,8 +1100,8 @@
 
             },
             success: function (result) {
-                var url = '@Url.Action("Activity_ea", "FormsM", new { codigo= "ACCMK00" + ViewBag.idvisita })';
 
+                 var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
                 $("#loading").hide();
                     window.location.href = url;
 
@@ -1392,146 +1391,4 @@
             }
         });
     });
-
-    $('input:radio').click(function () {
-        //console.log($(this).attr('name'));
-        //console.log($(this).attr('id'));
-
-
-        $("#loading").hide();
-        var idvisita = "";
-        idvisita = document.getElementById('idvisita').value;
-        //GUARDAMOS OBJETOS
-        var objects = [];
-        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-        //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-
-
-        $.each($('input.form-check-input[name=' + $(this).attr('name') + ']'), function () {
-
-
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).prop('checked'),
-                text: ""
-            });
-        });
-
-
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
-
-                if (result.Result == "Success") {
-                    $("#loading").hide();
-
-                } else {
-                    $("#loading").hide();
-
-
-                }
-
-
-            },
-            error: function (request) {
-                $("#loading").hide();
-
-
-
-            }
-        });
-    });
-
-    $('input:checkbox').click(function () {
-
-        $("#loading").hide();
-        var idvisita = "";
-        idvisita = document.getElementById('idvisita').value;
-        //GUARDAMOS OBJETOS
-        var objects = [];
-
-
-        objects.push({
-            id: $(this).attr('id'),
-            value: $(this).prop('checked'),
-            text: ""
-        });
-
-
-
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
-
-                if (result.Result == "Success") {
-                    $("#loading").hide();
-
-                } else {
-                    $("#loading").hide();
-
-
-                }
-
-
-            },
-            error: function (request) {
-                $("#loading").hide();
-
-
-
-            }
-        });
-    });
 </script>
-@if (ViewBag.checkin == 1)
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                $("#modal_demoform").modal('show');
-            });
-        </script>
-    }
-
-
-        <script>
-            var idvisita = "";
-            idvisita = document.getElementById('idvisita').value;
-
-            $(function () {
-                $("#checkin").click(function () {
-
-                    var now = new Date();
-
-                    console.log(now.toLocaleString());
-
-                    //alert(now.toLocaleString("en-US", { hour12: true}));
-                    console.log(now.toLocaleString("en-US", { hour12: true }));
-
-                    $.ajax({
-                        url: '/FormsM/Check_in',
-                        type: 'POST',
-                        data: { "ID_activity": idvisita, "check_in": now.toLocaleString("en-US", { hour12: true }) },
-                        success: function (result) {
-
-                        },
-                        error: function (request) {
-
-                        }
-                    });
-
-                }
-                );
-            });
-
-        </script>

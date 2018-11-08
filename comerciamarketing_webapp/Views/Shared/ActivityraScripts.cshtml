@@ -47,7 +47,9 @@
             }); //to remove previous position style
         }
     })(jQuery);
-
+    function isOnLine() {
+        return navigator.onLine;
+    }
 
     $(function () {
         $("#save_activity").click(function () {
@@ -117,70 +119,6 @@
 
         });
 
-        //$.each($('input.form-check-input[type = "radio"]'), function () {
-
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
-
-
-        //});
-        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
-
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).attr('data-changeflag'),
-                text: ""
-            });
-
-        });
-
-
-
-        //$.each($('textarea.form-control'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        //$.each($('select'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-        //    var str = $(this).find('option:selected').text();
-        //    str = str.substring(str.indexOf("-") + 1);
-
-        //    var final = "";
-        //    objects.push({
-        //        id: $(this).attr('name'),
-        //        value: $(this).val(),
-        //        text: str.trim()
-        //    });
-
-
-        //});
-
         //var canvas = document.getElementById("sig-canvas");
         $.each($('canvas'), function () {
             var canvas = document.getElementById($(this).attr("id"));
@@ -198,43 +136,236 @@
         //$.each(objects, function (propName, propVal) {
         //    console.log(propName, propVal);
         //});
+        if (isOnLine()) {
+                //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-        var now = new Date();
-        $.ajax({
-            url: '/FormsM/Save_activity',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
-            cache: false,
-            global: false,
-            success: function (result) {
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
-                if (result.Result == "Success") {
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
 
-                    $("#loading").hide();
-                    var x = document.getElementById("finish_activity");
-                    if (x.style.display === "none") {
-                        x.style.display = "inline-block";
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        if (objeto.resourcetype == 9) {//Si es firma
+                            if (value == "" || value == null) { value = ""; }
+                            item.fsource = value; //Lo guardamos
+
+                        } else if (objeto.resourcetype == 16) {
+                            if (value == "" || value == null) { value = false; }
+                            item.fvalue = value; //Lo guardamos
+                        }
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idVisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.check_in = now.toLocaleString("en-US", { hour12: true });
+                }
+
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+
+            //Guardamos en server
+
+            $.ajax({
+                url: '/FormsM/Save_activity',
+                type: 'POST',
+                data: { 'id': idVisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+                        $("#loading").hide();
+                                    //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                  
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                        var now = new Date();
+                        var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+                        retrievedArrayA.forEach(function (objeto) {
+                            if (objeto.ID_activity == idVisita) {
+                                item = objeto;
+                                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                item.onserver = false;
+                                item.action = "saved"
+                                item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            }
+
+                        });
+                        localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+                        showSuccessToast();
+
+                        var x = document.getElementById("finish_activity");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                        //window.location.reload(true);
+
+                        //window.location.reload(true);
                     } else {
-                        //x.style.display = "none";
+                        $("#loading").hide();
+                        showWarning2Toast();
+
                     }
 
 
-                    showSuccessToast();
-                    // window.location.reload(true);
-                    //window.location.reload(true);
-                } else {
+                },
+                error: function (request) {
                     $("#loading").hide();
                     showWarning2Toast();
+
+                }
+            });
+        } else {
+                //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        if (objeto.resourcetype == 9) {//Si es firma
+                            if (value == "" || value == null) { value = ""; }
+                            item.fsource = value; //Lo guardamos
+
+                        } else if (objeto.resourcetype == 16) {
+                            if (value == "" || value == null) { value = false; }
+                            item.fvalue = value; //Lo guardamos
+                        }
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
                 }
 
-
-            },
-            error: function (request) {
-                $("#loading").hide();
-                showWarning2Toast();
-
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idVisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.check_in = now.toLocaleString("en-US", { hour12: true });
+                }
+
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+            $("#loading").hide();
+            showSuccessToast();
+
+            var x = document.getElementById("finish_activity");
+            if (x.style.display === "none") {
+                x.style.display = "inline-block";
+            } else {
+                x.style.display = "none";
+            }
+
+        }
 
 
 
@@ -292,57 +423,6 @@
 
         });
 
-        //$.each($('input.form-check-input[type = "radio"]'), function () {
-
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
-
-
-        //});
-        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
-
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
-
-
-        //});
-        //$.each($('textarea.form-control'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        //$.each($('select'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-        //    var str = $(this).find('option:selected').text();
-        //    str = str.substring(str.indexOf("-") + 1);
-
-        //    var final = "";
-        //    objects.push({
-        //        id: $(this).attr('name'),
-        //        value: $(this).val(),
-        //        text: str.trim()
-        //    });
-
-
-        //});
-
         //var canvas = document.getElementById("sig-canvas");
         $.each($('canvas'), function () {
             var canvas = document.getElementById($(this).attr("id"));
@@ -356,54 +436,237 @@
             });
         });
 
-        $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).attr('data-changeflag'),
-                text: ""
-            });
-
-        });
         //$.each(objects, function (propName, propVal) {
         //    console.log(propName, propVal);
         //});
 
-        var now = new Date();
-        $.ajax({
-            url: '/FormsM/Save_activity',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
-            cache: false,
-            global: false,
-            success: function (result) {
+        if (isOnLine()) {
+                //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
 
-                    var x = document.getElementById("finish_activity");
-                    if (x.style.display === "none") {
-                        x.style.display = "inline-block";
-                    } else {
-                        x.style.display = "none";
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        if (objeto.resourcetype == 9) {//Si es firma
+                            if (value == "" || value == null) { value = ""; }
+                            item.fsource = value; //Lo guardamos
+
+                        } else if (objeto.resourcetype == 16) {
+                            if (value == "" || value == null) { value = false; }
+                            item.fvalue = value; //Lo guardamos
+                        }
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
                     }
-                    // window.location.reload(true);
-                    showSuccessToast();
-                    //window.location.reload(true);
-                } else {
-                    $("#loading").hide();
-                    showWarning2Toast();
+
                 }
 
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
-                showWarning2Toast();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idVisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.check_in = now.toLocaleString("en-US", { hour12: true });
+                }
+
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activity',
+                type: 'POST',
+                data: { 'id': idVisita, 'objects': objects, 'lat': "", 'lng': "", 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+                        $("#loading").hide();
+                                    //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                  
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+                        var now = new Date();
+                        var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+                        retrievedArrayA.forEach(function (objeto) {
+                            if (objeto.ID_activity == idVisita) {
+                                item = objeto;
+                                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                item.onserver = false;
+                                item.action = "saved"
+                                item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            }
+
+                        });
+                        localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+                        showSuccessToast();
+
+                        var x = document.getElementById("finish_activity");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                        //window.location.reload(true);
+
+                        //window.location.reload(true);
+                    } else {
+                        $("#loading").hide();
+                        showWarning2Toast();
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+                    showWarning2Toast();
+
+                }
+            });
+        } else {
+                //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        if (objeto.resourcetype == 9) {//Si es firma
+                            if (value == "" || value == null) { value = ""; }
+                            item.fsource = value; //Lo guardamos
+
+                        } else if (objeto.resourcetype == 16) {
+                            if (value == "" || value == null) { value = false; }
+                            item.fvalue = value; //Lo guardamos
+                        }
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idVisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.check_in = now.toLocaleString("en-US", { hour12: true });
+                }
+
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+            $("#loading").hide();
+            showSuccessToast();
+
+            var x = document.getElementById("finish_activity");
+            if (x.style.display === "none") {
+                x.style.display = "inline-block";
+            } else {
+                x.style.display = "none";
+            }
+
+        }
     };
 
     function initGeolocation() {
@@ -413,72 +676,6 @@
             console.log('Geolocation is not supported');
         }
     }
-</script>
-
-
-<!--SCRIPT PARA GUARDAR IMAGENES TIEMPO REAL -->
-<script>
-    $('input[type=file]').change(function () {
-        //Le decimos que por cada input file que encuentre hara este proceso
-        // Checking whether FormData is available in browser
-        if (window.FormData !== undefined) {
-            //$.each($('input[type="file"]'), function () {
-
-            var ID = $(this).attr('id');
-            $("#loading").show();
-            $(this).attr('data-changeflag', '0');
-
-            var idvisita = "";
-
-
-            var fileUpload = $("#" + ID).get(0);
-
-            var files = fileUpload.files;
-
-            // Create FormData object
-            var fileData = new FormData();
-
-            // Looping over all files and add it to FormData object
-            for (var i = 0; i < files.length; i++) {
-                fileData.append(files[i].name, files[i]);
-            }
-
-            // Adding one more key to FormData object
-            fileData.append('id', ID);
-            fileData.append('idvisita', idvisita);
-
-
-
-            //$.ajax({
-            //    url: '/FormsM/UploadFiles',
-            //    type: "POST",
-            //    contentType: false, // Not to set any content header
-            //    processData: false, // Not to process data
-            //    async: true,
-            //    timeout: 80000,
-            //    data: fileData,
-            //    success: function (result) {
-            //        //$("#modal_demoform_saving").modal('hide');
-            //    },
-            //    error: function (err) {
-            //        //$("#modal_demoform_saving").modal('hide');
-            //        alert("An error is reported.");
-
-            //    }
-            //});
-            //});
-
-
-        }
-
-
-        else {
-            alert("FormData is not supported.");
-        }
-
-    });
-
-
 </script>
 <script>
     function selectTest(ID) {
@@ -490,7 +687,9 @@
 </script>
 <script>
 //FINISH TEMPLATE
-
+    function isOnLine() {
+        return navigator.onLine;
+    }
     $(function () {
         $("#finish_activity").click(function () {
             var flag = true;
@@ -612,8 +811,23 @@
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
 
+        if (isOnLine()) {
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idvisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.isfinished = true;
+                    item.check_out = now.toLocaleString("en-US", { hour12: true });
+                }
 
-        var now = new Date();
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+        
         $.ajax({
             url: '/FormsM/Finish_activity',
             type: 'POST',
@@ -624,20 +838,50 @@
             success: function (result) {
 
                  var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                $("#loading").hide();
+
+              
+                var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+                retrievedArrayA.forEach(function (objeto) {
+                    if (objeto.ID_activity == idvisita) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "saved"
+                    }
+
+                });
+                localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
 
                     window.location.href = url;
 
             },
             error: function (request) {
 
-
+                $("#loading").hide();
                 window.location.reload(true);
             }
         });
 
+        } else {
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idvisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.isfinished = true;
+                    item.check_out = now.toLocaleString("en-US", { hour12: true });
+                }
 
-
-
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+                         var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+            $("#loading").hide();
+            window.location.href = url;
+        }
     };
 
     function error2(err) {
@@ -646,8 +890,23 @@
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
 
+        if (isOnLine()) {
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idvisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.isfinished = true;
+                    item.check_out = now.toLocaleString("en-US", { hour12: true });
+                }
 
-        var now = new Date();
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+
+        
         $.ajax({
             url: '/FormsM/Finish_activity',
             type: 'POST',
@@ -658,16 +917,50 @@
             success: function (result) {
 
                  var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                $("#loading").hide();
+
+              
+                var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+                retrievedArrayA.forEach(function (objeto) {
+                    if (objeto.ID_activity == idvisita) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "saved"
+                    }
+
+                });
+                localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
 
                     window.location.href = url;
 
             },
             error: function (request) {
 
-
+                $("#loading").hide();
                 window.location.reload(true);
             }
         });
+
+        } else {
+            var now = new Date();
+            var retrievedArrayA = JSON.parse(localStorage.getItem('activities'));
+            retrievedArrayA.forEach(function (objeto) {
+                if (objeto.ID_activity == idvisita) {
+                    item = objeto;
+                    //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                    item.onserver = false;
+                    item.action = "update"
+                    item.isfinished = true;
+                    item.check_out = now.toLocaleString("en-US", { hour12: true });
+                }
+
+            });
+            localStorage.setItem('activities', JSON.stringify(retrievedArrayA));
+             var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+            $("#loading").hide();
+            window.location.href = url;
+        }
     };
 
 
@@ -682,59 +975,153 @@
 
 
 </script>
+
+
+<!--***********SCRIPT PARA ORDENAMIENTO DE ITEMS***********-->
 <script>
-    $(function () {
-        var isXS = false,
-            $accordionXSCollapse = $('.accordion-xs-collapse');
+    function OrderedList(parentList,main_container, parent = 0, selectid="") {
+        //#main_container es el contenedor principal donde se estructuran los div principales
+        parentList.forEach(function (objeto) {
+            //< !--PARA TITULOS-- >
+            if (objeto.id_resource == 1) {
+                $("" + main_container + "").append('<div class="row" id="main_container_child' + objeto.idkey + '">');
+                $("#main_container_child" + objeto.idkey + "").append('<hr />');
+                $("#main_container_child" + objeto.idkey + "").append('<div class="form-horizontal" id="main_container_subchild' + objeto.idkey + '">');
+                $("#main_container_subchild" + objeto.idkey + "").append('<hr />');
+                $("#main_container_subchild" + objeto.idkey + "").append('<h5 class="display-4 text-warning" style="text-align:center;">' + objeto.fsource + '</h5>');
+                $("#main_container_subchild" + objeto.idkey + "").append('<hr />');
+                $("#main_container_child" + objeto.idkey + "").append('</div>');
+                $("#main_container_child" + objeto.idkey + "").append('<hr />');
+                $("" + main_container + "").append('</div>');
 
-        // Window resize event (debounced)
-        var timer;
-        $(window).resize(function () {
-            if (timer) { clearTimeout(timer); }
-            timer = setTimeout(function () {
-                isXS = Modernizr.mq('only screen and (max-width: 1767px)');
-
-                // Add/remove collapse class as needed
-                if (isXS) {
-                    $accordionXSCollapse.addClass('collapse');
-                } else {
-                    $accordionXSCollapse.removeClass('collapse');
-                }
-            }, 100);
-        }).trigger('resize'); //trigger window resize on pageload
-
-        // Initialise the Bootstrap Collapse
-        $accordionXSCollapse.each(function () {
-            $(this).collapse({ toggle: false });
-        });
-
-        // <a href="https://www.jqueryscript.net/accordion/">Accordion</a> toggle click event (live)
-        $(document).on('click', '.accordion-xs-toggle', function (e) {
-            e.preventDefault();
-
-            var $thisToggle = $(this),
-                $targetRow = $thisToggle.parent('.tr'),
-                $targetCollapse = $targetRow.find('.accordion-xs-collapse');
-
-            if (isXS && $targetCollapse.length) {
-                var $siblingRow = $targetRow.siblings('.tr'),
-                    $siblingToggle = $siblingRow.find('.accordion-xs-toggle'),
-                    $siblingCollapse = $siblingRow.find('.accordion-xs-collapse');
-
-                $targetCollapse.collapse('toggle'); //toggle this collapse
-                $siblingCollapse.collapse('hide'); //close siblings
-
-                $thisToggle.toggleClass('collapsed'); //class used for icon marker
-                $siblingToggle.removeClass('collapsed'); //remove sibling marker class
             }
-        });
-    });
-</script>
-<script>
 
-    $(document).ready(function () {
-        check_valid_inputs();
-    });
+        });
+    };
+
+    function OrderedListHeadertable(parentList, main_container, parent = 0, selectid = "") {
+        //#main_container es el contenedor principal donde se estructuran los div principales
+        parentList.forEach(function (objeto) {
+            //< !--PARA TITULOS-- >
+            if (objeto.id_resource == 24) {
+                $("" + main_container + "").append('<div class="th">' + objeto.fdescription + '</div>');
+            }
+
+        });
+    };
+
+    function OrderedListRetail(parentList, main_container, parent = 0, selectid = "") {
+        //#main_container es el contenedor principal donde se estructuran los div principales
+        parentList.forEach(function (objeto) {
+
+            // <!--PARA PRODUCTOS -->
+            if (objeto.id_resource == 3) {
+                $("" + main_container + "").append('<div class="tr" id="main_container_child' + objeto.idkey + '">');
+                $("#main_container_child" + objeto.idkey + "").append('<div class="td accordion-xs-toggle"><small>' + objeto.fdescription + '</small><div class="icondiv"></div></div>');
+                if (objeto.children.length > 0)
+                {
+                    $("#main_container_child" + objeto.idkey + "").append('<div id="main_container_subchild' + objeto.idkey + '" class="accordion-xs-collapse"></div></div>');
+                    $("#main_container_subchild" + objeto.idkey + "").append('<div class="inner" id="main_container_subsubchild' + objeto.idkey + '">');
+
+                    OrderedListRetail(objeto.children, "#main_container_subsubchild" + objeto.idkey + "", objeto.idkey)
+
+                    $("#main_container_subchild" + objeto.idkey + "").append('</div>');
+                    $("#main_container_child" + objeto.idkey + "").append('</div>');
+                    $("" + main_container + "").append('</div>');
+                }
+            }
+            ////<!--CHECK SELECCION MULTIPLE -->
+            if (objeto.id_resource == 16) {
+                if (objeto.parent != 0) {
+                    $("" + main_container + "").append('<div class="td" id="main_container_child' + objeto.idkey + '">');
+                    $("#main_container_child" + objeto.idkey + "").append('<div class="form-check" id="main_container_subchild' + objeto.idkey + '">');
+                    $("#main_container_subchild" + objeto.idkey + "").append('<label class="form-check-label" id="label_container' + objeto.idkey + '" >');
+
+                    if (objeto.fvalue == 0) {
+                        $("#label_container" + objeto.idkey + "").append('<input type="checkbox" class="form-check-input" name="radio_' + objeto.parent + '" id="' + objeto.idkey + '">');
+                        $("#label_container" + objeto.idkey + "").append('' + objeto.fdescription + '');
+                        $("#label_container" + objeto.idkey + "").append('<i class="input-helper"></i>');
+                    }
+                    else {
+                        $("#label_container" + objeto.idkey + "").append('<input type="checkbox" class="form-check-input" name="radio_' + objeto.parent + '" id="' + objeto.idkey + '" checked>');
+                        $("#label_container" + objeto.idkey + "").append('' + objeto.fdescription + '');
+                        $("#label_container" + objeto.idkey + "").append('<i class="input-helper"></i>');
+                    }
+
+                    $("#main_container_subchild" + objeto.idkey + "").append('</label>');
+                    $("#main_container_child" + objeto.idkey + "").append('</div>');
+                    $("" + main_container + "").append('</div>');
+                }
+            }
+
+            //<!--PARA INPUT NUMBER -->
+            if (objeto.id_resource == 18) {
+                if (objeto.parent != 0) {
+                    $("" + main_container + "").append('<div class="td" id="main_container_child' + objeto.idkey + '">');
+                    $("#main_container_child" + objeto.idkey + "").append('<div class="form-group" id="main_container_subchild' + objeto.idkey + '">');
+
+                    if (objeto.fvalueDecimal > 0)
+
+                    {
+                        $("#main_container_subchild" + objeto.idkey + "").append('<input type="number" onClick="selectTest(this.id);" id="' + objeto.idkey + '" class="form-control form-control-sm" value="' + objeto.fvalueDecimal + '" />');
+                    }
+
+                    else {
+                        $("#main_container_subchild" + objeto.idkey + "").append('<input type="number" onClick="selectTest(this.id);" id="' + objeto.idkey + '" class="form-control form-control-sm" value="" />');
+                    }
+                    $("#main_container_subchild" + objeto.idkey + "").append('' + objeto.fdescription + '');
+                    $("#main_container_child" + objeto.idkey + "").append('</div>');
+                    $("" + main_container + "").append('</div>');
+                }
+                else {
+                }
+            }
+            //<!--PARA INPUT NUMBER (CURRENCY)-->
+            if (objeto.id_resource == 21) {
+                if (objeto.parent != 0) {
+                    $("" + main_container + "").append('<div class="td" id="main_container_child' + objeto.idkey + '">');
+                    $("#main_container_child" + objeto.idkey + "").append('<div class="form-group" id="main_container_subchild' + objeto.idkey + '">');
+                    $("#main_container_subchild" + objeto.idkey + "").append('<label>' + objeto.fdescription + '</label>');
+                    $("#main_container_subchild" + objeto.idkey + "").append('<div class="input-group" id="main_container_subsubchild' + objeto.idkey + '">');
+                    $("#main_container_subsubchild" + objeto.idkey + "").append('<div class="input-group-prepend" id="main_container_subsubsubchild' + objeto.idkey + '">');
+                    $("#main_container_subsubsubchild" + objeto.idkey + "").append('<span class="input-group-text">$</span>');
+                    $("#main_container_subsubchild" + objeto.idkey + "").append('</div>');
+
+                    if (objeto.fvalueDecimal > 0)
+                    {
+                        $("#main_container_subsubchild" + objeto.idkey + "").append('<input type="number" onClick="selectTest(this.id);" id="' + objeto.idkey + '" class="form-control" value="' + objeto.fvalueDecimal + '" />');
+                    }
+                    else
+                    {
+                        $("#main_container_subsubchild" + objeto.idkey + "").append('<input type="number" onClick="selectTest(this.id);" id="' + objeto.idkey + '" class="form-control" value="" />');
+                    }
+
+                    $("#main_container_subchild" + objeto.idkey + "").append('</div>');
+                    $("#main_container_child" + objeto.idkey + "").append('</div>');
+                    $("" + main_container + "").append('</div>');
+                }
+                else {
+                }
+            }
+
+
+            //< !--PARA INPUT TEXT-- >
+            if (objeto.id_resource == 6) {
+                if (objeto.parent != 0) {
+                    $("" + main_container + "").append('<div class="td" id="main_container_child' + objeto.idkey + '">');
+                    $("#main_container_child" + objeto.idkey + "").append('<div class="form-group" id="main_container_subchild' + objeto.idkey + '">');
+                    $("#main_container_subchild" + objeto.idkey + "").append('<div class="col-md-12" id="main_container_subsubchild' + objeto.idkey + '">');
+                    $("#main_container_subsubchild" + objeto.idkey + "").append('<input type="text" id="' + objeto.idkey + '" class="form-control" />');
+                    $("#main_container_subchild" + objeto.idkey + "").append('</div>');
+                    $("#main_container_child" + objeto.idkey + "").append('</div>');
+                    $("" + main_container + "").append('</div>');
+                }
+                else {
+                }
+        }
+
+        });
+    };
 
     function check_valid_inputs() {
 
@@ -757,15 +1144,89 @@
 
         });
     };
-</script>
 
+        $(document).ready(function () {
+            //Select a localstorage, buscando ID de actividad
+            var idActividad = @ViewBag.idvisita;
+
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+
+            //Filtramos por actividad
+            var resultado = retrievedArrayF.filter(item => item.ID_visit === idActividad);
+
+            //Colocamos primero los titulos
+            OrderedList(resultado, "#titles_div");
+            //Luego las columnas
+            OrderedListHeadertable(resultado, "#headings_table");
+            //Luego los datos
+            OrderedListRetail(resultado, "#rows_table");
+
+            check_valid_inputs();
+
+
+            $(function () {
+                var isXS = false,
+                    $accordionXSCollapse = $('.accordion-xs-collapse');
+
+                // Window resize event (debounced)
+                var timer;
+                $(window).resize(function () {
+                    if (timer) { clearTimeout(timer); }
+                    timer = setTimeout(function () {
+                        isXS = Modernizr.mq('only screen and (max-width: 1767px)');
+
+                        // Add/remove collapse class as needed
+                        if (isXS) {
+                            $accordionXSCollapse.addClass('collapse');
+                        } else {
+                            $accordionXSCollapse.removeClass('collapse');
+                        }
+                    }, 100);
+                }).trigger('resize'); //trigger window resize on pageload
+
+                // Initialise the Bootstrap Collapse
+                $accordionXSCollapse.each(function () {
+                    $(this).collapse({ toggle: false });
+                });
+
+                // <a href="https://www.jqueryscript.net/accordion/">Accordion</a> toggle click event (live)
+                $(document).on('click', '.accordion-xs-toggle', function (e) {
+                    e.preventDefault();
+
+                    var $thisToggle = $(this),
+                        $targetRow = $thisToggle.parent('.tr'),
+                        $targetCollapse = $targetRow.find('.accordion-xs-collapse');
+
+                    if (isXS && $targetCollapse.length) {
+                        var $siblingRow = $targetRow.siblings('.tr'),
+                            $siblingToggle = $siblingRow.find('.accordion-xs-toggle'),
+                            $siblingCollapse = $siblingRow.find('.accordion-xs-collapse');
+
+                        $targetCollapse.collapse('toggle'); //toggle this collapse
+                        $siblingCollapse.collapse('hide'); //close siblings
+
+                        $thisToggle.toggleClass('collapsed'); //class used for icon marker
+                        $siblingToggle.removeClass('collapsed'); //remove sibling marker class
+                    }
+                });
+            });
+
+            });
+
+
+
+</script>
 
 <!--GUARDAR OBJETOS POR SEPARADO-->
 <script type="text/javascript">
-    $('input.form-control[type = "text"]').on('focusout', function () {
+    function isOnLine() {
+        return navigator.onLine;
+    }
+
+    $(document).on('focusout', 'input.form-control[type="text"]', function () {
         $("#loading").hide();
         var idvisita = "";
-        idvisita = document.getElementById('idvisita').value;
+        idvisita = document.getElementById('idvisita').value; //actividad
         //GUARDAMOS OBJETOS
         var objects = [];
         //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
@@ -776,78 +1237,364 @@
             text: ""
         });
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
+        if (isOnLine()) {
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-                } else {
-                    $("#loading").hide();
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fsource = ""
+                        } else {
+                            item.fsource = value;
+                        }
+
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
 
 
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+                        $("#loading").hide();
+                                    //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fsource = ""
+                        } else {
+                            item.fsource = value;
+                        }
+
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+        }
+
     });
 
-
-    $('textarea.form-control').on('focusout', function () {
+    $(document).on('focusout', 'textarea.form-control', function () {
         $("#loading").hide();
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
         //GUARDAMOS OBJETOS
         var objects = [];
         //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
         objects.push({
             id: $(this).attr('id'),
             value: $(this).val(),
             text: ""
         });
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
+        if (isOnLine()) {
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-                } else {
-                    $("#loading").hide();
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fsource = ""
+                        } else {
+                            item.fsource = value;
+                        }
+
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
 
 
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
-    });
 
-    $('input.form-control[type = "number"]').on('focusout', function () {
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fsource = ""
+                        } else {
+                            item.fsource = value;
+                        }
+
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+        }
+    });
+    $(document).on('focusout', 'input.form-control[type = "number"]', function () {
         $("#loading").hide();
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
@@ -879,35 +1626,177 @@
             $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
         }
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
+        if (isOnLine()) {
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-                } else {
-                    $("#loading").hide();
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fvalueDecimal = "0"
+                        } else {
+                            item.fvalueDecimal = value;
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
 
 
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+//En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        if (value == "" || value == null) {
+                            item.fvalueDecimal = "0"
+                        } else {
+                            item.fvalueDecimal = value;
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+        }
     });
 
-    $('select').on('focusout', function () {
+    $(document).on('focusout', 'select', function () {
         $("#loading").hide();
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
@@ -926,35 +1815,170 @@
             text: str.trim()
         });
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
+        if (isOnLine()) {
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+            var idVisita = @ViewBag.idvisita;
+            var item;
 
-                } else {
-                    $("#loading").hide();
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
 
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        item.fvalueText = value;
+                        item.fdescription = text;
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
 
 
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        item.fvalueText = value;
+                        item.fdescription = text;
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+        }
     });
 
-    $('input:radio').click(function () {
+    $(document).on('click', 'input:radio', function () {
         //console.log($(this).attr('name'));
         //console.log($(this).attr('id'));
 
@@ -981,36 +2005,209 @@
         });
 
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
+        var idVisita = @ViewBag.idvisita;
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+        if (isOnLine()) {
 
-                } else {
-                    $("#loading").hide();
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
 
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+
+                    if (value == "" || value == null) { value = false; }
+
+                        if (value == false) {
+                            item.fvalue = 0; //Lo guardamos como entero
+                        } else {
+                            item.fvalue = 1; //Lo guardamos como entero
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+                //getObject = null;
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
 
 
+
+
+            //retrievedArrayF.forEach(function (objeto) {
+            //    if (objeto.ID_visit == idVisita && objeto.idkey == id) {
+            //                item = objeto;
+            //                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+            //                item.onserver = false;
+            //                item.action = "update"
+
+            //        if (value == "" || value == null) { value = "false"; }
+            //        var seleccionado = 0;
+            //        if (item.value == "false") {
+            //            seleccionado = 0;
+            //        }
+            //        else if (item.value == "true") {
+            //            seleccionado = 1;
+            //        }
+            //        item.fvalue = seleccionado; //Lo guardamos como entero
+
+            //    }
+
+            //});
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+
+                    if (value == "" || value == null) { value = false; }
+
+                        if (value == false) {
+                            item.fvalue = 0; //Lo guardamos como entero
+                        } else {
+                            item.fvalue = 1; //Lo guardamos como entero
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+        }
     });
 
-
-    $('input:checkbox').click(function () {
+    $(document).on('click', 'input:checkbox', function () {
         //console.log($(this).attr('name'));
         //console.log($(this).attr('id'));
 
@@ -1025,46 +2222,214 @@
         //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
 
-
             objects.push({
                 id: $(this).attr('id'),
                 value: $(this).prop('checked'),
                 text: ""
             });
-  
-        //if ($(this).prop('checked')) {
-        //    $(this).closest('.tr').addClass('border-success');
-        //    $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
-        //} else {
-        //    $(this).closest('.tr').removeClass('border-success');
-        //    $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
-        //}
+    
 
-        $.ajax({
-            url: '/FormsM/Save_activityByitem',
-            type: 'POST',
-            data: { 'id': idvisita, 'objects': objects },
-            cache: false,
-            global: false,
-            success: function (result) {
 
-                if (result.Result == "Success") {
-                    $("#loading").hide();
+        var idVisita = @ViewBag.idvisita;
 
-                } else {
-                    $("#loading").hide();
+        if (isOnLine()) {
 
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+
+                    if (value == "" || value == null) { value = false; }
+
+                        if (value == false) {
+                            item.fvalue = 0; //Lo guardamos como entero
+                        } else {
+                            item.fvalue = 1; //Lo guardamos como entero
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
 
                 }
 
+                //getObject = null;
+            }
 
-            },
-            error: function (request) {
-                $("#loading").hide();
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
 
 
+
+
+            //retrievedArrayF.forEach(function (objeto) {
+            //    if (objeto.ID_visit == idVisita && objeto.idkey == id) {
+            //                item = objeto;
+            //                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+            //                item.onserver = false;
+            //                item.action = "update"
+
+            //        if (value == "" || value == null) { value = "false"; }
+            //        var seleccionado = 0;
+            //        if (item.value == "false") {
+            //            seleccionado = 0;
+            //        }
+            //        else if (item.value == "true") {
+            //            seleccionado = 1;
+            //        }
+            //        item.fvalue = seleccionado; //Lo guardamos como entero
+
+            //    }
+
+            //});
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+
+            //Guardamos en server
+            $.ajax({
+                url: '/FormsM/Save_activityByitem',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
 
             }
-        });
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+                    } else {
+                        $("#loading").hide();
+
+
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+
+
+
+                }
+            });
+        } else {
+            //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+            //Guardamos en local
+            var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+            //filtramos por actividad ((NO SE PUEDE FILTRAR PORQUE SINO, BORRAMOS TODO EL CACHE AL SOBREESCRIBIRLO))
+             //= retrievedArrayfi.filter(item => item.ID_visit === idVisita);
+
+            var idVisita = @ViewBag.idvisita;
+            var item;
+
+            //Creamos un metodo diferente para recorrer los elementos ya que hay objetos child
+            //los cuales no se pueden solo mandar a llamar, sino que hay que recorrerlos
+            function deepSearch(container, idkey, value, text) {
+
+                for (var i = 0; i < container.length; i++) {
+                    var objeto = container[i];
+                    if (objeto.ID_visit == idVisita && objeto.idkey == idkey) {
+                        //Lo encontro en los parent y actualizaremos
+                        item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+
+                    if (value == "" || value == null) { value = false; }
+
+                        if (value == false) {
+                            item.fvalue = 0; //Lo guardamos como entero
+                        } else {
+                            item.fvalue = 1; //Lo guardamos como entero
+                        }
+
+
+                        break;
+                    } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                        if (objeto.children.length > 0) {
+                            deepSearch(objeto.children, idkey, value, text);
+                        }
+                    }
+
+                }
+
+            }
+
+            objects.forEach(function (element) {
+                var id = element.id;
+                var val = element.value;
+                var txt = element.text;
+                deepSearch(retrievedArrayF, id, val, txt);
+            });
+
+            localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+
+        }
     });
+
 </script>

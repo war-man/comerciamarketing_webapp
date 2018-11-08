@@ -1,616 +1,3826 @@
 ﻿
 @{
+    Layout = null;
     ViewBag.Title = "Comercia Marketing - Store_stats";
 }
 
+<!DOCTYPE html>
+<html manifest="~/offline.appcache">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Comercia Marketing App">
+    <title>@ViewData["Title"]</title>
+
+    @Html.Partial("~/Views/Shared/Styles2.cshtml")
+
+    @if (ViewBag.Title == "Comercia Marketing - Template preview2")
+    {
+        <style>
+
+            #rightss {
+                height: 500px;
+                overflow-y: scroll;
+            }
+
+            .modal {
+                overflow: auto !important;
+            }
+
+            #sig-canvas {
+                width: 200px;
+                height: 150px;
+                border-style: dashed;
+                border-radius: 0.50px;
+                border-color: lightgray;
+            }
+
+            .currency {
+            }
+
+            .currency-symbol {
+                position: absolute;
+                padding: 7px 4px 0px;
+                font-size: 13px;
+            }
+
+            .currency-symbolv2 {
+                position: absolute;
+                padding: 1px 4px 0px;
+                font-size: 12px;
+            }
+
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                opacity: 0.7;
+                background-color: #fff;
+                z-index: 99;
+                text-align: center;
+            }
+
+            #loading-content {
+                margin-top: 20%;
+            }
+
+            .hide {
+                display: none;
+            }
 
 
-<div class="container-fluid page-body-wrapper">
-    <!-- partial -->
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="container">
+            /*DATATABLES*/
+            table {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table tr {
+                    padding: .35em;
+                }
+
+                table th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table td {
+                    font-size: .7em;
+                }
+            }
+
+            /**/
+            /**/
 
 
-                <div class="row profile-page">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="pt-2">
+            @@media screen and (max-width: 400px) {
 
-                                <a href="@Url.Action("RoutesM_details", "Home", new { id= ViewBag.route})" class="btn btn-info btn-sm mt-3 mb-4">Back</a>
-                            </div>
-                            <div class="card-body">
+                table {
+                    border: 0;
+                }
 
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="col-md-8 grid-margin stretch-card">
-                                            <div class="card text-center">
-                                                <div class="">
+                    table thead {
+                        display: none;
+                    }
 
-                                                    <img src="~/Content/newstyle2/images/samples/online-store.png" class="img-lg rounded mb-2" alt="profile image" />
-                                                    <h4>@ViewBag.storename</h4>
+                    table tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
 
-                                                    <p class="card-text text-black-50">
-                                                        @ViewBag.address
-                                                    </p>
+                    table td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: left;
+                    }
 
-                                                    <div class="border-top pt-1">
-                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                                {
-                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>
+                        table td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
+
+        </style>
+    }
+    @if (ViewBag.Title != "Comercia Marketing - Template preview2")
+    {
+        <style>
+            .disable {
+                opacity: 0.4;
+            }
+
+                /*Disable scrolling on child elements*/
+                .disable div,
+                .disable textarea {
+                    overflow: hidden;
+                }
+
+            #rightss {
+                height: 500px;
+                overflow-y: scroll;
+            }
+
+            .modal {
+                overflow: auto !important;
+            }
+
+            #sig-canvas {
+                width: 250px;
+                height: 150px;
+                border-style: dashed;
+                border-radius: 0.50px;
+                border-color: lightgray;
+            }
+
+            .map-responsive {
+                overflow: hidden;
+                padding-bottom: 56.25%;
+                position: relative;
+                height: 300px;
+            }
+
+                .map-responsive iframe {
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                }
+
+            .currency {
+            }
+
+            .currency-symbol {
+                position: absolute;
+                padding: 7px 4px 0px;
+                font-size: 13px;
+            }
+
+            .currency-symbolv2 {
+                position: absolute;
+                padding: 1px 4px 0px;
+                font-size: 13px;
+            }
+
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                opacity: 0.7;
+                background-color: #fff;
+                z-index: 99;
+                text-align: center;
+            }
+
+            #loading-content {
+                margin-top: 20%;
+            }
+
+            .hide {
+                display: none;
+            }
+
+
+            /*DATATABLES*/
+            table#order-listing {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table#order-listing tr {
+                    padding: .35em;
+                }
+
+                table#order-listing th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table#order-listing th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table#order-listing td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table#order-listing th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing td {
+                    font-size: .7em;
+                }
+            }
+
+
+
+            /**/
+            @@media screen and (max-width: 530px) {
+
+                table#order-listing {
+                    border: 0;
+                }
+
+                    table#order-listing thead {
+                        display: none;
+                    }
+
+                    table#order-listing tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#order-listing td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#order-listing td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table#order-listing td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
+
+
+
+            /**PARA MODALS*/
+
+            /*DATATABLES*/
+            table#resultsRetail {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            /**/
+
+
+
+
+            /**/
+            /**/
+
+
+
+            table#resultsRetail {
+                border: 0;
+            }
+
+                table#resultsRetail thead {
+                    display: none;
+                }
+
+                table#resultsRetail tr {
+                    border-bottom: 3px solid #ddd;
+                    display: block;
+                    margin-bottom: .625em;
+                }
+
+                table#resultsRetail td {
+                    border-bottom: 1px solid #ddd;
+                    display: block;
+                    font-size: .8em;
+                    text-align: right;
+                }
+
+                    table#resultsRetail td:before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: normal;
+                        text-transform: uppercase;
+                    }
+
+                    table#resultsRetail td:last-child {
+                        border-bottom: 0;
+                    }
+
+            /**/
+            /*END DATATABLES*/
+            .flexRadio {
+                display: flex;
+                /* Optional, if you want the DIVs 100% width: */
+                flex-wrap: wrap;
+                margin-right: -33.5px;
+                margin-left: -2.5px;
+            }
+
+                .flexRadio > .hRadio {
+                    order: 1;
+                }
+
+                .flexRadio > .fRadio {
+                    order: 2;
+                }
+
+            .map-icon-label .map-icon {
+                font-size: 24px;
+                color: #FFFFFF;
+                line-height: 48px;
+                text-align: center;
+                white-space: nowrap;
+            }
+        </style>
+    }
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116898086-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116898086-2');
+    </script>
+    <script>
+        var appCache = window.applicationCache;
+
+        // Fired after the first cache of the manifest.
+        appCache.addEventListener('cached', handleCacheEvent, false);
+
+        // Checking for an update. Always the first event fired in the sequence.
+        appCache.addEventListener('checking', handleCacheEvent, false);
+
+        // An update was found. The browser is fetching resources.
+        appCache.addEventListener('downloading', handleCacheEvent, false);
+
+        // The manifest returns 404 or 410, the download failed,
+        // or the manifest changed while the download was in progress.
+        //appCache.addEventListener('error', handleCacheError, false);
+
+        // Fired after the first download of the manifest.
+        appCache.addEventListener('noupdate', handleCacheEvent, false);
+
+        // Fired if the manifest file returns a 404 or 410.
+        // This results in the application cache being deleted.
+        appCache.addEventListener('obsolete', handleCacheEvent, false);
+
+        // Fired for each resource listed in the manifest as it is being fetched.
+        appCache.addEventListener('progress', handleCacheEvent, false);
+
+        // Fired when the manifest resources have been newly redownloaded.
+        appCache.addEventListener('updateready', handleCacheEvent, false);
+
+        function handleCacheEvent(e) {
+
+            if (e.type && (e.type == 'progress' || e.type == 'ProgressEvent')) {
+                $("#loading").show();
+                document.getElementById('loadmsg').innerHTML = ('Loading... ' + Math.round(e.loaded / e.total * 100) + '%');
+
+           
+                if (e.total == e.loaded) {
+                    $("#loading").hide();
+                }
+                
+                
+            }
+        }
+    </script>
+    <script>
+        function Offline() {
+            alert("wuju");
+            window.applicationCache.update();
 
         }
-        else
+    </script>
+</head>
+
+<body class="horizontal-menu-2">
+    <!--GLOBAL LOADER-->
+    <div id="loading" class="hide">
+        <div id="loading-content">
+
+
+            <div class="circle-loader">
+                <br /><br /><br /><br /><p id="loadmsg">Loading...</p>
+            </div>
+            
+
+        </div>
+    </div>
+    <!---->
+    <div style="background-color:#000">.</div>
+    <div class="container-scroller">
+        <!-- Horizontal Menu Start -->
+        @if (ViewBag.Title != "Comercia Marketing")
         {
-            if (ViewBag.estadovisita == 3)
+            if (ViewBag.Title == "Comercia Marketing - Activityea")
             {
-                        <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>
-}
-else if (ViewBag.estadovisita == 2)
-{
-                        <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>
-}
+
+            }
+            else
+            {
+                @Html.Partial("~/Views/Shared/Menu2.cshtml")
+            }
+
+        }
+
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="container">
 
 
-}
- <hr />                                                   </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
+                        <div class="row profile-page">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="pt-2">
+
+                                        <a href="@Url.Action("RoutesM_details", "Home", new { id= ViewBag.route})" class="btn btn-info btn-sm mt-3 mb-4">Back</a>
+                                  
+                                    </div>
+                                    <div class="card-body">
+
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <div class="wrapper mt-8" id="activitiesdiv">
-                                                    @if (ViewBag.activities.Count == 0)
-                            {
-                                <label>No activities to show</label>
-                                <hr />
-    }
-    else
-    {
-        foreach (var activity in ViewBag.activities)
-        {
-                        <div class="item-wrapper d-flex pb-4 border-bottom">
-                            <div class="status-wrapper d-flex align-items-start pr-3">
-                                @if (activity.isfinished == true && activity.query1 != "cancel")
-        {
-                        <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
-}
-else if (activity.isfinished == true && activity.query1 == "cancel")
-{
-                        <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
-}
-else
-{
-                        <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
-}
-                            </div>
-                            <div class="text-wrapper">
-                                @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
-                                {
-                                    if (activity.isfinished == true)
-                                    {
-                        <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
-else
-{
-                        <a href="@Url.Action("Activity", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
+                                                <div class="col-md-8 grid-margin stretch-card">
+                                                    <div class="card text-center">
+                                                        <div class="">
+
+                                                            <img src="~/Content/newstyle2/images/samples/online-store.png" class="img-lg rounded mb-2" alt="profile image" />
+                                                            <h4>@ViewBag.storename</h4>
+
+                                                            <p class="card-text text-black-50">
+                                                                @ViewBag.address
+                                                            </p>
+
+                                                            <div class="border-top pt-1" id="divcheckvisit">
+    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="wrapper mt-8" id="activitiesdiv">
+                                         
+                                                        </div>
 
 
-}
-else if (activity.ID_activitytype == 2)
-{
-if (activity.isfinished == true)
-{
-                        <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
-else
-{
-                        <a href="@Url.Action("Activityra", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
-
-}
-else
-{
-                        <a href="#" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
-                        <small class="text-gray d-block">Assigned rep : @activity.ID_customer</small>
-                        <small class="text-gray d-block">Last update : @activity.check_out</small>
-                        @if (activity.isfinished == true)
-{
-    if (activity.query1 == "cancel")
-    {
-                        <small class="text-gray d-block">Canceled</small>
-                        <small class="text-gray d-block">Reason: @activity.comments</small>
-}
-else
-{
-                        <small class="text-gray d-block">Finished</small>
-}
-
-}
-                        </div>
-                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-{
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
-
-                        </a>
-}
-else
-{
-if (ViewBag.estadovisita != 4)
-{
-    if (activity.isfinished != true && activity.query1 != "cancel")
-    {
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
-
-                        </a>
-}
-if (activity.ID_activitytype == 4)
-{
-
-}
-else
-{
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-content-copy"></i>
-
-                        </a>
-}
 
 
-}
 
-}
-                        </div><br />
-}
-}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5 class="my-4"><i class="mdi mdi-account-circle icon-sm text-info"></i> Who follow this visit</h5>
+
+                                                <div class="calendar-aside">
+                                                    @if (ViewBag.repslist.Count == 0)
+                                                    {
+                                                        <div class="list">
+                                                            <div class="col-12">
+                                                                <small class="d-block mb-2">No representatives assigned</small>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var rep in ViewBag.repslist)
+                                                        {
+                                                            <div class="list">
+                                                                <div class="col-12">
+                                                                    <small class="d-block mb-2"><strong>@rep.name</strong></small>
+                                                                    <small class="text-gray d-block">@rep.email</small>
+                                                                </div>
+                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                                {
+                                                                    <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
+                                                                        <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                                    </a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="javascript:void(0)" class="count online ml-auto">
+
+                                                                    </a>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div><hr />
+                                                <!--
+                                                <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
+                                                <div class="add-items d-flex">
+                                                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                    {
+                                                        <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
+                                                        <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
+                                                    }
+                                                </div>
+                                                <div class="list-wrapper">
+                                                    <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                                        <li>
+                                                            <div class="form-check form-check-flat">
+                                                                <label class="form-check-label">
+                                                                    <input class="checkbox" type="checkbox">
+                                                                    Example
+                                                                </label>
+                                                            </div>
+                                                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                            {
+                                                                <i class="remove mdi mdi-close-circle-outline"></i>
+                                                            }
+                                                        </li>
+                                                        <li class="completed">
+                                                            <div class="form-check form-check-flat">
+                                                                <label class="form-check-label">
+                                                                    <input class="checkbox" type="checkbox" checked>
+                                                                    Example completed
+                                                                </label>
+                                                            </div>
+                                                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                            {
+                                                                <i class="remove mdi mdi-close-circle-outline"></i>
+                                                            }
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                                -->
+                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                {
+                                                    <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
+
+                                                    <div class="calendar-aside">
+
+
+                                                        <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark">
+                                                            Gallery
+
+                                                        </a>
+
+                                                    </div><hr />
+
+                                                }
+                                                <h5 class="my-4"><i class="mdi mdi-map-marker icon-sm text-info"></i> Location</h5>
+                                                <div class="wrapper d-flex align-items-center py-2 border-bottom map-responsive">
+                                                    <iframe width="600" height="450" frameborder="0" style="border:0"
+                                                            src="https://www.google.com/maps/embed/v1/search?key=AIzaSyDOQqQJNx3dHPj8TtsSgvNDcqGmLfUq7bI&q=@ViewBag.address" allowfullscreen></iframe>
+                                                    @*<iframe width="600" height="450" frameborder="0" style="border:0" allowfullscreen
+        src="https://maps.google.com/maps?q=@ViewBag.glong,@ViewBag.glat&hl=es;z=15&amp;output=embed"></iframe>*@
+                                                </div>
+                                            </div>
+
+                                            <!--CANCEL VIIT
+                                            <div class="calendar-aside">
+
+                                                <div class="list">
+                                                    <div class="text-wrapper">
+                                                      <br /><br />
+                                                        <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
+
+                                                    </div>
                                                 </div>
 
+                                            </div>
+                                                -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>@Html.Partial("~/Views/Shared/Footer2.cshtml")
+                    </div><!-- partial:../../partials/_footer.html -->
+                </div>
+
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial -->
+        </div>
 
 
+        <!--CRESTE USER DATA STARTS-->
+        <div class="modal fade" id="createModal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("CreateActivity", "VisitsMs", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file-cloud"></i> Add New activity</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="ID_visita" name="ID_visita" hidden value="@ViewBag.idvisita" />
+                            <div class="col-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
 
-
+                                        <p class="card-description">
+                                            <h4 class="card-title">Activity</h4>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <select id="ID_form" name="ID_form" class="js-example-basic-single" style="width:100%" onChange='getActivity()'>
+                                                        <option value="0">Select an activity</option>
+                                                        <optgroup label="Demos">
+                                                            @foreach (var form in ViewBag.activeforms)
+                                                            {
+                                                                if (form.ID_activity == 4)
+                                                                {
+                                                                    <option value="@form.ID_form">@form.name</option>
+                                                                }
+                                                            }
+                                                        </optgroup>
+                                                        <optgroup label="Forms"></optgroup>
+                                                        @foreach (var form in ViewBag.activeforms)
+                                                        {
+                                                            if (form.ID_activity == 1)
+                                                            {
+                                                                <option value="@form.ID_form">@form.name</option>
+                                                            }
+                                                        }
+                                                        <optgroup label="Audits"></optgroup>
+                                                        @foreach (var form in ViewBag.activeforms)
+                                                        {
+                                                            if (form.ID_activity == 2)
+                                                            {
+                                                                <option value="@form.ID_form">@form.name</option>
+                                                            }
+                                                        }
+                                                        <optgroup label="Sales Order">
+                                                            @foreach (var form in ViewBag.activeforms)
+                                                            {
+                                                                if (form.ID_activity == 3)
+                                                                {
+                                                                    <option value="@form.ID_form">@form.name</option>
+                                                                }
+                                                            }
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
+                                        <p class="card-description">
+                                            <h4 class="card-title" id="demotimetitle">Set start date</h4>
+                                        </p>
+                                        <div class="row" id="demotimediv">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <input type="datetime-local" class="form-control" name="time" id="time" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p class="card-description">
+                                            <h4 class="card-title">Representative</h4>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()'>
+                                                        <option id="0">Select a representative</option>
+                                                        <optgroup label="Sales Representatives">
+
+                                                            @foreach (var rep in ViewBag.representatives)
+                                                            {
+
+                                                                <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
+                                                            }
+                                                        </optgroup>
+                                                        <optgroup label="Demos Representatives">
+
+                                                            @foreach (var rep2 in ViewBag.reps_demos)
+                                                            {
+
+                                                                <option value="@rep2.ID">@rep2.name</option>
+                                                            }
+                                                        </optgroup>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="card-description">
+                                            <h4 class="card-title">Customer</h4>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
-                                    <div class="col-md-4">
-                                        <h5 class="my-4"><i class="mdi mdi-account-circle icon-sm text-info"></i> Who follow this visit</h5>
-
-                                        <div class="calendar-aside">
-                                            @if (ViewBag.repslist.Count == 0)
-                    {
-                        <div class="list">
-                            <div class="col-12">
-                                <small class="d-block mb-2">No representatives assigned</small>
-
+                                </div>
                             </div>
-                        </div>
-}
-else
-{
-foreach (var rep in ViewBag.repslist)
-{
-                        <div class="list">
-                            <div class="col-12">
-                                <small class="d-block mb-2"><strong>@rep.name</strong></small>
-                                <small class="text-gray d-block">@rep.email</small>
-                            </div>
-                            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
-                        </a>
-}
-else
-{
-                        <a href="javascript:void(0)" class="count online ml-auto">
 
-                        </a>
-}
                         </div>
-}
-}
-                                        </div><hr />
-                                        <!--
-                <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
-                <div class="add-items d-flex">
-                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                    {
-                        <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
-                        <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info">Add</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </div>
                     }
                 </div>
-                <div class="list-wrapper">
-                    <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                        <li>
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox">
-                                    Example
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
-                        <li class="completed">
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" checked>
-                                    Example completed
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
-
-                    </ul>
-                </div>
-                -->
-                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                {
-                        <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
-
-                        <div class="calendar-aside">
-
-
-                            <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark">
-                                Gallery
-
-                            </a>
-
-                        </div><hr />
-
-}
-                                        <h5 class="my-4"><i class="mdi mdi-map-marker icon-sm text-info"></i> Location</h5>
-                                        <div class="wrapper d-flex align-items-center py-2 border-bottom map-responsive">
-                                            <iframe width="600" height="450" frameborder="0" style="border:0" allowfullscreen
-                                                    src="https://maps.google.com/maps?q=@ViewBag.glong,@ViewBag.glat&hl=es;z=15&amp;output=embed"></iframe>
-                                        </div>
-                                    </div>
-
-                                    <!--CANCEL VIIT
-            <div class="calendar-aside">
-
-                <div class="list">
-                    <div class="text-wrapper">
-                      <br /><br />
-                        <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
-
-                    </div>
-                </div>
-
             </div>
-                -->
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>@Html.Partial("~/Views/Shared/Footer2.cshtml")
-            </div><!-- partial:../../partials/_footer.html -->
         </div>
-
-    </div>
-    <!-- content-wrapper ends -->
-    <!-- partial -->
-</div>
-
-
-<!--CRESTE USER DATA STARTS-->
-<div class="modal fade" id="createModal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Html.BeginForm("CreateActivity", "VisitsMs", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file-cloud"></i> Add New activity</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="ID_visita" name="ID_visita" hidden value="@ViewBag.idvisita" />
-                    <div class="col-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-
-                                <p class="card-description">
-                                    <h4 class="card-title">Activity</h4>
-                                </p>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <select id="ID_form" name="ID_form" class="js-example-basic-single" style="width:100%" onChange='getActivity()'>
-                                                <option value="0">Select an activity</option>
-                                                <optgroup label="Demos">
-                                                    @foreach (var form in ViewBag.activeforms)
-                        {
-                            if (form.ID_activity == 4)
-                            {
-                                <option value="@form.ID_form">@form.name</option>
-}
-}
-                                                </optgroup>
-                                                <optgroup label="Forms"></optgroup>
-                                                @foreach (var form in ViewBag.activeforms)
+        <!--CREATE USER DATA ENDS-->
+        <!--DELETE DATA STARTS-->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("DeleteActivity", "VisitsMs", FormMethod.Post))
                     {
-                        if (form.ID_activity == 1)
-                        {
-                            <option value="@form.ID_form">@form.name</option>
-}
-}
-                                                <optgroup label="Audits"></optgroup>
-                                                @foreach (var form in ViewBag.activeforms)
+                        @Html.AntiForgeryToken()
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Activity Data</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="col-form-label">Are you sure you want to delete this activity?</label><br />
+                                <strong><label id="descriptionD" class="col-form-label"></label></strong>
+                                <input type="text" id="ID_activityD" name="ID_activityD" hidden />
+                                <input type="text" id="ID_visitA" name="ID_visitA" value="@ViewBag.idvisita" hidden />
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!--DELETE DATA ENDS-->
+        <!--DELETE DATA STARTS-->
+        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Cancel Activity</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="col-form-label">Are you sure you want to cancel this activity?</label><br />
+                                <strong><label id="descriptionCa" class="col-form-label"></label></strong>
+                                <input type="text" id="ID_activityCa" name="ID_activityCa" hidden />
+                                <br />
+                                <label>Reason:</label>
+                                <input type="text" id="comment" name="comment" class="form-control" required />
+                                <input type="text" id="ID_visitCa" name="ID_visitCa" value="@ViewBag.idvisita" hidden />
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="cancelbtn" class="btn btn-danger">Cancel</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!--DELETE DATA ENDS-->
+        <!--DELETE DATA STARTS-->
+        <div class="modal fade" id="deleteRepModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("DeleteRepfromActivity", "VisitsMs", FormMethod.Post))
                     {
-                        if (form.ID_activity == 2)
-                        {
-                            <option value="@form.ID_form">@form.name</option>
-}
-}
-                                                <optgroup label="Sales Order">
-                                                    @foreach (var form in ViewBag.activeforms)
-                        {
-                            if (form.ID_activity == 3)
-                            {
-                                <option value="@form.ID_form">@form.name</option>
-}
-}
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="card-description" >
-                                    <h4 class="card-title" id="demotimetitle">Set start date</h4>
-                                </p>
-                                <div class="row" id="demotimediv">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">      
-                                                    <input type="datetime-local" class="form-control" name="time" id="time" />                                                                    
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p class="card-description">
-                                    <h4 class="card-title">Representative</h4>
-                                </p>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()'>
-                                                <option id="0">Select a representative</option>
-                                                <optgroup label="Sales Representatives">
-
-                                                    @foreach (var rep in ViewBag.representatives)
-                        {
-
-                            <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
-}
-                                                </optgroup>
-                                                <optgroup label="Demos Representatives">
-
-                                                    @foreach (var rep2 in ViewBag.reps_demos)
-                        {
-
-                            <option value="@rep2.ID">@rep2.name</option>
-}
-                                                </optgroup>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="card-description">
-                                    <h4 class="card-title">Customer</h4>
-                                </p>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%"></select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
+                        @Html.AntiForgeryToken()
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Remove representative from visit</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
+                        <div class="modal-body">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info">Add</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-<!--CREATE USER DATA ENDS-->
-<!--DELETE DATA STARTS-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Html.BeginForm("DeleteActivity", "VisitsMs", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Activity Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to delete this activity?</label><br />
-                        <strong><label id="descriptionD" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_activityD" name="ID_activityD" hidden />
-                        <input type="text" id="ID_visitA" name="ID_visitA" value="@ViewBag.idvisita" hidden />
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<!--DELETE DATA ENDS-->
-<!--DELETE DATA STARTS-->
-<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Html.BeginForm("CancelActivity", "VisitsMs", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Cancel Activity</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to cancel this activity?</label><br />
-                        <strong><label id="descriptionCa" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_activityCa" name="ID_activityCa" hidden />
-                        <br />
-                        <label>Reason:</label>
-                        <input type="text" id="comment" name="comment" class="form-control" required />
-                        <input type="text" id="ID_visitCa" name="ID_visitCa" value="@ViewBag.idvisita" hidden />
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Cancel</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<!--DELETE DATA ENDS-->
-<!--DELETE DATA STARTS-->
-<div class="modal fade" id="deleteRepModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Html.BeginForm("DeleteRepfromActivity", "VisitsMs", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Remove representative from visit</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to remove this representative?</label>
-                        <strong><label id="descriptionUD" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_repUD" name="ID_repUD" value="" hidden />
-                        <input type="text" id="ID_visitU" name="ID_visitU" value="@ViewBag.idvisita" hidden />
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-<!--DELETE DATA ENDS-->
-<!--COPY DATA STARTS-->
-<div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Html.BeginForm("copyActivity", "VisitsMs", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i>Copy activity</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to copy this activity?</label>
-                        <strong><label id="descriptionCopy" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_activityCopy" name="ID_activityCopy" value="" hidden />
-                        <input type="text" id="ID_visitCopy" name="ID_visitCopy" value="@ViewBag.idvisita" hidden />
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger" onClick="this.form.submit(); this.disabled=true; this.value='Copying…'; ">Copy</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-<!--COPY DATA ENDS-->
-<!--INFO RETAIL DATA STARTS-->
-<div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUDM" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span style="font-size: 40px" aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    
-                                        <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
-                                            <thead>
-
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                   
-                                </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Are you sure you want to remove this representative?</label>
+                                <strong><label id="descriptionUD" class="col-form-label"></label></strong>
+                                <input type="text" id="ID_repUD" name="ID_repUD" value="" hidden />
+                                <input type="text" id="ID_visitU" name="ID_visitU" value="@ViewBag.idvisita" hidden />
                             </div>
+
+
                         </div>
-                    </div><br />
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <!--DELETE DATA ENDS-->
+        <!--COPY DATA STARTS-->
+        <div class="modal fade" id="copyModal"  role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+   
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i>Copy activity</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="col-form-label">Are you sure you want to copy this activity?</label><br />
+                                <strong><label id="descriptionCopy" class="col-form-label"></label></strong>
+                                <input type="text" id="ID_activityCopy" name="ID_activityCopy" value="" hidden />
+                                <input type="text" id="ID_visitCopy" name="ID_visitCopy" value="@ViewBag.idvisita" hidden />
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="copybtn" class="btn btn-danger">Copy</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!--COPY DATA ENDS-->
+        <!--INFO RETAIL DATA STARTS-->
+        <div class="modal fade" id="infoRetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-warning" id="exampleModalLabel-4"><label class="text-black">Retail audit - </label> <label id="descriptionUDM" class="col-form-label"></label><i class="mdi mdi-file"></i> </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
+                                                <thead>
+
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br />
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    </div>
 
                 </div>
-
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-            </div>
-
         </div>
+        <!--END-->
+
+
     </div>
-</div>
-<!--END-->
+
+    @Html.Partial("~/Views/Shared/Scripts2.cshtml")
+</body>
+</html>
+@if (ViewBag.Title != "Comercia Marketing - FormsM")
+{
+    <script type="text/javascript">
+        $(function () {
+
+            var t1 = "@ViewBag.filtrofechastart";
+            var t2 = "@ViewBag.filtrofechaend";
+
+            var start = moment(t1, "MM-DD-YYYY");
+        var end = moment(t2, "MM-DD-YYYY");
+            //var start = moment();
+            //var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('#reportrange').daterangepicker({
+
+                startDate: start,
+                endDate: end,
+                autoApply: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+        });
+    </script>
+    <script>
+        var start = moment();
+        var end = moment();
+
+        $(function () {
+            $('input[name="dailyStatsM"]').daterangepicker({
+                startDate: start,
+                endDate: end,
+                autoApply: true,
+                minDate: moment().startOf('month'),
+                maxDate: moment().endOf('month')
+            });
+        });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    <script type="text/javascript">
+        @*google.charts.load('current', {
+            'packages': ['geochart'],
+            // Note: you will need to get a mapsApiKey for your project.
+            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+            'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+        });
+        google.charts.setOnLoadCallback(drawRegionsMap);
+
+        function drawRegionsMap() {
+            var data = google.visualization.arrayToDataTable([
+                ['State', 'Visits'],
+                ['Alabama', 0],
+                ['Alaska', 0],
+                ['Arizona', 0],
+                ['Arkansas', 0],
+                ['California', 0],
+                ['Colorado', 0],
+                ['Connecticut', 0],
+                ['Delaware', 0],
+                ['Florida', 0],
+                ['Georgia', 0],
+                ['Hawaii', 0],
+                ['Idaho', 0],
+                ['Illinois', 0],
+                ['Indiana', 0],
+                ['Iowa', 0],
+                ['Kansas', 0],
+                ['Kentucky', 0],
+                ['Louisiana', 0],
+                ['Maine', 0],
+                ['Maryland', 0],
+                ['Massachusetts', 0],
+                ['Michigan', 0],
+                ['Minnesota', 0],
+                ['Mississippi', 0],
+                ['Missouri', 0],
+                ['Montana', 0],
+                ['Nebraska', 0],
+                ['Nevada', 0],
+                ['New Hampshire', 0],
+                ['New Jersey', 0],
+                ['New Mexico', 0],
+                ['New York', 0],
+                ['North Carolina', 0],
+                ['North Dakota', 0],
+                ['Ohio', 0],
+                ['Oklahoma', 0],
+                ['Oregon', 0],
+                ['Pennsylvania', 0],
+                ['Rhode Island', 0],
+                ['South Carolina', 0],
+                ['South Dakota', 0],
+                ['Tennessee', @ViewBag.rutascount],
+                ['Texas', 0],
+                ['Utah', 0],
+                ['Vermont', 0],
+                ['Virginia', 0],
+                ['Washington', 0],
+                ['West Virginia', 0],
+                ['Wisconsin', 0],
+                ['Wyoming', 0]
+            ]);
+
+            var options = {
+                width: 556,
+                height: 347,
+                region: "US",
+                resolution: "provinces"
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+            chart.draw(data, options);
+        }*@
+    </script>
+}
+
+
+@if (ViewBag.Title == "Comercia Marketing - Home")
+{
+    <script>
+    'use strict';
+    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+    });
+
+    function Initialize() {
+
+    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+        zoom: 4,
+        scrollwheel: true,
+        center: { lat: 35.2289067, lng: -86.885620 }
+
+    });
+
+    var data = @Html.Raw(ViewBag.routes_map);
+    var markers = [];
+    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+    $.each(data, function (i, item) {
+        var marker;
+
+            var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+
+
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image
+
+                });
+            }
+
+
+
+        // Make the marker-pin blue!
+        //if (item.demo_state == "3") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+        //}
+        //if (item.demo_state == "2") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        //}
+        //if (item.demo_state == "1") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+        //}
+        //if (item.demo_state == "4") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        //}
+
+        // put in some information about each json object - in this case, the opening hours.
+
+        //colocamos la url de la demo
+        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
+
+
+        //url = url.replace('DEMOID', item.id);
+
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+        //});
+        var estructuradiv = '<div  id="RouteDetails_' + item.id + '">';
+        estructuradiv += '<div class="card">';
+        estructuradiv += '<div class="card-body">';
+        estructuradiv += '<div class="row mt-4">';
+        estructuradiv += '<div class="col-md-12">';
+        estructuradiv += ' <h5>Visit details</h5>';
+        estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '</ul>';
+        estructuradiv += '<div class="tab-content tab-content-basic">';
+        estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
+        estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
+        estructuradiv += '<p class="mb-0" > STORE: ' + item.store + '</p>';
+        estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
+        estructuradiv += '<p > DATE: ' + item.date + '</p>';
+        estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
+        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+
+
+        var infowindow = new google.maps.InfoWindow({
+            content: estructuradiv
+        });
+        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+        });
+
+        marker.addListener('dblclick', function () {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+
+            // We get the map's default panorama and set up some defaults.
+            // Note that we don't yet set it visible.
+            panorama = map.getStreetView();
+            panorama.setPosition(marker.getPosition());
+            panorama.setPov(({
+                heading: 265,
+                pitch: 0
+            }));
+        });
+
+        //Agregamos el marcador al array de marcadores
+        markers.push(marker);
+
+
+    })
+
+
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+
+
+
+
+}
+
+
+
+    //function myFunction(ID, store, customer, date, representatives, comment ) {
+    //    var id_mapitem = document.getElementById("map_id");
+    //    var store_mapitem = document.getElementById("map_storename");
+    //    var store_customeritem = document.getElementById("map_customername");
+    //    var store_dateitem = document.getElementById("map_date");
+    //    var store_representativeitem = document.getElementById("map_representatives");
+    //    var store_commentitem = document.getElementById("map_comment");
+
+
+    //    id_mapitem.innerText = "";
+    //    store_mapitem.innerText = "";
+    //    store_customeritem.innerText = "";
+    //    store_dateitem.innerText = "";
+    //    store_representativeitem.innerText = "";
+    //    store_commentitem.innerText = "";
+
+    //    id_mapitem.innerText = "Visit ID: " + ID;
+    //    store_mapitem.innerText = "Store: " + store;
+    //    //store_customeritem.innerText = "Customer: " + customer;
+    //    store_dateitem.innerText = "Date: " + date;
+    //    store_representativeitem.innerText = "Route: " + representatives;
+    //    store_commentitem.innerText = "Comment: " + comment;
+
+    //    var x = document.getElementById("RouteDetails");
+    //    if (x.style.display === "none") {
+    //        x.style.display = "block";
+    //    } else {
+    //        //x.style.display = "none";
+    //    }
+    //}
+
+    </script>
+    <!--PARA CERRAR DIV MAP-->
+    <script>
+        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
+
+        button.onclick = function () {
+            var div = document.getElementById('RouteDetails');
+            div.style.display = 'none';
+
+        };
+
+    </script>
+
+
+    <script>
+    $(function () {
+        $('#click_filterMain').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Main", "Home", new { fstartd = "START", fendd = "FINISH", store="STORE"})';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+            url = url.replace('STORE', idstore);
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
+
+
+
+}
+<!--FORM BUILDER-->
+@if (ViewBag.Title == "Comercia Marketing - FormsM")
+{
+    @Html.Partial("~/Views/Shared/FormBuilderScriptM.cshtml")
+
+
+
+}
+
+@if (ViewBag.Title == "Comercia Marketing - RoutesM details")
+{
+    <script>
+        window.onload = function () {
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDvisit = button.data("id");// Extract info from data-* attributes
+                    var Desvisit = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
+                    $("#descriptionD").text(Desvisit);
+
+                })
+            })(jQuery);
+
+        }
+
+    </script>
+    @*<script>
+
+           $(document).ready(function () {
+
+               $(function () {
+                   $('#click_animation').click(function () {
+                       initialize2();
+                   });
+                });
+
+
+           var directionsDisplay;
+            var directionsService = new google.maps.DirectionsService();
+            var map;
+
+            function initialize2() {
+                directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+
+                map = new google.maps.Map(document.getElementById("map-with-marker"));
+                directionsDisplay.setMap(map);
+                calcRoute();
+            }
+
+            function calcRoute() {
+
+
+                var data2 = Html.Raw(ViewBag.routes_map);
+                var wayp = [];
+
+                $.each(data2, function (i, item) {
+                    var wp = {
+                        'location': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                        'stopover': true
+                    };
+
+
+                    wayp.push(wp);
+                });
+
+                var f = data2.length -1;
+
+                start = new google.maps.LatLng(data2[0].GeoLong, data2[0].GeoLat);
+                end = new google.maps.LatLng(data2[f].GeoLong, data2[f].GeoLat);
+
+                var request = {
+                    origin: start,
+                    destination: end,
+                    waypoints: wayp,
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                };
+                directionsService.route(request, function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        alert("directions response " + status);
+                    }
+                });
+               }
+           });
+        </script>*@
+    <script>
+        var autoDriveSteps = new Array();
+        var speedFactor = 10; // 10x faster animated drive
+
+        function setAnimatedRoute(origin, destination, map) {
+            // init routing services
+            var directionsService = new google.maps.DirectionsService;
+
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                setMap: map
+            });
+
+            //calculate route
+            directionsService.route({
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            },
+                function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        // display the route
+                        directionsRenderer.setDirections(response);
+
+                        // calculate positions for the animation steps
+                        // the result is an array of LatLng, stored in autoDriveSteps
+                        autoDriveSteps = new Array();
+                        var remainingSeconds = 0;
+                        var leg = response.routes[0].legs[0]; // supporting single route, single legs currently
+                        leg.steps.forEach(function (step) {
+                            var stepSeconds = step.duration.value;
+                            var nextStopSeconds = speedFactor - remainingSeconds;
+                            while (nextStopSeconds <= stepSeconds) {
+                                var nextStopLatLng = getPointBetween(step.start_location, step.end_location, nextStopSeconds / stepSeconds);
+                                autoDriveSteps.push(nextStopLatLng);
+                                nextStopSeconds += speedFactor;
+                            }
+                            remainingSeconds = stepSeconds + speedFactor - nextStopSeconds;
+                        });
+                        if (remainingSeconds > 0) {
+                            autoDriveSteps.push(leg.end_location);
+                        }
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+        }
+
+        // helper method to calculate a point between A and B at some ratio
+        function getPointBetween(a, b, ratio) {
+            return new google.maps.LatLng(a.lat() + (b.lat() - a.lat()) * ratio, a.lng() + (b.lng() - a.lng()) * ratio);
+        }
+
+        // start the route simulation
+        function startRouteAnimation(marker) {
+            var autoDriveTimer = setInterval(function () {
+                // stop the timer if the route is finished
+                if (autoDriveSteps.length === 0) {
+                    clearInterval(autoDriveTimer);
+                } else {
+                    // move marker to the next position (always the first in the array)
+                    marker.setPosition(autoDriveSteps[0]);
+                    // remove the processed position
+                    autoDriveSteps.shift();
+                }
+            },
+                1000);
+        }
+
+    </script>
+    <script>
+    'use strict';
+    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+
+    });
+
+
+    function Initialize() {
+
+    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+        zoom: 6,
+        scrollwheel: true,
+        center: { lat: 35.2289067, lng: -86.885620 }
+
+    });
+        directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        directionsDisplay.setMap(map);
+
+        calcRoute();
+
+
+
+        var data2;
+                function calcRoute() {
+
+
+            data2 = @Html.Raw(ViewBag.routes_animated);
+            var wayp = [];
+
+            $.each(data2, function (i, item) {
+                var wp = {
+                    'location': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'stopover': true
+                };
+
+
+                wayp.push(wp);
+            });
+
+            var f = data2.length -1;
+
+            start = new google.maps.LatLng(data2[0].GeoLong, data2[0].GeoLat);
+            end = new google.maps.LatLng(data2[f].GeoLong, data2[f].GeoLat);
+
+            var request = {
+                origin: start,
+                destination: end,
+                waypoints: wayp,
+                optimizeWaypoints: true,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                     //directionsDisplay.setOptions({ preserveViewport: true });//Si quisiera que el zoom fuera manejado por el control map pero hay que cambiarle el center
+                    directionsDisplay.setDirections(response);
+
+                } else {
+                    alert("directions response " + status);
+                }
+            });
+        }
+        //EJEMPLO DE ICONS
+        //if (item.demo_state == 3) {
+        //    marker = new mapIcons.Marker({
+        //        position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+        //        map: map,
+        //        animation: google.maps.Animation.DROP,
+        //        title: item.PlaceName,
+
+        //        icon: {
+        //            path: mapIcons.shapes.MAP_PIN,
+        //            fillColor: '#ff9900',
+        //            fillOpacity: 1,
+        //            strokeColor: '',
+        //            strokeWeight: 0
+        //        },
+        //        map_icon_label: '<span class="map-icon map-icon-store"></span>'
+
+        //    });
+        //}
+
+
+    var data = @Html.Raw(ViewBag.routes_map);
+    var markers = [];
+    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+        $.each(data, function (i, item) {
+            var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+            var marker;
+
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image,
+                    //label: '1'
+                });
+            }
+
+
+
+
+        // put in some information about each json object - in this case, the opening hours.
+
+        //colocamos la url de la demo
+        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
+
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+        //});
+
+        //url = url.replace('DEMOID', item.id);
+            var estructuradiv = '<div  id="RouteDetails_'+ item.id +'">';
+            estructuradiv += '<div class="card">';
+            estructuradiv += '<div class="card-body">';
+            estructuradiv += '<div class="row mt-4">';
+            estructuradiv += '<div class="col-md-12">';
+            estructuradiv += ' <h5>Visit details</h5>';
+            estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
+            estructuradiv += '<li class="nav-item">';
+            estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id +'" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
+            estructuradiv += '</li>';
+            estructuradiv += '<li class="nav-item">';
+            estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
+            estructuradiv += '</li>';
+            estructuradiv += '</ul>';
+            estructuradiv += '<div class="tab-content tab-content-basic">';
+            estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
+            estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
+            estructuradiv += '<p class="mb-0" > STORE: ' + item.store  +'</p>';
+            estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address +'</p>';
+            estructuradiv += '<p > DATE: ' +item.date +'</p>';
+            estructuradiv += '<p > REPRESENTATIVES: ' + item.representatives +'</p>';
+            estructuradiv += '</div>';
+            estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
+            estructuradiv += '<p > COMMENT: '+ item.comment +'</p>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+            estructuradiv += '</div>';
+
+
+        var infowindow = new google.maps.InfoWindow({
+            content: estructuradiv
+        });
+
+            function toggleBounce() {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(4);
+                }
+            }
+        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+            toggleBounce();
+            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+        });
+
+        marker.addListener('dblclick', function () {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+
+            // We get the map's default panorama and set up some defaults.
+            // Note that we don't yet set it visible.
+            panorama = map.getStreetView();
+            panorama.setPosition(marker.getPosition());
+            panorama.setPov(({
+                heading: 265,
+                pitch: 0
+            }));
+        });
+
+        //Agregamos el marcador al array de marcadores
+        markers.push(marker);
+
+
+    })
+
+
+    //// Add a marker clusterer to manage the markers.
+    //var markerCluster = new MarkerClusterer(map, markers,
+    //    { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+       // PARA ANIMACION
+        //var startf = new google.maps.LatLng(data2[0].GeoLong, data2[0].GeoLat);
+        //var ef = data2.length - 1;
+        //var nmarker = new mapIcons.Marker({
+        //    position: startf,
+        //    Map: map,
+        //    icon: {
+        //        path: mapIcons.shapes.MAP_PIN,
+        //        fillColor: '#8862e0',
+        //        fillOpacity: 1,
+        //        strokeColor: '',
+        //        strokeWeight: 0
+        //    },
+        //    map_icon_label: '<span class="map-icon map-icon-taxi-stand"></span>'
+
+        //});
+
+        //var endf = new google.maps.LatLng(data2[ef].GeoLong, data2[ef].GeoLat);
+        //setAnimatedRoute(startf,endf, map);
+        //startRouteAnimation(nmarker);
+}
+
+
+
+    //function myFunction(ID, store, customer, date, representatives, comment ) {
+    //    var id_mapitem = document.getElementById("map_id");
+    //    var store_mapitem = document.getElementById("map_storename");
+    //    var store_customeritem = document.getElementById("map_customername");
+    //    var store_dateitem = document.getElementById("map_date");
+    //    var store_representativeitem = document.getElementById("map_representatives");
+    //    var store_commentitem = document.getElementById("map_comment");
+
+
+    //    id_mapitem.innerText = "";
+    //    store_mapitem.innerText = "";
+    //    store_customeritem.innerText = "";
+    //    store_dateitem.innerText = "";
+    //    store_representativeitem.innerText = "";
+    //    store_commentitem.innerText = "";
+
+    //    id_mapitem.innerText = "ID: " + ID;
+    //    store_mapitem.innerText = "STORE: " + store;
+    //    //store_customeritem.innerText = "Customer: " + customer;
+    //    store_dateitem.innerText = "DATE: " + date;
+    //    store_representativeitem.innerText = "REPRESENTATIVES: " + representatives;
+    //    store_commentitem.innerText = comment;
+
+    //    ////LLAMADA AJAX PARA TIMELINE
+    //    //$.ajax
+    //    //    ({
+    //    //        url: '/Home/GetTimeline',
+    //    //        type: 'POST',
+    //    //        datatype: 'application/json',
+    //    //        contentType: 'application/json',
+    //    //        data: JSON.stringify({
+    //    //            idvisit: ID
+    //    //        }),
+    //    //        success: function (result) {
+
+    //    //            $("#timelinemap").html("");
+    //    //            $.each($.parseJSON(result), function (i, brands) {
+
+    //    //                    $("#timelinemap").append
+    //    //                        ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
+
+
+
+
+    //    //            }
+
+    //    //            )
+    //    //            getProductsline();
+
+    //    //        },
+    //    //        error: function () {
+    //    //            alert("Whooaaa! Something went wrong..")
+    //    //        },
+    //    //    });
+    //    ////FIN LLAMADA AJAX
+
+    //    var x = document.getElementById("RouteDetails");
+    //    if (x.style.display === "none") {
+    //        x.style.display = "block";
+    //    } else {
+    //        //x.style.display = "none";
+    //    }
+    //}
+
+    </script>
+    <!--PARA CERRAR DIV MAP-->
+    <script>
+        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
+
+        button.onclick = function () {
+            var div = document.getElementById('RouteDetails');
+            div.style.display = 'none';
+
+        };
+
+    </script>
+
+
+
+
+
+
+}
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#storesM').on('change', function () {
+            var conceptName = $('#storesM').find(":selected").text();
+
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            alert(valueSelected);
+        });
+    });
+
+</script>
+
+<!--SELECT MULTI ROUTES-->
+@if (ViewBag.Title == "Comercia Marketing - RoutesM")
+{
+    <script>
+        window.onload = function () {
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDroute = button.data("id");// Extract info from data-* attributes
+                    var Desroute = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
+                    $("#descriptionD").text(Desroute);
+
+                })
+            })(jQuery);
+
+        }
+
+    </script>
+    <script>
+
+    $(document).ready(function () {
+        function modelMatcher(params, data) {
+            data.parentText = data.parentText || "";
+
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
+
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+                    child.parentText += data.parentText + " " + data.text;
+
+                    var matches = modelMatcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return modelMatcher(params, match);
+            }
+            };
+        function matcher(params, data) {
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            var original = data.text.toUpperCase();
+            var term = params.term.toUpperCase();
+
+            // Check if the text contains the term
+            if (original.indexOf(term) > -1) {
+                return data;
+            }
+
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
+
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+
+                    var matches = matcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return matcher(params, match);
+            }
+
+            // If it doesn't contain the term, don't return anything
+            return null;
+        }
+
+
+        var json = JSON.parse('@Html.Raw(ViewBag.stores)')
+
+        var FRUIT_GROUPS = $.map(json, function (obj) {
+            obj.id = obj.id; // replace pk with your identifier
+            obj.text = obj.text;
+            obj.children = obj.children;
+            return obj;
+        });
+
+
+        $('#storesmulti').select2({
+            multiple: true,
+            placeholder: "Select stores...",
+            data: FRUIT_GROUPS,
+            query: function (options) {
+                var selectedIds = options.element.select2('val');
+                var data = jQuery.extend(true, {}, FRUIT_GROUPS);
+                var selectableGroups = $.map(data, function (group) {
+                    var areAllChildrenSelected = true,
+                        parentMatchTerm = false,
+                        anyChildMatchTerm = false;
+                    if (group.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0) {
+                        parentMatchTerm = true;
+                    }
+                    var i = group.children.length
+                    while (i--) {
+                        var child = group.children[i];
+
+                        if (selectedIds.indexOf(child.id) < 0) {
+                            areAllChildrenSelected = false;
+                        };
+
+                        if (options.term == '' || (child.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0)) {
+                            anyChildMatchTerm = true;
+                        }
+                        else if (!parentMatchTerm) {
+                            var index = group.children.indexOf(child);
+                            if (index > -1) {
+                                group.children.splice(index, 1);
+                            };
+                        };
+                    };
+
+                    return (!areAllChildrenSelected && (parentMatchTerm || anyChildMatchTerm)) ? group : null;
+                });
+
+                options.callback({ results: selectableGroups });
+            }
+        }).on('select2-selecting', function (e) {
+            var $select = $(this);
+            if (e.val == '') {
+                e.preventDefault();
+                $select.select2('data', $select.select2('data').concat(e.choice.children));
+                $select.select2('close');
+            }
+        });
+
+
+    @*var json = JSON.parse('@Html.Raw(ViewBag.usuarios)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.id; // replace pk with your identifier
+        obj.text = obj.text;
+        return obj;
+    });
+
+    $("#repmulti").select2({
+        multiple: true,
+        placeholder: "Select representatives...",
+        data: data
+
+    });*@
+
+
+
+        @*var json = JSON.parse('@Html.Raw(ViewBag.activitieslist)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.id; // replace pk with your identifier
+        obj.text = obj.text;
+        return obj;
+    });
+
+
+
+        $('#typesAmulti').select2({
+            multiple: true,
+            placeholder: "Select activities...",
+            data: data,
+            query: function (options) {
+                var selectedIds = options.element.select2('val');
+                var selectableGroups = $.map(this.data, function (group) {
+                    var areChildrenAllSelected = true;
+                    $.each(group.children, function (i, child) {
+                        if (selectedIds.indexOf(child.id) < 0) {
+                            areChildrenAllSelected = false;
+                            return false; // Short-circuit $.each()
+                        }
+                    });
+                    return !areChildrenAllSelected ? group : null;
+                });
+                options.callback({ results: selectableGroups });
+            }
+        }).on('select2-selecting', function (e) {
+            var $select = $(this);
+            if (e.val == '') {
+                e.preventDefault();
+                $select.select2('data', $select.select2('data').concat(e.choice.children));
+                $select.select2('close');
+            }
+        });*@
+
+
+    });
+    </script>
+}
+<!--SELECT MULTI ROUTES-->
+@if (ViewBag.Title == "Comercia Marketing - Representatives")
+{
+    <script>
+
+    $(document).ready(function () {
+
+
+    var json = JSON.parse('@Html.Raw(ViewBag.customers)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.ID; // replace pk with your identifier
+        obj.text = obj.Name;
+        return obj;
+    });
+
+        $("#Customersmulti").select2({
+        multiple: true,
+        placeholder: "Select customers...",
+        data: data
+
+    });
+
+
+        $("#CustomersmultiE").select2({
+            multiple: true,
+            placeholder: "Select customers...",
+            data: data
+
+        });
+  });
+    </script>
+}
+<script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("RoutesM", "Home", new { fstartd = "START", fendd = "FINISH"})';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+</script>
+
+
+<!--NOTIFICACIONES GLOBALES-->
+
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+                $.toast({
+                    heading: 'Danger',
+                    text: '@(TempData["error"])',
+                    showHideTransition: 'slide',
+                    icon: 'error',
+                    loaderBg: '#800000',
+                    position: 'top-right'
+                })
+
+        };
+    </script>
+}
+
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+                $.toast({
+                    heading: 'Warning',
+                    text: '@(TempData["advertencia"])',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#ff9900',
+                    position: 'top-right'
+                })
+
+        };
+    </script>
+}
+
+
+@if (TempData["exito"] != null)
+{
+    <script type="text/javascript">
+        console.log("Success");
+
+        $(document).ready(function () {
+
+                $.toast({
+                    heading: 'Success',
+                    text: '@(TempData["exito"])',
+                    showHideTransition: 'slide',
+                    icon: 'success',
+                    loader: false,
+                    loaderBg: '#004d00',
+                    position: 'top-right'
+                })
+        });
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        (function ($) {
+            showSuccessToast = function () {
+                'use strict';
+                resetToastPosition();
+                $.toast({
+                    heading: 'Success',
+                    text: 'Saved.',
+                    loader: false,
+                    showHideTransition: 'slide',
+                    icon: 'success',
+                    loaderBg: '#004d00',
+                    position: 'top-right'
+                })
+            };
+            showInfoToast = function () {
+                'use strict';
+                resetToastPosition();
+                $.toast({
+                    heading: 'Info',
+                    text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                    showHideTransition: 'slide',
+                    icon: 'info',
+                    loaderBg: '#46c35f',
+                    position: 'top-right'
+                })
+            };
+            showWarningToast = function () {
+                'use strict';
+                resetToastPosition();
+                $.toast({
+                    heading: 'Warning',
+                    text: 'Wrong email or password.',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#ff9900',
+                    position: 'top-right'
+                })
+            };
+            showDangerToast = function () {
+                'use strict';
+                resetToastPosition();
+                $.toast({
+                    heading: 'Danger',
+                    text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                    showHideTransition: 'slide',
+                    icon: 'error',
+                    loaderBg: '#f2a654',
+                    position: 'top-right'
+                })
+            };
+            showWarning = function () {
+                'use strict';
+                resetToastPosition();
+                $.toast({
+                    heading: 'Warning',
+                    text: 'Whooaaa! Something went wrong...',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#ff9900',
+                    position: 'top-right'
+                })
+            };
+
+
+        })(jQuery);
+    });
+</script>
+
+<!--FIN NOTIFICACIONES GLOBALES-->
+<!--TEMPLATE PREVIEW AND SAVE TEMPLATE ACTIVITY-->
+@if (ViewBag.Title == "Comercia Marketing - Template preview" || ViewBag.Title == "Comercia Marketing - Activity")
+{
+
+    @Html.Partial("~/Views/Shared/ActivityScripts.cshtml")
+}
+@if (ViewBag.Title == "Comercia Marketing - Activityea")
+{
+
+    @Html.Partial("~/Views/Shared/ActivityeaScripts.cshtml")
+}
+@if (ViewBag.Title == "Comercia Marketing - Template preview2")
+{
+    @Html.Partial("~/Views/Shared/ActivityraScripts.cshtml")
+}
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+    @Html.Partial("~/Views/Shared/visitScript.cshtml")
+}
+
+<script>
+    $(document).ready(function () {
+
+        $(".owl-example").owlCarousel({
+            // Most important owl features
+            items: 5,
+            itemsCustom: false,
+            itemsDesktop: [1199, 4],
+            itemsDesktopSmall: [980, 3],
+            itemsTablet: [768, 2],
+            itemsTabletSmall: false,
+            itemsMobile: [479, 1],
+            singleItem: false,
+            itemsScaleUp: false,
+
+            //Basic Speeds
+            slideSpeed: 200,
+            paginationSpeed: 800,
+            rewindSpeed: 1000,
+
+            //Autoplay
+            autoPlay: false,
+            stopOnHover: false,
+
+            // Navigation
+            navigation: false,
+            navigationText: ["prev", "next"],
+            rewindNav: true,
+            scrollPerPage: false,
+
+            //Pagination
+            pagination: true,
+            paginationNumbers: false,
+
+            // Responsive
+            responsive: true,
+            responsiveRefreshRate: 200,
+            responsiveBaseWidth: window,
+
+            // CSS Styles
+            baseClass: "owl-carousel",
+            theme: "owl-theme",
+
+            //Lazy load
+            lazyLoad: false,
+            lazyFollow: true,
+            lazyEffect: "fade",
+
+            //Auto height
+            autoHeight: false,
+
+            //JSON
+            jsonPath: false,
+            jsonSuccess: false,
+
+            //Mouse Events
+            dragBeforeAnimFinish: true,
+            mouseDrag: true,
+            touchDrag: true
+
+
+
+
+        });
+
+
+    });
+</script>
+@if (ViewBag.Title != "Comercia Marketing - Template preview")
+{
+    <script>
+
+
+
+        $(document).ajaxStart(function () {
+            $("#loading").show();
+        }).ajaxStop(function () {
+            $("#loading").hide();
+        }).ajaxError(function () {
+            $("#loading").hide();
+        });
+    </script>
+}
+<script>
+    $(function () {
+        $('#clickdiv').click(function () {
+            screenfull.request($('#contain22')[0]);
+        });
+    });
+</script>
+
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+    <script>
+        document.getElementById("time").defaultValue = "2018-01-01T00:00:00";
+
+        function BuildEditorHeader(array) {
+
+            array.forEach(function (element, root) {
+                var $th;
+                var $tr = "<tr id='headerR'></tr>";
+                $("#resultsRetail thead").append($tr);
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "24") {
+
+                    $th = "<th>" + element.fdescription + "</th>";
+                }
+
+                $('#headerR').append($th);
+            });
+        };
+
+        function BuildEditorRows(array) {
+
+            array.forEach(function (element) {
+                var $tr = "<tr></tr>";
+                var $td;
+                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                if (element.id_resource == "3") { //Products
+
+                    $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
+                    $("#resultsRetail tbody").append($tr);
+                    $("#resultsRetail tr:last").append($td);
+
+                    if (element.children != null) {
+                        BuildEditorRows(element.children);
+                    }
+                }
+
+                if (element.id_resource == "16") { //Multiple_choice
+
+                    $td = "<td data-label='" + element.fdescription + "'>";
+
+                    if (element.fvalue != 0) {
+
+                        $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
+                    } else {
+                        $td += "&nbsp;</td>";
+                    }
+
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "18") { //Input_number
+
+                    $td = "<td data-label='" + element.fdescription + "'>";
+
+                    $td += "<label>" + element.fvalue + "</label>";
+                    $td += "&nbsp;</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "21") { //Currency
+
+                    $td = "<td data-label='" + element.fdescription + "'>";
+
+                    $td += "$ <label>" + element.fvalueDecimal + "</label>";
+                    $td += "&nbsp;</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+                if (element.id_resource == "6") { ///Input_text
+
+                    $td = "<td data-label='" + element.fdescription + "'>";
+
+                    $td += "<label>" + element.fsource + "</label>";
+                    $td += "&nbsp;</td>";
+
+                    $('#resultsRetail tr:last').append($td);
+                }
+            });
+        };
+
+        (function ($) {
+            'use strict';
+            $('#infoRetailModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget);// Button that triggered the modal
+
+                var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
+                var DesAct = $(event.relatedTarget).data("name");
+
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+
+                $.ajax
+                    ({
+                        url: '/Home/Getformdata',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            id_activity: IDform
+                        }),
+                        success: function (result) {
+
+
+                            $("#resultsRetail").find("tr").remove();
+                            $("#descriptionUDM").text(DesAct);
+
+                            BuildEditorHeader(result);
+                            BuildEditorRows(result);
+
+                        },
+                        error: function () {
+                            alert("Whooaaa! Something went wrong..")
+                        },
+                    });
+
+
+
+
+            })
+        })(jQuery);
+
+    </script>
+
+    <script>
+        window.onload = function () {
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDAct = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
+                    $("#descriptionD").text(DesAct);
+
+                })
+            })(jQuery);
+            (function ($) {
+                'use strict';
+                $('#cancelModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDAct = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityCa"]').val(IDAct);
+                    $("#descriptionCa").text(DesAct);
+
+                })
+            })(jQuery);
+            (function ($) {
+                'use strict';
+                $('#deleteRepModal').on('show.bs.modal', function (event) {
+
+
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDRep = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_repUD"]').val(IDRep);
+                    $("#descriptionUD").text(DesAct);
+
+                })
+            })(jQuery);
+
+
+
+            (function ($) {
+                'use strict';
+                $('#copyModal').on('show.bs.modal', function (event) {
+
+
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDRep = button.data("activity");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityCopy"]').val(IDRep);
+                    $("#descriptionCopy").text(DesAct);
+
+                })
+            })(jQuery);
+        }
+
+    </script>
+
+}
+
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    <script>
+    'use strict';
+    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+    });
+
+    function Initialize() {
+
+    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+        zoom: 4,
+        scrollwheel: true,
+        center: { lat: 35.2289067, lng: -86.885620 }
+
+    });
+
+    var data = @Html.Raw(ViewBag.routes_map);
+    var markers = [];
+    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+    $.each(data, function (i, item) {
+        var marker;
+             var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+            var marker;
+
+
+
+
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image
+
+                });
+            }
+
+
+
+        // Make the marker-pin blue!
+        //if (item.demo_state == "3") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+        //}
+        //if (item.demo_state == "2") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        //}
+        //if (item.demo_state == "1") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+        //}
+        //if (item.demo_state == "4") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        //}
+
+        // put in some information about each json object - in this case, the opening hours.
+
+        //colocamos la url de la demo
+        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
+
+
+        //url = url.replace('DEMOID', item.id);
+
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+        //});
+        var estructuradiv = '<div  id="RouteDetails_' + item.id + '">';
+        estructuradiv += '<div class="card">';
+        estructuradiv += '<div class="card-body">';
+        estructuradiv += '<div class="row mt-4">';
+        estructuradiv += '<div class="col-md-12">';
+        estructuradiv += ' <h5>Visit details</h5>';
+        estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '</ul>';
+        estructuradiv += '<div class="tab-content tab-content-basic">';
+        estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
+        estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
+        estructuradiv += '<p class="mb-0" > STORE: ' + item.store + '</p>';
+        estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
+        estructuradiv += '<p > DATE: ' + item.date + '</p>';
+        estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
+        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: estructuradiv
+        });
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(4);
+            }
+        }
+        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+            toggleBounce();
+            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+        });
+
+        marker.addListener('dblclick', function () {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+
+            // We get the map's default panorama and set up some defaults.
+            // Note that we don't yet set it visible.
+            panorama = map.getStreetView();
+            panorama.setPosition(marker.getPosition());
+            panorama.setPov(({
+                heading: 265,
+                pitch: 0
+            }));
+        });
+
+        //Agregamos el marcador al array de marcadores
+        markers.push(marker);
+
+
+    })
+
+
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+
+
+
+
+}
+
+
+
+    //function myFunction(ID, store, customer, date, representatives, comment ) {
+    //    var id_mapitem = document.getElementById("map_id");
+    //    var store_mapitem = document.getElementById("map_storename");
+    //    var store_customeritem = document.getElementById("map_customername");
+    //    var store_dateitem = document.getElementById("map_date");
+    //    var store_representativeitem = document.getElementById("map_representatives");
+    //    var store_commentitem = document.getElementById("map_comment");
+
+
+    //    id_mapitem.innerText = "";
+    //    store_mapitem.innerText = "";
+    //    store_customeritem.innerText = "";
+    //    store_dateitem.innerText = "";
+    //    store_representativeitem.innerText = "";
+    //    store_commentitem.innerText = "";
+
+    //    id_mapitem.innerText = "Visit ID: " + ID;
+    //    store_mapitem.innerText = "Store: " + store;
+    //    //store_customeritem.innerText = "Customer: " + customer;
+    //    store_dateitem.innerText = "Date: " + date;
+    //    store_representativeitem.innerText = "Route: " + representatives;
+    //    store_commentitem.innerText = "Comment: " + comment;
+
+    //    var x = document.getElementById("RouteDetails");
+    //    if (x.style.display === "none") {
+    //        x.style.display = "block";
+    //    } else {
+    //        //x.style.display = "none";
+    //    }
+    //}
+
+    </script>
+    <!--PARA CERRAR DIV MAP-->
+    <script>
+        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
+
+        button.onclick = function () {
+            var div = document.getElementById('RouteDetails');
+            div.style.display = 'none';
+
+        };
+
+    </script>
+    <script>
+    $(function () {
+        $('#click_filterStoresStats').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("CustomerM_stats", "Home", new { fstartd = "START", fendd = "FINISH", store="STORE"})';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+            url = url.replace('STORE', idstore);
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
+
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Brand competitors")
+{
+    <script>
+
+        function getbrands() {
+            var customerId = $("#customer_list").val();
+
+
+
+            $.ajax
+                ({
+                    url: '/Home/Getbrands',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        customerID: customerId
+
+                    }),
+                    success: function (result) {
+
+                        $("#brands_list").html("");
+                        $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
+                        $.each($.parseJSON(result), function (i, brands) {
+
+                            $("#brands_list").append
+                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+
+
+
+                        }
+
+                        )
+
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+
+
+
+        }
+
+        (function ($) {
+            'use strict';
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);// Button that triggered the modal
+
+                var ID = button.data("id");// Extract info from data-* attributes
+
+
+
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                //modal.find('.modal-title').text('Edit data: ' + recipient)
+                modal.find('.modal-body input[name="idbrandD"]').val(ID);
+
+
+            })
+        })(jQuery);
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+    <script>
+        $("#demotimetitle").hide();
+        $("#demotimediv").hide();
+
+        function getCustomers() {
+            var Idrep = $("#ID_rep").val();
+
+            if (Idrep == "0" || Idrep == null) {
+
+            } else {
+
+                $.ajax
+                    ({
+                        url: '/VisitsMs/GetCustomer_reps',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            ID_usuario: Idrep
+                        }),
+                        success: function (result) {
+
+                            $("#ID_customer").html("");
+                            $("#ID_customer").append($('<option></option>').val(0).html("Select a customer"))
+                            $.each($.parseJSON(result), function (i, brands) {
+                                if (brands.isselected) {//si esta seleccionado
+                                    $("#ID_customer").append
+                                        ($('<option selected></option>').val(brands.ID).html(brands.Name));
+
+
+                                } else {
+                                    $("#ID_customer").append
+                                        ($('<option></option>').val(brands.ID).html(brands.Name));
+                                }
+
+
+                            }
+
+                            )
+                            $("#loading").hide();
+
+                        },
+                        error: function () {
+                            alert("Whooaaa! Something went wrong..")
+                            $("#loading").hide();
+                        },
+                    });
+            }
+
+
+        }
+        function getActivity() {
+            var Idact = $("#ID_form").val();
+
+            $.ajax
+                ({
+                    url: '/VisitsMs/GetType',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        ID_type: Idact
+                    }),
+                    success: function (result) {
+
+                        if (result != "4") {
+                            $("#demotimetitle").hide();
+                            $("#demotimediv").hide();
+                        } else {
+                            $("#demotimetitle").show();
+                            $("#demotimediv").show();
+                        }
+
+                    },
+                    error: function () {
+                        //alert("Whooaaa! Something went wrong..")
+
+                    },
+                });
+
+
+
+        }
+
+    </script>
+}
+
+
+<!--FILTERS REPRESENTATIVE STATS-->
+@if (ViewBag.Title == "Comercia Marketing - Representative_stats")
+{
+
+    <script>
+    $(function () {
+        $('#click_filterR').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("Representative_stats", "Home", new { id=ViewBag.ID_rep, fstartd = "START", fendd = "FINISH" })';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+    </script>
+
+
+}
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+
+    <script>
+    $(function () {
+        $('#click_filterR').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH" })';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+    </script>
+}
+<!--FILTERS STORE STATS-->
+@if (ViewBag.Title == "Comercia Marketing - Store_stats")
+{
+
+    <script>
+    $(function () {
+        $('#click_filterR').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+        var url = '@Url.Action("StoreM_stats", "Home", new { id=ViewBag.ID_store, fstartd = "START", fendd = "FINISH" })';
+
+
+            url = url.replace('START', st.toLocaleDateString());
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+    </script>
+}
+<!--GALLERY-->
+@if (ViewBag.Title == "Comercia Marketing - Gallery")
+{
+
+    <script>
+
+        $(document).ready(function () {
+            $('.parentdiv').click(function (e) {
+                var img = $(this).parent().parent().parent().find('img[data-enlargable]');
+                img.addClass('img-enlargable');
+
+                var src = img.attr('src');
+
+                $('<div>').css({
+                    background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
+                    backgroundSize: 'contain',
+                    width: '100%', height: '100%',
+                    position: 'fixed',
+                    zIndex: '10000',
+                    top: '0', left: '0',
+                    cursor: 'zoom-out'
+                }).click(function () {
+                    $(this).remove();
+                }).appendTo('body');
+            });
+
+        });
+    </script>
+}
+
+    <script>
+        function isOnLine() {
+            return navigator.onLine;
+        }
+
+        $(document).ready(function () {
+                        //Actualizamos cache manifest
+            var IDvisita = @ViewBag.idvisita;
+
+            if (isOnLine()) {
+                //window.applicationCache.update();
+                //$.ajax
+                //({
+                //    url: '/VisitsMs/DetailsOffline',
+                //    type: 'POST',
+                //    datatype: 'application/json',
+                //    contentType: 'application/json',
+                //    data: JSON.stringify({
+                //        id: IDvisita
+                //    }),
+                //    success: function (result) {
+                //        if (window.applicationCache) {
+                //                window.applicationCache.update();
+                //        }
+
+                        //window.location.reload();
+                        //Guardamos datos de Estado de activididad por rep o admin
+                        var datosestado =@Html.Raw(Json.Encode(@ViewBag.estadovisita));
+                        if (localStorage.getItem("estadovisita") === null) {
+                            //Como no existe, insertamos el registro desde el servidor
+                            localStorage.setItem('estadovisita', JSON.stringify(datosestado));
+                        } else { //Pero si existe, tenemos que evaluar
+                            var eval = JSON.parse(localStorage.getItem('estadovisita'));
+                            eval.forEach(function (objeto) {
+                                if (objeto.onserver == true) {
+                                    localStorage.setItem('estadovisita', JSON.stringify(datosestado));
+                                } else {
+                                    if (objeto.ID_visit == IDvisita) {
+                                        //Pero si no esta en el servidor, quiere decir que no se a subido, por lo tanto
+                                        //No tenemos que sobreescribir los datos
+                                    } else {//A menos que se cambie de visita
+                                        localStorage.setItem('estadovisita', JSON.stringify(datosestado));
+                                    }
+                                }
+                            });
+                        }
+
+                        //var retrievedArrayState = JSON.parse(localStorage.getItem('estadovisita'));
+                        /////fin
+
+        //GUARDAMOS DATOS DE ACTIVIDADES EN LOCAL STORAGE
+                        try {
+                            var datos =@Html.Raw(Json.Encode(@ViewBag.activities));
+
+                            if (localStorage.getItem("activities") === null) {
+                                //Como no existe, insertamos el registro desde el servidor
+                                localStorage.setItem('activities', JSON.stringify(datos));
+                            } else { //Pero si existe, tenemos que evaluar
+                                var eval = JSON.parse(localStorage.getItem('activities'));
+
+                                if (eval.length > 0) {
+
+
+                                    eval.forEach(function (objeto) {
+                                        //if (objeto.onserver == true) {
+                                        //    localStorage.setItem('activities', JSON.stringify(datos));
+                                        //} else {
+                                        if (objeto.ID_visit == IDvisita) {
+                                            //Pero si no esta en el servidor, quiere decir que no se a subido, por lo tanto
+                                            //No tenemos que sobreescribir los datos
+                                        } else {//A menos que se cambie de visita
+                                            localStorage.setItem('activities', JSON.stringify(datos));
+                                        }
+                                        //}
+                                    });
+                                } else {
+                                    localStorage.setItem('activities', JSON.stringify(datos));
+                                }
+                            }
+
+
+                var retrievedArray = JSON.parse(localStorage.getItem('activities'));
+
+    var tipousuario = @Session["tipousuario"].ToString();
+
+                            var tiporol = @Session["tiporol"].ToString();
+
+
+                            var lstestadov = JSON.parse(localStorage.getItem('estadovisita'));
+                            var estadov;
+                            lstestadov.forEach(function (objeto) {
+                                estadov = objeto.state;
+                            });
+                            
+                   
+    if (retrievedArray == null) {
+        $("#activitiesdiv").append("<label>No activities to show</label><hr />");
+    } else {
+
+        for (var activity in retrievedArray) {
+            var idActivity = retrievedArray[activity].ID_activity;
+            var copyID = "";
+            var res = "";
+            if (retrievedArray[activity].query1 != "" || retrievedArray[activity].query1 != null) {
+                res = retrievedArray[activity].query1.substring(0, 4);
+
+                if (res == "copy") {
+                   
+                    //copyID = retrievedArray[activity].query1.substring(retrievedArray[activity].query1.indexOf("act_") + 4);
+                    copyID = retrievedArray[activity].query1;
+                }
+                
+
+            }
+
+     
+            //$("#activitiesdiv").append(" <b>" + retrievedArray[p].ID_activity + '|' + retrievedArray[p].description + "</b>.");
+            $("#activitiesdiv").append('<div class="item-wrapper d-flex pb-4 border-bottom" id="activitiesdiv_child' + idActivity + '">');
+            $("#activitiesdiv_child" + idActivity + "").append('<div class="status-wrapper d-flex align-items-start pr-3" id="activitiesdiv_subchild1' + idActivity + '">');
+
+            if (retrievedArray[activity].isfinished == true && retrievedArray[activity].query1 != "cancel") {
+                $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>');
+            }
+            else if (retrievedArray[activity].isfinished == true && retrievedArray[activity].query1 == "cancel") {
+                $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>');
+            }
+            else {
+                $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>');
+            }
+
+            $("#activitiesdiv_child" + idActivity + "").append('</div>');
+            $("#activitiesdiv_child" + idActivity + "").append('<div class="text-wrapper" id="activitiesdiv_subchild2' + idActivity + '">');
+
+
+            if (retrievedArray[activity].ID_activitytype == 1 || retrievedArray[activity].ID_activitytype == 4) {
+                if (retrievedArray[activity].isfinished == true) {
+                    //var url = 'Url.Action("Activityresume", "FormsM", new { id = "IDactivity", details="json" })';
+                    //url = url.replace('IDactivity', idActivity);
+                    //url = url.replace('json', JSON.parse(localStorage.getItem('visit_info')));
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                }
+                else {
+                            if (res == "copy") {
+                                if (retrievedArray[activity].isnew == true) {
+                                    $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" id=' + copyID + ' onclick="copyact(this.id)" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                                } else {
+                                var url = '@Url.Action("Activity", "FormsM", new { id = "IDactivity" })';
+                                url = url.replace('IDactivity', idActivity);
+                                $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                                }
+                                
+                            } else {
+                                var url = '@Url.Action("Activity", "FormsM", new { id = "IDactivity" })';
+                                url = url.replace('IDactivity', idActivity);
+                                $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                            }
+
+                }
+            }
+            else if (retrievedArray[activity].ID_activitytype == 2) {
+                if (retrievedArray[activity].isfinished == true) {
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="' + retrievedArray[activity].ID_activity + '" data-name="' + retrievedArray[activity].description + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                }
+                else {
+                    var url = '@Url.Action("Activityra", "FormsM", new { id = "IDactivity" })';
+                    url = url.replace('IDactivity', idActivity);
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                }
+
+            }
+            else {
+                $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+
+            }
+            $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="d-block mb-2 text-black">Customer: ' + retrievedArray[activity].Customer + '</small>');
+            $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Assigned rep :' + retrievedArray[activity].usuarioasignado + '</small>');
+            var nowDate = new Date(parseInt(retrievedArray[activity].check_out.substr(6)));
+            $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Last update : ' + nowDate + '</small>');
+
+            if (retrievedArray[activity].isfinished == true) {
+                if (retrievedArray[activity].query1 == "cancel") {
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Canceled</small>');
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Reason: ' + retrievedArray[activity].comments + '</small>');
+
+
+                }
+                else {
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Finished</small>');
+                }
+
+            }
+            $("#activitiesdiv_child" + idActivity + "").append('</div>');
+
+
+
+            if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                $("#activitiesdiv_child" + idActivity + "").append('</a>');
+            }
+
+            else {
+
+                if (estadov != 4) {
+
+                    if (retrievedArray[activity].isfinished != true && retrievedArray[activity].query1 != "cancel") {
+                        
+                            if (res == "copy") {
+                                if (retrievedArray[activity].isnew == true) {
+                                    $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="' + retrievedArray[activity].query1 + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                                    $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                                } else {
+                                    $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                                    $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                                }
+
+                            } else {
+                                $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                                $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                            }
+                    
+                    }
+
+                    if (retrievedArray[activity].ID_activitytype == 4) {
+
+                    }
+
+                    else {
+                        if (res == "copy") {
+                            if (retrievedArray[activity].isnew == true) {
+
+                            } else {
+
+                            }
+
+                        } else {
+                            if (retrievedArray[activity].ID_activitytype == 1) {
+                                $("#activitiesdiv_child" + idActivity + "").append('<a class="count online ml-auto" href="#" data-toggle="modal" data-target="#copyModal" data-activity="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-content-copy"></i>');
+                                $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                            }
+                            
+                        }
+
+                    }
+
+
+
+                }
+
+
+            }
+            $("#activitiesdiv_child" + idActivity + "").append('</div><br />');
+
+        }
+    }
+
+
+} catch (err) {
+
+    console.log("Error: " + err.message);
+
+    $("#activitiesdiv").append("<label>Error loading activities</label><hr />");
+
+}
+
+                        //Guardamos DETALLES DE FORMULARIOS
+                        try {
+                            var datosf =@Html.Raw(@ViewBag.details);
+
+                            if (localStorage.getItem("FormsM_details") === null) {
+                                //Como no existe, insertamos el registro desde el servidor
+                                localStorage.setItem('FormsM_details', JSON.stringify(datosf));
+                            } else { //Pero si existe, tenemos que evaluar
+                                var eval = JSON.parse(localStorage.getItem('FormsM_details'));
+                                if (eval.length > 0) {
+                                    eval.forEach(function (objeto) {
+                                        //if (objeto.onserver == true) {
+                                        //    localStorage.setItem('FormsM_details', JSON.stringify(datosf));
+                                        //} else {
+                                        if (objeto.ID_visitOriginal == IDvisita) {
+                                            //Pero si no esta en el servidor, quiere decir que no se a subido, por lo tanto
+                                            //No tenemos que sobreescribir los datos
+                                        } else {//A menos que se cambie de visita
+                                            localStorage.setItem('FormsM_details', JSON.stringify(datosf));
+                                        }
+
+
+                                        //}
+                                    });
+                                } else {
+                                    localStorage.setItem('FormsM_details', JSON.stringify(datosf));
+                                }
+                            }
+                        } catch{
+
+                        }
+
+                                        //Guardamos FORMATOS
+                        try {
+                            var datosformatos =@Html.Raw(@ViewBag.formatosForms);
+
+                            if (localStorage.getItem("formatosForms") === null) {
+                                //Como no existe, insertamos el registro desde el servidor
+                                localStorage.setItem('formatosForms', JSON.stringify(datosformatos));
+                            } else { //Pero si existe, tenemos que evaluar
+                                var eval = JSON.parse(localStorage.getItem('formatosForms'));
+                                if (eval.length > 0) {
+                                    eval.forEach(function (objeto) {
+                                        //if (objeto.onserver == true) {
+                                        //    localStorage.setItem('FormsM_details', JSON.stringify(datosf));
+                                        //} else {
+                                        if (objeto.ID_visitOriginal == IDvisita) {
+                                            //Pero si no esta en el servidor, quiere decir que no se a subido, por lo tanto
+                                            //No tenemos que sobreescribir los datos
+                                        } else {//A menos que se cambie de visita
+                                            localStorage.setItem('formatosForms', JSON.stringify(datosformatos));
+                                        }
+
+
+                                        //}
+                                    });
+                                } else {
+                                    localStorage.setItem('formatosForms', JSON.stringify(datosformatos));
+                                }
+                            }
+                        } catch{
+
+                        }
+                        //GUARDAMOS DATOS DE VISITA EN LOCAL STORAGE
+                        try {
+                            //Guardamos la informacion de la visita
+                            var datosv =@Html.Raw(Json.Encode(@ViewBag.visit_info));
+
+                            if (localStorage.getItem("visit_info") === null) {
+                                //Como no existe, insertamos el registro desde el servidor
+                                localStorage.setItem('visit_info', JSON.stringify(datosv));
+                            } else { //Pero si existe, tenemos que evaluar
+                                var eval = JSON.parse(localStorage.getItem('visit_info'));
+                                eval.forEach(function (objeto) {
+                                    if (objeto.onserver == true) {
+                                        localStorage.setItem('visit_info', JSON.stringify(datosv));
+                                    } else {
+                                        if (objeto.ID_visit == IDvisita) {
+                                            //Pero si no esta en el servidor, quiere decir que no se a subido, por lo tanto
+                                        //No tenemos que sobreescribir los datos
+                                        } else {//A menos que se cambie de visita
+                                            localStorage.setItem('visit_info', JSON.stringify(datosv));
+                                        }
+
+
+                                    }
+                                });
+                            }
+
+
+                            var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                            if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                                $("#divcheckvisit").append('<a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>');
+                            }
+                            for (var visitinfo in retrievedArray) {
+                                if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                                    //$("#divcheckvisit").append('<a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>');
+                                }
+                                else {
+                                    if (retrievedArrayV[visitinfo].ID_visitstate == 3) {
+                                        $("#divcheckvisit").append('<a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>');
+                                    }
+                                    else if (retrievedArrayV[visitinfo].ID_visitstate == 2) {
+                                        $("#divcheckvisit").append('<a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>');
+                                    }
+                                }
+                            }
+                            $("#divcheckvisit").append('<hr />');
+                        }
+                        catch(err){
+                            console.log("Se encontro un error: " + err.message)
+                        }
+
+
+
+
+                        if (estadov == 3) 
+                        {
+                            if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1")
+                        { }
+                        else
+                        {
+                           
+                                    $("#activitiesdiv").addClass("disable")
+                                        .click(function () {
+                                            return false;
+                                        });
+                                
+
+                        }
+
+                    }
+
+                    //},
+                    //error: function () {
+                    //    //alert("Whooaaa! Something went wrong..")
+                    //},
+                //});
+            }
+            else {
+                var tipousuario = @Session["tipousuario"].ToString();
+                var tiporol = @Session["tiporol"].ToString();
+                var lstestadov = JSON.parse(localStorage.getItem('estadovisita'));
+                var estadov;
+                lstestadov.forEach(function (objeto) {
+                    estadov = objeto.state;
+                });
+
+         
+try {
+
+
+                var retrievedArray = JSON.parse(localStorage.getItem('activities'));
+
+                if (retrievedArray == null) {
+                    $("#activitiesdiv").append("<label>No activities to show</label><hr />");
+                }
+
+                for (var activity in retrievedArray) {
+                    var idActivity = retrievedArray[activity].ID_activity;
+                    var copyID = "";
+                    var res = "";
+                    if (retrievedArray[activity].query1 != "" || retrievedArray[activity].query1 != null) {
+                        res = retrievedArray[activity].query1.substring(0, 4);
+
+                        if (res == "copy") {
+                           
+                            //copyID = retrievedArray[activity].query1.substring(retrievedArray[activity].query1.indexOf("act_") + 4);
+                            copyID = retrievedArray[activity].query1;
+                        }
+
+
+                    }
+
+             
+
+
+                    //$("#activitiesdiv").append(" <b>" + retrievedArray[p].ID_activity + '|' + retrievedArray[p].description + "</b>.");
+                    $("#activitiesdiv").append('<div class="item-wrapper d-flex pb-4 border-bottom" id="activitiesdiv_child' + idActivity+'">');
+                    $("#activitiesdiv_child" + idActivity+ "").append('<div class="status-wrapper d-flex align-items-start pr-3" id="activitiesdiv_subchild1' + idActivity +'">');
+
+                    if (retrievedArray[activity].isfinished == true && retrievedArray[activity].query1 != "cancel") {
+                        $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>');
+                    }
+                    else if (retrievedArray[activity].isfinished == true && retrievedArray[activity].query1 == "cancel") {
+                        $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>');
+                    }
+                    else {
+                        $("#activitiesdiv_subchild1" + idActivity + "").append('<span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>');
+                    }
+
+                    $("#activitiesdiv_child" + idActivity + "").append('</div>');
+                    $("#activitiesdiv_child" + idActivity + "").append('<div class="text-wrapper" id="activitiesdiv_subchild2' + idActivity +'">');
+
+
+                    if (retrievedArray[activity].ID_activitytype == 1 || retrievedArray[activity].ID_activitytype == 4) {
+                        if (retrievedArray[activity].isfinished == true) {
+                            @*var url = '@Url.Action("Activityresume", "FormsM", new { id = "IDactivity" })';
+                            url = url.replace('IDactivity', idActivity);*@
+                            $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                        }
+                        else {
+                            if (res == "copy") {
+                                if (retrievedArray[activity].isnew == true) {
+                                    $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="#" id=' + copyID + ' onclick="copyact(this.id)" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                                } else {
+                                var url = '@Url.Action("Activity", "FormsM", new { id = "IDactivity" })';
+                                url = url.replace('IDactivity', idActivity);
+                                $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                                }
+                                
+                            } else {
+                                var url = '@Url.Action("Activity", "FormsM", new { id = "IDactivity" })';
+                                url = url.replace('IDactivity', idActivity);
+                                $("#activitiesdiv_subchild2" + idActivity + "").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                            }
+                        }
+                    }
+                    else if (retrievedArray[activity].ID_activitytype == 2) {
+                        if (retrievedArray[activity].isfinished == true) {
+                            $("#activitiesdiv_subchild2" + idActivity +"").append('<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="' + retrievedArray[activity].ID_activity + '" data-name="' + retrievedArray[activity].description + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                        }
+                        else {
+                            var url = '@Url.Action("Activityra", "FormsM", new { id = "IDactivity" })';
+                            url = url.replace('IDactivity', idActivity);
+                            $("#activitiesdiv_subchild2" + idActivity +"").append('<a href="' + url + '" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+                        }
+
+                    }
+                    else {
+                        $("#activitiesdiv_subchild2" + idActivity +"").append('<a href="#" class="text-black"><h6 class="d-block mb-1">' + retrievedArray[activity].description + '</h6></a>');
+
+                    }
+                    $("#activitiesdiv_subchild2" + idActivity +"").append('<small class="d-block mb-2 text-black">Customer: ' + retrievedArray[activity].Customer + '</small>');
+                    $("#activitiesdiv_subchild2" + idActivity + "").append('<small class="text-gray d-block">Assigned rep :' + retrievedArray[activity].usuarioasignado + '</small>');
+                    var nowDate = new Date(parseInt(retrievedArray[activity].check_out.substr(6)));
+                    $("#activitiesdiv_subchild2" + idActivity +"").append('<small class="text-gray d-block">Last update : ' + nowDate + '</small>');
+
+                    if (retrievedArray[activity].isfinished == true) {
+                        if (retrievedArray[activity].query1 == "cancel") {
+                            $("#activitiesdiv_subchild2" + idActivity +"").append('<small class="text-gray d-block">Canceled</small>');
+                            $("#activitiesdiv_subchild2" + idActivity +"").append('<small class="text-gray d-block">Reason: ' + retrievedArray[activity].comments + '</small>');
+
+
+                        }
+                        else {
+                            $("#activitiesdiv_subchild2" + idActivity +"").append('<small class="text-gray d-block">Finished</small>');
+                        }
+
+                    }
+                    $("#activitiesdiv_child" + idActivity + "").append('</div>');
+
+
+
+                    if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                        $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                        $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                    }
+
+                    else {
+
+                        if (estadov != 4) {
+
+                            if (retrievedArray[activity].isfinished != true && retrievedArray[activity].query1 != "cancel") {
+                                $("#activitiesdiv_child" + idActivity + "").append('<a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-close-circle-outline"></i>');
+                                $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                            }
+
+
+                            if (retrievedArray[activity].ID_activitytype == 4) {
+
+                            }
+
+                            else {
+                                if (res == "copy") {
+                                    if (retrievedArray[activity].isnew == true) {
+
+                                    } else {
+                                        $("#activitiesdiv_child" + idActivity + "").append('<a class="count online ml-auto" href="#" data-toggle="modal" data-target="#copyModal" data-activity="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-content-copy"></i>');
+                                        $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                                    }
+
+                                } else {
+                                    $("#activitiesdiv_child" + idActivity + "").append('<a class="count online ml-auto" href="#" data-toggle="modal" data-target="#copyModal" data-activity="' + retrievedArray[activity].ID_activity + '" data-description="' + retrievedArray[activity].description + '"><i class="close ml-auto mdi mdi-content-copy"></i>');
+                                    $("#activitiesdiv_child" + idActivity + "").append('</a>');
+                                }
+
+                            }
+
+
+
+                        }
+
+
+                    }
+                    $("#activitiesdiv_child" + idActivity + "").append('</div><br />');
+
+
+
+    }
+
+
+            } catch(err){
+                console.log("Error: " + err.message);
+                $("#activitiesdiv").append("<label>Error loading activities</label><hr />");
+            }
+
+                //RECUPERAMOS LA INFO DE LA VISITA EN LOCAL STORAGE
+
+                        try {
+                            //Guardamos la informacion de la visita
+
+                            var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                            if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                                $("#divcheckvisit").append('<a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>');
+                            }
+                            for (var visitinfo in retrievedArray) {
+                                if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") {
+                                    //$("#divcheckvisit").append('<a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>');
+                                }
+                                else {
+                                    if (retrievedArrayV[visitinfo].ID_visitstate == 3) {
+                                        $("#divcheckvisit").append('<a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>');
+                                    }
+                                    else if (retrievedArrayV[visitinfo].ID_visitstate == 2) {
+                                        $("#divcheckvisit").append('<a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>');
+                                    }
+                                }
+                            }
+                            $("#divcheckvisit").append('<hr />');
+                        }
+                        catch(err){
+                            console.log("Se encontro un error: " + err.message)
+                }
+
+
+                if (estadov == 3) {
+                   
+                    if ((tipousuario == "8" && tiporol == "8") || tipousuario == "1") { }
+                    else {
+                   
+                            $("#activitiesdiv").addClass("disable")
+                                .click(function () {
+                                    return false;
+                                });
+                        
+
+                    }
+
+                }
+            }
+
+
+
+
+            });
+
+    </script>
+@*<script>
+    jQuery('document').ready(function () {
+        $(document).bind('click', function (e) {
+            var target = $(e.target);
+            if (target.is('.copybtn')) {
+                //e.preventDefault(); // if you want to cancel the event flow
+                // do something
+                alert("holis");
+            }
+        });
+    });
+
+</script>*@
+
+@*<script>
+    //$(document).ready(function () {
+
+
+    //});
+</script>*@

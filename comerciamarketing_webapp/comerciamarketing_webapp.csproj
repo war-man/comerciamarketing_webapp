@@ -635,6 +635,8 @@
     <Content Include="Content\landingpage\img\pricing3.png" />
     <Content Include="Content\landingpage\img\product-details.png" />
     <Content Include="Content\landingpage\img\product-solution.png" />
+    <Content Include="Content\landingpage\img\productos.jpg" />
+    <Content Include="Content\landingpage\img\productos2.jpg" />
     <Content Include="Content\landingpage\img\profit.png" />
     <Content Include="Content\landingpage\img\request.png" />
     <Content Include="Content\landingpage\img\results-ver2.png" />
@@ -853,6 +855,7 @@
     <Content Include="Content\newstyle2\images\logoIcon.png" />
     <Content Include="Content\newstyle2\images\LogoCMK.png" />
     <Content Include="Content\newstyle2\images\logo_star_white.svg" />
+    <Content Include="Content\newstyle2\images\Logo_watermark.png" />
     <Content Include="Content\newstyle2\images\mapmarker.png" />
     <Content Include="Content\newstyle2\images\marker16x16.png" />
     <Content Include="Content\newstyle2\images\marker24x24.png" />
@@ -1089,6 +1092,7 @@
     <Content Include="Content\newstyle2\js\jq.tablesort.js" />
     <Content Include="Content\newstyle2\js\jquery-file-upload.js" />
     <Content Include="Content\newstyle2\js\jquery.sticky.js" />
+    <Content Include="Content\newstyle2\js\jquery.watermark.min.js" />
     <Content Include="Content\newstyle2\js\js-grid.js" />
     <Content Include="Content\newstyle2\js\just-gage.js" />
     <Content Include="Content\newstyle2\js\light-gallery.js" />
@@ -3093,6 +3097,7 @@
     <Content Include="Content\dist\fonts\map-icons.woff" />
     <Content Include="Content\dist\less\map-icons-variables.less" />
     <Content Include="Content\dist\sass\map-icons-variables.scss" />
+    <Content Include="manifest.appcache" />
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
     <Content Include="Models\dbComercia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -3104,6 +3109,8 @@
       <DependentUpon>dbComercia.edmx</DependentUpon>
       <LastGenOutput>dbComercia.cs</LastGenOutput>
     </Content>
+    <None Include="offline.appcache" />
+    <Content Include="versionamiento.txt" />
     <Content Include="Views\Demos\Form_templatepreview.cshtml" />
     <Content Include="Views\Forms\Create.cshtml" />
     <Content Include="Web.config">
@@ -3234,6 +3241,12 @@
     <Content Include="Views\Home\Internal.cshtml" />
     <Content Include="Views\FormsM\Activity_ea.cshtml" />
     <Content Include="Views\Shared\ActivityeaScripts.cshtml" />
+    <Content Include="Views\VisitsMs\Detailsa.cshtml" />
+    <Content Include="Views\Home\Promotions.cshtml" />
+    <Content Include="Views\Shared\ActivityraScripts_befoff.cshtml" />
+    <Content Include="Views\FormsM\Activityra_befoff.cshtml" />
+    <Content Include="Views\Shared\visitScriptadmin.cshtml" />
+    <Content Include="Views\Shared\ActivityadminScripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1140,20 +1140,65 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Activity_ea(string codigo)
         {
 
-            //devolvemos el codigo asignado en base a buscar el codigo introducido
-            
-            //ID_de la actividad
-            int id = 2118;
+            if (codigo == "" || codigo == null || codigo.Length <8)
+            {
+                TempData["advertencia"] = "Invalid or expired code. Please check the activity data in your email.";
+                return RedirectToAction("Internal", "Home", null);
+            }
+            else
+            {
+                //devolvemos el codigo asignado en base a buscar el codigo introducido
+
+                //ID_de la actividad ACCMK00
+                var solocodigo = codigo.Substring(7);
+                int id = 0;
+                try
+                {
+                    id = Convert.ToInt32(solocodigo);
+                }
+                catch {
+                    TempData["advertencia"] = "Invalid or expired code. Please check the activity data in your email.";
+                    return RedirectToAction("Internal", "Home", null);
+                }
+               
 
 
                 var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
 
                 if (activity == null)
                 {
+                    TempData["advertencia"] = "Invalid or expired code. Please check the activity data in your email.";
                     return RedirectToAction("Internal", "Home");
                 }
                 else
                 {
+                    //Verificamos si no esta finalizada
+                    if (activity.isfinished  ==true) {
+                        TempData["exito"] = "This demo is finished.";
+                        return RedirectToAction("Internal", "Home");
+                    }
+
+                    //Verificamos si esta en el periodo activo
+
+                    DateTime start = Convert.ToDateTime(activity.date).Date;
+                    DateTime end = Convert.ToDateTime(activity.date).AddDays(1).Date;
+                    DateTime today = DateTime.Today.Date;
+                    if (today >= start && today <= end)
+                    {
+                        int mostrarCheckin = 0;
+
+                        if (activity.query1 == "start")
+                        {
+                            mostrarCheckin = 1;
+                        }
+
+                        ViewBag.checkin = mostrarCheckin;
+                    }
+                    else
+                    {
+                        TempData["advertencia"] = "This demo is not available.";
+                        return RedirectToAction("Internal", "Home");
+                    }
 
                     FormsM formsM = db.FormsM.Find(activity.ID_form);
 
@@ -1275,8 +1320,11 @@ namespace comerciamarketing_webapp.Controllers
 
 
                     return View();
+
                 }
 
+
+            }
      
         }
 
@@ -1288,134 +1336,140 @@ namespace comerciamarketing_webapp.Controllers
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
-
-                var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
-
-                if (activity == null)
-                {
-                    return RedirectToAction("Main", "Home");
-                }
-                else {
-
-                    FormsM formsM = db.FormsM.Find(activity.ID_form);
-
-                    //LISTADO DE CLIENTES
-                    //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
-
-                    if (activity.Customer != "")
+                var iscopy="";
+                if (id == null) {
+                    //Asignamos el id a 
+                    if (Request.Cookies["IDactivitycopy"] == null)
                     {
-                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode==activity.ID_customer) select b).OrderBy(b => b.CardName).ToList();
-                        ViewBag.customers = customers.ToList();
+                            HttpCookie aCookie = new HttpCookie("IDactivitycopy");
+                            aCookie.Value = "copy";
+                            aCookie.Expires = DateTime.Now.AddMonths(3);
+                            Response.Cookies.Add(aCookie);
+                            iscopy = "copy";
                     }
                     else {
-                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
-                        ViewBag.customers = customers.ToList();
+
+                        var cookie = Request.Cookies["IDactivitycopy"];
+                        iscopy = cookie.Value.ToString();
                     }
 
-                    //Cargamos las marcas
-                    //List<brands> brandlist = COM_MKdb.view_CMKEditorB
-                    //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
-                    //    .Distinct()
-                    //    .OrderByDescending(i => i.FirmName)
-                    //    .ToList();
+                   
+                }
 
-                    //ViewBag.brands = brandlist;
-
-                    //Cargamos las lineas de procuctos
-                    //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
-                    //.Where(i => i.Id_subcategory != null)
-                    //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
-                    //.Distinct()
-                    //.OrderByDescending(i => i.SubCategory)
-                    //.ToList();
-
-                    //ViewBag.productline = productlinelist;
-
-                    //NUEVO
-                    //ID VISIT SE UTILIZA COMO RELACION
-                    List<MyObj_tablapadre> listapadresActivities = (from item in db.FormsM_details where(item.parent ==0 && item.ID_visit == activity.ID_activity && item.original==false)
-                                                                    select
-                                                                       new MyObj_tablapadre
-                                                                       {
-                                                                           ID_details = item.ID_details,
-                                                                           id_resource = item.ID_formresourcetype,
-                                                                           fsource = item.fsource,
-                                                                           fdescription = item.fdescription,
-                                                                           fvalue = item.fvalue,
-                                                                           fvalueDecimal = item.fvalueDecimal,
-                                                                           fvalueText = item.fvalueText,
-                                                                           ID_formM = item.ID_formM,
-                                                                           ID_visit = item.ID_visit,
-                                                                           original = item.original,
-                                                                           obj_order = item.obj_order,
-                                                                           obj_group = item.obj_group,
-                                                                           idkey = item.idkey,
-                                                                           parent = item.parent,
-                                                                           query1 = item.query1,
-                                                                           query2 = item.query2,
-                                                                           ID_empresa = item.ID_empresa
-                                                                       }
-                                          ).ToList();
+                ActivitiesM activity = new ActivitiesM();
+                if (iscopy != "")
+                {
+                    var sqlQueryText = string.Format("SELECT * FROM ActivitiesM WHERE query1 LIKE '{0}'", iscopy);
+                    activity = db.ActivitiesM.SqlQuery(sqlQueryText).FirstOrDefault(); //returns 0 or more rows satisfying sql query
+                    //activity = (from v in db.ActivitiesM where (v.query1.ToString() == iscopy) select v).FirstOrDefault();
+                }
+                else {
+                    activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
+                }
 
 
-                    //foreach (var t in listapadresActivities) {
-                    //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
-                    //    if (s > 0)
-                    //    {
+                var customer = "";
+                
+                if (activity == null)
+                {
+                    var cookie2 = Request.Cookies["currentvisit"];
 
-                    //    }
-                    //    else {
-                    //        listapadresActivities.Remove(t);
-                    //    }
+                    ViewBag.idvisitareal = cookie2.Value.ToString(); ;
+                    ViewBag.idvisita = iscopy;
 
-                    //}
-
-
-                    List<tablahijospadre> listahijasActivities = (from item in db.FormsM_details
-                                                                  where (item.ID_visit == activity.ID_activity && item.original == false)
-                                                                  select new tablahijospadre
-                                                                  {
-                                                                      ID_details = item.ID_details,
-                                                                      id_resource = item.ID_formresourcetype,
-                                                                      fsource = item.fsource,
-                                                                      fdescription = item.fdescription,
-                                                                      fvalue = item.fvalue,
-                                                                      fvalueDecimal = item.fvalueDecimal,
-                                                                      fvalueText = item.fvalueText,
-                                                                      ID_formM = item.ID_formM,
-                                                                      ID_visit = item.ID_visit,
-                                                                      original = item.original,
-                                                                      obj_order = item.obj_order,
-                                                                      obj_group = item.obj_group,
-                                                                      idkey = item.idkey,
-                                                                      parent = item.parent,
-                                                                      query1 = item.query1,
-                                                                      query2 = item.query2,
-                                                                      ID_empresa = item.ID_empresa
-
-                                                                  }).ToList();
-
-
-                    List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
-
-                    ///
-
-                    //Deserealizamos  los datos
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
+                }
+                else {
+                    if (iscopy != "")
+                    {
+                        var cookie2 = Request.Cookies["currentvisit"];
+                        ViewBag.idvisitareal = cookie2.Value.ToString(); ;
+                        ViewBag.idvisita = iscopy;
+                    }
+                    else {
+                        customer = activity.Customer;
 
                     ViewBag.idvisitareal = activity.ID_visit;
                     ViewBag.idvisita = activity.ID_activity;
+                    }
 
-                    ViewBag.details = categoriasListActivities;
+                }
 
-                    ViewBag.detailssql = (from a in db.FormsM_details where (a.ID_visit == activity.ID_activity && a.original == false) select a).ToList();
+                    //FormsM formsM = db.FormsM.Find(activity.ID_form);
+                    
+                    //LISTADO DE CLIENTES
+                    //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
+                    JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                    if (customer != "")
+                    {
+                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode==activity.ID_customer) select new { CardCode= b.CardCode, CardName=b.CardName }).OrderBy(b => b.CardName).ToArray();
+                        string result = javaScriptSerializer.Serialize(customers);
+                        ViewBag.customers = result;
+                       
+                        
+                    }
+                    else {
+                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { CardCode = b.CardCode, CardName = b.CardName }).OrderBy(b => b.CardName).ToArray();
+                          string result = javaScriptSerializer.Serialize(customers);
+                        ViewBag.customers = result;
+                    }
+
+                    //DESCARGAMOS TODAS LAS MARCAS SI FUERA NECESARIO SINO, SOLO LAS ESPECIFICAS POR CUSTOMER
+                    if (customer != "")
+                    {
+                        var lstbrands = COM_MKdb.view_CMKEditorB
+                                .Where(i => i.U_CustomerCM == activity.ID_customer)
+                                .Select(i => new brands { FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName, isselected = false, Customer = i.U_CustomerCM })
+                                .Distinct()
+                                .OrderByDescending(i => i.FirmName)
+                                .ToArray();
+                        string resultarray = javaScriptSerializer.Serialize(lstbrands);
+                        ViewBag.lstbrands = resultarray;
+                    }
+                    else {
+                        var lstbrands = COM_MKdb.view_CMKEditorB                           
+                            .Select(i => new brands { FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName, isselected = false, Customer = i.U_CustomerCM })
+                            .Distinct()
+                            .OrderByDescending(i => i.FirmName)
+                            .ToArray();
+
+                        string resultarray = javaScriptSerializer.Serialize(lstbrands);
+                        ViewBag.lstbrands = resultarray;
+                    }
+                    //DESCARGAMOS LISTA DE LINEA DE PRODUCTOS
+                        var lstproductline = COM_MKdb.view_CMKEditorB
+                    .Where(i => i.Id_subcategory != null)
+                    .Select(i => new productline { Id_subcategory = i.Id_subcategory, SubCategory = i.SubCategory, isselected = false, Brand = i.FirmCode.ToString()  })
+                    .Distinct()
+                    .OrderByDescending(i => i.SubCategory)
+                    .ToArray();
+                    string productline = javaScriptSerializer.Serialize(lstproductline);
+                    ViewBag.lstproductline = productline;
+                    //DESCARGAMOS BRAND COMPETITORS
+                    var lstbrandc = db.Brand_competitors
+                            .Select(i => new brandcompetitor { Id_brandc = i.ID_competitor.ToString(), namec = i.Name, isselected = false, Brand = i.ID_brand })
+                            .Distinct()
+                            .OrderByDescending(i => i.namec)
+                            .ToArray();
+                    string bcompetitors = javaScriptSerializer.Serialize(lstbrandc);
+                    ViewBag.lstbcompetitors = bcompetitors;
+
+
+                    //Deserealizamos  los datos
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    //MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
+                    //MyObj_tablapadre[] categoriasListActivities = js.Deserialize<MyObj_tablapadre[]>("");
+
+                 
+
+                    //ViewBag.details = categoriasListActivities.ToList();
+
+                    //ViewBag.detailssql = (from a in db.FormsM_details where (a.ID_visit == activity.ID_activity && a.original == false) select a).ToList();
 
 
 
 
                     return View();
-                }
+                
 
                 //var FormsM_details = db.FormsM_details.Where(c => c.ID_formM == id && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order);
 
@@ -1834,47 +1888,48 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else
                         {
-                            //if (detail.ID_formresourcetype == 3 || detail.ID_formresourcetype == 4 || detail.ID_formresourcetype == 10)//Products, Samples,Gift
-                            //{
-                            //    if (item.value == "" || item.value == null) { item.value = "0"; }
-                            //    detail.fvalue = Convert.ToInt32(item.value);
+                                //if (detail.ID_formresourcetype == 3 || detail.ID_formresourcetype == 4 || detail.ID_formresourcetype == 10)//Products, Samples,Gift
+                                //{
+                                //    if (item.value == "" || item.value == null) { item.value = "0"; }
+                                //    detail.fvalue = Convert.ToInt32(item.value);
 
-                            //    db.Entry(detail).State = EntityState.Modified;                        
-                            //    db.SaveChanges();
+                                //    db.Entry(detail).State = EntityState.Modified;
+                                //    db.SaveChanges();
 
-                            //}
-                            if (detail.ID_formresourcetype == 5) //Picture
-                            {
-                                //
-                                if (item.value == "100")
+                                //}
+                                //else 
+                                if (detail.ID_formresourcetype == 5) //Picture
                                 {
-                                    var path = detail.fsource;
-                                    //eliminamos la ruta
-                                    detail.fsource = "";
-
-                                    db.Entry(detail).State = EntityState.Modified;
-                                    db.SaveChanges();
-
-
-                                    if (System.IO.File.Exists(Server.MapPath(path)))
+                                    //
+                                    if (item.value == "100")
                                     {
-                                        try
-                                        {
-                                            System.IO.File.Delete(Server.MapPath(path));
-                                        }
-                                        catch (System.IO.IOException e)
-                                        {
-                                            Console.WriteLine(e.Message);
+                                        var path = detail.fsource;
+                                        //eliminamos la ruta
+                                        detail.fsource = "";
 
+                                        db.Entry(detail).State = EntityState.Modified;
+                                        db.SaveChanges();
+
+
+                                        if (System.IO.File.Exists(Server.MapPath(path)))
+                                        {
+                                            try
+                                            {
+                                                System.IO.File.Delete(Server.MapPath(path));
+                                            }
+                                            catch (System.IO.IOException e)
+                                            {
+                                                Console.WriteLine(e.Message);
+
+                                            }
                                         }
                                     }
-                                }
 
 
 
 
-                            }
-                            else if (detail.ID_formresourcetype == 6 || detail.ID_formresourcetype == 9) //Input text y Electronic Signature
+                                    }
+                                    else if (detail.ID_formresourcetype == 6 || detail.ID_formresourcetype == 9) //Input text y Electronic Signature
                             {
 
                                 if (item.value == "" || item.value == null) { item.value = ""; }
@@ -1990,30 +2045,36 @@ namespace comerciamarketing_webapp.Controllers
                             }
                             else if (detail.ID_formresourcetype == 5) //Picture
                             {
+                                if (item.value == "" || item.value == null) { item.value = ""; }
+
+                                detail.fsource = item.value;
+                                detail.query1 = item.text;
+                                db.Entry(detail).State = EntityState.Modified;
+                                db.SaveChanges();
                                 //
-                                if (item.value == "100")
-                                {
-                                    var path = detail.fsource;
-                                    //eliminamos la ruta
-                                    detail.fsource = "";
+                                //if (item.value == "100")
+                                //{
+                                //    var path = detail.fsource;
+                                //    //eliminamos la ruta
+                                //    detail.fsource = "";
 
-                                    db.Entry(detail).State = EntityState.Modified;
-                                    db.SaveChanges();
+                                //    db.Entry(detail).State = EntityState.Modified;
+                                //    db.SaveChanges();
 
 
-                                    if (System.IO.File.Exists(Server.MapPath(path)))
-                                    {
-                                        try
-                                        {
-                                            System.IO.File.Delete(Server.MapPath(path));
-                                        }
-                                        catch (System.IO.IOException e)
-                                        {
-                                            Console.WriteLine(e.Message);
+                                //    if (System.IO.File.Exists(Server.MapPath(path)))
+                                //    {
+                                //        try
+                                //        {
+                                //            System.IO.File.Delete(Server.MapPath(path));
+                                //        }
+                                //        catch (System.IO.IOException e)
+                                //        {
+                                //            Console.WriteLine(e.Message);
 
-                                        }
-                                    }
-                                }
+                                //        }
+                                //    }
+                                //}
 
 
 
@@ -2051,7 +2112,7 @@ namespace comerciamarketing_webapp.Controllers
                                 //db.Entry(detail).State = EntityState.Modified;
                                 //db.SaveChanges();
                             }
-                            //Select, Customer, Brands,Product line, Brand Competitors
+                            //Select, Customer, Brands,Product line, Brand Competitors 
                             else if (detail.ID_formresourcetype == 17 || detail.ID_formresourcetype == 12 || detail.ID_formresourcetype == 13 || detail.ID_formresourcetype == 14 || detail.ID_formresourcetype == 15)
                             {
 
@@ -2062,7 +2123,7 @@ namespace comerciamarketing_webapp.Controllers
                                 db.SaveChanges();
                             }
 
-                            else if (detail.ID_formresourcetype == 19 || detail.ID_formresourcetype == 16) //Select
+                            else if (detail.ID_formresourcetype == 19 || detail.ID_formresourcetype == 16) //checkbox,radio
                             {
 
                                 if (item.value == "" || item.value == null) { item.value = "false"; }
@@ -2170,8 +2231,19 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         //buscamos el id del detalle
                         int idf = Convert.ToInt32(id);
-                        int idvisit = Convert.ToInt32(idvisita);
-                        FormsM_details detail = (from d in db.FormsM_details where(d.idkey == idf && d.ID_visit == idvisit) select d).FirstOrDefault();
+                        FormsM_details detail = new FormsM_details();
+                        try
+                        {
+                            int idvisit = Convert.ToInt32(idvisita);
+                            detail = (from d in db.FormsM_details where (d.idkey == idf && d.ID_visit == idvisit) select d).FirstOrDefault();
+                        }
+                        catch {
+                            var sqlQueryText = string.Format("SELECT * FROM FormsM_details WHERE query2 LIKE '{0}' and idkey='" + idf + "'", idvisita);
+                            detail = db.FormsM_details.SqlQuery(sqlQueryText).FirstOrDefault(); //returns 0 or more rows satisfying sql query
+
+                        }
+
+                      
                         var pathimg = detail.fsource;
 
                         DateTime time = DateTime.Now;
@@ -2444,6 +2516,58 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+
+        public ActionResult Check_in(string ID_activity, string check_in)
+        {
+            try
+            {
+                int id = Convert.ToInt32(ID_activity);
+                ActivitiesM actividad = db.ActivitiesM.Find(Convert.ToInt32(id));
+                if (actividad != null)
+                {
+                    actividad.query1 = "checkin";
+                    actividad.check_in = Convert.ToDateTime(check_in);
+                    db.Entry(actividad).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                        //Guardamos el log de la actividad
+                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                        nuevoLog.latitude = "";
+                        nuevoLog.longitude = "";
+                        nuevoLog.ID_usuario = 0;
+                        nuevoLog.ID_activity = 0;
+                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        nuevoLog.query1 = actividad.ID_activity.ToString();
+                        nuevoLog.query2 = actividad.ID_usuarioEndString;
+                        nuevoLog.action = "DEMO CHECK IN  - " + actividad.ID_customer + " - " + actividad.Customer;
+                        nuevoLog.ip = "";
+                        nuevoLog.hostname = "";
+                        nuevoLog.typeh = "";
+                        nuevoLog.continent_name = "";
+                        nuevoLog.country_code = "";
+                        nuevoLog.country_name = "";
+                        nuevoLog.region_code = "";
+                        nuevoLog.region_name = "";
+                        nuevoLog.city = "";
+
+                        db.ActivitiesM_log.Add(nuevoLog);
+                        db.SaveChanges();
+                    
+
+                    return Json(new { Result = "Success" });
+                }
+                return Json(new { Result = "Fail" });
+            }
+            catch
+            {
+                return Json(new { Result = "Error" });
+            }
+
+
+
+        }
     }
+
 
 }

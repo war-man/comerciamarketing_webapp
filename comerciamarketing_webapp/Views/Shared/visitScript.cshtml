@@ -31,8 +31,32 @@
             success: function (result) {
 
                 if (result.Result == "Success") {
-                    //showSuccessToast();
 
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var item2;
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item2 = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item2.onserver = false;
+                        item2.action = "saved"
+                        item2.state = 2;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
                     window.location.reload(true);
                 } else {
                     //showWarning2Toast();
@@ -68,7 +92,31 @@
 
                 if (result.Result == "Success") {
                     //showSuccessToast();
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var item2;
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item2.onserver = false;
+                        item2.action = "saved"
+                        item2.state = 2;
 
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
                     window.location.reload(true);
                 } else {
                     //showWarning2Toast();
@@ -90,7 +138,9 @@
             console.log('Geolocation is not supported');
         }
     }
-
+    function isOnLine() {
+        return navigator.onLine;
+    }
     //CHECK IN
     function checkinVisit() {
 
@@ -105,9 +155,89 @@
 
         }).then((willDelete) => {
             if (willDelete) {
-                initGeolocation();
+                if (isOnLine()) {
+                    //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var item2;
+                    var now = new Date();
+
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+                            item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            item.ID_visitstate = 2;
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item2 = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item2.onserver = false;
+                        item2.action = "update"
+                        item2.state = 2;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+                    //Guardamos en server
+                    initGeolocation();
+
+                }
+                else {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'You must have internet connection. Please check and try again',
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
+                    @*//Pero si no hay conexion, entonces queda en el local
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var item2;
+                    var now = new Date();
+
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+                            item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            item.ID_visitstate = 2;
+                        }
+                    });
+
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item2 = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item2.onserver = false;
+                        item2.action = "update"
+                        item2.state = 2;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+                    //refrescamos
+                    window.location.reload(true);*@ 
+                }
+
             } else {
-                
+
             }
         });
     }
@@ -128,10 +258,110 @@
 
         }).then((willDelete) => {
             if (willDelete) {
-                initGeolocation2();
-            } else {
 
-            }
+                var flagok = true;
+                var actArr = JSON.parse(localStorage.getItem('activities'));
+                actArr.forEach(function (act) {
+                    if (act.isfinished == false) {
+                        flagok = false;
+                    }
+                });
+                if (flagok != false) {
+
+                if (isOnLine()) {
+                    //En toda accion de guardar, primero siempre ira al localstorage como update y luego al server
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var now = new Date();
+
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+                            item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            item.ID_visitstate = 4;
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+                            item.state = 4;
+                        
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+
+                    //Guardamos en server
+                    initGeolocation2();
+
+                }
+                else {
+                    //Obligaremos al usuario a estar conectado para hacer checkout
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'You must have internet connection. Please check and try again',
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
+
+                    @*//Pero si no hay conexion, entonces queda en el local
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
+                    var now = new Date();
+
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update"
+                            item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            item.ID_visitstate = 4;
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "update"
+                        item.state = 4;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+                    //refrescamos
+                    window.location.reload(true);*@
+                }
+                } else {
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'There are some incomplete activities. Please check and try again',
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
+                }
+            } 
         });
     }
 
@@ -142,6 +372,60 @@
         maximumAge: 0
     };
 
+    function flat(array) {
+        var result = [];
+        array.forEach(function (a) {
+            result.push(a);
+            if (Array.isArray(a.children)) {
+                result = result.concat(flat(a.children));
+            }
+        });
+        return result;
+    }
+
+    function deepSearch(container, idkey, value, text, act) {
+
+        for (var i = 0; i < container.length; i++) {
+            var objeto = container[i];
+            if (objeto.idkey == idkey && objeto.ID_visit == act) {
+                //Lo encontro en los parent y actualizaremos
+                item = objeto;
+                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                item.onserver = false;
+                item.action = "saved"
+                console.log(objeto);
+                break;
+            } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                if (objeto.children.length > 0) {
+                    deepSearch(objeto.children, idkey, value, text, act);
+                }
+            }
+
+        }
+
+    }
+
+    function deepSearchByQuery1(container, query2, value, text, act) {
+
+        for (var i = 0; i < container.length; i++) {
+            var objeto = container[i];
+            if (objeto.idkey == query2 && objeto.query2 == act) {
+                //Lo encontro en los parent y actualizaremos
+                item = objeto;
+                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                item.onserver = false;
+                item.action = "saved"
+                console.log(objeto);
+                break;
+            } else { //no lo encontro pero verificaremos si tiene hijos para buscar nuevamente
+                if (objeto.children.length > 0) {
+                    deepSearchByQuery1(objeto.children, query2, value, text, act);
+                }
+            }
+
+        }
+
+    }
     function success2(pos) {
         var crd = pos.coords;
         $("#loading").show();
@@ -152,18 +436,139 @@
         var idvisita = "";
         idvisita = document.getElementById('ID_visita').value;
         var now = new Date();
-        //console.log(now.toLocaleString("en-US", { hour12: true }));
+
+        //PRIMERO GUARDAREMOS TODOS LOS DATOS DEL FORMULARIO
+        var alldata = JSON.parse(localStorage.getItem('FormsM_details'));
+        var array = flat(alldata);
+        var objects = array.filter(item => item.action === "update");
+
+        var countFD = objects.length;
+        var complete = 1;
+        document.getElementById('loadmsg').innerHTML = ("Sync with server...");
+        var calls = [];
+        objects.forEach(function (objeto) {
+ 
+            calls.push($.ajax({
+                url: '/VisitsMs/getandsaveoffline',
+                type: 'POST',
+                data: { 'objects': objeto },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+                        //showSuccessToast();
+
+                        document.getElementById('loadmsg').innerHTML = ("Sending " + complete + " of " + countFD + " data packages");
+                
+                        complete++;
+
+
+                        if (objeto.ID_visit == "201010101") {
+                            //Buscamos en base a query2
+
+                            var id = objeto.idkey;
+                            var val = "";
+                            var txt = "";
+                            var act = objeto.query2;
+                            deepSearchByQuery1(alldata, id, val, txt, act);
+                        } else {
+                            //Buscamos en base a ID_detail
+
+                            var id = objeto.idkey;
+                            var val = "";
+                            var txt = "";
+                            var act = objeto.ID_visit;
+                            deepSearch(alldata, id, val, txt, act);
+                        }
+
+                        localStorage.setItem('FormsM_details', JSON.stringify(alldata));
+
+
+                    } else {
+
+                        console.log("Error en " + complete + "de " + countFD);
+                        complete++;
+
+                    }
+
+
+                },
+                error: function (request) {
+                    //showWarning2Toast();
+                    console.log("Error en " + complete + "de " + countFD);
+                    complete++;
+                }
+            }));
+
+
+
+        });
+
+
+        $.when.apply($, calls).then(function () {
+
+                    var actividadelst = JSON.parse(localStorage.getItem('activities'));
+        var array2 = flat(actividadelst);
+        var objects2 = array2.filter(item => item.action === "update");
+        //LUEGO ENVIAMOS LA VISITA Y LA LISTA DE ACTIVIDADES
         $.ajax({
             url: '/VisitsMs/check_out',
             type: 'POST',
-            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': lat, 'lng': lng },
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': lat, 'lng': lng, 'objects': objects2 },
             cache: false,
             global: false,
             success: function (result) {
 
                 if (result.Result == "Success") {
                     //showSuccessToast();
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
 
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+
+                    var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                    retrievedArrayActg.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                            item.check_out = now.toLocaleString("en-US", { hour12: true });
+                        }
+                    });
+                    localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "saved"
+                        item.state = 4;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+                    $.toast({
+                        heading: 'Success',
+                        text: "Saved",
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
                     window.location.reload(true);
                     $("#loading").hide();
                 } else {
@@ -188,6 +593,10 @@
 
             }
         });
+        });
+
+
+
 
 
 
@@ -197,21 +606,141 @@
     function error2(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
         $("#loading").show();
+
         var idvisita = "";
         idvisita = document.getElementById('ID_visita').value;
         var now = new Date();
 
+        //PRIMERO GUARDAREMOS TODOS LOS DATOS DEL FORMULARIO
+        var alldata = JSON.parse(localStorage.getItem('FormsM_details'));
+        var array = flat(alldata);
+        var objects = array.filter(item => item.action === "update");
+
+        var countFD = objects.length;
+        var complete = 1;
+        document.getElementById('loadmsg').innerHTML = ("Sync with server...");
+        var calls = [];
+        objects.forEach(function (objeto) {
+   
+            calls.push($.ajax({
+                url: '/VisitsMs/getandsaveoffline',
+                type: 'POST',
+                data: { 'objects': objeto },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+                        //showSuccessToast();
+
+                        document.getElementById('loadmsg').innerHTML = ("Sending " + complete + " of " + countFD + " data packages");
+                
+                        complete++;
+
+
+                        if (objeto.isnew == true) {
+                            //Buscamos en base a query1
+
+                            var id = objeto.query1;
+                            var val = "";
+                            var txt = "";
+                            deepSearchByQuery1(alldata, id, val, txt);
+                        } else {
+                            //Buscamos en base a ID_detail
+
+                            var id = objeto.id;
+                            var val = "";
+                            var txt = "";
+                            deepSearch(alldata, id, val, txt);
+                        }
+
+                        localStorage.setItem('FormsM_details', JSON.stringify(alldata));
+
+
+                    } else {
+
+                        console.log("Error en " + complete + "de " + countFD);
+                        complete++;
+
+                    }
+
+
+                },
+                error: function (request) {
+                    //showWarning2Toast();
+                    console.log("Error en " + complete + "de " + countFD);
+                    complete++;
+                }
+            }));
+
+
+
+        });
+
+
+        $.when.apply($, calls).then(function () {
+
+                    var actividadelst = JSON.parse(localStorage.getItem('activities'));
+        var array2 = flat(actividadelst);
+        var objects2 = array2.filter(item => item.action === "update");
+        //LUEGO ENVIAMOS LA VISITA Y LA LISTA DE ACTIVIDADES
         $.ajax({
             url: '/VisitsMs/check_out',
             type: 'POST',
-            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': "", 'lng': "" },
+            data: { 'ID_visit': idvisita, 'check_in': now.toLocaleString("en-US", { hour12: true }), 'lat': '', 'lng': '', 'objects': objects2 },
             cache: false,
             global: false,
             success: function (result) {
 
                 if (result.Result == "Success") {
                     //showSuccessToast();
+                    //Guardamos en local
+                    var retrievedArrayV = JSON.parse(localStorage.getItem('visit_info'));
+                    var idVisita = @ViewBag.idvisita;
+                    var item;
 
+                    retrievedArrayV.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                        }
+                    });
+                    localStorage.setItem('visit_info', JSON.stringify(retrievedArrayV));
+
+                    var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                    retrievedArrayActg.forEach(function (objeto) {
+                        if (objeto.ID_visit == idVisita) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "saved"
+                            item.check_out = now.toLocaleString("en-US", { hour12: true });
+                        }
+                    });
+                    localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+
+                    //Guardamos estado separado
+                    var retrievedArrayS = JSON.parse(localStorage.getItem('estadovisita'));
+                    retrievedArrayS.forEach(function (objeto) {
+                        item = objeto;
+                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                        item.onserver = false;
+                        item.action = "saved"
+                        item.state = 4;
+
+                    });
+                    localStorage.setItem('estadovisita', JSON.stringify(retrievedArrayS));
+                    $.toast({
+                        heading: 'Success',
+                        text: "Saved",
+                        loader: false,        // Change it to false to disable loader
+                        showHideTransition: 'slide',
+                        loaderBg: '#ff9900',
+                        hideAfter: 5000,
+                        position: 'top-right'
+                    });
                     window.location.reload(true);
                     $("#loading").hide();
                 } else {
@@ -236,6 +765,8 @@
 
             }
         });
+        });
+       
     };
 
     function initGeolocation2() {
@@ -264,6 +795,7 @@
 
         }).then((willDelete) => {
             if (willDelete) {
+
                 initGeolocation3();
             } else {
 
@@ -362,4 +894,321 @@
 
 
 
+</script>
+<script>
+    $(function () {
+        function reportOnlineStatus() {
+            var status = $("#onlineStatus");
+
+            if (isOnLine()) {
+                console.log("Tiene conexion a internet");
+                //AQUI SE COLOCA LA FUNCION QUE GUARDARA TODOS LOS DATOS
+            }
+            else {
+                console.log("Sin conexion");
+                //CUANDO NO HAY CONEXION MOSTRAMOS UNA ALERTA
+            }
+        }
+
+        window.addEventListener("online", function (e) {
+            reportOnlineStatus();
+        }, true);
+
+        window.addEventListener("offline", function (e) {
+            reportOnlineStatus();
+        }, true);
+    });
+
+</script>
+<script>
+    function isOnLine() {
+        return navigator.onLine;
+    }
+
+    $(function () {
+        $('#copybtn').on('click', function () {
+            $(this).prop("disabled", true);;
+
+
+            var ID_a = $("#ID_activityCopy").val();
+            var ID_v = $("#ID_visitCopy").val();
+
+            if (isOnLine()) {
+                $.ajax({
+                    url: '/VisitsMs/copyActivityOffline',
+                    type: 'POST',
+                    data: { 'ID_activityCopy': ID_a, 'ID_visitCopy': ID_v },
+                    cache: false,
+                    global: false,
+                    success: function (result) {
+
+                        if (result.Result == "Activity created successfully") {
+                            //Todo se copio bien y devolvemos los datos
+                            if (result.activity.length > 0) {
+                                //Actualizamos las actividades en localstorage
+                                var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                                result.activity.forEach(function (objeto) {
+                                    //Hacemos un push
+
+
+                                    retrievedArrayActg.push(objeto);
+
+                                });
+                                localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+                            }
+
+                            if (result.details_activity.length > 0) {
+                                //Actualizamos los FormsM en localstorage
+                                var retrievedArrayF = JSON.parse(localStorage.getItem('FormsM_details'));
+                                result.details_activity.forEach(function (objeto) {
+                                    //Hacemos un push
+                                    retrievedArrayF.push(objeto);
+
+                                });
+                                localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayF));
+                            }
+                            alert("Activity copied successfully.");
+                            window.location.reload(true);
+                        } else {
+                            //Algo salio mal
+                            alert("An error was handle while copying this activity");
+                        }
+
+
+                    },
+                    error: function (request) {
+                        //showWarning2Toast();
+                        alert("An error was handle while copying this activity");
+                    }
+
+                });
+            } else { //Como no tiene conexion guardamos  en localstorage
+                //Actualizamos las actividades en localstorage
+                var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                //ACA INSERTAMOS NUEVA ACTIVIDAD
+                var formularioacopiar;
+                //GENERAMOS NUMERO RANDOM
+                var card = getRandomInt(1, 175);
+                //fechas
+                var d = new Date();
+                var n = d.getHours();
+                var m = d.getMinutes();
+
+                var idgenerico = "copy_" + card + n.toString() + m.toString() + "_act_" + ID_a;
+
+                var nuevoobj;
+                var objetoarr = retrievedArrayActg.filter(item => item.ID_activity == ID_a);
+
+                objetoarr.forEach(function (objeto) {
+                    nuevoobj = JSON.parse(JSON.stringify(objeto));
+                    nuevoobj.ID_activity = 01010 + card + 10 + n + m;
+                    nuevoobj.isfinished = false;
+                    nuevoobj.comments = "";
+                    nuevoobj.query1 = idgenerico;
+                    nuevoobj.isnew = true;
+                    nuevoobj.onserver = false;
+                    nuevoobj.action = "update"
+                    formularioacopiar = objeto.ID_form;
+
+                    //Hacemos un push
+                    retrievedArrayActg.push(nuevoobj);
+
+                });
+                //
+                localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+                //FIN ACTIVIDAD
+
+
+                //COPIAMOS Y GUARDAMOS DETALLES
+                var detobj;
+                var retrievedArrayFd = JSON.parse(localStorage.getItem('FormsM_details'));
+                var retrievedArrayF = JSON.parse(localStorage.getItem('formatosForms'));
+            
+              
+                var formarray = retrievedArrayF.filter(item => item.ID_formM == formularioacopiar);
+          
+                formarray.forEach(function (objeto) {
+                    detobj = JSON.parse(JSON.stringify(objeto));
+                    detobj.original = false;
+                    detobj.query2 = idgenerico;
+                    detobj.ID_visit = 201010101;
+                    detobj.isnew = true;
+                    detobj.onserver = false;
+                    detobj.action = "update"
+                    //Hacemos un push
+                    retrievedArrayFd.push(detobj);
+
+                });
+                localStorage.setItem('FormsM_details', JSON.stringify(retrievedArrayFd));
+
+                alert("Activity copied successfully.");
+                window.location.reload(true);
+            }
+
+        });
+    });
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+</script>
+
+<script>
+    function isOnLine() {
+        return navigator.onLine;
+    }
+
+    $(function () {
+        $('#cancelbtn').on('click', function () {
+            $(this).prop("disabled", true);;
+
+
+            var ID_a = $("#ID_activityCa").val();
+            var ID_v = $("#ID_visitCa").val();
+            var comment = $("#comment").val();
+            var now = new Date();
+            if (isOnLine()) {
+                $.ajax({
+                    url: '/VisitsMs/cancel_ActivityOffline',
+                    type: 'POST',
+                    data: { 'ID_activityCancel': ID_a, 'ID_visitCancel': ID_v, 'commentCancel': comment, 'check': now.toLocaleString("en-US", { hour12: true })},
+                    cache: false,
+                    global: false,
+                    success: function (result) {
+
+                        if (result.Result == "Activity canceled successfully") {
+                            //Todo se copio bien y devolvemos los datos
+                                //Actualizamos las actividades en localstorage
+                                var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                            retrievedArrayActg.forEach(function (objeto) {
+                                if (ID_a.toString().length > 4) {
+                                    if (ID_a.toString().substring(0, 4) == "copy") {//ES COPIA
+                                        if (objeto.query1 == ID_a) {
+                                            item = objeto;
+                                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                            item.onserver = false;
+                                            item.action = "saved";
+                                            item.isfinished = true;
+                                            item.query1 = "cancel";
+                                            item.comments = comment;
+                                            item.check_out = now.toLocaleString("en-US", { hour12: true });
+                                        }
+                                    } else { //NO ES COPIA
+                                        if (objeto.ID_activity == ID_a) {
+                                            item = objeto;
+                                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                            item.onserver = false;
+                                            item.action = "saved";
+                                            item.isfinished = true;
+                                            item.query1 = "cancel";
+                                            item.comments = comment;
+                                            item.check_out = now.toLocaleString("en-US", { hour12: true });
+                                        }
+                                    }
+
+                                } else { //NO ES COPIA
+                                    if (objeto.ID_activity == ID_a) {
+                                        item = objeto;
+                                        //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                        item.onserver = false;
+                                        item.action = "saved";
+                                        item.isfinished = true;
+                                        item.query1 = "cancel";
+                                        item.comments = comment;
+                                        item.check_out = now.toLocaleString("en-US", { hour12: true });
+                                    }
+                                }
+
+
+
+                            });
+                                localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+
+                            alert("Activity canceled successfully.");
+
+                            window.location.reload(true);
+                        } else {
+                            //Algo salio mal
+                            alert("An error was handle while cancelling this activity");
+                        }
+
+
+                    },
+                    error: function (request) {
+                        //showWarning2Toast();
+                        alert("An Error was handle while cancelling this activity");
+                    }
+
+                });
+            } else { //Como no tiene conexion guardamos  en localstorage
+
+                //Actualizamos las actividades en localstorage
+                var retrievedArrayActg = JSON.parse(localStorage.getItem('activities'));
+                retrievedArrayActg.forEach(function (objeto) {
+                    if (ID_a.toString().length > 4) {
+                        if (ID_a.toString().substring(0, 4) == "copy") {//ES COPIA
+                            if (objeto.query1 == ID_a) {
+                                item = objeto;
+                                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                item.onserver = false;
+                                item.action = "update";
+                                item.comments = comment;
+                                item.isfinished = true;
+                                item.query1 = "cancel";
+                                item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            }
+                        } else { //NO ES COPIA
+                            if (objeto.ID_activity == ID_a) {
+                                item = objeto;
+                                //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                                item.onserver = false;
+                                item.action = "update";
+                                item.comments = comment;
+                                item.isfinished = true;
+                                item.query1 = "cancel";
+                                item.check_in = now.toLocaleString("en-US", { hour12: true });
+                            }
+                        }
+
+                    } else { //NO ES COPIA
+                        if (objeto.ID_activity == ID_a) {
+                            item = objeto;
+                            //Una vez encontrado,actualizamos lo que necesitamos y cambiamos el estado.
+                            item.onserver = false;
+                            item.action = "update";
+                            item.comments = comment;
+                            item.isfinished = true;
+                            item.query1 = "cancel";
+                            item.check_in = now.toLocaleString("en-US", { hour12: true });
+                        }
+                    }
+
+
+
+                });
+                localStorage.setItem('activities', JSON.stringify(retrievedArrayActg));
+                alert("Activity canceled successfully.");
+                window.location.reload(true);
+
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    function copyact(clicked_id) {
+        //var url = 'Url.Action("Activity", "FormsM", new { id="IDACTIVITY"})';
+        //url = url.replace('IDACTIVITY', clicked_id);
+        setCookie("IDactivitycopy", clicked_id, 300);
+        var url = '@Url.Action("Activity", "FormsM")';
+
+        window.location.href = url;
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
 </script>
