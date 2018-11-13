@@ -102,7 +102,7 @@
 }
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>
 
-@if (ViewBag.Title == "Comercia Marketing - Template preview2")
+@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
 {
 
 
@@ -110,7 +110,7 @@
 
 
 }
-@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Home")
+@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - Template preview2on")
 {
 
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -118,10 +118,16 @@
 
 
 }
-@if (ViewBag.Title == "Comercia Marketing - Template preview" || ViewBag.Title == "Comercia Marketing - Activityea")
+@if (ViewBag.Title == "Comercia Marketing - Template preview" || ViewBag.Title == "Comercia Marketing - Activityea" || ViewBag.Title == "Comercia Marketing - Template previewadmin")
 {
 
 
     <script src="~/Content/js/signature.js"></script>
     <script src="~/Content/newstyle2/js/JIC.js"></script>
+}
+
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    <script type="text/javascript" src="~/Content/newstyle2/js/jquery.treegrid.js"></script>
+    <script type="text/javascript" src="~/Content/newstyle2/js/jquery.treegrid.bootstrap3.js"></script>
 }

@@ -94,7 +94,7 @@ else
 }
 else
 {
-                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                            <a href="@Url.Action("Activityon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
 }
 
 
@@ -107,8 +107,8 @@ if (activity.isfinished == true)
 }
 else
 {
-                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-                            @*<a href="@Url.Action("Activityra", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
+                            @*<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
+                            <a href="@Url.Action("Activityraon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
 }
 
 }

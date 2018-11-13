@@ -219,6 +219,16 @@
           <Property Name="active" Type="bit" Nullable="false" />
           <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="promotions_v1">
+          <Key>
+            <PropertyRef Name="ID_datap" />
+          </Key>
+          <Property Name="ID_datap" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="imgpath" Type="text" Nullable="false" />
+        </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
             <PropertyRef Name="ID_recursousuario" />
@@ -507,6 +517,7 @@
           <EntitySet Name="FormsM_details" EntityType="Self.FormsM_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_displays" EntityType="Self.Items_displays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="promotions_v1" EntityType="Self.promotions_v1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recursos_usuario" EntityType="Self.Recursos_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoutesM" EntityType="Self.RoutesM" Schema="dbo" store:Type="Tables" />
@@ -699,6 +710,7 @@
           <EntitySet Name="ActivitiesM_log" EntityType="dbComerciaModel.ActivitiesM_log" />
           <EntitySet Name="Brand_competitors" EntityType="dbComerciaModel.Brand_competitors" />
           <EntitySet Name="Items_displays" EntityType="dbComerciaModel.Items_displays" />
+          <EntitySet Name="promotions_v1" EntityType="dbComerciaModel.promotions_v1" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -1181,6 +1193,16 @@
           <Property Name="active" Type="Boolean" Nullable="false" />
           <Property Name="ID_empresa" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="promotions_v1">
+          <Key>
+            <PropertyRef Name="ID_datap" />
+          </Key>
+          <Property Name="ID_datap" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="imgpath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1561,6 +1583,17 @@
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
                 <ScalarProperty Name="ID_item" ColumnName="ID_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="promotions_v1">
+            <EntityTypeMapping TypeName="dbComerciaModel.promotions_v1">
+              <MappingFragment StoreEntitySet="promotions_v1">
+                <ScalarProperty Name="imgpath" ColumnName="imgpath" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="ID_datap" ColumnName="ID_datap" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

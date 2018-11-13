@@ -380,6 +380,9 @@
     <Compile Include="Models\OMRC.cs">
       <DependentUpon>COM_MK.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\promotions_v1.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Recursos_usuario.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -460,6 +463,7 @@
     <Content Include="Content\dist\fonts\map-icons.svg" />
     <Content Include="Content\dist\js\map-icons.js" />
     <Content Include="Content\dist\js\map-icons.min.js" />
+    <Content Include="Content\landingpage\img\productos3.jpg" />
     <Content Include="Content\landingpage\css\base.css" />
     <Content Include="Content\landingpage\css\blocks.css" />
     <Content Include="Content\landingpage\css\crumina-fonts.css" />
@@ -746,6 +750,7 @@
     <Content Include="Content\landingpage\svg\twitter.svg" />
     <Content Include="Content\landingpage\svg\video-control.svg" />
     <Content Include="Content\landingpage\svg\youtube.svg" />
+    <Content Include="Content\newstyle2\css\jquery.treegrid.css" />
     <Content Include="Content\newstyle2\css\owl.carousel.css" />
     <Content Include="Content\newstyle2\css\owl.theme.css" />
     <Content Include="Content\newstyle2\css\retailauditresponsive.css" />
@@ -1092,6 +1097,8 @@
     <Content Include="Content\newstyle2\js\jq.tablesort.js" />
     <Content Include="Content\newstyle2\js\jquery-file-upload.js" />
     <Content Include="Content\newstyle2\js\jquery.sticky.js" />
+    <Content Include="Content\newstyle2\js\jquery.treegrid.bootstrap3.js" />
+    <Content Include="Content\newstyle2\js\jquery.treegrid.js" />
     <Content Include="Content\newstyle2\js\jquery.watermark.min.js" />
     <Content Include="Content\newstyle2\js\js-grid.js" />
     <Content Include="Content\newstyle2\js\just-gage.js" />
@@ -3243,14 +3250,16 @@
     <Content Include="Views\Shared\ActivityeaScripts.cshtml" />
     <Content Include="Views\VisitsMs\Detailsa.cshtml" />
     <Content Include="Views\Home\Promotions.cshtml" />
-    <Content Include="Views\Shared\ActivityraScripts_befoff.cshtml" />
-    <Content Include="Views\FormsM\Activityra_befoff.cshtml" />
+    <Content Include="Views\Shared\ActivityraonScripts.cshtml" />
+    <Content Include="Views\FormsM\Activityraon.cshtml" />
     <Content Include="Views\Shared\visitScriptadmin.cshtml" />
     <Content Include="Views\Shared\ActivityadminScripts.cshtml" />
+    <Content Include="Views\FormsM\Activityon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\activities\" />
+    <Folder Include="Content\images\promotions\" />
     <Folder Include="Reportes\pdf\" />
   </ItemGroup>
   <ItemGroup>

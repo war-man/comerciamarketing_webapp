@@ -298,7 +298,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     ViewBag.glong = geoLong;
                     ViewBag.glat = geoLat;
-                    ViewBag.address = visitsM.address + ", " + visitsM.zipcode + ", " + visitsM.city + ", " + visitsM.state;
+                ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
 
                     return View(visitsM);
 
@@ -453,9 +453,13 @@ namespace comerciamarketing_webapp.Controllers
                 SB.AppendLine(@"*");
                 //SB.AppendLine("http://*");
                 //SB.AppendLine("https://*");
+                var nomcache = datosUsuario.ID_usuario + "offline.appcache";
+
+                var path = Path.Combine(root, @"" + nomcache);
 
 
-                var path = Path.Combine(root, @"offline.appcache");
+
+
                 System.IO.StreamWriter file = new System.IO.StreamWriter(path, false);
 
 
@@ -489,7 +493,26 @@ namespace comerciamarketing_webapp.Controllers
                     Response.Cookies.Add(aCookie);
                 }
 
+                if (Request.Cookies["currentcache"] != null)
+                {
+                    //COMO YA EXISTE NO NECESITAMOS RECREARLA PERO LA ELIMINAMOS
+                    var d = new HttpCookie("currentcache");
+                    d.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(d);
+                    //LUEGO LA VOLVEMOS A CREAR
 
+                    HttpCookie dCookie = new HttpCookie("currentcache");
+                    dCookie.Value = path;
+                    dCookie.Expires = DateTime.Now.AddMonths(3);
+                    Response.Cookies.Add(dCookie);
+                }
+                else
+                {
+                    HttpCookie dCookie = new HttpCookie("currentcache");
+                    dCookie.Value = path;
+                    dCookie.Expires = DateTime.Now.AddMonths(3);
+                    Response.Cookies.Add(dCookie);
+                }
                 return RedirectToAction("Details", "VisitsMs", new { id = id });
 
             }
@@ -527,7 +550,7 @@ namespace comerciamarketing_webapp.Controllers
                 visitsM.customer = visitsMorig.customer;
                 visitsM.ID_store = visitsMorig.ID_store;
                 visitsM.store = visitsMorig.store;
-                visitsMorig.address = visitsMorig.address;
+                visitsM.address = visitsMorig.address;
                 visitsM.city = visitsMorig.city;
                 visitsM.zipcode = visitsMorig.zipcode;
                 visitsM.state = visitsMorig.state;
@@ -723,7 +746,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.glong = geoLong;
                 ViewBag.glat = geoLat;
-                ViewBag.address = visitsM.address + ", " + visitsM.zipcode  + ", " + visitsM.city  + ", " + visitsM.state;
+                ViewBag.address = visitsM.address + ", " +  visitsM.city + ", " +  visitsM.state + ", " + visitsM.zipcode;
 
 
                 ///DEVOLVEMOS VALORES DE ACTIVIDADES
@@ -885,8 +908,9 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.formatosForms = result2;
 
                 }
-
-
+                HttpCookie aCookie = Request.Cookies["currentcache"];
+                string d = Server.HtmlEncode(aCookie.Value);
+                ViewBag.cachem = d;
                 return View(visitsM);
 
             }
@@ -1713,18 +1737,20 @@ namespace comerciamarketing_webapp.Controllers
                     }
                     else
                     {
+                        DateTime ndate = DateTime.Today.Date;
+                        DateTime ndatetime = DateTime.Now;
                         //COPIAMOS Y GUARDAMOS LA NUEVA ACTIVIDAD
                         Random r = new Random();
                         int card = r.Next(172);
                         nuevaActivida.comments = "";
-                        nuevaActivida.check_in = DateTime.Today.Date;
-                        nuevaActivida.check_out = DateTime.Today.Date;
+                        nuevaActivida.check_in = ndate;
+                        nuevaActivida.check_out = ndate;
                         nuevaActivida.isfinished = false;
 
                         int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
                         nuevaActivida.ID_usuarioCreate = ID_usuario;
                         nuevaActivida.date = DateTime.Today.Date;
-                        nuevaActivida.query1 = "copy_" + card + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_act_" + IDActivity;
+                        nuevaActivida.query1 = "copy_" + card + ndatetime.Hour.ToString() + ndatetime.Minute.ToString() + "_act_" + IDActivity;
 
                         db.ActivitiesM.Add(nuevaActivida);
                         db.SaveChanges();
@@ -1738,7 +1764,7 @@ namespace comerciamarketing_webapp.Controllers
                             FormsM_details nuevodetalle = new FormsM_details();
                             nuevodetalle = item;
                             nuevodetalle.original = false;
-                            nuevodetalle.query2 = "copy_" + card + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_act_" + IDActivity;
+                            nuevodetalle.query2 = "copy_" + card + ndatetime.Hour.ToString() + ndatetime.Minute.ToString() + "_act_" + IDActivity;
                             nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
                             
 
@@ -1761,7 +1787,7 @@ namespace comerciamarketing_webapp.Controllers
                         nuevaoffline.comments = nuevaActivida.comments;
                         nuevaoffline.check_in = nuevaActivida.check_in;
                         nuevaoffline.check_out = nuevaActivida.check_out;
-                        nuevaoffline.query1 = "copy_" + card + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_act_" + IDActivity;
+                        nuevaoffline.query1 = "copy_" + card + ndatetime.Hour.ToString() + ndatetime.Minute.ToString() + "_act_" + IDActivity;
                         nuevaoffline.ID_empresa = nuevaActivida.ID_empresa;
                         nuevaoffline.isfinished = nuevaActivida.isfinished;
                         nuevaoffline.description = nuevaActivida.description;
@@ -1772,13 +1798,13 @@ namespace comerciamarketing_webapp.Controllers
                         nuevaoffline.ID_usuarioEndString = nuevaActivida.ID_usuarioEndString;
                         nuevaoffline.onserver = false;
                         nuevaoffline.action = "saved";
-                        nuevaoffline.isnew = false;
+                        nuevaoffline.isnew = true;
                         nlst.Add(nuevaoffline);
                         //////
                         int idvisit = Convert.ToInt32(ID_visitCopy);
                         //Retornamos el detalle
                         List<MyObj_tablapadre> listapadresActivities = (from item in detalles_acopiar
-                                                                       
+                                                                        where (item.parent == 0)
                                                                         select
                                                                            new MyObj_tablapadre
                                                                            {
@@ -1797,7 +1823,7 @@ namespace comerciamarketing_webapp.Controllers
                                                                                idkey = item.idkey,
                                                                                parent = item.parent,
                                                                                query1 = item.query1,
-                                                                               query2 = "copy_" + card + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_act_" + IDActivity,
+                                                                               query2 = "copy_" + card + ndatetime.Hour.ToString() + ndatetime.Minute.ToString() + "_act_" + IDActivity,
                                                                                ID_empresa = item.ID_empresa,
                                                                                onserver = false,
                                                                                action = "saved",
@@ -1829,7 +1855,7 @@ namespace comerciamarketing_webapp.Controllers
                                                                           idkey = item.idkey,
                                                                           parent = item.parent,
                                                                           query1 = item.query1,
-                                                                          query2 = "copy_" + card + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_act_" + IDActivity,
+                                                                          query2 = "copy_" + card + ndatetime.Hour.ToString() + ndatetime.Minute.ToString() + "_act_" + IDActivity,
                                                                           ID_empresa = item.ID_empresa,
                                                                           onserver = false,
                                                                           action = "saved",
@@ -1906,7 +1932,7 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else {
                             TempData["advertencia"] = "Something wrong happened, try again.";
-                            return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
                         }
 
                     }
@@ -1949,7 +1975,7 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             TempData["exito"] = "Activity created successfully.";
-                            return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
                         }
                     }
 
@@ -1965,7 +1991,7 @@ namespace comerciamarketing_webapp.Controllers
                     else
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Details", "VisitsMs", new { id = IDVisit });
+                        return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
                     }
                 }
 
@@ -2030,13 +2056,13 @@ namespace comerciamarketing_webapp.Controllers
            
 
                 TempData["exito"] = "Activity canceled successfully.";
-                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitCa });
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitCa });
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitCa });
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitCa });
             }
 
 
@@ -2054,13 +2080,13 @@ namespace comerciamarketing_webapp.Controllers
 
                
                 TempData["exito"] = "Representative removed successfully.";
-                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitU });
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitU });
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Details", "VisitsMs", new { id = ID_visitU });
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitU });
             }
 
 
@@ -2356,7 +2382,9 @@ namespace comerciamarketing_webapp.Controllers
                 int IDU = Convert.ToInt32(Session["IDusuario"]);
 
                 //Guardamos los datos de las actividades
-                foreach (var actobj in objects)
+                if (objects != null) {
+
+                    foreach (var actobj in objects)
                 {
                     ActivitiesM actividadObj = new ActivitiesM();//Creamos la actividad
                     if (actobj.isnew == false)
@@ -2371,6 +2399,7 @@ namespace comerciamarketing_webapp.Controllers
                             actividadObj.check_out = actobj.check_out;
                             actividadObj.check_in = actobj.check_in;
                             actividadObj.isfinished = actobj.isfinished;
+                            actividadObj.ID_usuarioEndString = "";
                             db.Entry(actividadObj).State = EntityState.Modified;
                             db.SaveChanges();
                         }
@@ -2383,6 +2412,7 @@ namespace comerciamarketing_webapp.Controllers
                             actividadObj.check_out = actobj.check_out;
                             actividadObj.check_in = actobj.check_in;
                             actividadObj.isfinished = actobj.isfinished;
+                            actividadObj.ID_usuarioEndString = "";
                             db.Entry(actividadObj).State = EntityState.Modified;
                             db.SaveChanges();
                         }
@@ -2411,7 +2441,7 @@ namespace comerciamarketing_webapp.Controllers
                         actividadObj.ID_usuarioEnd = actobj.ID_usuarioEnd;
                         actividadObj.date = actobj.date;
                         actividadObj.ID_activitytype = actobj.ID_activitytype;
-                        actividadObj.ID_usuarioEndString = actobj.ID_usuarioEndString;
+                        actividadObj.ID_usuarioEndString = "";
 
                         db.ActivitiesM.Add(actividadObj);
                         db.SaveChanges();
@@ -2420,6 +2450,9 @@ namespace comerciamarketing_webapp.Controllers
                     }
 
                 }
+
+                }
+
 
 
 
@@ -2577,7 +2610,8 @@ namespace comerciamarketing_webapp.Controllers
                 ActivitiesM activity = new ActivitiesM();
                 try
                 {
-                    activity = db.ActivitiesM.Find(ID_activityCancel); //Es actividad normal desde su id
+                    int idd = Convert.ToInt32(ID_activityCancel);
+                    activity = db.ActivitiesM.Find(idd); //Es actividad normal desde su id
                 }
                 catch {// es generico por lo tanto tenemos que buscar por query1
                     var sqlQueryText = string.Format("SELECT * FROM ActivitiesM WHERE query1 LIKE '{0}'", ID_activityCancel);

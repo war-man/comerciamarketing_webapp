@@ -9,7 +9,7 @@
 
     @Html.Partial("~/Views/Shared/Styles2.cshtml")
 
-    @if (ViewBag.Title == "Comercia Marketing - Template preview2")
+    @if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
     {
         <style>
 
@@ -155,7 +155,7 @@
 
         </style>
     }
-    @if (ViewBag.Title != "Comercia Marketing - Template preview2")
+    @if (ViewBag.Title != "Comercia Marketing - Template preview2" || ViewBag.Title != "Comercia Marketing - Template preview2on")
     {
         <style>
             .disable {
@@ -322,6 +322,89 @@
             /**/
             /*END DATATABLES*/
 
+            /*DATATABLES*/
+            table#order-listing2 {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+                table#order-listing2 tr {
+                    padding: .35em;
+                }
+
+                table#order-listing2 th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table#order-listing2 th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing2 td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table#order-listing2 td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table#order-listing2 th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#order-listing2 td {
+                    font-size: .7em;
+                }
+            }
+
+
+
+            /**/
+            @@media screen and (max-width: 530px) {
+
+                table#order-listing2 {
+                    border: 0;
+                }
+
+                    table#order-listing2 thead {
+                        display: none;
+                    }
+
+                    table#order-listing2 tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#order-listing2 td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#order-listing2 td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table#order-listing2 td:last-child {
+                            border-bottom: 0;
+                        }
+            }
 
 
             /**PARA MODALS*/
@@ -1789,6 +1872,12 @@
 {
     @Html.Partial("~/Views/Shared/ActivityraScripts.cshtml")
 }
+
+@if (ViewBag.Title == "Comercia Marketing - Template preview2on")
+{
+    @Html.Partial("~/Views/Shared/ActivityraonScripts.cshtml")
+}
+
 @if (ViewBag.Title == "Comercia Marketing - Store_stats")
 {
     @Html.Partial("~/Views/Shared/visitScript.cshtml")
@@ -2660,5 +2749,35 @@
             });
 
         });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    //update
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.tree').treegrid({
+                expanderExpandedClass: 'mdi mdi-store',
+                expanderCollapsedClass: 'mdi mdi-store'
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        function filter(clicked_id) {
+            var table = $('#order-listing').DataTable();
+
+            //table.columns(4).search("").draw();
+            table.columns(3).search("" + clicked_id + "", true, false, true).draw();
+        }
+
+        function filter_clear() {
+            var table = $('#order-listing').DataTable();
+
+            //table.columns(4).search("").draw();
+            table.columns(3).search("").draw();
+        }
     </script>
 }

@@ -43,6 +43,7 @@
         <EntityTypeShape EntityType="dbComerciaModel.ActivitiesM_log" Width="1.5" PointX="0.75" PointY="16.75" />
         <EntityTypeShape EntityType="dbComerciaModel.Brand_competitors" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="dbComerciaModel.Items_displays" Width="1.5" PointX="5.75" PointY="6.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.promotions_v1" Width="1.5" PointX="10.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

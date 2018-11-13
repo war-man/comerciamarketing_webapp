@@ -5,6 +5,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -36,7 +38,164 @@ namespace comerciamarketing_webapp.Controllers
 
             return View();
         }
+        [HttpPost]
+        public ActionResult SendDataPromotion(string name, string email, string phone, string estado)
+        {
+            try
+            {
+                //  Get all files from Request object  
+                HttpFileCollectionBase files = Request.Files;
 
+                for (int i = 0; i < files.Count; i++)
+                {
+                    //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                    //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                    HttpPostedFileBase file = files[i];
+
+                    if (file.ContentLength == 0)
+                    {
+                        TempData["advertencia"] = "No image selected.";
+                        return RedirectToAction("Promotions", "Home", null);
+                    }
+                    else
+                    {
+                        if (estado == "NA")
+                        {
+                            TempData["advertencia"] = "No State selected.";
+                            return RedirectToAction("Promotions", "Home", null);
+                        }
+                        string fname;
+
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+
+                        Image TargetImg = Image.FromStream(file.InputStream, true, true);
+
+                        if (TargetImg.PropertyIdList.Contains(0x0112))
+                        {
+                            try
+                            {
+                                int or = Convert.ToInt32(TargetImg.GetPropertyItem(0x0112).Value[0]);
+
+                                switch (or)
+                                {
+                                    case 1: // landscape, do nothing
+                                        break;
+
+                                    case 8: // rotated 90 right
+                                            // de-rotate:
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate270FlipNone);
+                                        break;
+
+                                    case 3: // bottoms up
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate180FlipNone);
+                                        break;
+
+                                    case 6: // rotated 90 left
+                                        TargetImg.RotateFlip(rotateFlipType: RotateFlipType.Rotate90FlipNone);
+                                        break;
+                                }
+
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        //buscamos el id del detalle
+
+                        promotions_v1 detail = new promotions_v1();
+                        detail.name = name;
+                        detail.email = email;
+                        detail.phone = phone;
+
+                        DateTime time = DateTime.Now;
+
+
+                        using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
+                        using (Graphics g = Graphics.FromImage(TargetImg))
+                        {
+
+                            Image thumb = watermark.GetThumbnailImage((TargetImg.Width / 2), (TargetImg.Height / 3), null, IntPtr.Zero);
+
+                            var destX = (TargetImg.Width / 2 - thumb.Width / 2);
+                            var destY = (TargetImg.Height / 2 - thumb.Height / 2);
+
+                            g.DrawImage(watermark, new Rectangle(destX,
+                                        destY,
+                                        TargetImg.Width / 2,
+                                        TargetImg.Height / 4));
+
+
+                            // display a clone for demo purposes
+                            //pb2.Image = (Image)TargetImg.Clone();
+                            Image imagenfinal = (Image)TargetImg.Clone();
+                            var path = Path.Combine(Server.MapPath("~/Content/images/promotions"), "promotion_" + name.Substring(0, 3) + "_" + time.Minute + time.Second + ".jpg");
+
+
+                            var tam = file.ContentLength;
+
+                            //if (tam < 600000)
+                            //{
+                            imagenfinal.Save(path, ImageFormat.Jpeg);
+                            //}
+                            //else {
+                            //    //Antes de guardar cambiamos el tamano de la imagen
+                            //    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                            //    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                            //    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                            //    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 10L);
+                            //    myEncoderParameters.Param[0] = myEncoderParameter;
+
+
+                            //    imagenfinal.Save(path, jpgEncoder, myEncoderParameters);
+                            //}
+
+
+
+                        }
+
+
+                        //fname = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), fname);
+                        //file.SaveAs(fname);
+
+                        //Luego guardamos la url en la db
+                        //Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));  //se movio hacia arriba
+                        detail.imgpath = "~/Content/images/activities/promotion_" + name.Substring(0, 3) + "_" + time.Minute + time.Second + ".jpg";
+
+                        db.promotions_v1.Add(detail);
+                        db.SaveChanges();
+
+                        // Returns message that successfully uploaded  
+                        TempData["exito"] = "Data saved succefully. Thank you for participating.";
+                        return RedirectToAction("Home", "Home", null);
+
+                    }
+
+
+
+                }
+                TempData["advertencia"] = "No image selected. Please, try again";
+                return RedirectToAction("Promotions", "Home", null);
+
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Error: " + ex.Message;
+                return RedirectToAction("Promotions", "Home", null);
+
+            }
+        }
         public ActionResult Main(string fstartd, string fendd, string store)
         {
 
@@ -1788,14 +1947,107 @@ namespace comerciamarketing_webapp.Controllers
                 foreach (var itemVisita in rutas)
                     {
                         var nombreRuta = "";
+                    var nombreStra = "";
                         var rutitalist = (from e in db.RoutesM where (e.ID_route == itemVisita.ID_route) select e).FirstOrDefault();
+                    var nombreStrategicPart = (from f in CMKdb.OCRD where (f.CardCode == itemVisita.ID_store) select f).FirstOrDefault();
 
+                    if (nombreStrategicPart != null) {
+                        nombreStra = nombreStrategicPart.SlpCode.ToString();
+                    }
+                    
+
+                    if (nombreStra == "18")
+                    {
+                        itemVisita.comments = "D. Limena Tennesse";
+                    }
+                    else if (nombreStra == "19") {
+                        itemVisita.comments = "D. Limena Georgia";
+                    }
+                    else{
+                        itemVisita.comments = "";
+                    }
                         nombreRuta = rutitalist.query2;
-                        //utiliamos esta variable para el nombre del representante
+                        //utiliamos esta variable para nombre de ruta
                         itemVisita.city = nombreRuta;
                     }
-                
 
+                //VISITAS//RUTAAAAAAAAAAAAAAAAAAAAAAAs
+
+                var visitas = new List<VisitsM>();
+                var rutas2 = new List<RoutesM>();
+
+
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && activities.Contains(d.ID_visit)).ToList();
+                    rutas2 = db.RoutesM.Where(d => d.date >= filtrostartdate && d.end_date <= filtroenddate).OrderByDescending(d => d.date).ToList();
+                }
+                else
+                {
+
+                    visitas = (from r in db.VisitsM where (activities.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r).ToList();
+
+                    var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
+                    rutas2 = (from rut in db.RoutesM where (arrayVisiID.Contains(rut.ID_route)) select rut).ToList();
+                }
+
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+                //if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                //{
+
+
+                //    foreach (var itemVisita in visitas)
+                //    {
+                //        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+
+                //        itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
+                //    }
+                //}
+
+
+                //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
+                decimal totalRutas = visitas.Count();
+                foreach (var rutait in rutas2)
+                {
+
+                    //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2 && e.ID_route == rutait.ID_route) select e).Count();
+                    totalRutas = (from e in visitas where (e.ID_route == rutait.ID_route) select e).Count();
+
+                    ViewBag.finished = finishedorCanceled;
+
+                    if (totalRutas != 0)
+                    {
+                        if (inprogressv != 0 && finishedorCanceled != 0)
+                        {
+                            decimal n = (finishedorCanceled / totalRutas) * 100;
+                            decimal m = (inprogressv / totalRutas) * 50;
+                            rutait.query3 = (n + m).ToString();
+
+                        }
+                        else if (inprogressv == 0 && finishedorCanceled != 0)
+                        {
+
+                            rutait.query3 = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
+                        }
+                        else if (inprogressv != 0 && finishedorCanceled == 0)
+                        {
+                            rutait.query3 = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
+                        }
+                        else
+                        {
+                            rutait.query3 = (Convert.ToDecimal(0)).ToString();
+                        }
+
+
+                    }
+                    else
+                    {
+                        rutait.query3 = "0";
+                    }
+                }
 
                 //Agregamos los representantes
                 foreach (var itemVisita in rutas)
@@ -1821,7 +2073,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //ESTADISTICA DE RUTAS POR ESTADO
-                int totalRutas = rutas.Count();
+                int totalRutas2 = rutas.Count();
 
 
                 int totalScheduled = (from c in rutas where (c.ID_visitstate == 3) select c).Count();
@@ -1837,12 +2089,12 @@ namespace comerciamarketing_webapp.Controllers
 
        
 
-                if (totalRutas != 0)
+                if (totalRutas2 != 0)
                 {
-                    ViewBag.onholdP = ((Convert.ToDecimal(totalScheduled) / totalRutas) * 100);
-                    ViewBag.inprogressP = ((Convert.ToDecimal(totalInpro) / totalRutas) * 100);
-                    ViewBag.canceledP = ((Convert.ToDecimal(totalCancl) / totalRutas) * 100);
-                    ViewBag.finishedP = ((Convert.ToDecimal(totalFini) / totalRutas) * 100);
+                    ViewBag.onholdP = ((Convert.ToDecimal(totalScheduled) / totalRutas2) * 100);
+                    ViewBag.inprogressP = ((Convert.ToDecimal(totalInpro) / totalRutas2) * 100);
+                    ViewBag.canceledP = ((Convert.ToDecimal(totalCancl) / totalRutas2) * 100);
+                    ViewBag.finishedP = ((Convert.ToDecimal(totalFini) / totalRutas2) * 100);
                 }
                 else
                 {
@@ -1929,7 +2181,7 @@ namespace comerciamarketing_webapp.Controllers
                 }
                 ViewBag.recursos = recursos;
 
-                return View();
+                return View(rutas2.ToList());
             }
             else
             {

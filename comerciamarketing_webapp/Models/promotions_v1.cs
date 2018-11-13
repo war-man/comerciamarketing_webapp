@@ -11,18 +11,13 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class Stock_items
+    
+    public partial class promotions_v1
     {
-        public int ID_stock { get; set; }
-        public string itemCode { get; set; }
-        public string itemName { get; set; }
-        public decimal quantity { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
-        public System.DateTime odate { get; set; }
-        public string ID_usuario { get; set; }
-        public string comment { get; set; }
+        public int ID_datap { get; set; }
+        public string name { get; set; }
+        public string email { get; set; }
+        public string phone { get; set; }
+        public string imgpath { get; set; }
     }
 }

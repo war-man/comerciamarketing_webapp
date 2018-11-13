@@ -449,10 +449,21 @@
                                                             <td data-label="Route">@itemVisita.city</td>
   
                                                             <td data-label="Store">
-                                                                <a class="text-black" href="@Url.Action("Details", "VisitsMs", new { id = itemVisita.ID_visit })">
-                                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                                    <span class="text-primary">@itemVisita.address</span>
-                                                                </a>
+                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+    {
+                                                            <a class="text-black" href="@Url.Action("Detailsa", "VisitsMs", new { id = itemVisita.ID_visit })">
+                                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                <span class="text-primary">@itemVisita.address</span>
+                                                            </a>
+}
+else
+{
+
+                                                            <a class="text-black" href="@Url.Action("Detailsa", "VisitsMs", new { id = itemVisita.ID_visit })">
+                                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                <span class="text-primary">@itemVisita.address</span>
+                                                            </a>
+}
                                                             </td>
                                                             <td data-label="Date">@itemVisita.visit_date.ToShortDateString()</td>
 

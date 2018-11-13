@@ -50,5 +50,6 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<ActivitiesM_log> ActivitiesM_log { get; set; }
         public virtual DbSet<Brand_competitors> Brand_competitors { get; set; }
         public virtual DbSet<Items_displays> Items_displays { get; set; }
+        public virtual DbSet<promotions_v1> promotions_v1 { get; set; }
     }
 }
