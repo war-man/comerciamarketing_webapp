@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using comerciamarketing_webapp.Models;
+using CrystalDecisions.CrystalReports.Engine;
 using Postal;
 
 namespace comerciamarketing_webapp.Controllers
@@ -1306,6 +1307,8 @@ namespace comerciamarketing_webapp.Controllers
                     return HttpNotFound();
                 }
 
+                ID_Customer = datosUsuario.Empresas.ID_SAP;
+
                 //Seleccionamos representantes que estan incluidos
                 var reps = (from rep in db.VisitsM_representatives
                             where (rep.ID_visit == id)
@@ -1390,6 +1393,10 @@ namespace comerciamarketing_webapp.Controllers
                 var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
 
                 ViewBag.customers = customers.ToList();
+
+                var actividades = (from a in db.ActivitiesM where (a.ID_customer == ID_Customer && a.ID_visit == id) select a).ToList();
+
+                ViewBag.actividades = actividades;
 
 
                 //Route
@@ -1480,6 +1487,245 @@ namespace comerciamarketing_webapp.Controllers
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateActivitySuggestedOrder(string ID_form, string ID_customer, string ID_visitaSO, string ID_rep)
+        {
+            try
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                ID_form = "27";
+                ID_rep = datosUsuario.ID_usuario.ToString();
+                int IDForm = 27; //Cambiar si se mueve, elimina o crea uno nuevo
+                int IDRep = 0;
+
+                ID_customer = "0";
+
+                int esDemoUser = 0;//Variable para identificar si el usuario seleccionado es demo o es un reps
+
+                try
+                {
+                    IDRep = Convert.ToInt32(ID_rep);
+                    esDemoUser = 0;
+                }
+                catch
+                {
+                    esDemoUser = 1;
+                }
+
+
+                //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
+                ActivitiesM nuevaActivida = new ActivitiesM();
+
+                nuevaActivida.ID_form = Convert.ToInt32(ID_form);
+                nuevaActivida.ID_visit = Convert.ToInt32(ID_visitaSO);
+                nuevaActivida.ID_customer = ID_customer;
+                nuevaActivida.Customer = "";
+                var customer = (from c in CMKdb.OCRD where (c.CardCode == ID_customer) select c).FirstOrDefault();
+                if (customer != null)
+                {
+                    nuevaActivida.Customer = customer.CardName;
+                }
+                nuevaActivida.comments = "";
+                nuevaActivida.check_in = DateTime.Today.Date;
+                nuevaActivida.check_out = DateTime.Today.Date;
+                nuevaActivida.query1 = "";
+                nuevaActivida.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+                nuevaActivida.isfinished = false;
+                nuevaActivida.description = "";
+                nuevaActivida.ID_activitytype = 0;
+
+                nuevaActivida.date = DateTime.Today.Date;
+                var form = (from c in db.FormsM where (c.ID_form == IDForm) select c).FirstOrDefault();
+                if (form != null)
+                {
+                    nuevaActivida.description = form.name;
+                    nuevaActivida.ID_activitytype = form.ID_activity;
+                    nuevaActivida.query1 = "";
+
+                }
+
+                int ID_usuario = Convert.ToInt32(Session["IDusuario"]);
+                nuevaActivida.ID_usuarioCreate = ID_usuario;
+
+                //OJO ESTA PARTE SE AGREGO PARA COMERCIA ES PROPIA DE LA EMPRESA
+                if (nuevaActivida.ID_activitytype != 4)
+                {
+                    nuevaActivida.ID_usuarioEnd = IDRep;  //Usuario que sera asignado
+                    nuevaActivida.ID_usuarioEndString = "";
+                }
+                else
+                {
+                    //Guardamos el usuario de SAP en la variable tipo String
+                    if (esDemoUser == 1)
+                    {
+                        nuevaActivida.ID_usuarioEnd = 0;
+                    }
+                    else
+                    {
+                        nuevaActivida.ID_usuarioEnd = IDRep;
+
+                    }
+                    nuevaActivida.ID_usuarioEndString = ID_rep;
+                }
+
+                //SOLO PARA COMERCIA
+                if (nuevaActivida.ID_activitytype == 4)
+                {
+
+                    nuevaActivida.query1 = "start";
+                }
+
+
+
+                //guardamos
+                db.ActivitiesM.Add(nuevaActivida);
+                db.SaveChanges();
+
+                //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
+                //Guardamos el detalle
+                var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).ToList();
+
+                foreach (var item in detalles_acopiar)
+                {
+                    FormsM_details nuevodetalle = new FormsM_details();
+                    nuevodetalle = item;
+                    nuevodetalle.original = false;
+                    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
+
+                    db.FormsM_details.Add(nuevodetalle);
+                    db.SaveChanges();
+                }
+
+
+                //Por ultimo asignamos el usuario a la visita
+                //Pero verificamos si ya existe
+
+                var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
+
+
+                if (existeenvisita > 0)
+
+                {
+                }
+                else
+                {
+
+                    if (esDemoUser == 1)
+
+                    {
+                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                        repvisita.ID_visit = nuevaActivida.ID_visit;
+                        repvisita.ID_usuario = 0;
+                        repvisita.query1 = nuevaActivida.ID_usuarioEndString;
+                        repvisita.ID_empresa = nuevaActivida.ID_empresa;
+                        db.VisitsM_representatives.Add(repvisita);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                        repvisita.ID_visit = nuevaActivida.ID_visit;
+                        repvisita.ID_usuario = IDRep;
+                        repvisita.query1 = "3";
+                        repvisita.ID_empresa = nuevaActivida.ID_empresa;
+                        db.VisitsM_representatives.Add(repvisita);
+                        db.SaveChanges();
+
+                    }
+
+                }
+
+                //enviamoS correo SI ES UN USUARIO DEMO
+                if (esDemoUser == 1)
+                {
+                    //Obtenemos el nombre de las marcas o brands por cada articulo
+                    var listadeItems = (from d in db.FormsM_details where (d.ID_visit == nuevaActivida.ID_activity && d.ID_formresourcetype == 3) select d).ToList();
+
+
+                    foreach (var itemd in listadeItems)
+                    {
+                        itemd.fdescription = (from k in CMKdb.OITM join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    }
+
+                    var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                    var brandstoshow = "";
+                    int count = 0;
+                    foreach (var items in brands)
+                    {
+                        if (count == 0)
+                        {
+                            try
+                            {
+                                brandstoshow = items.fdescription.ToString();
+                            }
+                            catch
+                            {
+                                brandstoshow = "no data from db";
+                            }
+
+                        }
+                        else
+                        {
+                            try
+                            {
+                                brandstoshow += ", " + items.fdescription.ToString();
+                            }
+                            catch
+                            {
+                                brandstoshow = "no data from db";
+                            }
+                        }
+                        count += 1;
+                    }
+                    //*******************************
+                    try
+                    {
+                        var usuario = (from a in CMKdb.OCRD where (a.CardCode == nuevaActivida.ID_usuarioEndString) select a).FirstOrDefault();
+
+                        var store = (from s in db.VisitsM where (s.ID_visit == nuevaActivida.ID_visit) select s).FirstOrDefault();
+
+                        //Enviamos correo para notificar
+                        dynamic email = new Email("newdemo_alert");
+                        email.To = usuario.E_Mail.ToString();
+                        email.From = "customercare@comerciamarketing.com";
+                        email.Vendor = brandstoshow;
+                        email.Date = Convert.ToDateTime(nuevaActivida.date).ToLongDateString();
+                        email.Time = Convert.ToDateTime(nuevaActivida.date).ToLongTimeString();
+                        email.Place = store.store + ", " + store.address;
+                        //email.link = "https://comerciamarketing.com/Home/Internal" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                        email.link = "https://comerciamarketing.com/Home/Internal";
+                        email.accesscode = "ACCMK00" + nuevaActivida.ID_activity.ToString();
+                        email.enddate = Convert.ToDateTime(nuevaActivida.date).AddDays(1).ToLongDateString();
+                        email.Send();
+
+                        //FIN email
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                //************
+
+                TempData["exito"] = "Activity created successfully.";
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitaSO });
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitaSO });
+            }
+
+
+
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1939,7 +2185,11 @@ namespace comerciamarketing_webapp.Controllers
                     else
                     {
                         //COPIAMOS Y GUARDAMOS LA NUEVA ACTIVIDAD
+                        if (nuevaActivida.ID_activitytype == 3) {//Si es SALES ORDER
 
+                            nuevaActivida.Customer = "";
+                            nuevaActivida.ID_customer = "";
+                        }
                         nuevaActivida.comments = "";
                         nuevaActivida.check_in = DateTime.Today.Date;
                         nuevaActivida.check_out = DateTime.Today.Date;
@@ -2638,6 +2888,85 @@ namespace comerciamarketing_webapp.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+        public ActionResult PreviewSalesOrderResume(int? id)
+        {
+
+            var activity_header = (from a in db.ActivitiesM where (a.ID_activity == id) select a).FirstOrDefault();
+
+
+
+            if (activity_header !=null)
+
+            {
+
+                //Existen datos
+                //Buscamos los detalles
+                //3 - Products 
+                var activity_details = (from b in db.FormsM_details where (b.ID_visit == id && b.ID_formresourcetype == 3 && b.fvalue>0) select b).OrderBy(b => b.obj_order).ToList();
+                var authorized = (from b in db.FormsM_details where (b.ID_visit == id && b.ID_formresourcetype == 6) select b).FirstOrDefault();
+
+
+                ////Rep
+                var rep = (from u in db.Usuarios where (u.ID_usuario == activity_header.ID_usuarioEnd) select u).FirstOrDefault();
+                //
+                var repname = "No data was found";
+                if (rep != null) {
+                    repname = rep.nombre + " " + rep.apellido;
+                }
+
+                var visit = (from f in db.VisitsM where (f.ID_visit == activity_header.ID_visit) select f).FirstOrDefault();
+                var storename = "";
+
+                if (visit != null)
+                {
+                    storename = visit.store + ", " + visit.address + ", " + visit.city + ", " + visit.zipcode;
+
+                }
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptSalesOrder.rpt"));
+
+
+                //*******************************
+                rd.SetDataSource(activity_details);
+
+                rd.SetParameterValue("suggested_order", activity_header.ID_activity);
+                rd.SetParameterValue("customer", activity_header.Customer);
+                rd.SetParameterValue("store", storename);
+                rd.SetParameterValue("date", activity_header.date);
+                rd.SetParameterValue("rep", repname.ToString().ToUpper());
+                rd.SetParameterValue("authorized", authorized.fsource.ToString().ToUpper());
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Suggested Order Resume; ");
+
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+
+                return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
         }
     }
 }

@@ -15,14 +15,23 @@ namespace comerciamarketing_webapp.Models
 
     public partial class Stock_items
     {
+
         public int ID_stock { get; set; }
+
         public string itemCode { get; set; }
+
         public string itemName { get; set; }
+
         public decimal quantity { get; set; }
+
         [DataType(DataType.Date)]
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
+
         public System.DateTime odate { get; set; }
+
         public string ID_usuario { get; set; }
+
         public string comment { get; set; }
     }
 }

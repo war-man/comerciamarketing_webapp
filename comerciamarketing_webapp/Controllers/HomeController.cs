@@ -117,10 +117,10 @@ namespace comerciamarketing_webapp.Controllers
                         detail.name = name;
                         detail.email = email;
                         detail.phone = phone;
-
+                        detail.estado = estado;
                         DateTime time = DateTime.Now;
-
-
+                        detail.fecha = DateTime.UtcNow;
+                        detail.query1 = "";
                         using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
                         using (Graphics g = Graphics.FromImage(TargetImg))
                         {
@@ -461,18 +461,26 @@ namespace comerciamarketing_webapp.Controllers
         {
             ViewBag.IPLOCAL = "";
             //Session["ip_user"] = GetExternalIp();
-
+            int cliente = 0;
+            var empresasap = "";
             if (Request.Cookies["GLOBALUSERID"] != null) //remember me active
             {
                 //cookies
                 HttpCookie aCookie = Request.Cookies["GLOBALUSERID"];
                 if (Session["IDusuario"] != null)
                 {
-                   
+                    int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
+                    var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+
+                    if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
+                    {
+                        cliente = 1;
+                        empresasap = obj.Empresas.ID_SAP;
+                    }
                 }
                 else {//Como tiene activado remember me, iniciamos sesion automaticamente
-                   int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
-                   var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+                    int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
+                    var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
 
                     Session["IDusuario"] = obj.ID_usuario.ToString();
                     Session["tipousuario"] = obj.ID_tipomembresia.ToString();
@@ -480,14 +488,273 @@ namespace comerciamarketing_webapp.Controllers
                     Session["ultimaconexion"] = "";
                     GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
 
-                   
+                    if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
+                    {
+                        cliente = 1;
+                        empresasap = obj.Empresas.ID_SAP;
+                    }
                 }
                 ////
+                if (cliente == 0)
+                {
+                    return RedirectToAction("Main");
+                }
+                else if (cliente == 1)
+                {
+                    return RedirectToAction("CustomerM_stats", "Home", new { id = empresasap });
+                }
                 return RedirectToAction("Main");
+
             }
             return View();
         }
 
+        public class Routes_calendar {
+           public string title { get; set; }
+            public string url { get; set; }
+            public string start { get; set; }
+            public string end { get; set; }
+            public string color { get; set; }
+        }
+
+        public ActionResult RoutesM_calendar(string fstartd, string fendd)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                //VISITAS
+
+                var visitas = new List<VisitsM>();
+                var rutas = new List<RoutesM>();
+
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                //filtros de fecha
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = sunday;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = saturday;
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                //FIN FILTROS*******************
+
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).ToList();
+                    rutas = db.RoutesM.Where(d => d.date >= filtrostartdate && d.end_date <= filtroenddate).OrderByDescending(d => d.date).ToList();
+                }
+                else
+                {
+                    var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == ID) select gg.ID_visit).ToArray();
+
+
+                    visitas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) select r).ToList();
+
+                    var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
+                    rutas = (from rut in db.RoutesM where (arrayVisiID.Contains(rut.ID_route)) select rut).ToList();
+                }
+
+                //Agregamos los representantes y tambien el estado de cada visita por REP filtro
+                if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                {
+
+
+                    foreach (var itemVisita in visitas)
+                    {
+                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+
+                        itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
+                    }
+                }
+
+
+                //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
+                decimal totalRutas = visitas.Count();
+                foreach (var rutait in rutas)
+                {
+
+                    //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4) && e.ID_route == rutait.ID_route) select e).Count();
+                    decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2 && e.ID_route == rutait.ID_route) select e).Count();
+                    totalRutas = (from e in visitas where (e.ID_route == rutait.ID_route) select e).Count();
+
+                    ViewBag.finished = finishedorCanceled;
+
+                    if (totalRutas != 0)
+                    {
+                        if (inprogressv != 0 && finishedorCanceled != 0)
+                        {
+                            decimal n = (finishedorCanceled / totalRutas) * 100;
+                            decimal m = (inprogressv / totalRutas) * 50;
+                            rutait.query3 = (n + m).ToString();
+
+                        }
+                        else if (inprogressv == 0 && finishedorCanceled != 0)
+                        {
+
+                            rutait.query3 = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
+                        }
+                        else if (inprogressv != 0 && finishedorCanceled == 0)
+                        {
+                            rutait.query3 = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
+                        }
+                        else
+                        {
+                            rutait.query3 = (Convert.ToDecimal(0)).ToString();
+                        }
+
+
+                    }
+                    else
+                    {
+                        rutait.query3 = "0";
+                    }
+                }
+
+                //MAPA DE RUTAS
+                var demos_map = (from a in rutas select a).ToList();
+
+
+                // Convertimos la lista a array
+                //var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                // Convertimos la lista a array
+                //ArrayList myArrList = new ArrayList();
+                //myArrList.AddRange((from p in usuarios
+                //                    select new
+                //                    {
+                //                        id = p.ID_usuario,
+                //                        text = p.nombre + " " + p.apellido
+                //                    }).ToList());
+
+
+                ////LISTADO DE REPRESENTANTES
+
+                //ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
+                //LISTADO DE RUTAS
+                var rutass = CMKdb.C_ROUTES.OrderBy(c => c.Code);
+                ViewBag.rutass = rutass.ToList();
+                //LISTADO DE TIENDAS
+
+                List<MyObj_tablapadre> listapadres = (from p in CMKdb.C_ROUTES
+                                                      select
+                             new MyObj_tablapadre
+                             {
+                                 id = p.Code,
+                                 text = p.Name
+                             }
+                                                      ).ToList();
+
+                List<tablahijospadre> listahijas = (from p in CMKdb.C_ROUTE
+                                                    join store in CMKdb.OCRD on p.U_CardCode equals store.CardCode
+                                                    select new tablahijospadre
+                                                    {
+                                                        id = p.U_CardCode,
+                                                        text = store.CardName.Replace("\"", "\\\""),
+                                                        parent = p.U_Route
+                                                    }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasList = ObtenerCategoriarJerarquiaByName(listapadres, listahijas);
+
+                //var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.stores = JsonConvert.SerializeObject(categoriasList);
+                //FIN LISTADO DE TIENDAS
+
+                //LISTADO DE ACTIVIDADES
+
+                List<MyObj_tablapadre> listapadresActivities = (from a in db.ActivitiesM_types
+                                                                select
+                                                                   new MyObj_tablapadre
+                                                                   {
+                                                                       id = a.ID_activity.ToString(),
+                                                                       text = a.description
+                                                                   }
+                                      ).ToList();
+
+                List<tablahijospadre> listahijasActivities = (from p in db.FormsM
+                                                              select new tablahijospadre
+                                                              {
+                                                                  id = p.ID_form.ToString(),
+                                                                  text = p.name,
+                                                                  parent = p.ID_activity.ToString()
+                                                              }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
+
+
+                ViewBag.activitieslist = JsonConvert.SerializeObject(categoriasListActivities);
+
+                //LISTADO DE CLIENTES
+                var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                ViewBag.customers = customers.ToList();
+                //LISTADO DE ACTIVIDAD (TIMELINE)
+
+                var log = new List<ActivitiesM_log>();
+
+
+
+                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                {
+                    log = (from l in db.ActivitiesM_log where (l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate) select l).ToList();
+                }
+                else
+                {
+                    log = (from l in db.ActivitiesM_log where (l.ID_usuario == ID && l.fecha_conexion >= filtrostartdate && l.fecha_conexion <= filtroenddate) select l).OrderBy(l => l.fecha_conexion).ToList();
+                }
+
+                ViewBag.log = log;
+
+                //Filtros Viewbag
+                //Filtros viewbag
+
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString(); ;
+                //*****************
+
+                List<Routes_calendar> rutaslst = new List<Routes_calendar>();
+                
+                foreach (var item in rutas) {
+                    Routes_calendar rt = new Routes_calendar();
+
+                    rt.title = item.ID_route + " - " + item.query2;
+                    rt.url = "";
+                    rt.start = item.date.ToString("yyyy-MM-dd");
+                    rt.end = item.end_date.AddDays(1).ToString("yyyy-MM-dd");
+                    rt.color = "#bfbfbf";//"#2081d6";
+                    rutaslst.Add(rt);
+                }
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(rutaslst.ToArray());
+                ViewBag.calroutes = result;
+
+                return View(rutas.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
         public ActionResult RoutesM(string fstartd, string fendd)
         {
             if (Session["IDusuario"] != null)
@@ -1463,6 +1730,179 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult GetVisits(string id)
+        {
+
+            int idr = Convert.ToInt32(id);
+            var visitas = new List<VisitsM>();
+            var porcentaje = "";
+
+            visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
+            var lst = (from obj in db.VisitsM where (obj.ID_route == idr) select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate }).ToArray();
+
+           
+            //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
+            decimal totalRutas = visitas.Count();
+     
+
+                //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
+                decimal finishedorCanceled = (from e in visitas where (e.ID_visitstate == 4) select e).Count();
+                decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2) select e).Count();
+                totalRutas = visitas.Count();
+
+                ViewBag.finished = finishedorCanceled;
+
+                if (totalRutas != 0)
+                {
+                    if (inprogressv != 0 && finishedorCanceled != 0)
+                    {
+                        decimal n = (finishedorCanceled / totalRutas) * 100;
+                        decimal m = (inprogressv / totalRutas) * 50;
+                        porcentaje = (n + m).ToString();
+
+                    }
+                    else if (inprogressv == 0 && finishedorCanceled != 0)
+                    {
+
+                    porcentaje = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
+                    }
+                    else if (inprogressv != 0 && finishedorCanceled == 0)
+                    {
+                    porcentaje = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
+                    }
+                    else
+                    {
+                    porcentaje = (Convert.ToDecimal(0)).ToString();
+                    }
+
+
+                }
+                else
+                {
+                porcentaje = "0";
+                }
+            
+
+
+
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result2 = javaScriptSerializer.Serialize(lst);
+            var result = new { result = result2, porcentaje = porcentaje };
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public ActionResult ChangeDates(string route, string nuevafecha)
+        {
+            string result2 = "";
+            int idroute = Convert.ToInt32(route);
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            try
+            {
+                var ndate = Convert.ToDateTime(nuevafecha);
+                RoutesM ruta = (from a in db.RoutesM where (a.ID_route == idroute) select a).FirstOrDefault();
+
+                if (ruta != null)
+                {
+                    if (ruta.date == ruta.end_date)
+                    {
+                        ruta.date = ndate;
+                        ruta.end_date = ndate;
+                    }
+                    else { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                        var d2  = (ruta.end_date - ruta.date).TotalDays;
+                        ruta.date = ndate;
+
+                        ruta.end_date = ndate.AddDays(d2);
+                    }
+
+                    //verificamos si tiene anexas
+                    var anexas = (from an in db.RoutesM where (an.query1 == route) select an).Count();
+
+                    if (anexas > 0) {
+                        result2 = "You can't edit this route.";
+                        var result = new { result = result2 };
+                        return Json(result, JsonRequestBehavior.AllowGet);
+                    }
+                    //
+                    var visitas = (from v in db.VisitsM where (v.ID_route == idroute) select v).ToList();
+                    int flg = 0;
+
+                    foreach (var item in visitas) {
+                        if (item.ID_visitstate != 3) {
+                            flg = 1;
+                        }
+                    }
+
+                    if (flg == 1) //Ya hay visitas en progreso, canceladas o finalizadas, por lo tanto no se puede modificar
+                    {
+
+
+
+                        result2 = "You can't edit this route. Please check the visits state.";
+                        var result = new { result = result2 };
+                        return Json(result, JsonRequestBehavior.AllowGet);
+
+                    }
+                    else {
+                        //Modificamos las visitas
+                        foreach (var item in visitas) {
+                            if (item.visit_date == item.end_date)
+                            {
+                                item.visit_date = ndate;
+                                item.check_in = ndate;
+                                item.end_date = ndate;
+                            }
+                            else
+                            { 
+
+                                var d3 = (item.end_date - item.visit_date).TotalDays;
+                                item.visit_date = ndate;
+                                item.check_in = ndate;
+                                item.end_date = ndate.AddDays(d3);
+                            }
+
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        //
+                        if (ruta.query1 != "") {
+                            ruta.query1 = "";
+                        }
+                        db.Entry(ruta).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        result2 = "success";
+                        var result = new { result = result2 };
+                        return Json(result, JsonRequestBehavior.AllowGet);
+                    }
+
+
+   
+                }
+                else {
+                    result2 = "Error: no data was found.";
+                    var result = new { result = result2 };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+
+
+            }
+            catch (Exception ex) {
+                result2 = "Error: " + ex.Message;
+                var result = new { result = result2 };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
+
+
+
+
+
+
+        }
 
         public ActionResult GetDemosGallery(string vendorID)
         {
@@ -2081,7 +2521,7 @@ namespace comerciamarketing_webapp.Controllers
                 int totalFini = (from c in rutas where (c.ID_visitstate == 4) select c).Count();
                 int totalCancl = (from c in rutas where (c.ID_visitstate == 1) select c).Count();
 
-                ViewBag.totalVisitas = totalRutas;
+                ViewBag.totalVisitas = rutas.Count();
                 ViewBag.totalSD = totalScheduled;
                 ViewBag.totalFS = totalFini;
                 ViewBag.totalInpro = totalInpro;
@@ -2244,7 +2684,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25" };
 
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
 
@@ -2266,6 +2706,385 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
         //MERCHANDISING
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRoutev2(string descriptionN, DateTime date, DateTime enddate, string listatiendas, string listarepresentantes, string idform, string listatiposactividades, string cust)
+        {
+            try
+            {
+
+                //Comenzamos con el maestro de rutas
+                RoutesM rutamaestra = new RoutesM();
+
+                rutamaestra.date = date;
+                rutamaestra.end_date = enddate;
+                rutamaestra.query1 = "";
+                rutamaestra.query2 = descriptionN;
+                rutamaestra.query3 = cust;
+
+                rutamaestra.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+
+                db.RoutesM.Add(rutamaestra);
+                db.SaveChanges();
+                //FIN ruta maestra
+
+
+
+                //Guardamos detalle de visita
+                //Se guarda el detalle por cada tienda a visitar
+                List<string> storeIds = listatiendas.Split(',').ToList();
+
+                foreach (var store in storeIds)
+                {
+                    var storeSAP = (from s in CMKdb.OCRD where (s.CardCode == store) select s).FirstOrDefault();
+                    if (storeSAP != null)
+                    {
+                        VisitsM visita = new VisitsM();
+                        visita.ID_customer = "";
+                        visita.customer = "";
+                        visita.ID_store = store;
+                        visita.store = storeSAP.CardName;
+                        visita.address = storeSAP.MailAddres;
+                        visita.city = storeSAP.MailCity;
+                        if (storeSAP.MailZipCod == null)
+                        {
+                            visita.zipcode = "";
+                        }
+                        else { visita.zipcode = storeSAP.MailZipCod; }
+
+                        if (storeSAP.State2 == null)
+                        {
+                            visita.state = "";
+                        }
+                        else { visita.state = storeSAP.State2; }
+                        visita.visit_date = date;
+                        visita.ID_visitstate = 3; //On Hold
+                        visita.comments = "";
+                        visita.check_in = date;
+                        visita.check_out = date;
+                        visita.end_date = enddate;
+                        visita.extra_hours = 0;
+                        visita.ID_route = rutamaestra.ID_route;
+                        visita.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+                        //GEOLOCALIZACION
+                        try
+                        {
+                            string address = storeSAP.CardName.ToString() + ", " + storeSAP.MailAddres.ToString() + ", " + storeSAP.MailCity.ToString() + ", " + storeSAP.MailZipCod.ToString();
+                            string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                            WebRequest request = WebRequest.Create(requestUri);
+                            WebResponse response = request.GetResponse();
+                            XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                            XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                            XElement locationElement = result.Element("geometry").Element("location");
+                            XElement lat = locationElement.Element("lat");
+                            XElement lng = locationElement.Element("lng");
+                            //NO SE PORQUE LO TIRA AL REVEZ
+                            visita.geoLat = lng.Value;
+                            visita.geoLong = lat.Value;
+                            //FIN
+
+                        }
+                        catch
+                        {
+                            visita.geoLong = "";
+                            visita.geoLat = "";
+                        }
+
+                        db.VisitsM.Add(visita);
+                        db.SaveChanges();
+
+
+                        //List<int> repIds = listarepresentantes.Split(',').Select(int.Parse).ToList();
+
+                        //foreach (var rep in repIds)
+                        //{
+
+                        //    if (rep != 0)
+                        //    {
+                        //        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                        //        repvisita.ID_visit = visita.ID_visit;
+                        //        repvisita.ID_usuario = rep;
+                        //        repvisita.query1 = "";
+                        //        repvisita.ID_empresa= visita.ID_empresa;
+                        //        db.VisitsM_representatives.Add(repvisita);
+                        //        db.SaveChanges();
+                        //    }
+
+                        //}
+
+
+                    }
+
+                    //FIN detalle visita
+
+
+
+
+                }
+                //FIn detalle de representantes
+
+                //Evaluamos si hay que repetir
+
+                if (cust != "NA") {
+                    if (cust == "FW") ///First week of every month
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+                        var remainingMonths = date.Month + 1;
+
+
+                        for (int mth = remainingMonths; mth <= 12; mth++)
+                        {
+                            DateTime dt = new DateTime(getyear, mth, 1);
+                            while (dt.DayOfWeek != getday)
+                            {
+                                dt = dt.AddDays(1);
+                            }
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+                           
+
+         
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+                            
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+                            }
+
+
+                        }
+
+
+                    }
+                    if (cust == "OW") //Once a week
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+                        
+
+                        int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
+                        int daysLeftInYear = daysInYear - date.DayOfYear; // Result is in range 0-365
+
+                        for (int wk =7; wk <= daysLeftInYear; wk+=7)
+                        {
+                            DateTime dt = date;
+ 
+                            dt = dt.AddDays(wk);
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+
+
+
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+                            }
+                        }
+                    }
+                    if (cust == "OTW") //Once every two weeks
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+
+
+                        int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
+                        int daysLeftInYear = daysInYear - date.DayOfYear; // Result is in range 0-365
+
+                        for (int wk = 14; wk <= daysLeftInYear; wk += 14)
+                        {
+                            DateTime dt = date;
+
+                            dt = dt.AddDays(wk);
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+
+
+
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+                            }
+                        }
+                    }
+
+                }
+
+
+
+
+                TempData["exito"] = "Route created successfully.";
+                return RedirectToAction("RoutesM_calendar", "Home", null);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("RoutesM_calendar", "Home", null);
+            }
+
+
+
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateRoute(string descriptionN, DateTime date, DateTime enddate, string listatiendas, string listarepresentantes, string idform, string listatiposactividades)
@@ -3027,12 +3846,12 @@ namespace comerciamarketing_webapp.Controllers
                 db.SaveChanges();
 
                 TempData["exito"] = "Route deleted successfully.";
-                return RedirectToAction("RoutesM", "Home", null);
+                return RedirectToAction("RoutesM_calendar", "Home", null);
             }
             catch
             {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                return RedirectToAction("RoutesM", "Home", null);
+                return RedirectToAction("RoutesM_calendar", "Home", null);
             }
 
 

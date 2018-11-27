@@ -435,6 +435,12 @@
       <DependentUpon>rptDemoDailyResume.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\rptSalesOrder.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSalesOrder.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\rptw9form - backup.cs">
       <DependentUpon>rptw9form - backup.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -3255,6 +3261,10 @@
     <Content Include="Views\Shared\visitScriptadmin.cshtml" />
     <Content Include="Views\Shared\ActivityadminScripts.cshtml" />
     <Content Include="Views\FormsM\Activityon.cshtml" />
+    <Content Include="Views\FormsM\Activitysoon.cshtml" />
+    <Content Include="Views\Shared\ActivitysoonScripts.cshtml" />
+    <Content Include="Views\Home\RoutesM_calendar.cshtml" />
+    <Content Include="Views\Shared\Routes_calendarScript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3281,6 +3291,10 @@
     <EmbeddedResource Include="Reportes\rptDemoDailyResume.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemoDailyResume.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptSalesOrder.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSalesOrder.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptw9form - backup.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

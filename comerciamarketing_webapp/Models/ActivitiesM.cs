@@ -45,6 +45,7 @@ namespace comerciamarketing_webapp.Models
         public int ID_activitytype { get; set; }
         public string ID_usuarioEndString { get; set; }
 
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormsM> FormsM { get; set; }
         public virtual ActivitiesM_types ActivitiesM_types { get; set; }

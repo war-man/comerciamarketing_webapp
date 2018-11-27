@@ -21951,12 +21951,13 @@ body.avgrund-active {
           font-size: 13px;
           font-weight: 600; }
         #calendar .fc-view-container .fc-view table tbody.fc-body tr td.fc-widget-content .fc-day-grid-container .fc-day-grid .fc-row .fc-content-skeleton table tbody tr td.fc-event-container .fc-h-event {
-          background: #00ce68;
-          border: none;
-          padding: 6px 12px 6px 22px;
-          font-weight: 500;
-          color: #ffffff;
-          border-radius: 4px; }
+            background: #00ce68;
+            /*border: none;*/
+            /*padding: 6px 12px 6px 22px;*/
+            font-weight: 300;
+            color: #ffffff;
+            border-radius: 4px;
+        }
         #calendar .fc-view-container .fc-view table tbody.fc-body tr td.fc-widget-content .fc-day-grid-container .fc-day-grid .fc-row .fc-content-skeleton table tbody tr td.fc-more-cell {
           font-weight: 600;
           color: #424964;

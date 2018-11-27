@@ -11,7 +11,8 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class promotions_v1
     {
         public int ID_datap { get; set; }
@@ -19,5 +20,10 @@ namespace comerciamarketing_webapp.Models
         public string email { get; set; }
         public string phone { get; set; }
         public string imgpath { get; set; }
+        public string estado { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
+        public System.DateTime fecha { get; set; }
+        public string query1 { get; set; }
     }
 }

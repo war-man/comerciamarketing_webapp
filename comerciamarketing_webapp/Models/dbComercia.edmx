@@ -228,6 +228,9 @@
           <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="imgpath" Type="text" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="query1" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="Recursos_usuario">
           <Key>
@@ -1202,6 +1205,9 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="imgpath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1589,6 +1595,9 @@
           <EntitySetMapping Name="promotions_v1">
             <EntityTypeMapping TypeName="dbComerciaModel.promotions_v1">
               <MappingFragment StoreEntitySet="promotions_v1">
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="imgpath" ColumnName="imgpath" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="email" ColumnName="email" />

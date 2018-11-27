@@ -48,71 +48,113 @@
                                             <div class="tab-content tab-body" id="profile-log-switch">
                                                 <div class="tab-pane fade show active pr-3" id="user-profile-info" role="tabpanel" aria-labelledby="user-profile-info-tab">
                                                     <br />
+
+                                                    <!--ROUTES LIST-->
                                                     <div class="row">
-                                                        <div class="col-md-8">
-                                                            <div class="wrapper mt-8" id="activitiesdiv">
-                                                                @if (ViewBag.activities.Count == 0)
-                                    {
-                                        <label>No activities to show</label>
-                                        <hr />
-        }
-        else
-        {
-            foreach (var activity in ViewBag.activities)
-            {
-                            <div class="item-wrapper d-flex pb-4 border-bottom">
-                                <div class="status-wrapper d-flex align-items-start pr-3">
+                                                        <div class="col-md-12 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
 
-                                    <span class="bg-info rounded-circle p-1 mt-2 mx-auto"></span>
+                                                                  
+                                                                    <div class="row">
+
+                                                                        <table id="order-listing2" class="table-striped">
+                                                                            <thead>
+                                                                                <tr>
+
+                                                                                    <th scope="col">Activity ID</th>
+                                                                                    <th scope="col">Description</th>
+                                                                                    <th scope="col">Activity Type</th>
+                                                                                    <th scope="col">Status</th>
+                                                                               
+
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var itemVisita in ViewBag.actividades)
+    {
+                                                                            <tr>
+
+                                                                            <td scope="row" data-label="ID">
+                                                                                @itemVisita.ID_activity
+
+                                                                            </td>
 
 
-                                </div>
-                                <div class="text-wrapper">
-                                    @if (activity.ID_activitytype == 1)
-        {
 
-                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                                <td data-label="Description">
+                                                                                @if (itemVisita.ID_activitytype == 1)
+                                                                                {
+                                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                                        <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
+                                                                                    </a>
+                                                                                }
+                                                                                else if (itemVisita.ID_activitytype == 2)
+                                                                                {
+                                                                                <a class="text-black" href="#">
+                                                                                    <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
+                                                                                </a>
+                                                                                }
+                                                                                else if (itemVisita.ID_activitytype == 3)
+                                                                                {
+                                                                                <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                                    <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
+                                                                                </a>                                                                               
+                                                                                }
+                                                                                else {
+                                                                                <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                                    <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
+                                                                                </a>
+
+                                                                                }
+                                                                                    
+                                                                                </td>
+                                                                                @if (itemVisita.ID_activitytype == 1)
+                                                                                {
+                                                                                <td data-label="Activity Type">Form</td>
+                                                                                }
+                                                                                else if (itemVisita.ID_activitytype == 2)
+                                                                                {
+                                                                                <td data-label="Activity Type">Audit</td>
+                                                                                }
+                                                                                else if (itemVisita.ID_activitytype == 3)
+                                                                                {
+                                                                                <td data-label="Activity Type">Sales Order</td>                                                                                 
+                                                                                }
+                                                                                else {
+                                                                                <td data-label="Activity Type">Demo</td>
+
+                                                                                }
+                                                                                
+                                                                                @if (itemVisita.isfinished == true && itemVisita.query1 != "cancel")
+                                                                                {
+                                                                                <td data-label="Status">Finished</td>
+                                                                                }
+                                                                                else {
+                                                                                    if (itemVisita.query1 == "cancel")
+                                                                                    {
+                                                                                        <td data-label="Status">Canceled</td>
+                                                                                    }
+                                                                                    else {
+                                                                                <td data-label="Status">Not finished</td>
+                                                                                    }
+                                                                                }
+                                                                              
+                                                                            </tr>
 }
-else if (activity.ID_activitytype == 2)
-{
+                                                                            </tbody>
+                                                                        </table>
 
-                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-
-
-}
-else
-{
-                            <a href="#" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
-                            <small class="text-gray d-block">Assigned rep : @activity.ID_customer</small>
-                            <small class="text-gray d-block">Last update : @activity.check_out</small>
-                            @if (activity.isfinished == true)
-{
-                            <small class="text-gray d-block">Finished</small>
-}
-                            </div>
-                            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-{
-
-}
-else
-{
-
-
-}
-                            </div><br />
-}
-}
+                                                                    </div>
+                                                                </div>
                                                             </div>
-
                                                         </div>
-
                                                     </div>
-
+                                                    <!--END-->
 
 
                                                 </div>
@@ -156,45 +198,7 @@ else
 }
 }
                                             </div>
-                                            <!--
-                <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
-                <div class="add-items d-flex">
-                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                    {
-                        <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
-                        <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
-                    }
-                </div>
-                <div class="list-wrapper">
-                    <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                        <li>
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox">
-                                    Example
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
-                        <li class="completed">
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" checked>
-                                    Example completed
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
 
-                    </ul>
-                </div>
-                -->
 
                                             <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
 
@@ -211,19 +215,7 @@ else
 
 
                                         </div>
-                                        <!--CANCEL VIIT
-            <div class="calendar-aside">
 
-                <div class="list">
-                    <div class="text-wrapper">
-                      <br /><br />
-                        <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
-
-                    </div>
-                </div>
-
-            </div>
-                -->
                                     </div>
                                 </div>
                             </div>

@@ -77,7 +77,21 @@
             }
 
 
+            if (objeto.id_resource == 11)
+            {
 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                <input type="button" onClick="cargarproductos()" value="Load products" class="form-control" id="@objeto.idkey" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
             <!--PARA PRODUCTOS -->
             if (objeto.id_resource == 3)
             {

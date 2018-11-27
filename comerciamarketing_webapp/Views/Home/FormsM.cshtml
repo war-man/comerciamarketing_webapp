@@ -58,6 +58,11 @@
                                                             <a href="@Url.Action("Template_preview2", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
 
                                                         }
+                                                        @if (itemForms.ID_activity == 3)
+                                                        {//Sales Orders
+                                                            <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
+
+                                                        }
                                                         else if (itemForms.ID_activity == 4)//Demo
                                                         {
                                                             <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>

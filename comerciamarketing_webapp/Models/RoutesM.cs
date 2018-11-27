@@ -21,6 +21,7 @@ namespace comerciamarketing_webapp.Models
             this.VisitsM = new HashSet<VisitsM>();
         }
 
+
         public int ID_route { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]

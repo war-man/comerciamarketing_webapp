@@ -8,7 +8,43 @@
     <title>@ViewData["Title"]</title>
 
     @Html.Partial("~/Views/Shared/Styles2.cshtml")
+    <style>
+        #mydivInfo {
+            position: absolute;
+            z-index: 9;
+            background-color: #fff;
+            border: 1px solid #d3d3d3;
+            display: none;
+            left: 5%;
+            top: 50%;
+        }
 
+        #mydivInfoheader {
+            padding: 10px;
+            cursor: move;
+            z-index: 10;
+            background-color: #fff;
+        }
+
+        #mydivConf {
+            position: absolute;
+            z-index: 9;
+            background-color: #f1f1f1;
+            border: 1px solid #d3d3d3;
+            text-align: center;
+            display: none;
+            left: 50%;
+            top: 50%;
+        }
+
+        #mydivConfheader {
+            padding: 10px;
+            cursor: move;
+            z-index: 10;
+            background-color: #ff0000;
+            color: #fff;
+        }
+    </style>
     @if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
     {
         <style>
@@ -889,7 +925,7 @@
             var idstore = document.getElementById('filterstore').value;
 
 
-        var url = '@Url.Action("Main", "Home", new { fstartd = "START", fendd = "FINISH", store="STORE"})';
+        var url = '@Url.Action("Main", "Home", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
 
 
             url = url.replace('START', st.toLocaleDateString());
@@ -1432,7 +1468,7 @@
 </script>
 
 <!--SELECT MULTI ROUTES-->
-@if (ViewBag.Title == "Comercia Marketing - RoutesM")
+@if (ViewBag.Title == "Comercia Marketing - RoutesM" || ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
 {
     <script>
         window.onload = function () {
@@ -1442,8 +1478,8 @@
                 $('#deleteModal').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDroute = button.data("id");// Extract info from data-* attributes
-                    var Desroute = button.data("description");
+                    var IDroute = button.data("IDr");// Extract info from data-* attributes
+                    //var Desroute = button.data("description");
 
 
                     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -1451,7 +1487,7 @@
                     var modal = $(this);
                     //modal.find('.modal-title').text('Edit data: ' + recipient)
                     modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
-                    $("#descriptionD").text(Desroute);
+                    //$("#descriptionD").text(Desroute);
 
                 })
             })(jQuery);
@@ -1863,6 +1899,11 @@
 
     @Html.Partial("~/Views/Shared/ActivityadminScripts.cshtml")
 }
+@if (ViewBag.Title == "Comercia Marketing - Template previewsoon")
+{
+
+    @Html.Partial("~/Views/Shared/ActivitysoonScripts.cshtml")
+}
 @if (ViewBag.Title == "Comercia Marketing - Activityea")
 {
 
@@ -1886,6 +1927,11 @@
 @if (ViewBag.Title == "Comercia Marketing - Store_statsadmin")
 {
     @Html.Partial("~/Views/Shared/visitScriptadmin.cshtml")
+}
+
+@if (ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
+{
+    @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
 }
 <script>
     $(document).ready(function () {

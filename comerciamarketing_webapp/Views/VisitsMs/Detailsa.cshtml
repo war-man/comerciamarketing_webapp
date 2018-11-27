@@ -36,139 +36,155 @@
 
                                                     <div class="border-top pt-1">
                                                         @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                                {
-                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>
+                                                        {
+                                                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModal">Add activity<i class="mdi mdi-plus"></i></a>
 
-        }
-        else
-        {
-            if (ViewBag.estadovisita == 3)
-            {
-                        <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>
-}
-else if (ViewBag.estadovisita == 2)
-{
-                        <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>
-}
+                                                        }
+                                                        else
+                                                        {
+
+                                                            if (ViewBag.estadovisita == 3)
+                                                            {
+                                                                <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-success" onclick="checkinVisit()">Check in<i class="mdi mdi-check"></i></a>
+                                                            }
+                                                            else if (ViewBag.estadovisita == 2)
+                                                            {
+                                                                <a href="#" style="padding: 42px 32px;margin-left:0%; margin-top:2px;" class="btn btn-danger" onclick="checkoutVisit()">Check out<i class="mdi mdi-check"></i></a>
+                                                            }
 
 
-}
- <hr />                                                   </div>
+                                                        }
+                                                        <hr />
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                         <br />
                                         <div class="row">
                                             <div class="col-md-8">
+
                                                 <div class="wrapper mt-8" id="activitiesdiv">
+
                                                     @if (ViewBag.activities.Count == 0)
-                            {
-                                <label>No activities to show</label>
-                                <hr />
-    }
-    else
-    {
-        foreach (var activity in ViewBag.activities)
-        {
-                        <div class="item-wrapper d-flex pb-4 border-bottom">
-                            <div class="status-wrapper d-flex align-items-start pr-3">
-                                @if (activity.isfinished == true && activity.query1 != "cancel")
-        {
-                        <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
-}
-else if (activity.isfinished == true && activity.query1 == "cancel")
-{
-                        <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
-}
-else
-{
-                        <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
-}
-                            </div>
-                            <div class="text-wrapper">
-                                @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
-    {
-        if (activity.isfinished == true)
-        {
-                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
-else
-{
-                            <a href="@Url.Action("Activityon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
+                                                    {
+                                                        <label>No activities to show</label>
+                                                        <hr />
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var activity in ViewBag.activities)
+                                                        {
+                                                            <div class="item-wrapper d-flex pb-4 border-bottom">
+                                                                <div class="status-wrapper d-flex align-items-start pr-3">
+                                                                    @if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                    {
+                                                                        <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
+                                                                    }
+                                                                    else if (activity.isfinished == true && activity.query1 == "cancel")
+                                                                    {
+                                                                        <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
+                                                                    }
+                                                                </div>
+                                                                <div class="text-wrapper">
+                                                                    @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
+                                                                    {
+                                                                        if (activity.isfinished == true)
+                                                                        {
+                                                                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a href="@Url.Action("Activityon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                        }
 
 
-}
-else if (activity.ID_activitytype == 2)
-{
-if (activity.isfinished == true)
-{
-                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
-else
-{
-                            @*<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
-                            <a href="@Url.Action("Activityraon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}
+                                                                    }
+                                                                    else if (activity.ID_activitytype == 2)
+                                                                    {
+                                                                        if (activity.isfinished == true)
+                                                                        {
+                                                                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @*<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
+                                                                            <a href="@Url.Action("Activityraon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                        }
 
-}
-else
-{
-                            <a href="#" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
-}<small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
-                            <small class="text-gray d-block">Assigned rep : @activity.ID_customer</small>
-                            <small class="text-gray d-block">Last update : @activity.check_out</small>
-                            @if (activity.isfinished == true)
-{
-    if (activity.query1 == "cancel")
-    {
-                            <small class="text-gray d-block">Canceled</small>
-                            <small class="text-gray d-block">Reason: @activity.comments</small>
-}
-else
-{
-                            <small class="text-gray d-block">Finished</small>
-}
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="@Url.Action("Activitysoon", "FormsM", new { id = activity.ID_activity })" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>
+                                                                    }
+                                                                    <small class="d-block mb-2 text-black">Customer: @activity.Customer</small>
+                                                                    <small class="text-gray d-block">Assigned rep : @activity.ID_customer</small>
+                                                                    <small class="text-gray d-block">Last update : @activity.check_out</small>
+                                                                    @if (activity.isfinished == true)
+                                                                    {
+                                                                        if (activity.query1 == "cancel")
+                                                                        {
+                                                                            <small class="text-gray d-block">Canceled</small>
+                                                                            <small class="text-gray d-block">Reason: @activity.comments</small>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <small class="text-gray d-block">Finished</small>
+                                                                        }
 
-}
-                            </div>
-                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-{
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                                    }
+                                                                </div>
+                                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                                {
+                                                                    <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                                                                        <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
-                        </a>
-}
-else
-{
-if (ViewBag.estadovisita != 4)
-{
-    if (activity.isfinished != true && activity.query1 != "cancel")
-    {
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                                    </a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (ViewBag.estadovisita != 4)
+                                                                    {
+                                                                        if (activity.isfinished != true && activity.query1 != "cancel")
+                                                                        {
+                                                                            <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                                                                                <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
-                        </a>
-}
-if (activity.ID_activitytype == 4)
-{
+                                                                            </a>
+                                                                        }
+                                                                        if (activity.ID_activitytype == 4)
+                                                                        {
 
-}
-else
-{
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
-                            <i class="close ml-auto mdi mdi-content-copy"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (activity.ID_activitytype == 3)
+                                                                            {
+                                                                                if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                                {
+                                                                                    <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="count online ml-auto">
+                                                                                        <i class="close ml-auto mdi mdi-download"></i>
 
-                        </a>
-}
+                                                                                    </a>
+                                                                                }
+                                                                            }
+                                                                            <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
+                                                                                <i class="close ml-auto mdi mdi-content-copy"></i>
+
+                                                                            </a>
+                                                                        }
 
 
-}
+                                                                    }
 
-}
-                        </div><br />
-}
-}
+                                                                }
+                                                            </div><br />
+                                                        }
+                                                    }
                                                 </div>
 
 
@@ -179,97 +195,109 @@ else
                                         </div>
                                     </div>
                                     <div class="col-md-4">
+                                        <h5 class="my-4"><i class="mdi mdi-file icon-sm text-info"></i> Sales Orders</h5>
+
+                                        <div class="calendar-aside">
+                                            <div class="list">
+                                                <div class="col-12">
+                                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createModalSO">Add Suggested Order<i class="mdi mdi-plus"></i></a>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                         <h5 class="my-4"><i class="mdi mdi-account-circle icon-sm text-info"></i> Who follow this visit</h5>
 
                                         <div class="calendar-aside">
                                             @if (ViewBag.repslist.Count == 0)
-                    {
-                        <div class="list">
-                            <div class="col-12">
-                                <small class="d-block mb-2">No representatives assigned</small>
+                                            {
+                                                <div class="list">
+                                                    <div class="col-12">
+                                                        <small class="d-block mb-2">No representatives assigned</small>
 
-                            </div>
-                        </div>
-}
-else
-{
-foreach (var rep in ViewBag.repslist)
-{
-                        <div class="list">
-                            <div class="col-12">
-                                <small class="d-block mb-2"><strong>@rep.name</strong></small>
-                                <small class="text-gray d-block">@rep.email</small>
-                            </div>
-                            @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
-                        <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
-                            <i class="close ml-auto mdi mdi-close-circle-outline"></i>
-                        </a>
-}
-else
-{
-                        <a href="javascript:void(0)" class="count online ml-auto">
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                foreach (var rep in ViewBag.repslist)
+                                                {
+                                                    <div class="list">
+                                                        <div class="col-12">
+                                                            <small class="d-block mb-2"><strong>@rep.name</strong></small>
+                                                            <small class="text-gray d-block">@rep.email</small>
+                                                        </div>
+                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                        {
+                                                            <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
+                                                                <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="javascript:void(0)" class="count online ml-auto">
 
-                        </a>
-}
-                        </div>
-}
-}
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                }
+                                            }
                                         </div><hr />
                                         <!--
-                <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
-                <div class="add-items d-flex">
-                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                    {
-                        <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
-                        <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
-                    }
-                </div>
-                <div class="list-wrapper">
-                    <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                        <li>
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox">
-                                    Example
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
-                        <li class="completed">
-                            <div class="form-check form-check-flat">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" checked>
-                                    Example completed
-                                </label>
-                            </div>
-                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                            {
-                                <i class="remove mdi mdi-close-circle-outline"></i>
-                            }
-                        </li>
+                                        <h5 class="my-4"><i class="mdi mdi-format-list-bulleted icon-sm text-info"></i> To Do List</h5>
+                                        <div class="add-items d-flex">
+                                            if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                            {
+                                                <input type="text" class="form-control todo-list-input" placeholder="What do you need to do?">
+                                                <button class="add btn btn-primary font-weight-medium todo-list-add-btn">Add</button>
+                                            }
+                                        </div>
+                                        <div class="list-wrapper">
+                                            <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                                <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">
+                                                            Example
+                                                        </label>
+                                                    </div>
+                                                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                    {
+                                                        <i class="remove mdi mdi-close-circle-outline"></i>
+                                                    }
+                                                </li>
+                                                <li class="completed">
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" checked>
+                                                            Example completed
+                                                        </label>
+                                                    </div>
+                                                    if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                    {
+                                                        <i class="remove mdi mdi-close-circle-outline"></i>
+                                                    }
+                                                </li>
 
-                    </ul>
-                </div>
-                -->
+                                            </ul>
+                                        </div>
+                                        -->
                                         @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                {
-                        <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
+                                        {
+                                            <h5 class="my-4"><i class="mdi mdi-image icon-sm text-info"></i> Images</h5>
 
-                        <div class="calendar-aside">
+                                            <div class="calendar-aside">
 
 
-                            <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark">
-                                Gallery
+                                                <a href="@Url.Action("Gallery", "VisitsMs", new { id = ViewBag.idvisita, modulo="visits" })" class="btn btn-dark">
+                                                    Gallery
 
-                            </a>
+                                                </a>
 
-                        </div><hr />
+                                            </div><hr />
 
-}
+                                        }
                                         <h5 class="my-4"><i class="mdi mdi-map-marker icon-sm text-info"></i> Location</h5>
                                         <div class="wrapper d-flex align-items-center py-2 border-bottom map-responsive">
                                             <iframe width="600" height="450" frameborder="0" style="border:0" allowfullscreen
@@ -278,18 +306,18 @@ else
                                     </div>
 
                                     <!--CANCEL VIIT
-            <div class="calendar-aside">
+                                    <div class="calendar-aside">
 
-                <div class="list">
-                    <div class="text-wrapper">
-                      <br /><br />
-                        <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
+                                        <div class="list">
+                                            <div class="text-wrapper">
+                                              <br /><br />
+                                                <a href="#" class="btn btn-danger">Cancel visit<i class="mdi mdi-close"></i></a>
 
-                    </div>
-                </div>
+                                            </div>
+                                        </div>
 
-            </div>
-                -->
+                                    </div>
+                                        -->
                                 </div>
 
                             </div>
@@ -334,49 +362,49 @@ else
                                                 <option value="0">Select an activity</option>
                                                 <optgroup label="Demos">
                                                     @foreach (var form in ViewBag.activeforms)
-                        {
-                            if (form.ID_activity == 4)
-                            {
-                                <option value="@form.ID_form">@form.name</option>
-}
-}
+                                                    {
+                                                        if (form.ID_activity == 4)
+                                                        {
+                                                            <option value="@form.ID_form">@form.name</option>
+                                                        }
+                                                    }
                                                 </optgroup>
                                                 <optgroup label="Forms"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
-                    {
-                        if (form.ID_activity == 1)
-                        {
-                            <option value="@form.ID_form">@form.name</option>
-}
-}
+                                                {
+                                                    if (form.ID_activity == 1)
+                                                    {
+                                                        <option value="@form.ID_form">@form.name</option>
+                                                    }
+                                                }
                                                 <optgroup label="Audits"></optgroup>
                                                 @foreach (var form in ViewBag.activeforms)
-                    {
-                        if (form.ID_activity == 2)
-                        {
-                            <option value="@form.ID_form">@form.name</option>
-}
-}
+                                                {
+                                                    if (form.ID_activity == 2)
+                                                    {
+                                                        <option value="@form.ID_form">@form.name</option>
+                                                    }
+                                                }
                                                 <optgroup label="Sales Order">
                                                     @foreach (var form in ViewBag.activeforms)
-                        {
-                            if (form.ID_activity == 3)
-                            {
-                                <option value="@form.ID_form">@form.name</option>
-}
-}
+                                                    {
+                                                        if (form.ID_activity == 3)
+                                                        {
+                                                            <option value="@form.ID_form">@form.name</option>
+                                                        }
+                                                    }
                                                 </optgroup>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="card-description" >
+                                <p class="card-description">
                                     <h4 class="card-title" id="demotimetitle">Set start date</h4>
                                 </p>
                                 <div class="row" id="demotimediv">
                                     <div class="col-md-12">
-                                        <div class="form-group row">      
-                                                    <input type="datetime-local" class="form-control" name="time" id="time" />                                                                    
+                                        <div class="form-group row">
+                                            <input type="datetime-local" class="form-control" name="time" id="time" />
                                         </div>
                                     </div>
                                 </div>
@@ -392,18 +420,18 @@ else
                                                 <optgroup label="Sales Representatives">
 
                                                     @foreach (var rep in ViewBag.representatives)
-                        {
+                                                    {
 
-                            <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
-}
+                                                        <option value="@rep.ID_usuario">@rep.nombre @rep.apellido</option>
+                                                    }
                                                 </optgroup>
                                                 <optgroup label="Demos Representatives">
 
                                                     @foreach (var rep2 in ViewBag.reps_demos)
-                        {
+                                                    {
 
-                            <option value="@rep2.ID">@rep2.name</option>
-}
+                                                        <option value="@rep2.ID">@rep2.name</option>
+                                                    }
                                                 </optgroup>
 
                                             </select>
@@ -423,6 +451,42 @@ else
 
 
 
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Add</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!--CREATE USER DATA ENDS-->
+<!--CREATE SUGGESTED ORDER DATA STARTS-->
+<div class="modal fade" id="createModalSO" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("CreateActivitySuggestedOrder", "VisitsMs", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-file-cloud"></i> Add New activity</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span style="font-size: 40px" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="ID_visitaSO" name="ID_visitaSO" hidden value="@ViewBag.idvisita" />
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <p class="card-description">
+                                    <h4 class="card-title">Suggested Order Activity</h4>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -591,14 +655,14 @@ else
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    
-                                        <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
-                                            <thead>
 
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                   
+                                    <table class="table-striped" id="resultsRetail" style="table-layout:fixed;width:100%;">
+                                        <thead>
+
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>

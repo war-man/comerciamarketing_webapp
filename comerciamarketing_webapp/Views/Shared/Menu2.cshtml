@@ -101,75 +101,86 @@
             <li class="nav-item active">
                 <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
             </li>
-                }
+}
 
                 @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
     {
             <li class="nav-item active">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
             </li>
-                }
-
+}
+                @if (ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
+    {
+            <li class="nav-item active">
+                <a href="@Url.Action("RoutesM_calendar", "Home")" class="nav-link">Routes (Beta version)</a>
+            </li>
+}
+else
+{
+            <li class="nav-item">
+                <a href="@Url.Action("RoutesM_calendar", "Home")" class="nav-link">Routes (Beta version)</a>
+            </li>
+}
                 @if (ViewBag.Title == "Comercia Marketing - FormsM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("FormsM", "Home")" class="nav-link">Forms</a>
             </li>
-                }
+}
                 @if (ViewBag.Title == "Comercia Marketing - Representatives")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("Representatives", "Home")" class="nav-link">Representatives</a>
             </li>
-                }
+}
                 @if (ViewBag.Title == "Comercia Marketing - StoresM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("StoresM", "Home")" class="nav-link">Stores</a>
             </li>
-                }
+}
                 @if (ViewBag.Title == "Comercia Marketing - CustomersM")
     {
             <li class="nav-item active">
                 <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <a href="@Url.Action("CustomersM", "Home")" class="nav-link">Customers</a>
             </li>
-                }
+}
                 @if (ViewBag.Title == "Comercia Marketing - Maintenance")
     {
             <li class="nav-item active">
@@ -197,9 +208,9 @@
                     </li>
                 </ul>
             </li>
-                }
-                else
-                {
+}
+else
+{
             <li class="nav-item">
                 <ul class="navbar-nav ml-auto sub-menu">
                     <li class="nav-item dropdown">
@@ -225,7 +236,7 @@
                     </li>
                 </ul>
             </li>
-                }
+}
             </ul>
 }
             <!--Si es usuario con membresia Merchandising pero rol Usuario-->
