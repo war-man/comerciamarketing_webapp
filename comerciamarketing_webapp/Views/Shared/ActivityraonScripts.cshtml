@@ -52,7 +52,173 @@
     $(function () {
         $("#save_activity").click(function () {
 
-            initGeolocation();
+            //initGeolocation();
+
+            var idvisita = "";
+            idvisita = document.getElementById('idvisita').value;
+
+
+            //GUARDAMOS OBJETOS
+
+            var objects = [];
+
+            //$.each($('input.form-control[type = "text"]'), function () {
+
+            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            //    objects.push({
+            //        id: $(this).attr('id'),
+            //        value: $(this).val(),
+            //        text: ""
+            //    });
+
+
+            //});
+
+            $.each($('input.form-control[type = "number"]'), function () {
+
+
+                //objects.push({
+                //    id: $(this).attr('id'),
+                //    value: $(this).val(),
+                //    text: ""
+                //});
+
+                if ($(this).val() != "" || $(this).val() != null) {
+                    if ($(this).val() > 0) {
+                        //Agregamos la propiedad
+
+                        $(this).closest('.tr').addClass('border-success');
+                        $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
+
+                    } else {
+                        //Quitamos la propiedad
+
+                        $(this).closest('.tr').removeClass('border-success');
+                        $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+                    }
+                }
+
+            });
+
+            //$.each($('input.form-check-input[type = "radio"]'), function () {
+
+
+            //    objects.push({
+            //        id: $(this).attr('id'),
+            //        value: $(this).prop('checked'),
+            //        text: ""
+            //    });
+
+
+            //});
+            //$.each($('input.form-check-input[type = "checkbox"]'), function () {
+
+
+            //    objects.push({
+            //        id: $(this).attr('id'),
+            //        value: $(this).prop('checked'),
+            //        text: ""
+            //    });
+
+
+            //});
+
+            $.each($('input.dropifyIMG[type = "file"]'), function () {
+
+                objects.push({
+                    id: $(this).attr('id'),
+                    value: $(this).attr('data-changeflag'),
+                    text: ""
+                });
+
+            });
+
+
+
+            //$.each($('textarea.form-control'), function () {
+
+            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+            //    objects.push({
+            //        id: $(this).attr('id'),
+            //        value: $(this).val(),
+            //        text: ""
+            //    });
+
+
+            //});
+
+            //$.each($('select'), function () {
+
+            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+            //    var str = $(this).find('option:selected').text();
+            //    str = str.substring(str.indexOf("-") + 1);
+
+            //    var final = "";
+            //    objects.push({
+            //        id: $(this).attr('name'),
+            //        value: $(this).val(),
+            //        text: str.trim()
+            //    });
+
+
+            //});
+
+            //var canvas = document.getElementById("sig-canvas");
+            $.each($('canvas'), function () {
+                var canvas = document.getElementById($(this).attr("id"));
+                var dataUrl = canvas.toDataURL();
+                //alert(dataUrl);
+
+                objects.push({
+                    id: $(this).attr("data-id"),
+                    value: dataUrl,
+                    text: ""
+                });
+            });
+
+
+            //$.each(objects, function (propName, propVal) {
+            //    console.log(propName, propVal);
+            //});
+
+            var now = new Date();
+            $.ajax({
+                url: '/FormsM/Save_activity',
+                type: 'POST',
+                data: { 'id': idvisita, 'objects': objects, 'lat': '', 'lng': '', 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result == "Success") {
+
+                        $("#loading").hide();
+                        var x = document.getElementById("finish_activity");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            //x.style.display = "none";
+                        }
+
+
+                        showSuccessToast();
+                        // window.location.reload(true);
+                        //window.location.reload(true);
+                    } else {
+                        $("#loading").hide();
+                        showWarning2Toast();
+                    }
+
+
+                },
+                error: function (request) {
+                    $("#loading").hide();
+                    showWarning2Toast();
+
+                }
+            });
 
         }
         );

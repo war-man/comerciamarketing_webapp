@@ -38,6 +38,11 @@ namespace comerciamarketing_webapp.Controllers
 
             return View();
         }
+        public ActionResult Promotions_Ducal()
+        {
+
+            return View();
+        }
         [HttpPost]
         public ActionResult SendDataPromotion(string name, string email, string phone, string estado)
         {
@@ -56,14 +61,14 @@ namespace comerciamarketing_webapp.Controllers
                     if (file.ContentLength == 0)
                     {
                         TempData["advertencia"] = "No image selected.";
-                        return RedirectToAction("Promotions", "Home", null);
+                        return RedirectToAction("Promotions_Ducal", "Home", null);
                     }
                     else
                     {
                         if (estado == "NA")
                         {
                             TempData["advertencia"] = "No State selected.";
-                            return RedirectToAction("Promotions", "Home", null);
+                            return RedirectToAction("Promotions_Ducal", "Home", null);
                         }
                         string fname;
 
@@ -120,7 +125,7 @@ namespace comerciamarketing_webapp.Controllers
                         detail.estado = estado;
                         DateTime time = DateTime.Now;
                         detail.fecha = DateTime.UtcNow;
-                        detail.query1 = "";
+                        detail.query1 = "DUCAL";
                         using (Image watermark = Image.FromFile(Server.MapPath("~/Content/images/Logo_watermark.png")))
                         using (Graphics g = Graphics.FromImage(TargetImg))
                         {
@@ -635,21 +640,21 @@ namespace comerciamarketing_webapp.Controllers
                 var demos_map = (from a in rutas select a).ToList();
 
 
-                // Convertimos la lista a array
-                //var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
-                // Convertimos la lista a array
-                //ArrayList myArrList = new ArrayList();
-                //myArrList.AddRange((from p in usuarios
-                //                    select new
-                //                    {
-                //                        id = p.ID_usuario,
-                //                        text = p.nombre + " " + p.apellido
-                //                    }).ToList());
+                //Convertimos la lista a array
+               var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                //Convertimos la lista a array
+               ArrayList myArrList = new ArrayList();
+                myArrList.AddRange((from p in usuarios
+                                    select new
+                                    {
+                                        id = p.ID_usuario,
+                                        text = p.nombre + " " + p.apellido
+                                    }).ToList());
 
 
-                ////LISTADO DE REPRESENTANTES
+                //LISTADO DE REPRESENTANTES
 
-                //ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
+                ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
                 //LISTADO DE RUTAS
                 var rutass = CMKdb.C_ROUTES.OrderBy(c => c.Code);
                 ViewBag.rutass = rutass.ToList();
@@ -961,7 +966,7 @@ namespace comerciamarketing_webapp.Controllers
                 //Filtros viewbag
 
                 ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
-                ViewBag.filtrofechaend = filtroenddate.ToShortDateString(); ;
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
                 //*****************
                 return View(rutas.ToList());
             }
@@ -1737,6 +1742,8 @@ namespace comerciamarketing_webapp.Controllers
             var visitas = new List<VisitsM>();
             var porcentaje = "";
 
+            RoutesM rt = (from a in db.RoutesM where (a.ID_route == idr) select a).FirstOrDefault();
+
             visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
             var lst = (from obj in db.VisitsM where (obj.ID_route == idr) select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate }).ToArray();
 
@@ -1787,7 +1794,7 @@ namespace comerciamarketing_webapp.Controllers
 
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result2 = javaScriptSerializer.Serialize(lst);
-            var result = new { result = result2, porcentaje = porcentaje };
+            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3};
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
@@ -2319,20 +2326,50 @@ namespace comerciamarketing_webapp.Controllers
                 if (fstartd == null || fstartd == "")
                 {
                     filtrostartdate = sunday;
+                    ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
                 }
                 else
                 {
-                    filtrostartdate = Convert.ToDateTime(fstartd);
+                    try
+                    {
+                        filtrostartdate = Convert.ToDateTime(fstartd);
+                        ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                    }
+                    catch
+                    {
+                        //filtrostartdate = sunday;
+                        var dategg = DateTime.ParseExact(fstartd, "M/d/yyyy", null);
+                        filtrostartdate = Convert.ToDateTime(dategg);
+
+                        ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                    }
+                    //filtrostartdate = Convert.ToDateTime(fstartd);
                 }
 
                 if (fendd == null || fendd == "")
                 {
                     filtroenddate = saturday;
+                    ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
                 }
                 else
                 {
-                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                    try
+                    {
+                        filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                        ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                    }
+                    catch
+                    {
+                        var daterrr = DateTime.ParseExact(fendd, "M/d/yyyy", null);
+                        filtroenddate = Convert.ToDateTime(daterrr).AddHours(23).AddMinutes(59);
+                        ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                        //filtroenddate = saturday;
+                    }
+                    //filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
                 }
+
+               
+                
                 //FIN FILTROS*******************
 
                 //VISITAS
@@ -2498,14 +2535,17 @@ namespace comerciamarketing_webapp.Controllers
                     foreach (var itemrep in reps)
                     {
                         var usuario = (from u in db.Usuarios where (u.ID_usuario == itemrep.ID_usuario) select u).FirstOrDefault();
-                        if (reps.Count() == 1)
-                        {
-                            nombreRep = usuario.nombre + " " + usuario.apellido;
+                        if (usuario != null) {
+                            if (reps.Count() == 1)
+                            {
+                                nombreRep = usuario.nombre + " " + usuario.apellido;
+                            }
+                            else if (reps.Count() > 1)
+                            {
+                                nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
+                            }
                         }
-                        else if (reps.Count() > 1)
-                        {
-                            nombreRep += usuario.nombre + " " + usuario.apellido + ", ";
-                        }
+
                     }
                     //utiliamos esta variable para el nombre del representante
                     itemVisita.customer = nombreRep;
@@ -2604,8 +2644,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 //Filtros viewbag
 
-                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
-                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
 
                 ViewData["customerName"] = customer.CardName;
                 ViewBag.customerID = customer.CardCode;
@@ -2712,7 +2751,7 @@ namespace comerciamarketing_webapp.Controllers
         {
             try
             {
-
+                List<int> repIds = listarepresentantes.Split(',').Select(int.Parse).ToList();
                 //Comenzamos con el maestro de rutas
                 RoutesM rutamaestra = new RoutesM();
 
@@ -2796,24 +2835,24 @@ namespace comerciamarketing_webapp.Controllers
                         db.SaveChanges();
 
 
-                        //List<int> repIds = listarepresentantes.Split(',').Select(int.Parse).ToList();
+                        
 
-                        //foreach (var rep in repIds)
-                        //{
+                        foreach (var rep in repIds)
+                        {
 
-                        //    if (rep != 0)
-                        //    {
-                        //        VisitsM_representatives repvisita = new VisitsM_representatives();
+                            if (rep != 0)
+                            {
+                                VisitsM_representatives repvisita = new VisitsM_representatives();
 
-                        //        repvisita.ID_visit = visita.ID_visit;
-                        //        repvisita.ID_usuario = rep;
-                        //        repvisita.query1 = "";
-                        //        repvisita.ID_empresa= visita.ID_empresa;
-                        //        db.VisitsM_representatives.Add(repvisita);
-                        //        db.SaveChanges();
-                        //    }
+                                repvisita.ID_visit = visita.ID_visit;
+                                repvisita.ID_usuario = rep;
+                                repvisita.query1 = "3";
+                                repvisita.ID_empresa = visita.ID_empresa;
+                                db.VisitsM_representatives.Add(repvisita);
+                                db.SaveChanges();
+                            }
 
-                        //}
+                        }
 
 
                     }
@@ -2903,6 +2942,25 @@ namespace comerciamarketing_webapp.Controllers
                                 db.VisitsM.Add(newvisit);
                                 db.SaveChanges();
 
+                                foreach (var rep in repIds)
+                                {
+
+                                    if (rep != 0)
+                                    {
+                                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                                        repvisita.ID_visit = newvisit.ID_visit;
+                                        repvisita.ID_usuario = rep;
+                                        repvisita.query1 = "3";
+                                        repvisita.ID_empresa = newvisit.ID_empresa;
+                                        db.VisitsM_representatives.Add(repvisita);
+                                        db.SaveChanges();
+                                    }
+
+                                }
+
+
+
                             }
 
 
@@ -2984,10 +3042,350 @@ namespace comerciamarketing_webapp.Controllers
                                 db.VisitsM.Add(newvisit);
                                 db.SaveChanges();
 
+                                foreach (var rep in repIds)
+                                {
+
+                                    if (rep != 0)
+                                    {
+                                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                                        repvisita.ID_visit = newvisit.ID_visit;
+                                        repvisita.ID_usuario = rep;
+                                        repvisita.query1 = "3";
+                                        repvisita.ID_empresa = newvisit.ID_empresa;
+                                        db.VisitsM_representatives.Add(repvisita);
+                                        db.SaveChanges();
+                                    }
+
+                                }
                             }
                         }
                     }
                     if (cust == "OTW") //Once every two weeks
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+
+
+                        int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
+                        int daysLeftInYear = daysInYear - date.DayOfYear; // Result is in range 0-365
+
+                        for (int wk = 14; wk <= daysLeftInYear; wk += 14)
+                        {
+                            DateTime dt = date;
+
+                            dt = dt.AddDays(wk);
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+
+
+
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+
+                                foreach (var rep in repIds)
+                                {
+
+                                    if (rep != 0)
+                                    {
+                                        VisitsM_representatives repvisita = new VisitsM_representatives();
+
+                                        repvisita.ID_visit = newvisit.ID_visit;
+                                        repvisita.ID_usuario = rep;
+                                        repvisita.query1 = "3";
+                                        repvisita.ID_empresa = newvisit.ID_empresa;
+                                        db.VisitsM_representatives.Add(repvisita);
+                                        db.SaveChanges();
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+
+
+
+                TempData["exito"] = "Route created successfully.";
+                return RedirectToAction("RoutesM_calendar", "Home", null);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("RoutesM_calendar", "Home", null);
+            }
+
+
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRoutev2(string ID_routeDedt, string custedt)
+        {
+            try
+            {
+                int idroute = Convert.ToInt32(ID_routeDedt);
+                RoutesM rutamaestra = (from a in db.RoutesM where (a.ID_route == idroute) select a).FirstOrDefault();
+                //Comenzamos con el maestro de rutas
+                rutamaestra.query3 = custedt;
+
+    
+
+                db.Entry(rutamaestra).State = EntityState.Modified;
+                db.SaveChanges();
+                //FIN ruta maestra
+                DateTime date = rutamaestra.date;
+
+                //FIn detalle de representantes
+
+                //Evaluamos si hay que repetir
+
+                if (custedt != "NA")
+                {
+                    var anexas = (from an in db.RoutesM where (an.query1 == ID_routeDedt) select an).ToList();
+
+                    if (anexas.Count() > 0)
+                    {
+
+
+                        foreach (var item in anexas)
+                        {
+
+                            var visitas = (from a in db.VisitsM where (a.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && a.ID_route == item.ID_route) select a).ToList();
+                            var visitasArray = (from b in db.VisitsM where (b.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && b.ID_route == item.ID_route) select b.ID_visit).ToArray();
+
+                            foreach (var visit in visitas)
+                            {
+                                VisitsM visita = db.VisitsM.Find(visit.ID_visit);
+                                if (visita != null)
+                                {
+                                    db.VisitsM.Remove(visita);
+                                    db.SaveChanges();
+                                }
+                            }
+
+                            RoutesM ruta = db.RoutesM.Find(item.ID_route);
+                            db.RoutesM.Remove(ruta);
+                            db.SaveChanges();
+                        }
+                    }
+
+
+                    if (custedt == "FW") ///First week of every month
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+                        var remainingMonths = date.Month + 1;
+
+
+                        for (int mth = remainingMonths; mth <= 12; mth++)
+                        {
+                            DateTime dt = new DateTime(getyear, mth, 1);
+                            while (dt.DayOfWeek != getday)
+                            {
+                                dt = dt.AddDays(1);
+                            }
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+
+
+
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+                            }
+
+
+                        }
+
+
+                    }
+                    if (custedt == "OW") //Once a week
+                    {
+                        var getyear = date.Year;
+                        var getday = date.DayOfWeek;
+
+
+                        int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
+                        int daysLeftInYear = daysInYear - date.DayOfYear; // Result is in range 0-365
+
+                        for (int wk = 7; wk <= daysLeftInYear; wk += 7)
+                        {
+                            DateTime dt = date;
+
+                            dt = dt.AddDays(wk);
+
+                            RoutesM rutaRepetir = new RoutesM();
+
+                            rutaRepetir.date = rutamaestra.date;
+                            rutaRepetir.query1 = rutamaestra.ID_route.ToString();
+                            rutaRepetir.query3 = "";
+                            rutaRepetir.query2 = rutamaestra.query2;
+                            rutaRepetir.end_date = rutamaestra.end_date;
+                            rutaRepetir.ID_empresa = rutamaestra.ID_empresa;
+
+
+
+
+                            if (rutaRepetir.date == rutaRepetir.end_date)
+                            {
+                                rutaRepetir.date = dt;
+                                rutaRepetir.end_date = dt;
+                            }
+                            else
+                            { //Como la ruta no tiene la misma fecha de finalizacion, debemos calcular cuando terminaria
+
+                                var d2 = (rutaRepetir.end_date - rutaRepetir.date).TotalDays;
+                                rutaRepetir.date = dt;
+
+                                rutaRepetir.end_date = dt.AddDays(d2);
+                            }
+
+
+                            db.RoutesM.Add(rutaRepetir);
+                            db.SaveChanges();
+
+                            //Guardamos visitas
+                            foreach (var visitas in rutamaestra.VisitsM)
+                            {
+                                VisitsM newvisit = new VisitsM();
+
+                                newvisit.ID_customer = visitas.ID_customer;
+                                newvisit.customer = visitas.customer;
+                                newvisit.ID_store = visitas.ID_store;
+                                newvisit.store = visitas.store;
+                                newvisit.address = visitas.address;
+                                newvisit.city = visitas.city;
+                                newvisit.zipcode = visitas.zipcode;
+                                newvisit.state = visitas.state;
+                                newvisit.ID_visitstate = visitas.ID_visitstate;
+                                newvisit.comments = visitas.comments;
+                                newvisit.geoLong = visitas.geoLong;
+                                newvisit.geoLat = visitas.geoLat;
+                                newvisit.extra_hours = visitas.extra_hours;
+                                newvisit.ID_route = rutaRepetir.ID_route;
+                                newvisit.ID_empresa = visitas.ID_empresa;
+
+                                newvisit.visit_date = dt;
+                                newvisit.end_date = dt;
+                                newvisit.check_in = dt;
+                                newvisit.check_out = dt;
+
+                                db.VisitsM.Add(newvisit);
+                                db.SaveChanges();
+
+                            }
+                        }
+                    }
+                    if (custedt == "OTW") //Once every two weeks
                     {
                         var getyear = date.Year;
                         var getday = date.DayOfWeek;
@@ -3066,11 +3464,41 @@ namespace comerciamarketing_webapp.Controllers
                     }
 
                 }
+                else {//Eliminamos rutas
+                    var anexas = (from an in db.RoutesM where (an.query1 == ID_routeDedt) select an).ToList();
+
+                    if (anexas.Count() > 0)
+                    {
+
+
+                        foreach (var item in anexas)
+                        {
+
+                            var visitas = (from a in db.VisitsM where (a.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && a.ID_route == item.ID_route) select a).ToList();
+                            var visitasArray = (from b in db.VisitsM where (b.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO && b.ID_route == item.ID_route) select b.ID_visit).ToArray();
+
+                            foreach (var visit in visitas)
+                            {
+                                VisitsM visita = db.VisitsM.Find(visit.ID_visit);
+                                if (visita != null)
+                                {
+                                    db.VisitsM.Remove(visita);
+                                    db.SaveChanges();
+                                }
+                            }
+
+                            RoutesM ruta = db.RoutesM.Find(item.ID_route);
+                            db.RoutesM.Remove(ruta);
+                            db.SaveChanges();
+                        }
+                    }
+
+                }
 
 
 
 
-                TempData["exito"] = "Route created successfully.";
+                TempData["exito"] = "Route updated successfully.";
                 return RedirectToAction("RoutesM_calendar", "Home", null);
 
             }
@@ -3083,7 +3511,6 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

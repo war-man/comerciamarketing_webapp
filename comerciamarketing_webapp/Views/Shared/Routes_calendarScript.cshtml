@@ -125,7 +125,10 @@
                                 theDiv.innerHTML = "";
 
                                 var porcentaje = result.porcentaje;
-                                document.getElementById("nameofroute").innerHTML = '<a class="text-black" href="#">' + calEvent.title + '</a>';
+                                var url = '<a class="text-black" href="@Url.Action("RoutesM_details", "Home", new { id = "IDDERUTA" })">' + calEvent.title + '</a>';
+                                url = url.replace('IDDERUTA', id_route);
+
+                                document.getElementById("nameofroute").innerHTML = url;
                                 document.getElementById("porcentajeroute").innerHTML = (Math.round(porcentaje * 100) / 100) + "%";
                                 $("#progressbarroute").css("width", (Math.round(porcentaje * 100) / 100) + "%");
 
@@ -155,19 +158,19 @@
                                     theDiv.innerHTML += contents;
                                 });
                                 contents = '';
-                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 "></span>&nbsp; Canceled</div>';
-                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 "></span>&nbsp; In progress</div>';
-                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 "></span>&nbsp; Scheduled</div>';
-                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 "></span>&nbsp; Finished</div>';
-                                //contents += '<hr>';
-                                contents += ' <button class="btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
-                                contents += '';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 "></span>&nbsp; Canceled</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 "></span>&nbsp; In progress</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 "></span>&nbsp; Scheduled</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 "></span>&nbsp; Finished</div>';
+                                contents += '<hr>';
+                   
                                 theDiv.innerHTML += contents;
                                 var theDivcount = document.getElementById("countVisits");
                                 theDivcount.innerHTML = count;
 
                                 $('#idroutedel').data('IDr', id_route); //setter
-
+                                $('#idrouteedit').data('IDr', id_route); 
+                                $('#idrouteedit').data('RepeatM', result.sel); 
                             },
                             error: function (request) {
                                 $("#loading").hide();

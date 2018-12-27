@@ -2,7 +2,6 @@
 
     ViewBag.Title = "Comercia Marketing - Template previewadmin";
 }
-
 @helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
         foreach (var objeto in parentList)
@@ -20,8 +19,32 @@
                         <hr />
                     </div>
                     <hr />
-
                 </div>
+            }
+
+            <!--PARA PRODUCTOS DINAMICOS-->
+            if (objeto.id_resource == 11)
+            {
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                @if (ViewBag.mostrarboton == 1)
+                                {
+                                    <input type="button" onClick="cargarproductospormarca()" value="Load products" class="btn btn-primary form-control" id="@objeto.idkey" hidden />
+                                }
+                                else
+                                {
+                                    <input type="button" onClick="cargarproductospormarca()" value="Load products" class="btn btn-primary form-control" id="@objeto.idkey" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             }
             <!--PARA SUBTITULOS -->
             if (objeto.id_resource == 8)
@@ -38,7 +61,6 @@
                                     <div class="parentdiv flexRadio">
                                         @OrderedList(objeto.children, objeto.idkey)
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -53,7 +75,6 @@
                                     <div class="parentdiv">
                                         @OrderedList(objeto.children, objeto.idkey)
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -63,11 +84,9 @@
                 {
                     <div class="row">
                         <div class="col-md-12 grid-margin">
-
                             <hr />
                             <h6 style="text-align:center;">@objeto.fsource</h6>
                             <hr />
-
                         </div>
                     </div>
                 }
@@ -144,7 +163,6 @@
                     if (objeto.children.Count > 0)
                     {
                         <div class="parentdiv fRadio col-12">
-
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
@@ -159,7 +177,6 @@
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
-
                         </div>
                     }
 
@@ -180,7 +197,6 @@
                                         {
                                             <input type="radio" class="form-check-input rad" name="@("radio_" + parent)" id="@objeto.idkey" value="@objeto.fsource" checked>
                                         }
-
                                         @objeto.fsource
                                     </label>
                                 </div>
@@ -204,16 +220,13 @@
                             {
                                 <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
                             }
-
                             @objeto.fsource
                         </label>
-
                     </div>
 
                     if (objeto.children.Count > 0)
                     {
                         <div class="col-md-12 parentdiv">
-
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
@@ -228,7 +241,6 @@
                                     @OrderedList(objeto.children, objeto.idkey)
                                 </div>
                             }
-
                         </div>
                     }
                 }
@@ -248,11 +260,9 @@
                                         {
                                             <input type="checkbox" class="form-check-input chk" id="@objeto.idkey" checked>
                                         }
-
                                         @objeto.fsource
                                     </label>
                                 </div>
-
 
                             </div>
                         </div>
@@ -269,17 +279,17 @@
                     <p class="control-label col-md-10">@objeto.fdescription</p>
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
-    {
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden/>
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"   hidden/>
-}
-else
-{
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                    <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
-}
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
+                        else
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
                     </div>
 
 
@@ -288,23 +298,21 @@ else
                 {
                     <div class="card">
                         <div class="card-body">
-
                             <p class="control-label col-md-10">@objeto.fdescription</p>
                             <div class="col-md-12">
                                 @if (objeto.fsource != "")
-    {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                            <img id="@("img_" + objeto.idkey)" alt="your image"  hidden/>
-                            <img id="@("resultimg_" + objeto.idkey)" alt="your image"  hidden/>
-}
-else
-{
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                            <img id="@("img_" + objeto.idkey)" src="#" alt="your image"  hidden/>
-                            <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image"  hidden/>
-}
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                                }
+                                else
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                                    <img id="@("img_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                }
                             </div>
-
                         </div>
                     </div>
 
@@ -346,28 +354,32 @@ else
                             }
                             <div class="col-md-12">
                                 <textarea id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
-
                             </div>
                         </div>
                     </div>
                 </div>
 
             }
-            <!--PARA INPUT NUMBER -->
-            if (objeto.id_resource == 18)
+            <!--PARA DATE -->
+            if (objeto.id_resource == 22)
             {
                 if (objeto.parent != 0)
                 {
 
-                            <div class="form-group">
-                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                    <div class="form-group">
+                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                        <div class="col-md-12">
+                            @if (objeto.fvalueText == "")
+    {
+                        <input type="date" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueText" />
+}
+else
+{
+                        <input type="date" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@Convert.ToDateTime(objeto.fvalueText).ToString("yyyy-MM-dd")" />
+}
 
-                                <div class="col-md-12">
-                                    <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
-
-
-                                </div>
-                            </div>
+                        </div>
+                    </div>
 
                 }
                 else
@@ -376,10 +388,49 @@ else
                         <div class="card-body">
                             <div class="form-group">
                                 <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                                 <div class="col-md-12">
-                                    <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                    @if (objeto.fvalueText == "")
+    {
+                                <input type="date" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueText" />
+}
+else
+{
+                                <input type="date" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@Convert.ToDateTime(objeto.fvalueText).ToString("yyyy-MM-dd")" />
+}
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            }
+
+
+            <!--PARA INPUT NUMBER -->
+            if (objeto.id_resource == 18)
+            {
+                if (objeto.parent != 0)
+                {
+
+                    <div class="form-group">
+                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                        <div class="col-md-12">
+                            <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                                <div class="col-md-12">
+                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
                                 </div>
                             </div>
@@ -396,10 +447,8 @@ else
                     <div class="card-body">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
-                                <input type="number"  id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
-
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
 
                             </div>
                         </div>
@@ -414,10 +463,8 @@ else
                     <div class="card-body">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
                                 <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
-
                                     @if (ViewBag.customers.Count == 1)
                                     {
                                         <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
@@ -439,9 +486,7 @@ else
 
                                         }
                                     }
-
                                 </select>
-
 
                             </div>
                         </div>
@@ -456,13 +501,10 @@ else
                     <div class="card-body">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
                                 <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
                                     <option value="0">Seleccione una marca</option>
-
                                 </select>
-
 
                             </div>
                         </div>
@@ -477,13 +519,10 @@ else
                     <div class="card-body">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
                                 <select id="productline_list" name="@objeto.idkey" class="form-control" style="width:100%">
                                     <option value="0">Seleccione un linea de producto</option>
-
                                 </select>
-
 
                             </div>
                         </div>
@@ -498,7 +537,6 @@ else
                     <div class="">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
                                 <select id="@objeto.idkey" name="@objeto.idkey" class="form-control" style="width:100%">
                                     <option value="0">Select an item</option>
@@ -507,7 +545,6 @@ else
                                         @OrderedList(objeto.children, objeto.idkey)
                                     }
                                 </select>
-
 
                             </div>
                         </div>
@@ -554,13 +591,10 @@ else
                     <div class="card-body">
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-
                             <div class="col-md-12">
                                 <select class="form-control" id="brandcompetitors_list" name="@objeto.idkey" style="width:100%">
                                     <option value="0">Seleccione competidor de la marca</option>
-
                                 </select>
-
 
                             </div>
                         </div>
@@ -573,20 +607,14 @@ else
             {
                 <div class="card">
                     <div class="card-body">
-
                         <p class="control-label col-md-10">@objeto.fdescription</p>
 
-
                         <!-- Content -->
-
-
-
 
 
                         <canvas id="sig-canvas" class="@("canvas_" + objeto.idkey)" data-id="@objeto.idkey" ontouchmove="event.preventDefault();">
                             Get a better browser, bro.
                         </canvas>
-
 
                         <script type="text/javascript">
 
@@ -616,9 +644,6 @@ else
                         </div>
 
 
-
-
-
                     </div>
                 </div>
 
@@ -630,35 +655,27 @@ else
         }
 }
 
-
-
 <div class="container-fluid page-body-wrapper">
     <div class="main-panel">
         <div class="content-wrapper">
-
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10 text-right">
-
                         <a href="@Url.Action("Detailsa", "VisitsMs", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
                     </div>
                 </div>
             </div>
 
-
             <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
-            
+
             <div class="row">
                 <div class="col-md-12 grid-margin">
 
-
                     @OrderedList(ViewBag.details)
 
-
                 </div><br />
-
             </div>
-           
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10 text-right">
                     <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
@@ -666,7 +683,6 @@ else
                     <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
                 </div>
             </div>
-
             @Html.Partial("~/Views/Shared/Footer2.cshtml")
         </div>
         <!-- content-wrapper ends -->

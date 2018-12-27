@@ -144,6 +144,26 @@
                                                                         <i class="close ml-auto mdi mdi-close-circle-outline"></i>
 
                                                                     </a>
+                                                                                                                     if (activity.ID_activitytype == 3)
+                                                                            {
+                                                                                if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                                {
+                                                                                    <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="count online ml-auto">
+                                                                                        <i class="close ml-auto mdi mdi-download"></i>
+
+                                                                                    </a>
+                                                                        }
+                                                                    }
+                                                                    else if (activity.ID_activitytype == 4)
+                                                                    {
+                                                                        if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                        {
+                                                                                        <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="count online ml-auto">
+                                                                                            <i class="close ml-auto mdi mdi-download"></i>
+
+                                                                                        </a>
+                                                                                        }
+                                                                        }
                                                                 }
                                                                 else
                                                                 {
@@ -158,10 +178,28 @@
                                                                         }
                                                                         if (activity.ID_activitytype == 4)
                                                                         {
+                                                                                if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                                    {
+                                                                                        <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="count online ml-auto">
+                                                                                            <i class="close ml-auto mdi mdi-download"></i>
 
+                                                                                        </a>
+                                                                                        }
                                                                         }
                                                                         else
                                                                         {
+                                                                            if (activity.ID_activitytype == 1)
+                                                                            {
+                                                                                if(activity.description == "STOCK INVENTORY CONTROL") { 
+                                                                                    if (activity.isfinished == true && activity.query1 != "cancel")
+                                                                                    {
+                                                                                        <a href="@Url.Action("PreviewFormStockResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="count online ml-auto">
+                                                                                            <i class="close ml-auto mdi mdi-download"></i>
+
+                                                                                        </a>
+                                                                                        }
+                                                                                }
+                                                                            }
                                                                             if (activity.ID_activitytype == 3)
                                                                             {
                                                                                 if (activity.isfinished == true && activity.query1 != "cancel")

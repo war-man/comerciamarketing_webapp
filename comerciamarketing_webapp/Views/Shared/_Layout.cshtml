@@ -1492,6 +1492,26 @@
                 })
             })(jQuery);
 
+            (function ($) {
+                'use strict';
+                $('#editModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDroute = button.data("IDr");// Extract info from data-* attributes
+                    var Desroute = button.data("RepeatM");
+
+ 
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
+                    $('.modal-body select[name="custedt"]').val(Desroute);
+                    //$("#descriptionD").text(Desroute);
+
+                })
+            })(jQuery);
+
         }
 
     </script>
@@ -1638,7 +1658,7 @@
         });
 
 
-    @*var json = JSON.parse('@Html.Raw(ViewBag.usuarios)')
+    var json = JSON.parse('@Html.Raw(ViewBag.usuarios)')
 
     var data = $.map(json, function (obj) {
         obj.id = obj.id; // replace pk with your identifier
@@ -1651,7 +1671,7 @@
         placeholder: "Select representatives...",
         data: data
 
-    });*@
+    });
 
 
 
@@ -2686,12 +2706,12 @@
         var url = '@Url.Action("Representative_stats", "Home", new { id=ViewBag.ID_rep, fstartd = "START", fendd = "FINISH" })';
 
 
-            url = url.replace('START', st.toLocaleDateString());
+            url = url.replace('START', st.toDateString());
 
         var newurl = url;
 
 
-            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+            newurl = newurl.replace('FINISH', ed.toDateString());
         newurl = newurl.replace(/&amp;/g, "&");
         //alert(newurl);
         window.location.href = newurl;
@@ -2719,12 +2739,12 @@
         var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH" })';
 
 
-            url = url.replace('START', st.toLocaleDateString());
+            url = url.replace('START', st.toDateString());
 
         var newurl = url;
 
 
-            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+            newurl = newurl.replace('FINISH', ed.toDateString());
         newurl = newurl.replace(/&amp;/g, "&");
         //alert(newurl);
         window.location.href = newurl;

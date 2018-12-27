@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Comercia Marketing";
     Layout = null;
 }
@@ -13,6 +12,7 @@
     <meta name="description" content="Comercia Marketing App">
     <title>Comercia Marketing</title>
     <link rel="shortcut icon" href="~/Content/newstyle2/images/favicon-16x16.png" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/fonts.css">
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/crumina-fonts.css">
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/normalize.css">
@@ -28,10 +28,39 @@
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/swiper.min.css">
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/primary-menu.css">
     <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/magnific-popup.css">
+
+
+
     <!--Styles for RTL-->
     <!--<link rel="stylesheet" type="text/css" href="~/Content/landingpage/rtl.css">-->
     <!--External fonts-->
     <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <style>
+        .modal-body {
+            background-image: url('/Content/landingpage/img/promoDucal2018.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 900px;
+        }
+    </style>
+    <style type="text/css">
+        @@media screen and (min-width: 1100px) {
+            .modal-dialog {
+                width: 1100px; /* New width for default modal */
+            }
+
+            .modal-sm {
+                width: 350px; /* New width for small modal */
+            }
+        }
+
+        @@media screen and (min-width: 992px) {
+            .modal-lg {
+                width: 950px; /* New width for large modal */
+            }
+        }
+    </style>
 </head>
 
 <body class=" ">
@@ -279,12 +308,11 @@
             <div class="swiper-container main-slider" data-effect="fade" data-autoplay="4000">
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
-                    <!-- Slides
-                            <div class="swiper-slide bg-border-color main-slider-bg-dark" style="background-image: url('/Content/landingpage/img/landing/Fmerchandising.psd.jpg'); background-size: contain;background-position:center;background-repeat:no-repeat">-->
+                    <!-- Slides -->
                     <div class="swiper-slide bg-border-color main-slider-bg-dark">
                         <div class="container table full-height">
                             <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-content">
                                         <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
                                             Merchandising
@@ -312,18 +340,18 @@
 
                                     </div>
                                 </div>
-                                @*<div class="col-lg-12 table-cell">
-                        <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                            <img src="~/Content/landingpage/img/landing/Fmerchandising.psd.jpg" alt="slider">
-                        </div>
-                    </div>*@
+                                <div class="col-lg-6 table-cell">
+                                    <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
+                                        <img src="~/Content/landingpage/img/landing/Fmerchandising.psd.jpg" alt="slider">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide bg-border-color main-slider-bg-dark">
                         <div class="container table full-height">
                             <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-content">
                                         <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
                                             Campain Design
@@ -348,18 +376,18 @@
 
                                     </div>
                                 </div>
-                                @*<div class="col-lg-6 table-cell">
-                        <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                            <img src="~/Content/landingpage/img/landing/F20Campaña.png.jpg" alt="slider">
-                        </div>
-                    </div>*@
+                                <div class="col-lg-6 table-cell">
+                                    <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
+                                        <img src="~/Content/landingpage/img/landing/F20Campaña.png.jpg" alt="slider">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide bg-border-color main-slider-bg-dark">
                         <div class="container table full-height">
                             <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-content">
                                         <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
                                             In Store Sampling
@@ -384,18 +412,18 @@
 
                                     </div>
                                 </div>
-                                @*<div class="col-lg-6 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
                                         <img src="~/Content/landingpage/img/landing/fbdemos.jpg" alt="slider">
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide bg-border-color main-slider-bg-dark">
                         <div class="container table full-height">
                             <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-content">
                                         <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
                                             Brand Activation
@@ -420,18 +448,18 @@
 
                                     </div>
                                 </div>
-                                @*<div class="col-lg-6 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
                                         <img src="~/Content/landingpage/img/landing/marca1.jpg" alt="slider">
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide bg-border-color main-slider-bg-dark">
                         <div class="container table full-height">
                             <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-content">
                                         <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
                                             Market Research
@@ -456,11 +484,11 @@
 
                                     </div>
                                 </div>
-                                @*<div class="col-lg-6 table-cell">
+                                <div class="col-lg-6 table-cell">
                                     <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
                                         <img src="~/Content/landingpage/img/landing/mejorespacio.jpg" alt="slider">
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -605,159 +633,157 @@
         <!-- End Background-mountains -->
         <!-- Info-Box
 
-    <div class="container info-boxes pt100 pb100">
+        <div class="container info-boxes pt100 pb100">
 
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box1.png" alt="image">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box1.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Local Search Strategy</h5>
+                            <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                                sed diam nonummy nibh euismod.
+                            </p>
+                        </div>
                     </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Local Search Strategy</h5>
-                        <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                            sed diam nonummy nibh euismod.
-                        </p>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box2.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Maps Search Optimization</h5>
+                            <p class="text">Claritas est etiam processus dynamicus,
+                                qui sequitur mutationem consuetudium lectorum.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box3.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Link Building & Content</h5>
+                            <p class="text">Investigationes demonstraverunt lectores
+                                legere me lius quod ii legunt saepius notare.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box4.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Paid Search Advertising</h5>
+                            <p class="text">Claritas est etiam processus dynamicus,
+                                qui sequitur mutationem consuetudium lectorum.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box5.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Custom Website Design</h5>
+                            <p class="text">Investigationes demonstraverunt lectores legere
+                                me lius quod ii legunt saepius notare.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box--standard" data-mh="info-boxes">
+                        <div class="info-box-image">
+                            <img src="img/info-box6.png" alt="image">
+                        </div>
+                        <div class="info-box-content">
+                            <h5 class="info-box-title">Custom Email Design</h5>
+                            <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                                sed diam nonummy nibh euismod.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box2.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Maps Search Optimization</h5>
-                        <p class="text">Claritas est etiam processus dynamicus,
-                            qui sequitur mutationem consuetudium lectorum.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box3.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Link Building & Content</h5>
-                        <p class="text">Investigationes demonstraverunt lectores
-                            legere me lius quod ii legunt saepius notare.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box4.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Paid Search Advertising</h5>
-                        <p class="text">Claritas est etiam processus dynamicus,
-                            qui sequitur mutationem consuetudium lectorum.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box5.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Custom Website Design</h5>
-                        <p class="text">Investigationes demonstraverunt lectores legere
-                            me lius quod ii legunt saepius notare.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box6.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Custom Email Design</h5>
-                        <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                            sed diam nonummy nibh euismod.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
 
-    </div>
-
-     End Info-Box -->
+         End Info-Box -->
         <!-- Offers
 
-    <div class="container">
-        <div class="row medium-padding120">
-            <div class="col-lg-12">
-                <div class="offers">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <h4 class="h1 heading-title">Our custom solution</h4>
-                                <div class="heading-line">
-                                    <span class="short-line"></span>
-                                    <span class="long-line"></span>
+        <div class="container">
+            <div class="row medium-padding120">
+                <div class="col-lg-12">
+                    <div class="offers">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                                <div class="heading">
+                                    <h4 class="h1 heading-title">Our custom solution</h4>
+                                    <div class="heading-line">
+                                        <span class="short-line"></span>
+                                        <span class="long-line"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <div class="heading">
+                                    <p class="heading-text">Claritas est etiam processus dynamicus, qui sequitur
+                                        mutationem consuetudium.
+                                    </p>
+                                </div>
+
+                                <ul class="list list--secondary">
+                                    <li>
+                                        <i class="seoicon-check"></i>
+                                        <a href="#">Introduction</a>
+
+                                    </li>
+                                    <li>
+                                        <i class="seoicon-check"></i>
+                                        <a href="#">Growth</a>
+                                    </li>
+                                    <li>
+                                        <i class="seoicon-check"></i>
+                                        <a href="#">Maturity</a>
+                                    </li>
+                                    <li>
+                                        <i class="seoicon-check"></i>
+                                        <a href="#">Redefinition</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <div class="offers-thumb">
+                                    <img src="img/landing/aliado.jpg" alt="offers">
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <p class="heading-text">Claritas est etiam processus dynamicus, qui sequitur
-                                    mutationem consuetudium.
-                                </p>
-                            </div>
-
-                            <ul class="list list--secondary">
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Introduction</a>
-
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Growth</a>
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Maturity</a>
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Redefinition</a>
-                                </li>
-                            </ul>
-
-                        </div>
-
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="offers-thumb">
-                                <img src="img/landing/aliado.jpg" alt="offers">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-     ... End Offers -->
-  
-
+         ... End Offers -->
         <!-- Post-slider -->
         <div class="container">
             <div class="recent-post-slider medium-padding120">
@@ -860,300 +886,301 @@
         <!-- ... End Offers -->
         <!-- Counters
 
-    <div class="container-fluid">
-        <div class="row bg-orange-color">
-            <div class="container">
-                <div class="row">
-                    <div class="counters">
-
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark" data-speed="2000" data-refresh-interval="3" data-to="5" data-from="0">5</span>
-                                </div>
-                                <span class="counter-title">Years of Service</span>
-
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="30" data-from="0">30+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Professionals</span>
-
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="6" data-from="0">6+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Satisfied Clients</span>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="10" data-from="0">10+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Satisfied Clients</span>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     End Counters -->
-        <!-- Testimonial-slider
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="testimonial-slider scrollme">
+        <div class="container-fluid">
+            <div class="row bg-orange-color">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <h4 class="h1 heading-title">Happy Clients
-                                    </h4>
-                                <div class="heading-line">
-                                    <span class="short-line bg-yellow-color"></span>
-                                    <span class="long-line bg-yellow-color"></span>
-                                </div>
-                                <p class="heading-text c-white">Claritas est etiam processus dynamicus, qui lectorum.
-                                </p>
-                            </div>
-                            <div class="signature js-animate-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60">
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M24.78 42.5C11.28 41.06.96 36 1.16 26.86 1.62 11.6 16.76 3.6 28.13 3.25c5.44-.16 9.8 2.38 10.2 5.8.86 7.66-19.23 15.62-19.23 15.62s17.86-6.57 24.66 2.2c2.8 3.6-11.8 10.65-11.8 10.65s-8.8 3.35-7.65-.24c1.78-5.52 16.8-10.1 18.42-10.3 3.17-.4 7.1-.4 8 .12 1.33.78-1.7 4.14-.94 4.86.76.72 3.82-2.55 3.94-1.97.12.57-.64 2.63.58 3 1.2.38 2.3-1.1 4.28-1.5 1.97-.4 1.83-.44 3.6-.12 1.76.32 2.1.64 3.47 1.4 1.36.74.86 2.22 1.96 1.6 1.1-.6 1.43-4.16 2.44-4.04 1.02.1.03 5.38 1.63 4.5 1.6-.85 4.74-7.97 4.74-7.97s-.82 4.04 0 3.93c3.14-.4 8.12-2.57 14.48-3.36 6.37-.78 8.67-.35 11 .24 1.92.48 2.67 2.3 2.67 2.3"
-                                          stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M113.7 15.75s-1.1-2.78-3.6-2.08c-5.83 1.62-16.2 7.68-16.44 15.63-.46 16.3 21.1 11.14 22.7 11 13.6-1.2 17.38-9.96 17.36-14.48-.06-14.3-19.07-10.3-21.07-10.07-7.9.92-10.48 1.57-10.48 1.57"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M119.7 1.05c-2.53 13.9-5.1 27.83-2.53 41.44" stroke-linecap="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M133.6 27.8c-6.62-.42-12.6.37-17.36 3.35"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M131.52 32.77s3.95-.13 8.34-.93c2.4-.43 5-1.73 7.87-1.85 2.87-.12 1.74 1.44 3.6 1.38 4.62-.14 7.98-.3 14.92-.7 6.95-.4 9.76-2.76 12.86-.92 1.7 1 1.4 3.13 1.4 3.13"
-                                          stroke-linecap="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M153.52 31.03s2.27-2.74-.7-3.35c-3.36-.7-3.7 2.43-3.7 2.43"></path>
-                                </svg>
-                            </div>
-                        </div>
+                        <div class="counters">
 
-                        <div class="col-lg-7 col-lg-offset-1 col-md-8 col-sm-12 col-xs-12">
 
-                            <div class="testimonial-item">
-                                <!-- Slider main container
-                                <div class="swiper-container testimonial__thumb overflow-visible" data-effect="fade" data-loop="false">
-
-                                    <div class="swiper-wrapper">
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company CEO</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="counter-item">
+                                    <div class="counter-numbers counter">
+                                        <span class="c-dark" data-speed="2000" data-refresh-interval="3" data-to="5" data-from="0">5</span>
                                     </div>
-                                    <!-- If we need pagination
-                                    <div class="swiper-pagination"></div>
+                                    <span class="counter-title">Years of Service</span>
 
-                                    <div class="quote">
-                                        <i class="seoicon-quotes"></i>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="testimonial__thumb-img">
-                                    <img src="img/testimonial1.png" alt="image">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="counter-item">
+                                    <div class="counter-numbers counter">
+                                        <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="30" data-from="0">30+</span>
+                                        <div class="units c-dark">+</div>
+                                    </div>
+                                    <span class="counter-title">Professionals</span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="counter-item">
+                                    <div class="counter-numbers counter">
+                                        <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="6" data-from="0">6+</span>
+                                        <div class="units c-dark">+</div>
+                                    </div>
+                                    <span class="counter-title">Satisfied Clients</span>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="counter-item">
+                                    <div class="counter-numbers counter">
+                                        <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="10" data-from="0">10+</span>
+                                        <div class="units c-dark">+</div>
+                                    </div>
+                                    <span class="counter-title">Satisfied Clients</span>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-img">
-                    <img src="img/testimonial2.png" alt="image">
+            </div>
+        </div>
+
+         End Counters -->
+        <!-- Testimonial-slider
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="testimonial-slider scrollme">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="heading">
+                                    <h4 class="h1 heading-title">Happy Clients
+                                        </h4>
+                                    <div class="heading-line">
+                                        <span class="short-line bg-yellow-color"></span>
+                                        <span class="long-line bg-yellow-color"></span>
+                                    </div>
+                                    <p class="heading-text c-white">Claritas est etiam processus dynamicus, qui lectorum.
+                                    </p>
+                                </div>
+                                <div class="signature js-animate-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60">
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
+                                              d="M24.78 42.5C11.28 41.06.96 36 1.16 26.86 1.62 11.6 16.76 3.6 28.13 3.25c5.44-.16 9.8 2.38 10.2 5.8.86 7.66-19.23 15.62-19.23 15.62s17.86-6.57 24.66 2.2c2.8 3.6-11.8 10.65-11.8 10.65s-8.8 3.35-7.65-.24c1.78-5.52 16.8-10.1 18.42-10.3 3.17-.4 7.1-.4 8 .12 1.33.78-1.7 4.14-.94 4.86.76.72 3.82-2.55 3.94-1.97.12.57-.64 2.63.58 3 1.2.38 2.3-1.1 4.28-1.5 1.97-.4 1.83-.44 3.6-.12 1.76.32 2.1.64 3.47 1.4 1.36.74.86 2.22 1.96 1.6 1.1-.6 1.43-4.16 2.44-4.04 1.02.1.03 5.38 1.63 4.5 1.6-.85 4.74-7.97 4.74-7.97s-.82 4.04 0 3.93c3.14-.4 8.12-2.57 14.48-3.36 6.37-.78 8.67-.35 11 .24 1.92.48 2.67 2.3 2.67 2.3"
+                                              stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
+                                              d="M113.7 15.75s-1.1-2.78-3.6-2.08c-5.83 1.62-16.2 7.68-16.44 15.63-.46 16.3 21.1 11.14 22.7 11 13.6-1.2 17.38-9.96 17.36-14.48-.06-14.3-19.07-10.3-21.07-10.07-7.9.92-10.48 1.57-10.48 1.57"></path>
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M119.7 1.05c-2.53 13.9-5.1 27.83-2.53 41.44" stroke-linecap="round"></path>
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M133.6 27.8c-6.62-.42-12.6.37-17.36 3.35"></path>
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
+                                              d="M131.52 32.77s3.95-.13 8.34-.93c2.4-.43 5-1.73 7.87-1.85 2.87-.12 1.74 1.44 3.6 1.38 4.62-.14 7.98-.3 14.92-.7 6.95-.4 9.76-2.76 12.86-.92 1.7 1 1.4 3.13 1.4 3.13"
+                                              stroke-linecap="round"></path>
+                                        <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M153.52 31.03s2.27-2.74-.7-3.35c-3.36-.7-3.7 2.43-3.7 2.43"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7 col-lg-offset-1 col-md-8 col-sm-12 col-xs-12">
+
+                                <div class="testimonial-item">
+                                    <!-- Slider main container
+                                    <div class="swiper-container testimonial__thumb overflow-visible" data-effect="fade" data-loop="false">
+
+                                        <div class="swiper-wrapper">
+                                            <div class="testimonial-slider-item swiper-slide">
+                                                <div class="testimonial-content">
+                                                    <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
+                                                        nihil imperdiet doming id quod mazim.
+                                                    </p>
+                                                    <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
+                                                    <a href="#" class="company" data-swiper-parallax="-150">Company</a>
+
+                                                </div>
+                                                <div class="avatar" data-swiper-parallax="-50">
+                                                    <img src="img/avatar.png" alt="avatar">
+                                                </div>
+                                            </div>
+                                            <div class="testimonial-slider-item swiper-slide">
+                                                <div class="testimonial-content">
+                                                    <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
+                                                        nihil imperdiet doming id quod mazim.
+                                                    </p>
+                                                    <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
+                                                    <a href="#" class="company" data-swiper-parallax="-150">Company CEO</a>
+
+                                                </div>
+                                                <div class="avatar" data-swiper-parallax="-50">
+                                                    <img src="img/avatar.png" alt="avatar">
+                                                </div>
+                                            </div>
+                                            <div class="testimonial-slider-item swiper-slide">
+                                                <div class="testimonial-content">
+                                                    <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
+                                                        nihil imperdiet doming id quod mazim.
+                                                    </p>
+                                                    <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
+                                                    <a href="#" class="company" data-swiper-parallax="-150">Company</a>
+
+                                                </div>
+                                                <div class="avatar" data-swiper-parallax="-50">
+                                                    <img src="img/avatar.png" alt="avatar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- If we need pagination
+                                        <div class="swiper-pagination"></div>
+
+                                        <div class="quote">
+                                            <i class="seoicon-quotes"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="testimonial__thumb-img">
+                                        <img src="img/testimonial1.png" alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-img">
+                        <img src="img/testimonial2.png" alt="image">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-     End Testimonial-slider -->
+         End Testimonial-slider -->
         <!-- Recent-case -->
         <!-- End Recent-case -->
         <!-- Pricing table
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="pricing-tables medium-padding120 bg-border-color">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
-                            <div class="heading align-center">
-                                <h4 class="h1 heading-title">Our Pricing Packages</h4>
-                                <div class="heading-line">
-                                    <span class="short-line"></span>
-                                    <span class="long-line"></span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="pricing-tables medium-padding120 bg-border-color">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+                                <div class="heading align-center">
+                                    <h4 class="h1 heading-title">Our Pricing Packages</h4>
+                                    <div class="heading-line">
+                                        <span class="short-line"></span>
+                                        <span class="long-line"></span>
+                                    </div>
+                                    <p class="heading-text">Claritas est etiam processus dynamicus,
+                                        qui sequitur mutationem consuetudium.
+                                    </p>
                                 </div>
-                                <p class="heading-text">Claritas est etiam processus dynamicus,
-                                    qui sequitur mutationem consuetudium.
-                                </p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="pricing-tables-wrap">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div class="row">
+                            <div class="pricing-tables-wrap">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing1.png" alt="personal">
+                                    <div class="pricing-tables-item">
+                                        <div class="pricing-tables-icon">
+                                            <img src="img/pricing1.png" alt="personal">
+                                        </div>
+                                        <a href="#" class="pricing-title">Personal</a>
+                                        <ul class="pricing-tables-position">
+                                            <li class="position-item">
+                                                <span class="count">5</span>
+                                                Analytics Campaigns
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">300</span>
+                                                Keywords
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">250,000</span>
+                                                Crawled Pages
+                                            </li>
+                                            <li class="position-item">
+                                                -
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">15</span>
+                                                Social Accounts
+                                            </li>
+                                        </ul>
+                                        <h4 class="rate">$49.99</h4>
+                                        <a href="20_checkout.html" class="btn btn-medium btn--dark">
+                                            <span class="text">Order Now!</span>
+                                            <span class="semicircle"></span>
+                                        </a>
+                                        <img src="img/pricing-dots.png" class="dots" alt="dots">
                                     </div>
-                                    <a href="#" class="pricing-title">Personal</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">5</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">300</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item">
-                                            -
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">15</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$49.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
+
                                 </div>
 
-                            </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="pricing-tables-item">
+                                        <div class="pricing-tables-icon">
+                                            <img src="img/pricing2.png" alt="personal">
+                                        </div>
+                                        <a href="#" class="pricing-title">Webmaster</a>
+                                        <ul class="pricing-tables-position">
+                                            <li class="position-item">
+                                                <span class="count">25</span>
+                                                Analytics Campaigns
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">1,900</span>
+                                                Keywords
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">1,250,000</span>
+                                                Crawled Pages
+                                            </li>
+                                            <li class="position-item include">
+                                                Includes Branded Reports
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">50</span>
+                                                Social Accounts
+                                            </li>
+                                        </ul>
+                                        <h4 class="rate">$99.99</h4>
+                                        <a href="20_checkout.html" class="btn btn-medium btn--dark">
+                                            <span class="text">Order Now!</span>
+                                            <span class="semicircle"></span>
+                                        </a>
 
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing2.png" alt="personal">
+                                        <img src="img/pricing-dots.png" class="dots" alt="dots">
                                     </div>
-                                    <a href="#" class="pricing-title">Webmaster</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">25</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,900</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item include">
-                                            Includes Branded Reports
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">50</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$99.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
                                 </div>
-                            </div>
 
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing3.png" alt="personal">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="pricing-tables-item">
+                                        <div class="pricing-tables-icon">
+                                            <img src="img/pricing3.png" alt="personal">
+                                        </div>
+                                        <a href="#" class="pricing-title">Professional</a>
+                                        <ul class="pricing-tables-position">
+                                            <li class="position-item">
+                                                <span class="count">100</span>
+                                                Analytics Campaigns
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">7500</span>
+                                                Keywords
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">1,250,000</span>
+                                                Crawled Pages
+                                            </li>
+                                            <li class="position-item include">
+                                                Includes Branded Reports
+                                            </li>
+                                            <li class="position-item">
+                                                <span class="count">150</span>
+                                                Social Accounts
+                                            </li>
+                                        </ul>
+                                        <h4 class="rate">$169.99</h4>
+                                        <a href="20_checkout.html" class="btn btn-medium btn--dark">
+                                            <span class="text">Order Now!</span>
+                                            <span class="semicircle"></span>
+                                        </a>
+
+                                        <img src="img/pricing-dots.png" class="dots" alt="dots">
                                     </div>
-                                    <a href="#" class="pricing-title">Professional</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">100</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">7500</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item include">
-                                            Includes Branded Reports
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">150</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$169.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
                                 </div>
                             </div>
                         </div>
@@ -1161,45 +1188,44 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    End Pricing table -->
+        End Pricing table -->
         <!-- Clients -->
         <!-- End Clients -->
         <!-- Subscribe Form
 
-    <div class="container-fluid bg-green-color">
-        <div class="row">
-            <div class="container">
+        <div class="container-fluid bg-green-color">
+            <div class="row">
+                <div class="container">
 
-                <div class="row">
+                    <div class="row">
 
-                    <div class="subscribe scrollme">
+                        <div class="subscribe scrollme">
 
-                        <div class="col-lg-6 col-lg-offset-5 col-md-6 col-md-offset-5 col-sm-12 col-xs-12">
-                            <h4 class="subscribe-title">What are you waiting for, get in touch with us now!</h4>
-                            <form class="subscribe-form" method="post" action="import.php">
-                                <input class="email input-standard-grey input-white" name="email" required="required" placeholder="Your Email Address" type="email">
-                                <button class="subscr-btn">Send
-                                    <span class="semicircle--right"></span>
-                                </button>
-                            </form>
+                            <div class="col-lg-6 col-lg-offset-5 col-md-6 col-md-offset-5 col-sm-12 col-xs-12">
+                                <h4 class="subscribe-title">What are you waiting for, get in touch with us now!</h4>
+                                <form class="subscribe-form" method="post" action="import.php">
+                                    <input class="email input-standard-grey input-white" name="email" required="required" placeholder="Your Email Address" type="email">
+                                    <button class="subscr-btn">Send
+                                        <span class="semicircle--right"></span>
+                                    </button>
+                                </form>
 
 
-                        </div>
+                            </div>
 
-                        <div class="images-block">
-                            <img src="img/subscr-gear.png" alt="gear" class="gear">
-                            <img src="img/subscr1.png" alt="mail" class="mail">
-                            <img src="img/subscr-mailopen.png" alt="mail" class="mail-2">
+                            <div class="images-block">
+                                <img src="img/subscr-gear.png" alt="gear" class="gear">
+                                <img src="img/subscr1.png" alt="mail" class="mail">
+                                <img src="img/subscr-mailopen.png" alt="mail" class="mail-2">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-     End Subscribe Form -->
+         End Subscribe Form -->
     </div>
 
     <!-- Footer -->
@@ -1369,6 +1395,10 @@
     <!-- End Overlay Search -->
     <!-- JS Script -->
     <script src="~/Content/landingpage/js/jquery-2.1.4.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
     <!-- <script src="~/Content/landingpage/js/crum-mega-menu.js"></script>-->
     <script src="~/Content/landingpage/js/swiper.jquery.min.js"></script>
     <script src="~/Content/landingpage/js/theme-plugins.js"></script>
@@ -1379,6 +1409,143 @@
     <script src="~/Content/landingpage/js/animation.velocity.min.js"></script>
 
     <!-- ...end JS Script -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding:0;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    @using (Html.BeginForm("SendDataPromotion", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <input name="name" class="email input-standard-grey" placeholder="Your Name" type="text" required>
+                                <input name="email" class="email input-standard-grey" placeholder="Email Address" type="email" required>
+                                <input name="phone" class="email input-standard-grey" placeholder="Phone" type="text">
+                                <select name="estado" class="form-control">
+                                    <option value="NA">Select your State</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District Of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                                <input name="file" id="file" class="email input-standard-grey" type="file" accept="image/*">
+                                <div class="submit-block table">
+
+                                    <button type="submit" class="btn btn-small btn--primary">
+                                        <span class="text">Send</span>
+                                    </button>
+
+
+
+                                    <div class="submit-block-text" style="color:black;font-size:16px;">
+                                        <br />
+                                        Please, let us know any particular things to check and the best time
+                                        to contact you by phone (if provided).
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
 
+<script type="text/javascript">
+    $(window).on('load', function () {
+        $('#myModal').modal('show');
+    });
+</script>
+<!--NOTIFICACIONES GLOBALES-->
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@Html.Raw(TempData["error"])");
+        };
+    </script>
+}
+
+@if (TempData["advertencia"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+
+
+            alert("@Html.Raw(TempData["advertencia"])");
+
+        };
+    </script>
+}
+
+@if (TempData["exito"] != null)
+{
+    <script type="text/javascript">
+        console.log("Success");
+
+        $(document).ready(function () {
+
+alert("@Html.Raw(TempData["exito"])");
+        });
+    </script>
+}

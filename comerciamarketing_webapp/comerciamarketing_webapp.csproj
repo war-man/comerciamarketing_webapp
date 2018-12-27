@@ -435,6 +435,18 @@
       <DependentUpon>rptDemoDailyResume.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\rptDemov1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptDemov1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptStockControl.cs">
+      <DependentUpon>rptStockControl.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reportes\rptSalesOrder.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -469,6 +481,7 @@
     <Content Include="Content\dist\fonts\map-icons.svg" />
     <Content Include="Content\dist\js\map-icons.js" />
     <Content Include="Content\dist\js\map-icons.min.js" />
+    <Content Include="Content\images\promoDucal2018.jpg" />
     <Content Include="Content\landingpage\img\productos3.jpg" />
     <Content Include="Content\landingpage\css\base.css" />
     <Content Include="Content\landingpage\css\blocks.css" />
@@ -648,6 +661,8 @@
     <Content Include="Content\landingpage\img\productos.jpg" />
     <Content Include="Content\landingpage\img\productos2.jpg" />
     <Content Include="Content\landingpage\img\profit.png" />
+    <Content Include="Content\landingpage\img\promocion_ducal.jpg" />
+    <Content Include="Content\landingpage\img\promoDucal2018.jpg" />
     <Content Include="Content\landingpage\img\request.png" />
     <Content Include="Content\landingpage\img\results-ver2.png" />
     <Content Include="Content\landingpage\img\reviews-avatar1.png" />
@@ -3265,6 +3280,7 @@
     <Content Include="Views\Shared\ActivitysoonScripts.cshtml" />
     <Content Include="Views\Home\RoutesM_calendar.cshtml" />
     <Content Include="Views\Shared\Routes_calendarScript.cshtml" />
+    <Content Include="Views\Home\Promotions_Ducal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3291,6 +3307,14 @@
     <EmbeddedResource Include="Reportes\rptDemoDailyResume.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemoDailyResume.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptDemov1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDemov1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptStockControl.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptStockControl.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptSalesOrder.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
