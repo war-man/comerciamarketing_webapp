@@ -1,0 +1,254 @@
+﻿@using comerciamarketing_webapp.Models
+@model List<FileModel>
+@{
+    ViewBag.Title = "Comercia Marketing - Gallery";
+}
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="container">
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10 text-right">
+
+                            @*<a href="@Url.Action("DetailsC", "VisitsMs", new { id=ViewBag.id_visita, brand = ViewBag.branddef})" class="btn btn-info">Back</a>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+
+                        <div class="accordion basic-accordion" id="accordion" role="tablist">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <h6 class="mb-0">
+                                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <i class="card-icon mdi mdi-filter"></i>Filters
+                                        </a>
+                                    </h6>
+                                </div>
+                                <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Visit</h4>
+                                                        <select class="form-control" type="hidden" name="lstvisits" id="lstvisits" value="" style="width:100%;">
+                                                            <option value="0">All Visits</option>
+                                                            @foreach (var visit in ViewBag.lstvisits)
+                                                            {
+                                                                if (visit.ID_visit.ToString() == ViewBag.id_visita)
+                                                                {
+                                                                    <option value="@visit.ID_visit" selected>@Convert.ToDateTime(visit.visit_date).ToShortDateString() - @visit.store</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@visit.ID_visit">@Convert.ToDateTime(visit.visit_date).ToShortDateString() - @visit.store</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Brand</h4>
+                                                        <select class="form-control" type="hidden" name="brand" id="lstbrand" value="" style="width:100%;">
+                                                            <option value="0">All Brands</option>
+                                                            @foreach (var act in ViewBag.brands)
+                                                            {
+                                                                if (act.FirmCode.ToString() == ViewBag.branddef)
+                                                                {
+                                                                    <option value="@act.FirmCode" selected>@act.FirmName</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@act.FirmCode">@act.FirmName</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Representative</h4>
+                                                        <select class="form-control" type="hidden" name="lstreps" id="lstreps" value="" style="width:100%;">
+                                                            <option value="0">All Representatives</option>
+                                                            @foreach (var user in ViewBag.usuarios)
+    {
+
+        if (user.ID_usuario.ToString() == ViewBag.repdef)
+        {
+                                                        <option value="@user.ID_usuario" selected>@user.nombre @user.apellido</option>
+}
+else
+{
+                                                        <option value="@user.ID_usuario">@user.nombre @user.apellido</option>
+}
+
+}
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Activity Type</h4>
+                                                        <select class="form-control" type="hidden" name="lstActivities" id="lstActivities" value="" style="width:100%;">
+                                                            <option value="0">All Activities Type</option>
+                                                            @foreach (var act in ViewBag.formsAct)
+                                                            {
+                                                                if (act.ID_form.ToString() == ViewBag.activityFormdef)
+                                                                {
+                                                                    <option value="@act.ID_form" selected>@act.name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@act.ID_form">@act.name</option>
+                                                                }
+
+                                                            }
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">By Section</h4>
+                                                        <select class="form-control" type="hidden" name="lstsection" id="lstsection" value="" style="width:100%;">
+                                                            <option value="0">All Sections</option>
+                                                            @foreach (var act in ViewBag.containers)
+    {
+
+        if (act.FirmCode.ToString() == ViewBag.sectiondef)
+        {
+                                                        <option value="@act.FirmCode" selected>@act.FirmName</option>
+}
+else
+{
+                                                        <option value="@act.FirmCode">@act.FirmName</option>
+}
+
+}
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <a href="#" class="btn btn-primary" id="click_filterR">Apply<i class="mdi mdi-check-all"></i></a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+
+                                        <div class="row portfolio-grid">
+
+                                            @for (int i = 0; i < Model.Count(); i++)
+                                            {
+                                                if (Model[i].FilePath == null || Model[i].FilePath == "")
+                                                {
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
+                                                        <figure class="effect-text-in">
+                                                            <img data-enlargable src="@Url.Content(Model[i].FilePath)" alt="image" />
+                                                            <figcaption>
+                                                               
+                                                                <p>
+                                                                    @Model[i].FileActivity<br />
+                                                                    @Model[i].FileStore<br />
+                                                                    @Model[i].FileBrand<br />@Model[i].FileRep<br />
+                                                                    @Model[i].FileSection<br />
+                                                                    
+                                                                    <a class="text-light parentdiv" href="#">Maximize</a> <a class="text-light" href='@Url.Content(Model[i].FilePath)' download>Download</a>
+
+                                                                </p>
+
+                                                            </figcaption>
+                                                        </figure>
+                                                    </div>
+
+
+                                                }
+
+
+                                            }
+
+
+
+                                        </div>
+
+                                        <br />
+                                        @using (Html.BeginForm("DownloadZip", "VisitsMs", FormMethod.Post))
+                                        {
+                                            <input type="text" name="id" value="@ViewBag.id_visita" hidden />
+                                            <input type="text" name="IDcustomer" value="@ViewBag.customerID" hidden />
+                                            <input type="text" name="brands" value="@ViewBag.branddef" hidden />
+                                            <input type="text" name="activityform" value="@ViewBag.activityFormdef" hidden />
+                                            <input type="submit" class="btn btn-outline-info" value="Download" />
+
+                                        }
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- content-wrapper ends -->
+                            <!-- partial:../../partials/_footer.html -->
+                            <!-- partial -->
+                        </div>
+                        <!-- main-panel ends -->
+                    </div>
+                </div>
+                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-body-wrapper ends -->

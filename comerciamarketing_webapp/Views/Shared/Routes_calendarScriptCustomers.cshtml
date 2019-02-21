@@ -1,0 +1,199 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script>
+    (function ($) {
+        'use strict';
+        $(function () {
+            var style = getComputedStyle(document.body);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if ($('#calendar').length) {
+                $('#calendar').fullCalendar({
+                    header: {
+                        left: '',
+                        center: 'title',
+                        //right: 'month'
+                       // right: 'month,listWeek,listDay'
+                    },
+                    views: {
+                       // month: { buttonText: 'Month' }
+                        //listWeek: { buttonText: 'list week' },
+                        //listDay: { buttonText: 'list day' }
+                    },
+
+                    defaultDate: today,
+                    navLinks: false, // can click day/week names to navigate views
+                    editable: true,
+                    disableResizing: true,
+                    //showNonCurrentDates: false,
+                    eventLimit: false, // allow "more" link when too many events
+                    events: @Html.Raw(ViewBag.calroutes),
+                    eventDrop: function (event, delta, revertFunc) {
+                        revertFunc();
+     
+                    },
+                    eventAfterRender: function (event, element, view) {
+                        element.css("background", "#fff");
+                        element.css("border-color", "#000 !important");
+                        element.css("color", "#000");
+                        element.css("border", "solid !important");
+                    },
+                    eventResize: function (event, delta, revertFunc) {
+                        revertFunc();
+
+                    },
+
+                    eventClick: function (calEvent, jsEvent, view) {
+
+                        //Llamamos con AJAX
+
+                        var id_route = calEvent.title.substr(0, calEvent.title.indexOf(' '));
+                        var id_customer = '@ViewBag.customerID';
+                        //Guardamos en server
+                        $("#loading").show();
+                        $.ajax({
+                            url: '/Home/GetVisitsCustomer',
+                            type: 'GET',
+                            data: { 'id': id_route, 'customer': id_customer },
+                            cache: false,
+                            global: false,
+                            success: function (result) {
+                                $("#loading").hide();
+
+                                var count = 0;
+                                var theDiv = document.getElementById("appendDivVisits");
+                                theDiv.innerHTML = "";
+
+                                var porcentaje = result.porcentaje;
+                                var url = '<a class="text-black" href="javascript:void(0)">' + calEvent.title + '</a>';
+                                url = url.replace('IDDERUTA', id_route);
+
+                                document.getElementById("nameofroute").innerHTML = url;
+                                document.getElementById("porcentajeroute").innerHTML = (Math.round(porcentaje * 100) / 100) + "%";
+                                $("#progressbarroute").css("width", (Math.round(porcentaje * 100) / 100) + "%");
+
+                                var contents = '';
+                                $.each($.parseJSON(result.result), function (i, visitas) {
+                                    count++;
+                                    contents = '<div class="item-wrapper d-flex pb-4 border-bottom">';
+
+                                    if (visitas.visitstate == 1) { //Cancelado
+                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                    } else if (visitas.visitstate == 2) { // En progreso
+                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                    } else if (visitas.visitstate == 3) { //Agendado
+                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                    } else { //Finalizado
+                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span></div>';
+
+                                    }
+
+                                    @*//var url = '@Url.Action("Detailsa", "VisitsMs", new { id= "idvisit"})';*@
+                                  var url = '@Url.Action("DetailsC", "VisitsMs", new { id= "idvisit", ID_Customer=ViewBag.customerID, brand = ViewBag.branddef})';
+                                  
+                                    url = url.replace('idvisit', visitas.id);
+
+                                    contents += '<div class="text-wrapper"><h6 class="d-block mb-1"><a href="' + url + '" class="text-black">' + visitas.store + ' </a></h6><small class="text-gray d-block">' + visitas.address + '</small></div>';
+                                    contents += '</div>';
+
+                                    theDiv.innerHTML += contents;
+                                });
+                                contents = '';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 "></span>&nbsp; Canceled</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 "></span>&nbsp; In progress</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 "></span>&nbsp; Scheduled</div>';
+                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 "></span>&nbsp; Finished</div>';
+                                contents += '<hr>';
+                   
+                                theDiv.innerHTML += contents;
+                                var theDivcount = document.getElementById("countVisits");
+                                theDivcount.innerHTML = count;
+
+                                $('#idroutedel').data('IDr', id_route); //setter
+                                $('#idrouteedit').data('IDr', id_route); 
+                                $('#idrouteedit').data('RepeatM', result.sel); 
+                            },
+                            error: function (request) {
+                                $("#loading").hide();
+
+
+                            }
+                        });
+                        $("#hiddenDiv").css("display", "block");
+                        // change the border color just for fun
+                        $(".fc-h-event").css("border-color", "#000 !important");
+                        $(".fc-h-event").css("background", "#fff");
+                        $(this).css("background", "#00ce68");
+                    }
+
+
+                })
+            }
+        });
+    })(jQuery);
+
+
+
+</script>
+<script>
+    var button = document.getElementById('close_divmap'); // Assumes element with id='button'
+
+    button.onclick = function () {
+        var div = document.getElementById('mydivInfo');
+        div.style.display = 'none';
+
+    };
+
+</script>
+
+
+<script>
+    //Make the DIV element draggagle:
+    dragElement(document.getElementById("mydivInfo"));
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            /* if present, the header is where you move the DIV from:*/
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            /* otherwise, move the DIV from anywhere inside the DIV:*/
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+</script>
+

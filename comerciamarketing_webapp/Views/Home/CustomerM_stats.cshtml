@@ -37,6 +37,32 @@
                                             <div class="col-md-4 grid-margin stretch-card">
                                                 <div class="card">
                                                     <div class="card-body">
+                                                        <h4 class="card-title">By Brand</h4>
+                                                        <select class="form-control" type="hidden" name="brand" id="brand" value="" style="width:100%;">
+                                                            <option value="0">Select a Brand</option>
+                                                            @foreach (var brand in ViewBag.brands)
+                                                {
+                                                    if (brand.FirmCode == ViewBag.branddef)
+                                                    {
+                                                        <option value="@brand.FirmCode" selected>@brand.FirmName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@brand.FirmCode">@brand.FirmName</option>
+                            }
+
+                        }
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-4 grid-margin stretch-card">
+                                                <div class="card">
+                                                    <div class="card-body">
                                                         <a href="#" class="btn btn-primary" id="click_filterR">Apply<i class="mdi mdi-check-all"></i></a>
 
                                                     </div>
@@ -87,6 +113,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="@Url.Action("GalleryG", "VisitsMs", new {id="0", IDcustomer=ViewBag.customerID, brand = ViewBag.branddef, showimg=false})" target="_blank" class="btn btn-primary btn-sm mt-3 mb-4">General Gallery</a>
                             </div>
                         </div>
                     </div>
@@ -328,57 +355,113 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-0">Activities</h4>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-inline-block pt-3">
-                                        <div class="d-flex">
-                                            <h2 class="mb-0">@ViewBag.totalAct</h2>
-                                            <div class="d-flex align-items-center ml-2">
+                @*<div class="row">
+            <div class="col-md-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-0">Activities</h4>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-inline-block pt-3">
+                                <div class="d-flex">
+                                    <h2 class="mb-0">@ViewBag.totalAct</h2>
+                                    <div class="d-flex align-items-center ml-2">
 
 
-                                            </div>
-                                        </div>
-                                        <small class="text-gray">Forms, Audits, Sales Orders, Demos</small>
                                     </div>
-                                    <div class="d-inline-block">
-                                        <div class="bg-success px-4 py-2 rounded">
-                                            <i class="mdi mdi-file-document text-white icon-lg"></i>
-                                        </div>
-                                    </div>
+                                </div>
+                                <small class="text-gray">Forms, Audits, Sales Orders, Demos</small>
+                            </div>
+                            <div class="d-inline-block">
+                                <div class="bg-success px-4 py-2 rounded">
+                                    <i class="mdi mdi-file-document text-white icon-lg"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 grid-margin">
+                </div>
+            </div>
+            <div class="col-md-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-0">Visited stores</h4>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-inline-block pt-3">
+                                <div class="d-flex">
+                                    <h2 class="mb-0">@ViewBag.totalVisitas</h2>
+                                    <div class="d-flex align-items-center ml-2">
+
+                                    </div>
+                                </div>
+                                <small class="text-gray">&nbsp;</small>
+                            </div>
+                            <div class="d-inline-block">
+                                <div class="bg-primary px-4 py-2 rounded">
+                                    <i class="mdi mdi-basket-fill text-white icon-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+                <!--ROUTES LIST-->
+                <div class="row">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-0">Visited stores</h4>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-inline-block pt-3">
-                                        <div class="d-flex">
-                                            <h2 class="mb-0">@ViewBag.totalVisitas</h2>
-                                            <div class="d-flex align-items-center ml-2">
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                      
+                                        <hr />
+
+                                        <div id="hiddenDiv" style="display:none">
+                                           
+                                            <p id="nameofroute">Name of the Route</p>
+                                            <div class="d-flex justify-content-between mt-2">
+
+                                                <small id="porcentajeroute">0 %</small>
+                                            </div>
+                                            <div class="progress progress-sm mt-2">
+                                                <div id="progressbarroute" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div><br />
+                                            <div class="d-flex align-items-center">
+                                                <small class="font-weight-bold mr-2 mb-0">Visits</small>
+                                                <div class="badge badge-inverse-primary badge-pill" id="countVisits">0</div>
+                                            </div>
+                                            <div class="wrapper mt-3" id="appendDivVisits">
 
                                             </div>
+                                            @*<div class="wrapper">
+                                        <div class="wrapper d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <small class="font-weight-bold mr-2 mb-0">Representatives</small>
+                                                <div class="badge badge-inverse-primary badge-pill">0</div>
+                                            </div>
+
                                         </div>
-                                        <small class="text-gray">&nbsp;</small>
+                                        <div class="calendar-aside">
+
+                                            <div class="list">
+
+                                                <span class="user-text">Amanda Stone</span>
+                                                <span class="count online ml-auto">
+                                                    <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                        </div>
                                     </div>
-                                    <div class="d-inline-block">
-                                        <div class="bg-primary px-4 py-2 rounded">
-                                            <i class="mdi mdi-basket-fill text-white icon-lg"></i>
-                                        </div>
+                                    <div class="col-md-10">
+                                        <div id="calendar"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--ROUTES LIST-->
-                <div class="row">
+                @*<div class="row">
                     <div class="col-md-12 grid-margin">
                         <div class="card">
                             <div class="card-body">
@@ -390,50 +473,52 @@
                                         <thead>
                                             <tr>
                                                 @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                {
-                                <th scope="col">ID</th>
-}
+                                    {
+                                        <th scope="col">ID</th>
+                        }
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Date</th>
-                                                <th scope="col">Estimated completion date</th>
+                                                <th scope="col">Representatives</th>
+                                                <th scope="col">Complete Visits</th>
                                                 <th scope="col">Status</th>
                                                 @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                {
-                                <th scope="col">Actions</th>
-}
+                                    {
+                                        <th scope="col">Actions</th>
+                        }
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var itemRuta in Model)
-            {
-                                <tr>
-                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
+                                            @foreach (var itemRuta in ViewBag.ruts)
+                                {
+                                    <tr>
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                            {
                                 <td scope="row" data-label="ID">
                                     @itemRuta.ID_route
 
                                 </td>}
-                                    <td data-label="Name">
-                                        <i class="mdi mdi-truck-delivery icon-sm text-info"></i>
-                                        <a class="text-black" href="#order-listing" id="@itemRuta.query2" onclick="filter(this.id)">
-                                            @itemRuta.query2
-                                        </a>
-                                    </td>
+                                        <td data-label="Name">
+                                            <i class="mdi mdi-truck-delivery icon-sm text-info"></i>
+                                            <a class="text-black" href="#order-listing" id="@itemRuta.query2" onclick="filter(this.id)">
+                                                @itemRuta.query2
+                                            </a>
+                                        </td>
 
-                                    <td data-label="Date">@itemRuta.date.ToLongDateString()</td>
-                                    <td data-label="Estimated completion date">@itemRuta.end_date.ToLongDateString()</td>
+                                        <td data-label="Date">@itemRuta.date.ToShortDateString()</td>
+                                        <td data-label="Representatives">@itemRuta.query1</td>
+                                        <td data-label="Complete Visits">@itemRuta.query4</td>
 
-                                    <td data-label="Status">
-                                        <div class="d-flex justify-content-between mt-2">
+                                        <td data-label="Status">
+                                            <div class="d-flex justify-content-between mt-2">
 
-                                            <small>@Convert.ToDecimal(itemRuta.query3).ToString("F") %</small>
-                                        </div>
-                                        <div class="progress progress-sm mt-2">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: @Convert.ToDecimal(itemRuta.query3).ToString("F")%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
+                                                <small>@Convert.ToDecimal(itemRuta.query3).ToString("F") %</small>
+                                            </div>
+                                            <div class="progress progress-sm mt-2">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: @Convert.ToDecimal(itemRuta.query3).ToString("F")%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                            {
                                 <td data-label="Actions">
                                     &nbsp;
                                     <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@itemRuta.ID_route" data-description="@itemRuta.query2">
@@ -441,9 +526,9 @@
 
                                     </a>
                                 </td>
-}
-                                </tr>
-}
+                }
+                                    </tr>
+                    }
                                         </tbody>
                                     </table>
 
@@ -451,10 +536,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <!--END-->
                 <!--VISITS LIST-->
-                <div class="row">
+                @*<div class="row">
                     <div class="col-md-12 grid-margin">
                         <div class="card">
                             <div class="card-body">
@@ -466,10 +551,10 @@
                                         <thead>
                                             <tr>
                                                 @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
-                                            <th scope="col">ID </th>
+                                    {
+                                        <th scope="col">ID </th>
 
-}
+                        }
                                                 <th scope="col">Store</th>
                                                 <th scope="col">Representatives</th>
                                                 <th scope="col">Strategic partner</th>
@@ -486,68 +571,68 @@
                                         <tbody>
                                             @foreach (var itemVisita in ViewBag.visitas)
                                 {
-                                            <tr>
-                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                    <tr>
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                            {
+                                <td scope="row" data-label="ID">
+                                    @itemVisita.ID_visit
+
+                                </td>
+
+                }
+
+                                        <td data-label="Store">
+                                            <a class="text-black" href="@Url.Action("DetailsC", "VisitsMs", new { id=itemVisita.ID_visit,ID_Customer=ViewBag.customerID, brand = ViewBag.branddef})">
+                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                <span class="text-primary">@itemVisita.address</span>
+                                            </a>
+                                        </td>
+                                        <td data-label="Representatives">@itemVisita.customer</td>
+                                        <td data-label="Strategic partner">@itemVisita.comments</td>
+                                        <td data-label="Route">@itemVisita.city</td>
+
+
+
+                                        <td data-label="Date">@itemVisita.visit_date.ToShortDateString()</td>
+
+
+
+                                        <td data-label="Status">
+                                            @switch (itemVisita.ID_visitstate)
+                                {
+                                    case 1: //Canceled
+                                        <label class="badge badge-danger">Canceled</label>
+                            break;
+                        case 2: //In Progress
+                            <label class="badge badge-success">In progress</label>
+                break;
+            case 3: //Scheduled
+                if (itemVisita.customer == "" || itemVisita.customer == null)
+                {
+                    <label class="badge badge-warning">Not assigned</label>
+    }
+    else
     {
-                                            <td scope="row" data-label="ID">
-                                                @itemVisita.ID_visit
-
-                                            </td>
-
-}
-
-                                                <td data-label="Store">
-                                                    <a class="text-black" href="@Url.Action("DetailsC", "VisitsMs", new { id=itemVisita.ID_visit})">
-                                                        <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                        <span class="text-primary">@itemVisita.address</span>
-                                                    </a>
-                                                </td>
-                                                <td data-label="Representatives">@itemVisita.customer</td>
-                                                <td data-label="Strategic partner">@itemVisita.comments</td>
-                                                <td data-label="Route">@itemVisita.city</td>
-
-
-
-                                                <td data-label="Date">@itemVisita.visit_date.ToShortDateString()</td>
-
-
-
-                                                <td data-label="Status">
-                                                    @switch (itemVisita.ID_visitstate)
-        {
-            case 1: //Canceled
-                                            <label class="badge badge-danger">Canceled</label>
-break;
-case 2: //In Progress
-                                            <label class="badge badge-success">In progress</label>
-break;
-case 3: //Scheduled
-if (itemVisita.customer == "" || itemVisita.customer == null)
-{
-                                            <label class="badge badge-warning">Not assigned</label>
-}
-else
-{
-                                            <label class="badge badge-warning">Scheduled</label>
+            <label class="badge badge-warning">Scheduled</label>
 }
 break;
 case 4: //Finished
-                                            <label class="badge badge-primary">Finished</label>
+            <label class="badge badge-primary">Finished</label>
 break;
 }
 
-                                                </td>
-                                            </tr>
+                                        </td>
+                                    </tr>
                     }
                                         </tbody>
-            
+
                                     </table>
-                                         <a  href="#order-listing" onclick="filter_clear()"> Clear filter </a>
+                                    <a href="#order-listing" onclick="filter_clear()"> Clear filter </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
 
                 @Html.Partial("~/Views/Shared/Footer2.cshtml")

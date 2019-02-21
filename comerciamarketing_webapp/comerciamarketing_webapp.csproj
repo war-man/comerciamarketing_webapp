@@ -52,6 +52,9 @@
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DotNetZip, Version=1.13.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.0\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -248,6 +251,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.16.22.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.16.22\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ApplicationInsights">
@@ -416,6 +422,7 @@
     <Compile Include="Models\VisitsM_representatives.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Zipimages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reportes\rptDemo.cs">
       <AutoGen>True</AutoGen>
@@ -3183,7 +3190,7 @@
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\email_userregistration.cshtml" />
     <Content Include="Views\Usuarios\Login_history.cshtml" />
-    <Content Include="Views\Emails\email_confirmation.cshtml" />
+    <Content Include="Views\Emails\email_confirmationReps.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Emails\email_changepassword.cshtml" />
     <Content Include="Views\Recursos_usuario\Preview.cshtml" />
@@ -3281,6 +3288,11 @@
     <Content Include="Views\Home\RoutesM_calendar.cshtml" />
     <Content Include="Views\Shared\Routes_calendarScript.cshtml" />
     <Content Include="Views\Home\Promotions_Ducal.cshtml" />
+    <Content Include="Views\FormsM\Activityraonresume.cshtml" />
+    <Content Include="Views\VisitsMs\GalleryG.cshtml" />
+    <Content Include="Views\Emails\email_confirmation.cshtml" />
+    <Content Include="Views\Emails\email_credentials.cshtml" />
+    <Content Include="Views\Shared\Routes_calendarScriptCustomers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

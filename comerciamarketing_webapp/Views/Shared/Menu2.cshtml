@@ -109,7 +109,7 @@ else
             </li>
 }
 
-                @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
+                @*@if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
     {
             <li class="nav-item active">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
@@ -120,7 +120,7 @@ else
             <li class="nav-item">
                 <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
             </li>
-}
+}*@
                 @if (ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
     {
             <li class="nav-item active">
@@ -255,7 +255,7 @@ else
             <a href="@Url.Action("Main", "Home")" class="nav-link">Home</a>
         </li>
             }
-            @if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
+            @*@if ((ViewBag.Title == "Comercia Marketing - RoutesM") || (ViewBag.Title == "Comercia Marketing - RoutesM details"))
     {
         <li class="nav-item active">
             <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
@@ -266,7 +266,7 @@ else
         <li class="nav-item">
             <a href="@Url.Action("RoutesM", "Home")" class="nav-link">Routes</a>
         </li>
-            }
+            }*@
         </ul>
 }
 
@@ -279,27 +279,27 @@ else
         <li class="nav-item active">
             <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
         </li>
-        <li class="nav-item">
+        @*<li class="nav-item">
             <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
-        </li>
+        </li>*@
 }
 else if (ViewBag.Title == "Comercia Marketing - Analytics")
 {
         <li class="nav-item">
             <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
         </li>
-        <li class="nav-item active">
+        @*<li class="nav-item active">
             <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
-        </li>
+        </li>*@
 }
 else 
 {
         <li class="nav-item">
             <a href="@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID})" class="nav-link">Home</a>
         </li>
-        <li class="nav-item">
+        @*<li class="nav-item">
             <a href="@Url.Action("Analytics", "Home", new { id=ViewBag.customerID})" class="nav-link">Analytics</a>
-        </li>
+        </li>*@
 }
         </ul>
 }

@@ -1500,7 +1500,7 @@
                     var IDroute = button.data("IDr");// Extract info from data-* attributes
                     var Desroute = button.data("RepeatM");
 
- 
+
                     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                     var modal = $(this);
@@ -1952,6 +1952,10 @@
 @if (ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
 {
     @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
+}
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    @Html.Partial("~/Views/Shared/Routes_calendarScriptCustomers.cshtml")
 }
 <script>
     $(document).ready(function () {
@@ -2725,6 +2729,45 @@
 
 
 }
+
+@if (ViewBag.Title == "Comercia Marketing - Gallery")
+{
+
+    <script>
+    $(function () {
+        $('#click_filterR').click(function () {
+
+            var idvisita = $('#lstvisits').val();
+            var idact = $('#lstActivities').val();
+            var idbra = $('#lstbrand').val();
+            var idrep = $('#lstreps').val();
+            var idsection = $('#lstsection').val();
+        var url = '@Url.Action("GalleryG", "VisitsMs", new { id="START", IDcustomer = ViewBag.customerID, brand = "DEFB", activityform="FINISH", showimg=true, rep="SELR", section ="PRSTI" })';
+
+
+            url = url.replace('START', idvisita);
+
+        var newurl = url;
+
+
+            newurl = newurl.replace('FINISH', idact);
+            newurl = newurl.replace('DEFB', idbra);
+            newurl = newurl.replace('SELR', idrep);
+            newurl = newurl.replace('PRSTI', idsection);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+    </script>
+
+
+}
+
 @if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
 {
 
@@ -2732,11 +2775,12 @@
     $(function () {
         $('#click_filterR').click(function () {
 
+            var br = $("#brand").val();
 
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH" })';
+        var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH", brand = "marca" })';
 
 
             url = url.replace('START', st.toDateString());
@@ -2747,6 +2791,8 @@
             newurl = newurl.replace('FINISH', ed.toDateString());
         newurl = newurl.replace(/&amp;/g, "&");
         //alert(newurl);
+            newurl = newurl.replace('marca', br);
+
         window.location.href = newurl;
 
 
@@ -2836,7 +2882,8 @@
             var table = $('#order-listing').DataTable();
 
             //table.columns(4).search("").draw();
-            table.columns(3).search("" + clicked_id + "", true, false, true).draw();
+            table.columns(4).search("" + clicked_id + "", true, false, true).draw();
+            //table.columns(3).search("" + clicked_id + "", true, false, true).draw();
         }
 
         function filter_clear() {
@@ -2845,5 +2892,27 @@
             //table.columns(4).search("").draw();
             table.columns(3).search("").draw();
         }
+
+        //$("#brand").select2({
+
+
+        //});
+            @*var json = JSON.parse('@Html.Raw(ViewBag.brands)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.id; // replace pk with your identifier
+        obj.text = obj.text;
+        return obj;
+    });
+
+
+
+
+        $('#brand').val();
+        $(document).ready(function () {
+
+            $("#brand").select2().select2('val', '@Html.Raw(ViewBag.branddef)');
+
+        });*@
     </script>
 }

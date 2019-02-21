@@ -939,7 +939,7 @@ namespace comerciamarketing_webapp.Controllers
 
             if (usuarios.contrasena == null)
             {
-                usuarios.contrasena = "c0m2018";
+                usuarios.contrasena = "c0m2019";
             }
 
             if (usuarios.cargo == null)
@@ -965,6 +965,26 @@ namespace comerciamarketing_webapp.Controllers
             {
                 db.Usuarios.Add(usuarios);
                 db.SaveChanges();
+
+                try
+                {
+                    //Enviamos correo para notificar
+                    dynamic email = new Email("email_confirmationReps");
+                    email.To = usuarios.correo.ToString();
+                    email.From = "customercare@comerciamarketing.com";
+                    email.Nombrecliente = usuarios.nombre + " " + usuarios.apellido;
+                    email.Correocliente = usuarios.correo;
+                    email.Passwordcliente = usuarios.contrasena;
+
+                    email.Send();
+
+                    //FIN email
+                }
+                catch
+                {
+
+                }
+
                 TempData["exito"] = "User created successfully.";
                 return RedirectToAction("Representatives", "Home", null);
             }

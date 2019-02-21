@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -15,6 +17,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
+using Ionic.Zip;
 using Postal;
 
 namespace comerciamarketing_webapp.Controllers
@@ -180,9 +183,11 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         return HttpNotFound();
                     }
+                    //Lista de usuarios representantes
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
 
-                    //Seleccionamos representantes que estan incluidos
-                    var reps = (from rep in db.VisitsM_representatives
+                //Seleccionamos representantes que estan incluidos
+                var reps = (from rep in db.VisitsM_representatives
                                 where (rep.ID_visit == id)
                                 select new representativesVisit
                                 {
@@ -194,7 +199,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     foreach (var itemR in reps)
                     {
-                        var user = (from u in db.Usuarios where (u.ID_usuario == itemR.ID) select u).FirstOrDefault();
+                        var user = (from u in usuarios where (u.ID_usuario == itemR.ID) select u).FirstOrDefault();
                         if (user != null) { itemR.name = user.nombre + " " + user.apellido; itemR.email = user.correo; } else { itemR.name = ""; itemR.email = ""; }
                     }
 
@@ -207,7 +212,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         foreach (var itemac in activities)
                         {
-                            var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+                            var uassigned = (from u in usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
                             if (uassigned == null && itemac.ID_usuarioEnd == 0)
                             {
                                 var usuario = (from a in CMKdb.OCRD where (a.CardCode == itemac.ID_usuarioEndString) select a).FirstOrDefault();
@@ -234,7 +239,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         foreach (var itemac in activities)
                         {
-                            var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
+                            var uassigned = (from u in usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
 
                             itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
 
@@ -263,7 +268,7 @@ namespace comerciamarketing_webapp.Controllers
 
                     //FIN ACTIVITIES
                     //representantes
-                    var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9);
+                    
 
                     ViewBag.representatives = usuarios.ToList();
 
@@ -277,7 +282,7 @@ namespace comerciamarketing_webapp.Controllers
                                                            }).ToList();
                     ViewBag.reps_demos = selectList_usuarios;
                     //Cargamos ruta 
-                    var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
+                    //var ruta = (from r in db.RoutesM where (r.ID_route == visitsM.ID_route) select r).FirstOrDefault();
                     //FORMULARIOS
 
                     //List<int> FormsIds = ruta.query1.Split(',').Select(int.Parse).ToList();
@@ -1292,7 +1297,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
-        public ActionResult DetailsC(int? id, string ID_Customer)
+        public ActionResult DetailsC(int? id, string ID_Customer, string brand)
         {
 
             if (Session["IDusuario"] != null)
@@ -1312,8 +1317,8 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     return HttpNotFound();
                 }
-
-                ID_Customer = datosUsuario.Empresas.ID_SAP;
+                
+                //ID_Customer = datosUsuario.Empresas.ID_SAP;
 
                 //Seleccionamos representantes que estan incluidos
                 var reps = (from rep in db.VisitsM_representatives
@@ -1352,24 +1357,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 ViewBag.repslist = listau.ToList();
-                //FIN representantes
-                //ACTIVITIES
-
-                    var activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_customer==ID_Customer) select a).ToList();
-
-                    foreach (var itemac in activities)
-                    {
-                        var uassigned = (from u in db.Usuarios where (u.ID_usuario == itemac.ID_usuarioEnd) select u).FirstOrDefault();
-
-                        itemac.ID_customer = uassigned.nombre + " " + uassigned.apellido;
-
-                    }
-
-
-                    ViewBag.activities = activities;
-                
-
-
+                //FIN representante
                 
                     ViewBag.estadovisita = visitsM.ID_visitstate;
                 
@@ -1396,11 +1384,42 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.activeForms = activeForms;
                 //FIN FORMULARIOS
 
-                var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                //var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
 
-                ViewBag.customers = customers.ToList();
+                //ViewBag.customers = customers.ToList();
+                List<ActivitiesM> actividades = new List<ActivitiesM>();
 
-                var actividades = (from a in db.ActivitiesM where (a.ID_customer == ID_Customer && a.ID_visit == id) select a).ToList();
+                if (brand == null || brand == "" || brand=="0")
+                {
+                     actividades = (from a in db.ActivitiesM where (a.ID_customer == ID_Customer && a.ID_visit == id) select a).ToList();
+                }
+                else {
+
+                    actividades = (from a in db.ActivitiesM where (a.ID_customer == ID_Customer && a.ID_visit == id) select a).ToList();
+
+                    var activitiesdef = (from a in actividades select a.ID_activity).Distinct().ToArray();
+
+                    var formsdef = (from a in db.FormsM_details where (activitiesdef.Contains(a.ID_visit) && a.ID_formresourcetype == 13 && a.fvalueText.StartsWith(brand) && a.fvalueText.EndsWith(brand)) select a.ID_visit).Distinct().ToArray();
+
+
+                    actividades = (from a in actividades where (formsdef.Contains(a.ID_activity)) select a).ToList();
+
+
+
+                }
+
+                foreach (var item in actividades) {
+                    var dt = (from a in db.FormsM_details where (a.ID_formresourcetype == 13 && a.ID_visit == item.ID_activity) select a).FirstOrDefault();
+                    if (dt != null) {
+                        item.ID_customer = dt.fdescription;
+                    }
+                    else{
+                        item.ID_customer = "NA";
+                    }
+
+                }
+
+                ViewBag.branddef = brand;
 
                 ViewBag.actividades = actividades;
 
@@ -1592,19 +1611,26 @@ namespace comerciamarketing_webapp.Controllers
 
                 //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
                 //Guardamos el detalle
-                var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).ToList();
+                var sql = @"usp_CreateFormDetail @IDVisit, @IDForm";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@IDVisit", nuevaActivida.ID_activity),
+                    new SqlParameter("@IDForm", IDForm));
 
-                foreach (var item in detalles_acopiar)
-                {
-                    FormsM_details nuevodetalle = new FormsM_details();
-                    nuevodetalle = item;
-                    nuevodetalle.original = false;
-                    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
 
-                    db.FormsM_details.Add(nuevodetalle);
-                    db.SaveChanges();
-                }
+                //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).AsNoTracking().ToList();
+                //List<FormsM_details> dtlstoinsert = new List<FormsM_details>();
+                //foreach (var item in detalles_acopiar)
+                //{
+                //    FormsM_details nuevodetalle = new FormsM_details();
+                //    nuevodetalle = item;
+                //    nuevodetalle.original = false;
+                //    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
 
+                //    //db.FormsM_details.Add(nuevodetalle);
+                //    //db.SaveChanges();
+                //    dtlstoinsert.Add(nuevodetalle);
+                //}
+                //db.BulkInsert(dtlstoinsert);
 
                 //Por ultimo asignamos el usuario a la visita
                 //Pero verificamos si ya existe
@@ -1825,24 +1851,31 @@ namespace comerciamarketing_webapp.Controllers
 
                 //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
                 //Guardamos el detalle
-                var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).ToList();
+                //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).AsNoTracking().ToList();
 
-                foreach (var item in detalles_acopiar)
-                {
-                    FormsM_details nuevodetalle = new FormsM_details();
-                    nuevodetalle = item;
-                    nuevodetalle.original = false;
-                    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
+                var sql = @"usp_CreateFormDetail @IDVisit, @IDForm";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@IDVisit", nuevaActivida.ID_activity),
+                    new SqlParameter("@IDForm", IDForm));
 
-                    db.FormsM_details.Add(nuevodetalle);
-                    db.SaveChanges();
-                }
+                //List<FormsM_details> dtlstoinsert = new List<FormsM_details>();
 
+                //foreach (var item in detalles_acopiar)
+                //{
+                //    FormsM_details nuevodetalle = new FormsM_details();
+                //    nuevodetalle = item;
+                //    nuevodetalle.original = false;
+                //    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
+
+                //    dtlstoinsert.Add(nuevodetalle);
+                    
+                //}
+                //db.BulkInsert(dtlstoinsert);
 
                 //Por ultimo asignamos el usuario a la visita
                 //Pero verificamos si ya existe
 
-                    var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
+                var existeenvisita = (from v in db.VisitsM_representatives where (v.ID_visit == nuevaActivida.ID_visit && v.ID_usuario == IDRep) select v).Count();
 
 
                 if (existeenvisita > 0)
@@ -2210,19 +2243,26 @@ namespace comerciamarketing_webapp.Controllers
 
                         //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
                         //Guardamos el detalle
-                        var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == nuevaActivida.ID_form && a.original == true) select a).ToList();
+                        var sql = @"usp_CreateFormDetail @IDVisit, @IDForm";
+                        db.Database.ExecuteSqlCommand(sql,
+                            new SqlParameter("@IDVisit", nuevaActivida.ID_activity),
+                            new SqlParameter("@IDForm", nuevaActivida.ID_form));
 
-                        foreach (var item in detalles_acopiar)
-                        {
-                            FormsM_details nuevodetalle = new FormsM_details();
-                            nuevodetalle = item;
-                            nuevodetalle.original = false;
-                            nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
 
-                            db.FormsM_details.Add(nuevodetalle);
-                            db.SaveChanges();
-                        }
+                        //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == nuevaActivida.ID_form && a.original == true) select a).AsNoTracking().ToList();
+                        //List<FormsM_details> dtlstoinsert = new List<FormsM_details>();
+                        //foreach (var item in detalles_acopiar)
+                        //{
+                        //    FormsM_details nuevodetalle = new FormsM_details();
+                        //    nuevodetalle = item;
+                        //    nuevodetalle.original = false;
+                        //    nuevodetalle.ID_visit = nuevaActivida.ID_activity; //TOMAREMOS ID VISIT COMO ID ACTIVITY PORQUE ES POR REPRESENTANTE Y NO POR VISITA
 
+                        //    //db.FormsM_details.Add(nuevodetalle);
+                        //    //db.SaveChanges();
+                        //    dtlstoinsert.Add(nuevodetalle);
+                        //}
+                        //db.BulkInsert(dtlstoinsert);
                         if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)//Administrador
                         {
                             TempData["exito"] = "Activity created successfully.";
@@ -2272,17 +2312,17 @@ namespace comerciamarketing_webapp.Controllers
                 ActivitiesM activity = db.ActivitiesM.Find(ID_activityD);
                 db.ActivitiesM.Remove(activity);
                 db.SaveChanges();
+                //Eliminamos detalle
+                var sql = @"usp_DeleteFormDetail @IDVisit";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@IDVisit", ID_activityD));
 
-                //Eliminamos el detalle que genero la actividad en FormsM_details
-                var lista_eliminar = (from c in db.FormsM_details where (c.ID_visit ==ID_activityD && c.original == false) select c).ToList();
 
-                foreach (var item in lista_eliminar)
-                {
-                    FormsM_details detailstodelete = db.FormsM_details.Find(item.ID_details);
-                    db.FormsM_details.Remove(detailstodelete);
-                    db.SaveChanges();
 
-                }
+                ////Eliminamos el detalle que genero la actividad en FormsM_details
+                //var lista_eliminar = (from c in db.FormsM_details where (c.ID_visit ==ID_activityD && c.original == false) select c).ToList();
+                //db.BulkDelete(lista_eliminar);
+
                 TempData["exito"] = "Activity deleted successfully.";
                 return RedirectToAction("Detailsa","VisitsMs", new { id=ID_visitA});
 
@@ -2357,7 +2397,7 @@ namespace comerciamarketing_webapp.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult GalleryC(string id, string modulo, string IDcustomer)
+        public ActionResult GalleryC(string id, string modulo, string IDcustomer, string brand)
         {
             if (Session["IDusuario"] != null)
             {
@@ -2366,28 +2406,41 @@ namespace comerciamarketing_webapp.Controllers
 
                 ViewBag.usuario = datosUsuario.correo;
                 ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
-
+                List<FormsM_details> detalles = new List<FormsM_details>();
                 int IDV = Convert.ToInt32(id);
 
                 try
                 {
                     var actividadesList = (from e in db.ActivitiesM where (e.ID_visit == IDV && e.ID_customer == IDcustomer) select e).ToList();
-                    var actividades = (from a in db.ActivitiesM where (a.ID_visit == IDV && a.ID_customer == IDcustomer) select a.ID_activity).ToArray();
+                    var actividades = (from a in actividadesList select a.ID_activity).ToArray();
 
-                    var detalles = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit) && b.ID_formresourcetype == 5) select b).ToList();
+                    var detallesGlobales = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit)) select b).ToList();
+                    if (brand == null || brand == "" || brand == "0")
+                    {
+                     detalles = (from b in detallesGlobales where (b.ID_formresourcetype == 5) select b).ToList();
+                    }
+                    else {
+                        var detallesGlobalesArr = (from b in detallesGlobales where (b.ID_formresourcetype == 13 && b.fvalueText.StartsWith(brand) && b.fvalueText.EndsWith(brand)) select b.ID_visit).ToArray();
+                        detalles = (from b in detallesGlobales where (b.ID_formresourcetype == 5 && detallesGlobalesArr.Contains(b.ID_visit)) select b).ToList();
+                    }
+
 
 
                     foreach (var item in detalles)
                     {
                         var f = (from c in actividadesList where (c.ID_activity == item.ID_visit) select c).FirstOrDefault();
+                        var bra = (from br in detallesGlobales where (br.ID_formresourcetype == 13 && br.ID_visit == item.ID_visit) select br).FirstOrDefault();
+
+                        var brandn = "";
+                        if(bra != null){ brandn = bra.fdescription; }
 
                         item.fvalueText = f.Customer;
                         item.fdescription = f.description;
-                        item.query1 = f.check_out.ToShortDateString();
+                        item.query1 = brandn;
 
                     }
 
-
+                    ViewBag.branddef = brand;
                     ViewBag.imagenes = detalles;
                     ViewBag.id_visita = id;
                     ViewBag.customerID = IDcustomer;
@@ -2415,6 +2468,291 @@ namespace comerciamarketing_webapp.Controllers
             }
 
         }
+
+        public class brands
+        {
+            public string FirmCode { get; set; }
+            public string FirmName { get; set; }
+            public string Customer { get; set; }
+            public Boolean isselected { get; set; }
+        }
+
+        public class ActForm
+        {
+            public int id { get; set; }
+            public string text { get; set; }
+
+        }
+
+        [HttpPost]
+        public ActionResult DownloadZip(string id, string IDcustomer, string brands, string activityform) {
+            List<FormsM_details> detalles = new List<FormsM_details>();
+            detalles =(List<FormsM_details>) Session["imagesDown"];
+            List<FileModel> files = new List<FileModel>();
+            foreach (var item in detalles)
+            {
+                files.Add(new FileModel()
+                {
+                    id = item.ID_details,
+                    FileName = Path.GetFileName(item.fsource),
+                    FileActivity = item.fdescription,
+                    FilePath = item.fsource,
+                    FileCustomer = item.fvalueText,
+                    FileBrand = item.query1
+                });
+            }
+           
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AlternateEncodingUsage = ZipOption.AsNecessary;
+                zip.AddDirectoryByName("Files");
+                foreach (FileModel file in files)
+                {
+                    //if (file.IsSelected)
+                    //{
+                    //    zip.AddFile(file.FilePath, "Files");
+                    //}                    
+                    if (System.IO.File.Exists(Server.MapPath(file.FilePath)))
+                    {
+                        try
+                        {
+                            zip.AddFile(Server.MapPath(file.FilePath), "Files");
+                        }
+                        catch (System.IO.IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+
+                        }
+                    }
+                    
+                    
+                }
+                string zipName = String.Format("Zip_{0}.zip", DateTime.Now.ToString("yyyy-MMM-dd"));
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    zip.Save(memoryStream);
+                    return File(memoryStream.ToArray(), "application/zip", zipName);
+                }
+            }
+
+
+
+        }
+
+        public ActionResult GalleryG(string id, string IDcustomer, string brand, string activityform, bool showimg, string rep, string section)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+                ViewBag.usuario = datosUsuario.correo;
+                ViewBag.nomusuarioSAP = datosUsuario.Empresas.nombre;
+                List<FormsM_details> detalles = new List<FormsM_details>();
+                List<ActivitiesM> actividadesList = new List<ActivitiesM>();
+                int IDV = Convert.ToInt32(id);
+                int IDF = Convert.ToInt32(activityform);
+                List<VisitsM> newlstvisits = new List<VisitsM>();
+
+                    newlstvisits = (List<VisitsM>)Session["visitstemp"];
+                
+
+            
+                
+                var visitsArr = (from c in newlstvisits select c.ID_visit).ToArray();
+                    try
+
+                    {
+                    string[] subtitles = new string[] { "BEFORE", "AFTER", "CONDICION INICIAL EN LA TIENDA (ANTES)", "ESPACIOS E INVENTARIOS", "ANALISIS DE LA COMPETENCIA", "CONDICION FINAL DE LA TIENDA (DESPUES)" };
+
+                    if (id == null || showimg == false)
+                        {
+
+                        }
+                        else
+                        {
+                            if ((id == null || id == "" || id == "0") && (activityform == null || activityform == "" || activityform == "0"))
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (e.ID_customer == IDcustomer && visitsArr.Contains(e.ID_visit)) select e).ToList();
+                            }
+                            else if ((id != null || id != "" || id != "0") && (activityform == null || activityform == "" || activityform == "0"))
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (e.ID_visit == IDV && e.ID_customer == IDcustomer) select e).ToList();
+                            }
+                            else if ((id == null || id == "" || id == "0") && (activityform != null || activityform != "" || activityform != "0"))
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (visitsArr.Contains(e.ID_visit) && e.ID_customer == IDcustomer && e.ID_form == IDF) select e).ToList();
+
+                            }
+                            else if ((id != null || id != "" || id != "0") && (activityform != null || activityform != "" || activityform != "0"))
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (e.ID_visit == IDV && e.ID_customer == IDcustomer && e.ID_form == IDF) select e).ToList();
+
+                            }
+
+
+                            var actividades = (from a in actividadesList select a.ID_activity).ToArray();
+
+                            var detallesGlobales = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit)) select b).ToList();
+
+
+
+                            if (brand == null || brand == "" || brand == "0")
+                            {
+                                detalles = (from b in detallesGlobales where ((b.ID_formresourcetype == 5 || b.ID_formresourcetype == 8) && b.fsource != "") select b).ToList();
+                            }
+                            else
+                            {
+                                var detallesGlobalesArr = (from b in detallesGlobales where (b.ID_formresourcetype == 13 && b.fvalueText.StartsWith(brand) && b.fvalueText.EndsWith(brand)) select b.ID_visit).ToArray();
+                                detalles = (from b in detallesGlobales where ((b.ID_formresourcetype == 5 || b.ID_formresourcetype == 8) && detallesGlobalesArr.Contains(b.ID_visit) && b.fsource != "") select b).ToList();
+                            }
+
+                        var cleardet = (from a in detalles where (!subtitles.Contains(a.fsource) && a.ID_formresourcetype==8) select a.ID_details).ToArray();
+                        detalles = (from c in detalles where (!cleardet.Contains(c.ID_details)) select c).ToList();
+                        var count = 0;
+                            foreach (var item in detalles)
+                            {
+                            
+                            if (item.ID_formresourcetype == 5) {
+                                var f = (from c in actividadesList where (c.ID_activity == item.ID_visit) select c).FirstOrDefault();
+                                var bra = (from br in detallesGlobales where (br.ID_formresourcetype == 13 && br.ID_visit == item.ID_visit) select br).FirstOrDefault();
+
+                                var brandn = "";
+                                if (bra != null) { brandn = bra.fdescription; }
+
+                                item.fvalueText = f.Customer;
+                                item.fdescription = f.ID_activity + " - " + f.description;
+                                item.query1 = brandn;
+
+                                try
+                                {
+                                    for (int i = count - 1; i >= 0; i--)
+                                    {
+                                        var current = detalles[i];
+                                        //Do things
+                                        if (current.ID_formresourcetype == 8) {
+                                            item.query2 = current.fsource;
+                                            break;
+                                        }
+                                        
+                                    }
+                                }
+                                catch { }
+
+                            }
+
+                            count++;
+                        }
+                        
+                    }
+
+                    var lstContainers = detalles
+                    .Where(i => i.ID_formresourcetype == 8 && subtitles.Contains(i.fsource)).GroupBy(p => p.fsource)
+                    .Select(i => i.FirstOrDefault())
+
+                    .ToList();
+
+
+                    var lstbrands = CMKdb.view_CMKEditorB
+.Where(i => i.U_CustomerCM == IDcustomer)
+.Select(i => new brands { FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName, isselected = false, Customer = "" })
+.Distinct()
+.OrderByDescending(i => i.FirmName)
+.ToList();
+            
+                    //ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
+                    ViewBag.brands = lstbrands;
+                    ViewBag.containers = (from h in lstContainers select new brands { FirmCode = h.fsource, FirmName = h.fsource, isselected = false, Customer = "" });
+
+                    var users = (from a in db.Usuarios where (a.ID_empresa == 2 && a.estados_influencia.Contains(IDcustomer) && a.ID_usuario != 59) select a).ToList();
+                    ViewBag.usuarios = users;
+                    //Actividades o tipo de forms
+
+                    //var formsAct = (from f in actividadesList where(f.ID_activitytype==1) select f.ID_form).Distinct().ToArray();
+
+                    var forms = (from form in db.FormsM where (form.ID_form==1 || form.ID_form ==3) select form).ToList();
+
+                    ViewBag.lstvisits = newlstvisits;
+                    ViewBag.formsAct = forms;
+                    ViewBag.branddef = brand;
+                    ViewBag.imagenes = detalles;
+                    ViewBag.repdef = rep;
+                    ViewBag.sectiondef = section;
+                    ViewBag.id_visita = id;
+                    ViewBag.customerID = IDcustomer;
+                    ViewBag.activityFormdef = activityform;
+
+
+
+                    List<FileModel> files = new List<FileModel>();
+                    foreach (var item in detalles)
+                    {
+                        if(item.ID_formresourcetype == 5) { 
+                        var actss = (from b in actividadesList where (b.ID_activity == item.ID_visit) select b).FirstOrDefault();
+                            var stlst = (from d in newlstvisits where (d.ID_visit == actss.ID_visit) select d).FirstOrDefault();
+
+                        var repname = "";
+                            var idrep = "";
+                            var store = "";
+                        try {
+                            var usu = (from a in db.Usuarios where (a.ID_usuario == actss.ID_usuarioEnd) select a).FirstOrDefault();
+                            if (usu != null) {
+                                repname = usu.nombre + " " + usu.apellido;
+                                    idrep = usu.ID_usuario.ToString();
+                            }
+
+                                if (stlst != null) {
+
+                                    store = stlst.store;
+                                }
+
+                                } catch { }
+
+                        files.Add(new FileModel()
+                        {
+                            id = item.ID_details,
+                            FileName = Path.GetFileName(item.fsource),
+                            FileActivity = item.fdescription,
+                            FilePath = item.fsource,
+                            FileCustomer = item.fvalueText,
+                            FileBrand = item.query1,
+                            FileRep = repname,
+                            FileSection = item.query2,
+                            FileStore = store,
+                            FileIDREP = idrep
+                        });
+                        }
+                    }
+
+                    if (rep != "0" && rep != null && rep !="") {
+                        files = (from a in files where (a.FileIDREP == rep) select a).ToList();
+                    }
+                    if (section != "0" && section != null && section != "") {
+                        files = (from a in files where (a.FileSection == section) select a).ToList();
+                    }
+                    var arrFiles = (from h in files select h.id).ToArray();
+
+                    detalles = (from i in detalles where (arrFiles.Contains(i.ID_details)) select i).ToList();
+                    Session["imagesDown"] = detalles;
+
+                    return View(files);
+
+                }
+                catch (Exception ex)
+                {
+
+                        TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                    return RedirectToAction("Index", "Home", null);
+
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+
+        }
+
         public ActionResult Gallery(string id, string modulo)
         {
             if (Session["IDusuario"] != null)
@@ -2953,6 +3291,67 @@ namespace comerciamarketing_webapp.Controllers
                 rd.SetParameterValue("rep", repname.ToString().ToUpper());
                 rd.SetParameterValue("authorized", authorized.fsource.ToString().ToUpper());
 
+
+                //Verificams si existe firma electronica
+                var firma = (from d in db.FormsM_details where (d.ID_visit == id && d.ID_formresourcetype == 9) select d).ToList();
+
+                int firmaC = firma.Count();
+
+
+
+
+                if (firmaC == 1)
+                {
+
+                    string data = firma[0].fsource;
+                    if (data != "")
+                    {
+                        var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+                        var binData = Convert.FromBase64String(base64Data);
+
+                        using (var streamf = new MemoryStream(binData))
+                        {
+
+                            Bitmap myImage = new Bitmap(streamf);
+
+                            // Assumes myImage is the PNG you are converting
+                            using (var b = new Bitmap(myImage.Width, myImage.Height))
+                            {
+                                b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+
+                                using (var g = Graphics.FromImage(b))
+                                {
+                                    g.Clear(Color.White);
+                                    g.DrawImageUnscaled(myImage, 0, 0);
+                                }
+
+                                // Now save b as a JPEG like you normally would
+
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                                b.Save(path, ImageFormat.Jpeg);
+
+
+                                rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+                            }
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimgsign", "");
+
+                    }
+
+                }
+                else
+                {
+                    rd.SetParameterValue("urlimgsign", "");
+                }
+
+
                 var filePathOriginal = Server.MapPath("/Reportes/pdf");
 
                 Response.Buffer = false;
@@ -3384,6 +3783,629 @@ namespace comerciamarketing_webapp.Controllers
             }
             else
             {
+                return RedirectToAction("Index", "Home", null);
+            }
+        }
+
+        public ActionResult SendDemoResume(int? id)
+        {
+
+            var demo_header = (from a in db.ActivitiesM where (a.ID_activity == id) select a).ToList();
+
+
+
+
+            if (demo_header.Count > 0)
+
+            {
+                var id_visit = demo_header[0].ID_visit;
+                var visit = (from b in db.VisitsM where (b.ID_visit == id_visit) select b).FirstOrDefault();
+                foreach (var item in demo_header)
+                {
+                    var usuario = (from u in CMKdb.OCRD where (u.CardCode == item.ID_usuarioEndString) select u).FirstOrDefault();
+                    if (usuario == null)
+                    {
+
+                    }
+                    else
+                    {
+                        item.ID_usuarioEndString = usuario.CardName;
+                    }
+
+                    item.Customer = visit.store + ",  " + visit.address;
+
+                }
+
+                //Existen datos
+                //Buscamos los detalles
+                //3 - Products | 4- Products samples | 6 - Input_text | 10- GIFT
+                var detallesMaestro = (from b in db.FormsM_details where (b.ID_visit == id) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+
+
+                var demo_details = (from b in detallesMaestro where (b.ID_visit == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var result = demo_details
+                        .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
+                        .Select(cl => new FormsM_details
+                        {
+                            ID_details = cl.First().ID_details,
+                            ID_formresourcetype = cl.First().ID_formresourcetype,
+                            fsource = cl.First().fsource,
+                            fdescription = cl.First().fdescription,
+                            fvalue = cl.Sum(c => c.fvalue),
+                            ID_formM = cl.First().ID_formM,
+                            ID_visit = cl.First().ID_visit,
+                            original = cl.First().original,
+                            obj_order = cl.First().obj_order,
+                            obj_group = cl.First().obj_group
+                        }).ToList();
+
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
+
+                //Obtenemos el nombre de las marcas o brands por cada articulo
+                var listadeItems = (from d in detallesMaestro where (d.ID_visit == id && d.ID_formresourcetype == 3) select d).ToList();
+
+                var oitm = (from h in CMKdb.OITM select h).ToList();
+                var omrc = (from i in CMKdb.OMRC select i).ToList();
+                foreach (var itemd in listadeItems)
+                {
+
+                    itemd.fdescription = (from k in oitm join j in omrc on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    if (itemd.fdescription == null)
+                    {
+                        itemd.fdescription = "No data found";
+                    }
+                }
+
+                var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                var brandstoshow = "";
+                int count = 0;
+                foreach (var items in brands)
+                {
+                    if (count == 0)
+                    {
+                        brandstoshow = items.fdescription.ToString();
+                    }
+                    else
+                    {
+                        brandstoshow += ", " + items.fdescription.ToString();
+                    }
+                    count += 1;
+                }
+                //*******************************
+
+                demo_header[0].query1 = brandstoshow;
+
+                rd.SetDataSource(demo_header);
+
+                rd.Subreports[0].SetDataSource(result);
+
+                //Verificamos si existen fotos en el demo (MAX 4 fotos)
+                var fotos = (from c in detallesMaestro where (c.ID_visit == id && c.ID_formresourcetype == 5) select c).ToList();
+
+                int fotosC = fotos.Count();
+
+
+
+
+                if (fotosC == 4)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+                    if (fotos[2].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg3", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    }
+                    if (fotos[3].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg4", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
+                    }
+
+
+                }
+                else if (fotosC == 3)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+                    if (fotos[2].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg3", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    }
+
+                    rd.SetParameterValue("urlimg4", "");
+
+                }
+                else if (fotosC == 2)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+
+                    rd.SetParameterValue("urlimg3", "");
+
+                    rd.SetParameterValue("urlimg4", "");
+
+                }
+                else if (fotosC == 1)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+
+                    rd.SetParameterValue("urlimg2", "");
+
+                    rd.SetParameterValue("urlimg3", "");
+
+                    rd.SetParameterValue("urlimg4", "");
+
+                }
+                else
+                {
+
+                    rd.SetParameterValue("urlimg1", "");
+                    rd.SetParameterValue("urlimg2", "");
+                    rd.SetParameterValue("urlimg3", "");
+                    rd.SetParameterValue("urlimg4", "");
+                }
+
+
+                //Verificams si existe firma electronica
+                var firma = (from d in detallesMaestro where (d.ID_visit == id && d.ID_formresourcetype == 9) select d).ToList();
+
+                int firmaC = firma.Count();
+
+
+
+
+                if (firmaC == 1)
+                {
+
+                    string data = firma[0].fsource;
+                    if (data != "")
+                    {
+                        var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+                        var binData = Convert.FromBase64String(base64Data);
+
+                        using (var streamf = new MemoryStream(binData))
+                        {
+
+                            Bitmap myImage = new Bitmap(streamf);
+
+                            // Assumes myImage is the PNG you are converting
+                            using (var b = new Bitmap(myImage.Width, myImage.Height))
+                            {
+                                b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+
+                                using (var g = Graphics.FromImage(b))
+                                {
+                                    g.Clear(Color.White);
+                                    g.DrawImageUnscaled(myImage, 0, 0);
+                                }
+
+                                // Now save b as a JPEG like you normally would
+
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                                b.Save(path, ImageFormat.Jpeg);
+
+
+                                rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+                            }
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimgsign", "");
+
+                    }
+
+                }
+                else
+                {
+                    rd.SetParameterValue("urlimgsign", "");
+                }
+
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+                //PARA PREVISULIZACION
+                //return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+                //PARA ENVIAR POR CORREO
+
+                try
+
+                {
+                    //limpiamos el directorio
+
+                    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+
+                    foreach (FileInfo file in di.GetFiles())
+
+                    {
+
+                        file.Delete();
+
+                    }
+
+                    foreach (DirectoryInfo dir in di.GetDirectories())
+
+                    {
+
+                        dir.Delete(true);
+
+                    }
+
+                }
+
+                catch (Exception e)
+
+                {
+
+                    var mensaje = e.ToString();
+
+                }
+
+                var path2 = "";
+                var filename = "DEMO RESUME" + "" + ".pdf";
+                path2 = Path.Combine(filePathOriginal, filename);
+                rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
+
+                //PdfDocument doc = new PdfDocument();
+                //doc.LoadFromFile(path);
+                ////Contamos numero total de paginas
+                //int indexpages = doc.Pages.Count;
+
+                //Image img = doc.SaveAsImage(0);
+                //var imagename = "Accounts Receivable Report " + seller.SalesRepresentative + ".jpg";
+                //pathimage = Path.Combine(filePathOriginal, imagename);
+                //img.Save(pathimage);
+                //doc.Close();
+
+
+                //Para enviar correos
+                //var data2 = demo_header.FirstOrDefault();
+                //try
+                //{
+                    
+
+
+                //    dynamic email = new Email("DemoResume");
+                //    email.To = "f.velasquez@limenainc.net";
+                //    email.From = "customercare@comerciamarketing.com";
+                //    email.Subject = "(FINISHED) DEMO IN " + visit.store + "- " + visit.visit_date.ToShortDateString();
+                //    email.Attach(new Attachment(path2));
+                //    //email.Body = imagename;
+                //    //return new EmailViewResult(email);
+
+
+
+
+
+                //    email.Send();
+
+
+                //}
+
+                //catch (Exception e)
+                //{
+                //    Console.WriteLine("{0} Exception caught.", e);
+                //}
+
+                try
+                {
+                    var emp = demo_header[0].ID_customer;
+                    var id_empresa = (from j in db.Empresas where (j.ID_SAP == emp) select j.ID_empresa).FirstOrDefault();
+                    var contactos = (from u in db.Usuarios where (u.ID_tipomembresia == 7 && u.ID_empresa == id_empresa && u.activo == true) select u).ToList();
+                    if (contactos.Count > 0)
+                    {
+                        foreach (var item in contactos)
+                        {
+                            if (item.correo != null)
+                            {
+                                dynamic email = new Email("DemoResume");
+                                email.To = item.correo;
+                                email.From = "customercare@comerciamarketing.com";
+                                email.Subject = "DEMO RESUME IN " + visit.store + "- " + visit.visit_date.ToShortDateString();
+                                email.Attach(new Attachment(path2));
+                                //email.Body = imagename;
+                                //return new EmailViewResult(email);
+
+
+                                email.Send();
+
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        TempData["exito"] = "No emails contacts.";
+                        return RedirectToAction("Detailsa", "VisitsMs", new { id = visit.ID_visit });
+                    }
+
+
+
+                }
+
+                catch (Exception e)
+                {
+
+                    TempData["advertenca"] = "Something went wrong, please try again. " + e.Message;
+                    return RedirectToAction("Detailsa", "VisitsMs", new { id = visit.ID_visit });
+                }
+
+
+                TempData["exito"] = "Emails sent successfully.";
+                return RedirectToAction("Detailsa", "VisitsMs", new { id=visit.ID_visit });
+            }
+            else
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("Index", "Home", null);
+            }
+        }
+
+        public class DemosRpt
+        {
+            public int ID_demo { get; set; }
+            public string ID_Vendor { get; set; }
+            public string vendor { get; set; }
+            public string ID_Store { get; set; }
+            public string store { get; set; }
+            public System.DateTime visit_date { get; set; }
+            public string ID_usuario { get; set; }
+            public int ID_demostate { get; set; }
+            public string comments { get; set; }
+            public int ID_form { get; set; }
+            public decimal extra_hours { get; set; }
+            public System.DateTime end_date { get; set; }
+            public System.DateTime check_in { get; set; }
+            public string geoLong { get; set; }
+            public string geoLat { get; set; }
+        }
+        public ActionResult PreviewDemoResumeByCustomer(string id)
+        {
+            //DateTime today_init_hour = DateTime.Today;
+            //DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
+
+            List<DemosRpt> total_demos = new List<DemosRpt>();
+            var cust = "";
+            //var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+            total_demos = (from e in db.ActivitiesM where (e.ID_customer == id && e.ID_activitytype == 4) select new DemosRpt
+            {
+                ID_demo = e.ID_activity,
+                check_in = e.check_in,
+                comments = e.comments,
+                ID_demostate = 0,
+                end_date = e.check_out,
+                extra_hours = 0,
+                geoLat = "0",
+                geoLong = "0",
+                ID_form = e.ID_form,
+                ID_Store = e.ID_visit.ToString(),
+                ID_usuario = e.ID_usuarioEnd.ToString(),
+                vendor = e.Customer,
+                visit_date = e.date,
+                ID_Vendor = e.ID_customer,
+                store = ""
+            
+            }).ToList();
+            
+            if (total_demos.Count > 0) { 
+
+                cust = total_demos[0].vendor;
+            //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
+            int[] demo_ids = (from f in total_demos select f.ID_demo).ToArray();
+
+                //Existen datos
+                //Buscamos los detalles
+
+                var demo_details_items = (from b in db.FormsM_details where (demo_ids.Contains(b.ID_visit) && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var result = demo_details_items
+                                        .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
+                                        .Select(cl => new Forms_details
+                                        {
+                                            ID_details = cl.First().ID_details,
+                                            ID_formresourcetype = cl.First().ID_formresourcetype,
+                                            fsource = cl.First().fsource,
+                                            fdescription = cl.First().fdescription,
+                                            fvalue = cl.Sum(c => c.fvalue),
+                                            ID_form = cl.First().ID_formM,
+                                            ID_demo = cl.First().ID_visit,
+                                            original = cl.First().original,
+                                            obj_order = cl.First().obj_order,
+                                            obj_group = cl.First().obj_group
+                                        }).ToList();
+
+
+                if (result.Count > 0)
+
+                {
+
+                    //CAMBIAMOS LOS DATOS A LOS QUE NECESITAMOS DESDE SAP COMERCIA
+                    /*
+                     STORE = NOMBRE DE TIENDA
+                     ID_STORE = ESTADO
+                     VENDOR = CIUDAD
+                     ID_VENDOR = UNIDADES VENDIDAS
+                     
+                     */
+                    //VARIABLE PARA TOTAL DE HORAS DEMO
+                    TimeSpan totaldemohours = new TimeSpan(0, 0, 0);
+                
+                    foreach (var item in total_demos)
+                    {
+                        int idvi = Convert.ToInt32(item.ID_Store);
+
+                        var store_details = (from CM in db.VisitsM where (CM.ID_visit == idvi) select CM).FirstOrDefault();
+                        
+                        if (store_details == null)
+                        {
+                            item.store = "NOT FOUND";
+                            item.ID_Store = item.ID_Store + ": NOT FOUND";
+                            //item.vendor = "NOT FOUND";
+
+                            decimal sumLineTotal = (from s in db.FormsM_details where (s.ID_visit == item.ID_demo && s.ID_formresourcetype == 3) select s.fvalue).Sum();
+
+                            item.ID_Vendor = Convert.ToString(sumLineTotal);
+
+                            DateTime dt = item.check_in;
+                            DateTime dt2 = item.end_date;
+                            TimeSpan ts = (dt2 - dt);
+
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
+                            totaldemohours = totaldemohours + ts;
+                        }
+                        else
+                        {
+                            item.store = store_details.store;
+                            item.ID_Store = store_details.state;
+                            item.vendor = store_details.city;
+
+                            decimal sumLineTotal = (from s in db.FormsM_details where (s.ID_visit == item.ID_demo && s.ID_formresourcetype == 3) select s.fvalue).Sum();
+
+                            item.ID_Vendor = Convert.ToString(sumLineTotal);
+
+
+                            DateTime dt = item.check_in;
+                            DateTime dt2 = item.end_date;
+                            TimeSpan ts = (dt2 - dt);
+
+                            item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
+                            totaldemohours = totaldemohours + ts;
+
+                        }
+
+                    }
+
+                    ReportDocument rd = new ReportDocument();
+
+                    rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemoDailyResume_v2.rpt"));
+
+
+
+                    rd.SetDataSource(total_demos);
+
+                    rd.Subreports[0].SetDataSource(result);
+                    // rd.Subreports[1].SetDataSource(total_demos);
+
+                    rd.SetParameterValue("totaldemohours", totaldemohours.ToString(@"hh\:mm"));
+                    rd.SetParameterValue("Customer", cust);
+                    var filePathOriginal = Server.MapPath("/Reports/pdfReports");
+
+                    Response.Buffer = false;
+
+                    Response.ClearContent();
+
+                    Response.ClearHeaders();
+
+
+                    //PARA VISUALIZAR
+                    Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume.pdf; ");
+
+
+
+                    Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+
+
+                    return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+                }
+                else
+                {
+                    TempData["advertencia"] = "No data to send.";
+                    return RedirectToAction("Index", "Empresas", null);
+                }
+            }
+            else
+            {
+                TempData["advertencia"] = "No Demos assigned for today.";
                 return RedirectToAction("Index", "Empresas", null);
             }
         }

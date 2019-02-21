@@ -927,17 +927,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult PreviewDemoResumeByCustomer(string id)
         {
-            DateTime today_init_hour = DateTime.Today;
-            DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
+            //DateTime today_init_hour = DateTime.Today;
+            //DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
             
 
 
-            var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+            //var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+            var total_demos = (from e in db.Demos where (e.ID_Vendor == id) select e).ToList();
 
             if (total_demos.Count > 0)
             {
                 //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour && f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id) select f.ID_demo).ToArray();
 
                 //Existen datos
                 //Buscamos los detalles
@@ -1039,7 +1040,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                     //PARA VISUALIZAR
-                    Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Daily Resume; ");
+                    Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume.pdf; ");
 
 
 
@@ -1177,16 +1178,17 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult SendDemoResumeByCustomer(string id)
         {
-            DateTime today_init_hour = DateTime.Today;
-            DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
+            //DateTime today_init_hour = DateTime.Today;
+            //DateTime today_end_hour = DateTime.Today.AddHours(23).AddMinutes(58);
             var id_empresa = (from j in db.Empresas where (j.ID_SAP == id) select j.ID_empresa).FirstOrDefault();
 
-            var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+            //var total_demos = (from e in db.Demos where (e.ID_Vendor == id && e.visit_date >= today_init_hour && e.visit_date <= today_end_hour) select e).ToList();
+            var total_demos = (from e in db.Demos where (e.ID_Vendor == id) select e).ToList();
 
             if (total_demos.Count > 0)
             {
                 //Recuperamos los IDS de las demos en el dia especifico y del customer especifico
-                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id && (f.visit_date >= today_init_hour && f.visit_date <= today_end_hour)) select f.ID_demo).ToArray();
+                int[] demo_ids = (from f in db.Demos where (f.ID_Vendor == id ) select f.ID_demo).ToArray();
 
                 //Existen datos
                 //Buscamos los detalles
@@ -1367,7 +1369,7 @@ namespace comerciamarketing_webapp.Controllers
                                     dynamic email = new Email("DemoResumeTotal");
                                     email.To = item.correo;
                                     email.From = "customercare@comerciamarketing.com";
-                                    email.Subject = "Demos daily summary " + today_init_hour.ToShortDateString();
+                                    email.Subject = "Demos daily summary ";// + today_init_hour.ToShortDateString();
                                     email.Attach(new Attachment(path2));
                                     //email.Body = imagename;
                                     //return new EmailViewResult(email);
@@ -1796,5 +1798,8 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Empresas", null);
             }
         }
+
+        
+
     }
 }

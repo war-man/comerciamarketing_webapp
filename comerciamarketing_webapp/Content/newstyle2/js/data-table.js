@@ -60,7 +60,14 @@
             "iDisplayLength": 10,
             "language": {
                 search: ""
-            }
+            },
+            "columnDefs": [{
+                "targets": 2,    // column index, 0 means the first column
+                "render": function (data) {
+                    return moment(data, 'MM/DD/YY').format('MM/DD/YY');
+                }
+            }],
+            "order": [[1, "asc"]]
         });
         $('#order-listing2').each(function () {
             var datatable = $(this);
