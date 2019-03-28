@@ -79,28 +79,28 @@
                                                                         <td data-label="Description">
                                                                             @if (itemVisita.ID_activitytype == 1)
         {
-                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer",ID_Customer=ViewBag.customerID, brand = ViewBag.branddef })">
                                                                         <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
                                                                     </a>
 }
 else if (itemVisita.ID_activitytype == 2)
 {
-                                                                    <a class="text-black" href="@Url.Action("Activityraonresume", "FormsM", new { id = itemVisita.ID_activity })">
+                                                                    <a class="text-black" href="@Url.Action("Activityraonresume", "FormsM", new { id = itemVisita.ID_activity,modulo="customer",ID_Customer=ViewBag.customerID, brand = ViewBag.branddef })">
                                                                         <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
                                                                     </a>
 }
 else if (itemVisita.ID_activitytype == 3)
 {
-                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer",ID_Customer=ViewBag.customerID, brand = ViewBag.branddef })">
                                                                         <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
                                                                     </a>
 }
 else
 {
-                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer" })">
+                                                                    <a class="text-black" href="@Url.Action("Activityresume", "FormsM", new { id = itemVisita.ID_activity, modulo="customer",ID_Customer=ViewBag.customerID, brand = ViewBag.branddef })">
                                                                         <i class="mdi mdi-file icon-sm text-primary"></i>@itemVisita.description<br />
 
                                                                     </a>

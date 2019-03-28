@@ -1229,7 +1229,7 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        public ActionResult Activityresume(int? id, string modulo)
+        public ActionResult Activityresume(int? id, string modulo, string ID_Customer, string brand)
         {
             if (Session["IDusuario"] != null)
             {
@@ -1369,6 +1369,15 @@ namespace comerciamarketing_webapp.Controllers
                     MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
 
                     ViewBag.idvisitareal = activity.ID_visit;
+                    ViewBag.branddef = brand;
+
+
+
+
+                    //Route
+
+                    ViewBag.customerID = ID_Customer;
+
                     ViewBag.idvisita = activity.ID_activity;
 
                     ViewBag.details = categoriasListActivities;
@@ -2107,10 +2116,10 @@ namespace comerciamarketing_webapp.Controllers
                 if (id != null)
                 {
                     int act = Convert.ToInt32(id);
-                    ActivitiesM activity = db.ActivitiesM.Find(act);
-                    activity.check_out = Convert.ToDateTime(check_in);
-                    db.Entry(activity).State = EntityState.Modified;             
-                    db.SaveChanges();
+                    //ActivitiesM activity = db.ActivitiesM.Find(act);
+                    //activity.check_out = Convert.ToDateTime(check_in);
+                    //db.Entry(activity).State = EntityState.Modified;             
+                    //db.SaveChanges();
 
                     //if (lat != null || lat != "")
                     //{
@@ -2144,7 +2153,7 @@ namespace comerciamarketing_webapp.Controllers
                     foreach (var item in objects)
                     {
                         int IDItem = Convert.ToInt32(item.id);
-                        FormsM_details detail = (from f in detailsForm where (f.ID_visit == activity.ID_activity &&  f.idkey== IDItem) select f).FirstOrDefault();
+                        FormsM_details detail = (from f in detailsForm where (f.ID_visit == act &&  f.idkey== IDItem) select f).FirstOrDefault();
                         if (detail == null)
                         {
 
@@ -2171,7 +2180,7 @@ namespace comerciamarketing_webapp.Controllers
                                         detail.fsource = "";
 
                                         db.Entry(detail).State = EntityState.Modified;
-                                        
+
 
 
                                         if (System.IO.File.Exists(Server.MapPath(path)))
@@ -2191,9 +2200,9 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-                                    }
-                                    else if (detail.ID_formresourcetype == 9) //Input text y Electronic Signature
-                            {
+                                }
+                                else if (detail.ID_formresourcetype == 9) //Input text y Electronic Signature
+                                {
 
                                 if (item.value == "" || item.value == null) { item.value = ""; }
                                     if (detail.fsource != item.value) {
@@ -2264,6 +2273,8 @@ namespace comerciamarketing_webapp.Controllers
 
                     }
                         db.SaveChanges();
+
+                        Session["detailsForm"] = detailsForm;
                     }
 
                     return Json(new { Result = "Success" });
@@ -2291,7 +2302,7 @@ namespace comerciamarketing_webapp.Controllers
                         foreach (var item in objects)
                         {
                             int IDItem = Convert.ToInt32(item.id);
-                            FormsM_details detail = (from f in detailsForm where (f.ID_visit == act && f.idkey == IDItem) select f).FirstOrDefault();
+                            var detail = (from f in detailsForm where (f.ID_visit == act && f.idkey == IDItem) select f).FirstOrDefault();
                             if (detail == null)
                             {
 
@@ -2307,6 +2318,8 @@ namespace comerciamarketing_webapp.Controllers
 
                                         db.Entry(detail).State = EntityState.Modified;
                                         db.SaveChanges();
+
+                                        
                                     }
 
 
@@ -2446,7 +2459,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                         }
-
+                        Session["detailsForm"] = detailsForm;
 
                         return Json(new { Result = "Success" });
                     }
@@ -2463,7 +2476,7 @@ namespace comerciamarketing_webapp.Controllers
         [HttpPost]
         public ActionResult UploadFiles(string id,string idvisita, string orientation)
         {
-
+            List<FormsM_details> detailsForm = Session["detailsForm"] as List<FormsM_details>;
 
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
@@ -2532,7 +2545,7 @@ namespace comerciamarketing_webapp.Controllers
                         try
                         {
                             int idvisit = Convert.ToInt32(idvisita);
-                            detail = (from d in db.FormsM_details where (d.idkey == idf && d.ID_visit == idvisit) select d).FirstOrDefault();
+                            detail = (from d in detailsForm where (d.idkey == idf && d.ID_visit == idvisit) select d).FirstOrDefault();
                         }
                         catch {
                             var sqlQueryText = string.Format("SELECT * FROM FormsM_details WHERE query2 LIKE '{0}' and idkey='" + idf + "'", idvisita);
@@ -2632,19 +2645,20 @@ namespace comerciamarketing_webapp.Controllers
 
                         db.Entry(detail).State = EntityState.Modified;
                         db.SaveChanges();
+                        Session["detailsForm"] = detailsForm;
 
-                        if (System.IO.File.Exists(Server.MapPath(pathimg)))
-                        {
-                            try
-                            {
-                                System.IO.File.Delete(Server.MapPath(pathimg));
-                            }
-                            catch (System.IO.IOException e)
-                            {
-                                Console.WriteLine(e.Message);
+                        //if (System.IO.File.Exists(Server.MapPath(pathimg)))
+                        //{
+                        //    try
+                        //    {
+                        //        System.IO.File.Delete(Server.MapPath(pathimg));
+                        //    }
+                        //    catch (System.IO.IOException e)
+                        //    {
+                        //        Console.WriteLine(e.Message);
 
-                            }
-                        }
+                        //    }
+                        //}
                     }
 
 
@@ -2802,31 +2816,31 @@ namespace comerciamarketing_webapp.Controllers
                     int act = Convert.ToInt32(id);
                     ActivitiesM activity = db.ActivitiesM.Find(act);
 
-                    if (lat != null || lat != "")
-                    {
-                        //Guardamos el log de la actividad
-                        ActivitiesM_log nuevoLog = new ActivitiesM_log();
-                        nuevoLog.latitude = lat;
-                        nuevoLog.longitude = lng;
-                        nuevoLog.ID_usuario = IDU;
-                        nuevoLog.ID_activity = Convert.ToInt32(id);
-                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_out);
-                        nuevoLog.query1 = "";
-                        nuevoLog.query2 = "";
-                        nuevoLog.action = "FINISH ACTIVITY - " + activity.description;
-                        nuevoLog.ip = "";
-                        nuevoLog.hostname = "";
-                        nuevoLog.typeh = "";
-                        nuevoLog.continent_name = "";
-                        nuevoLog.country_code = "";
-                        nuevoLog.country_name = "";
-                        nuevoLog.region_code = "";
-                        nuevoLog.region_name = "";
-                        nuevoLog.city = "";
+                    //if (lat != null || lat != "")
+                    //{
+                    //    //Guardamos el log de la actividad
+                    //    ActivitiesM_log nuevoLog = new ActivitiesM_log();
+                    //    nuevoLog.latitude = lat;
+                    //    nuevoLog.longitude = lng;
+                    //    nuevoLog.ID_usuario = IDU;
+                    //    nuevoLog.ID_activity = Convert.ToInt32(id);
+                    //    nuevoLog.fecha_conexion = Convert.ToDateTime(check_out);
+                    //    nuevoLog.query1 = "";
+                    //    nuevoLog.query2 = "";
+                    //    nuevoLog.action = "FINISH ACTIVITY - " + activity.description;
+                    //    nuevoLog.ip = "";
+                    //    nuevoLog.hostname = "";
+                    //    nuevoLog.typeh = "";
+                    //    nuevoLog.continent_name = "";
+                    //    nuevoLog.country_code = "";
+                    //    nuevoLog.country_name = "";
+                    //    nuevoLog.region_code = "";
+                    //    nuevoLog.region_name = "";
+                    //    nuevoLog.city = "";
 
-                        db.ActivitiesM_log.Add(nuevoLog);
-                        db.SaveChanges();
-                    }
+                    //    db.ActivitiesM_log.Add(nuevoLog);
+                    //    db.SaveChanges();
+                    //}
 
                     activity.check_out = Convert.ToDateTime(check_out);                  
                     activity.isfinished = true;
@@ -3124,7 +3138,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                             //PARA VISUALIZAR
-                            Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+                            Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Report; ");
 
 
 
@@ -3172,7 +3186,7 @@ namespace comerciamarketing_webapp.Controllers
                             }
 
                             var path2 = "";
-                            var filename = "DEMO RESUME" + "" + ".pdf";
+                            var filename = "DEMO REPORT" + "" + ".pdf";
                             path2 = Path.Combine(filePathOriginal, filename);
                             rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
@@ -3193,7 +3207,7 @@ namespace comerciamarketing_webapp.Controllers
                                         dynamic email = new Email("DemoResume");
                                         email.To = item.correo;
                                         email.From = "customercare@comerciamarketing.com";
-                                        email.Subject = "DEMO RESUME IN " + visit.store + "- " + visit.visit_date.ToShortDateString();
+                                        email.Subject = "DEMO REPORT FOR " + visit.store + "- " + visit.visit_date.ToShortDateString();
                                         email.Attach(new Attachment(path2));
                                         //email.Body = imagename;
                                         //return new EmailViewResult(email);
@@ -3718,7 +3732,7 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        public ActionResult Activityraonresume(int? id)
+        public ActionResult Activityraonresume(int? id, string modulo, string ID_Customer, string brand)
         {
             if (Session["IDusuario"] != null)
             {
@@ -3848,6 +3862,32 @@ namespace comerciamarketing_webapp.Controllers
 
                     ViewBag.idvisitareal = activity.ID_visit;
                     ViewBag.idvisita = activity.ID_activity;
+
+
+
+                    ViewBag.branddef = brand;
+
+
+
+
+                    //Route
+
+                    ViewBag.customerID = ID_Customer;
+
+
+
+
+
+
+                    if (modulo != null && modulo != "")
+                    {
+                        ViewBag.modulo = "customers";
+                    }
+                    else
+                    {
+                        ViewBag.modulo = "normal";
+                    }
+
 
                     ViewBag.details =( from c in categoriasListActivities where (c.children.Count > 0) select c).ToList();
 

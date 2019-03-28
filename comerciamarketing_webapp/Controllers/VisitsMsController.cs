@@ -4080,7 +4080,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //PARA VISUALIZAR
-                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Report; ");
 
 
 
@@ -4128,7 +4128,7 @@ namespace comerciamarketing_webapp.Controllers
                 }
 
                 var path2 = "";
-                var filename = "DEMO RESUME" + "" + ".pdf";
+                var filename = "DEMO REPORT" + "" + ".pdf";
                 path2 = Path.Combine(filePathOriginal, filename);
                 rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
@@ -4187,7 +4187,7 @@ namespace comerciamarketing_webapp.Controllers
                                 dynamic email = new Email("DemoResume");
                                 email.To = item.correo;
                                 email.From = "customercare@comerciamarketing.com";
-                                email.Subject = "DEMO RESUME IN " + visit.store + "- " + visit.visit_date.ToShortDateString();
+                                email.Subject = "DEMO REPORT FOR " + visit.store + "- " + visit.visit_date.ToShortDateString();
                                 email.Attach(new Attachment(path2));
                                 //email.Body = imagename;
                                 //return new EmailViewResult(email);

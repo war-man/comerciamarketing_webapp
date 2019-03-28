@@ -703,7 +703,7 @@
                     <div class="col-md-offset-2 col-md-10 text-right">
                         @if (ViewBag.modulo == "customers")
                         {
-                            <a href="@Url.Action("DetailsC", "VisitsMs", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
+                            <a href="@Url.Action("DetailsC", "VisitsMs", new { id=ViewBag.idvisitareal, ID_Customer=ViewBag.customerID, brand = ViewBag.branddef})" class="btn btn-info">Back</a>
                         }
                         else
                         {

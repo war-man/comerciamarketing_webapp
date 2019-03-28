@@ -1135,7 +1135,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //LISTADO DE TIENDAS
-                var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).ToList();
+                var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" ) select b).OrderBy(b => b.CardName).ToList();
                 ViewBag.stores = stores.ToList();
 
                 //LISTADO DE CLIENTES
@@ -2570,13 +2570,13 @@ namespace comerciamarketing_webapp.Controllers
                 int[] activities = new int[] { };
                 if ((store == null || store == "") && (brand == "" || brand == null))
                 {
-                    rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_empresa == empresadef).OrderBy(d => d.visit_date).ToList();
+                    rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).OrderBy(d => d.visit_date).ToList();
                     visitasarray = rutas.Select(d => d.ID_visit).ToArray();
                     activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a.ID_activity).ToArray();
                 }
                 else if ((store != null || store != "") && (brand == "" || brand == null))
                 {
-                    rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store && d.ID_empresa == empresadef).OrderBy(d => d.visit_date).ToList();
+                    rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_store == store).OrderBy(d => d.visit_date).ToList();
                     visitasarray = rutas.Select(d => d.ID_visit).ToArray();
                     activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a.ID_activity).ToArray();
                 }
@@ -2585,14 +2585,14 @@ namespace comerciamarketing_webapp.Controllers
 
                     if (brand != "0")
                     {
-                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_empresa == empresadef).OrderBy(d => d.visit_date).ToList();
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).OrderBy(d => d.visit_date).ToList();
                         visitasarray = rutas.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).Select(d => d.ID_visit).ToArray();
 
-                        var activitiesdef = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_empresa == empresadef) select a).ToList();
+                        var activitiesdef = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit)) select a).ToList();
                         var activitiesdefArr = (from a in activitiesdef select a.ID_activity).Distinct().ToArray();
 
 
-                        var formsdef = (from a in db.FormsM_details where (activitiesdefArr.Contains(a.ID_visit) && a.ID_formresourcetype == 13 && a.fvalueText.StartsWith(brand) && a.fvalueText.EndsWith(brand) && a.ID_empresa == empresadef) select a.ID_visit).Distinct().ToArray();
+                        var formsdef = (from a in db.FormsM_details where (activitiesdefArr.Contains(a.ID_visit) && a.ID_formresourcetype == 13 && a.fvalueText.StartsWith(brand) && a.fvalueText.EndsWith(brand)) select a.ID_visit).Distinct().ToArray();
 
                         var nactivitiesdef = (from a in activitiesdef where (formsdef.Contains(a.ID_activity)) select a.ID_visit).Distinct().ToArray();
                         rutas = (from a in rutas where (nactivitiesdef.Contains(a.ID_visit)) select a).ToList();
@@ -2602,7 +2602,7 @@ namespace comerciamarketing_webapp.Controllers
                     else
                     {
 
-                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && d.ID_empresa == empresadef).OrderBy(d => d.visit_date).ToList();
+                        rutas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate).OrderBy(d => d.visit_date).ToList();
                         visitasarray = rutas.Select(d => d.ID_visit).ToArray();
 
                         activities = (from a in db.ActivitiesM where (visitasarray.Contains(a.ID_visit) && a.ID_customer == id) select a.ID_activity).ToArray();
@@ -2707,7 +2707,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 var arrayVisiID = (from arr in visitas select arr.ID_route).ToArray();
                 rutas2 = (from rut in db.RoutesM
-                          where (arrayVisiID.Contains(rut.ID_route) && rut.ID_empresa == empresadef)
+                          where (arrayVisiID.Contains(rut.ID_route))
                           select new Routes_customer
                           {
                               ID_route = rut.ID_route,

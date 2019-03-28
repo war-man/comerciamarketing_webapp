@@ -176,7 +176,14 @@ else
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10 text-right">
 
-                        <a href="@Url.Action("DetailsC", "VisitsMs", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
+                        @if (ViewBag.modulo == "customers")
+    {
+                    <a href="@Url.Action("DetailsC", "VisitsMs", new { id=ViewBag.idvisitareal, ID_Customer=ViewBag.customerID, brand = ViewBag.branddef})" class="btn btn-info">Back</a>
+}
+else
+{
+                    <a href="@Url.Action("Detailsa", "VisitsMs", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
+}
                     </div>
                 </div>
             </div>
