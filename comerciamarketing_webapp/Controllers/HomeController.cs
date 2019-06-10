@@ -27,11 +27,20 @@ namespace comerciamarketing_webapp.Controllers
         private dbComerciaEntities db = new dbComerciaEntities();
         private COM_MKEntities CMKdb = new COM_MKEntities();
 
+
+        [HttpPost]
+        public JsonResult KeepSessionAlive()
+        {
+            return new JsonResult { Data = "Success" };
+        }
         public ActionResult Home(string idioma)
         {
 
             return View();
         }
+
+        protected string WindowStatusText = "";
+
 
         public ActionResult Promotions()
         {
@@ -473,53 +482,57 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.IPLOCAL = "";
+            //ViewBag.IPLOCAL = "";
             //Session["ip_user"] = GetExternalIp();
-            int cliente = 0;
-            var empresasap = "";
-            if (Request.Cookies["GLOBALUSERID"] != null) //remember me active
-            {
-                //cookies
-                HttpCookie aCookie = Request.Cookies["GLOBALUSERID"];
-                if (Session["IDusuario"] != null)
-                {
-                    int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
-                    var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+            //int cliente = 0;
+            //var empresasap = "";
+            //if (Request.Cookies["GLOBALUSERID"] != null) //remember me active
+            //{
+            //    //cookies
+            //    HttpCookie aCookie = Request.Cookies["GLOBALUSERID"];
+            //    if (Session["IDusuario"] != null)
+            //    {
+            //        int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
+            //        Session["activeUser"] = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+            //        Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //        var obj = activeuser;
 
-                    if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
-                    {
-                        cliente = 1;
-                        empresasap = obj.Empresas.ID_SAP;
-                    }
-                }
-                else {//Como tiene activado remember me, iniciamos sesion automaticamente
-                    int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
-                    var obj = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+            //        if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
+            //        {
+            //            cliente = 1;
+            //            empresasap = obj.Empresas.ID_SAP;
+            //        }
+            //    }
+            //    else {//Como tiene activado remember me, iniciamos sesion automaticamente
+            //        int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
+            //        Session["activeUser"] = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
+            //        Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //        var obj = activeuser;
 
-                    Session["IDusuario"] = obj.ID_usuario.ToString();
-                    Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-                    Session["tiporol"] = obj.ID_rol.ToString();
-                    Session["ultimaconexion"] = "";
-                    GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+            //        Session["IDusuario"] = obj.ID_usuario.ToString();
+            //        Session["tipousuario"] = obj.ID_tipomembresia.ToString();
+            //        Session["tiporol"] = obj.ID_rol.ToString();
+            //        Session["ultimaconexion"] = "";
+            //        GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
 
-                    if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
-                    {
-                        cliente = 1;
-                        empresasap = obj.Empresas.ID_SAP;
-                    }
-                }
-                ////
-                if (cliente == 0)
-                {
-                    return RedirectToAction("Main");
-                }
-                else if (cliente == 1)
-                {
-                    return RedirectToAction("CustomerM_stats", "Home", new { id = empresasap });
-                }
-                return RedirectToAction("Main");
+            //        if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
+            //        {
+            //            cliente = 1;
+            //            empresasap = obj.Empresas.ID_SAP;
+            //        }
+            //    }
+            //    ////
+            //    if (cliente == 0)
+            //    {
+            //        return RedirectToAction("Main");
+            //    }
+            //    else if (cliente == 1)
+            //    {
+            //        return RedirectToAction("Dashboard", "Customers", new { id = empresasap });
+            //    }
+            //    return RedirectToAction("Main");
 
-            }
+            //}
             return View();
         }
 
@@ -1238,28 +1251,16 @@ namespace comerciamarketing_webapp.Controllers
             //Validamos del lado del cliente que ambos parametros no vengan vacios
             try
             {
-                var obj = (from c in db.Usuarios where (c.correo == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
-                if (obj != null) { 
-                //PARA DASHBOARD
-                //(obj.Tipo_membresia.descripcion == "Demo")
+                Session["activeUser"] = (from c in db.Usuarios where (c.correo == usuariocorreo && c.contrasena == password) select c).FirstOrDefault();
+                if (Session["activeUser"] != null) {
 
-                //PARA DEMOS
-                //(obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium")
+                    Usuarios activeuser = Session["activeUser"] as Usuarios;
 
-                //PARA MERCHANDISING
-                //((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
-
-                //if ((obj.Tipo_membresia.descripcion == "Demo") || (obj.Tipo_membresia.descripcion == "Professional" || obj.Tipo_membresia.descripcion == "Enterprise" || obj.Tipo_membresia.descripcion == "Premium"))
-                //{
-                //    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                Session["IDusuario"] = obj.ID_usuario.ToString();
-                    Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-                    Session["tiporol"] = obj.ID_rol.ToString();
+                    Session["IDusuario"] = activeuser.ID_usuario.ToString();
+                    Session["tipousuario"] = activeuser.ID_tipomembresia.ToString();
+                    Session["tiporol"] = activeuser.ID_rol.ToString();
                     Session["ultimaconexion"] = "";
-                    GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+                    GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(activeuser.ID_empresa);
 
 
                     ///PARA RECORDAR DATOS
@@ -1270,74 +1271,36 @@ namespace comerciamarketing_webapp.Controllers
                     }
                     else { 
                         HttpCookie aCookie = new HttpCookie("GLOBALUSERID");
-                        aCookie.Value =  obj.ID_usuario.ToString();
+                        aCookie.Value =  activeuser.ID_usuario.ToString();
                         aCookie.Expires = DateTime.Now.AddMonths(3);
                         Response.Cookies.Add(aCookie);
                     }
                 }
 
-
-                    ///
-
-
-                    //OJO: SOLO PARA DEMOS, ESTO EVALUA SI UN USUARIO DEMO NUEVO COMPLETO EL FORMULARIO. ****ELIMINAR CUANDO SE UTILICE DASHBOARD
-                    //6 demos ,rol: 7 demo_user
-                    //if (obj.ID_tipomembresia == 6 && obj.ID_rol == 7) {
-                    //    var formw9 = (from a in db.user_form_w9 where (a.ID_usuario == obj.ID_usuario) select a).FirstOrDefault();
-
-                    //    if (formw9 != null)
-                    //    {
-                    //        if (formw9.iscomplete == false && string.IsNullOrEmpty(formw9.name))
-                    //        {
-                    //            return Json(new { success = true, redireccion = formw9.ID_form }, JsonRequestBehavior.AllowGet);
-                    //        }
-                    //        else if (formw9.iscomplete = false && formw9.name != "")
-                    //        {
-                    //            return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-
-                    //        }
-
-
-                    //    }
-                    //    else {
-                    //        return Json(new { success = false, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                    //    }
-
-
-                    //}
-
-
                     //Verificamos si el usuario esta activo
-                    if (obj.activo != false)
+                    if (activeuser.activo != false)
                     {
-                        var ultimaconexion = (from b in db.historial_conexiones where (b.ID_usuario == obj.ID_usuario) select b).OrderByDescending(b => b.fecha_conexion).FirstOrDefault();
-                        if (ultimaconexion == null)
-                        {
-                            if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4) {
-                                Session["ultimaconexion"] = "";
-                                return Json(new { success = true, redireccion = "customer", cm = obj.Empresas.ID_SAP }, JsonRequestBehavior.AllowGet);
-                            }
-                            else
-                            {
-                                Session["ultimaconexion"] = "";
-                                return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                            }
 
-                        }
-                        else
+                        if (activeuser.ID_tipomembresia == 2 || activeuser.ID_tipomembresia == 3 || activeuser.ID_tipomembresia == 4)
                         {
-                            if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
-                            {
-                                Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
-                                return Json(new { success = true, redireccion = "customer", cm = obj.Empresas.ID_SAP }, JsonRequestBehavior.AllowGet);
-                            }
-                            else
-                            {
-                                Session["ultimaconexion"] = Convert.ToDateTime(ultimaconexion.fecha_conexion).ToLocalTime();
-                                return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
-                            }
-
+                            Session["ultimaconexion"] = "";
+                            return Json(new { success = true, redireccion = "customer", cm = activeuser.Empresas.ID_SAP }, JsonRequestBehavior.AllowGet);
                         }
+                        else if ((activeuser.ID_tipomembresia == 8 && activeuser.ID_rol == 8) || activeuser.ID_tipomembresia == 1)
+                        {
+                            Session["ultimaconexion"] = "";
+                            return Json(new { success = true, redireccion = "admin" }, JsonRequestBehavior.AllowGet);
+                        }
+                        else if (activeuser.ID_tipomembresia == 8 && activeuser.ID_rol == 9)
+                        {
+                            Session["ultimaconexion"] = "";
+                            return Json(new { success = true, redireccion = "salesreps" }, JsonRequestBehavior.AllowGet);
+                        }
+                        else {
+                            Session["ultimaconexion"] = "";
+                            return Json(new { success = true, redireccion = "" }, JsonRequestBehavior.AllowGet);
+                        }
+
                     }
                     else {
 
@@ -1815,6 +1778,11 @@ namespace comerciamarketing_webapp.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+        public class brandsinroute {
+            public string brand { get; set; }
+            public int count { get; set; }
+        }
+
         public ActionResult GetVisits(string id)
         {
 
@@ -1825,7 +1793,7 @@ namespace comerciamarketing_webapp.Controllers
             RoutesM rt = (from a in db.RoutesM where (a.ID_route == idr) select a).FirstOrDefault();
 
             visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
-            var lst = (from obj in db.VisitsM where (obj.ID_route == idr) select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate }).ToArray();
+            var lst = (from obj in db.VisitsM where (obj.ID_route == idr) select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate, checkout=obj.check_in, lat=obj.geoLat, lng = obj.geoLong }).OrderByDescending(c=>c.visitstate ==4).ThenByDescending(c=>c.visitstate==2).ThenBy(c=>c.checkout).ToArray();
 
            
             //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
@@ -1868,13 +1836,19 @@ namespace comerciamarketing_webapp.Controllers
                 {
                 porcentaje = "0";
                 }
-            
+
+            //get brands
+            var arrayvisits = visitas.Select(c => c.ID_visit).ToArray();
+            var brands = (from a in db.ActivitiesM
+                          join b in db.FormsM_details on a.ID_activity equals b.ID_visit
+                          where (arrayvisits.Contains(a.ID_visit) && b.ID_formresourcetype==13 && b.fdescription !="") select new brandsinroute { brand=b.fdescription, count=0}).Distinct().ToList();
 
 
 
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result2 = javaScriptSerializer.Serialize(lst);
-            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3};
+            string result3 = javaScriptSerializer.Serialize(brands);
+            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3, result2=result3};
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
@@ -2070,7 +2044,7 @@ namespace comerciamarketing_webapp.Controllers
                     //Enviamos correo para notificar
                     dynamic email = new Email("email_credentials");
                     email.To = usuarios.correo.ToString();
-                    email.From = "customercare@comerciamarketing.com";
+                    email.From = "donotreply@comerciamarketing.com";
                     email.Nombrecliente = usuarios.nombre + " " + usuarios.apellido;
                     email.Correocliente = usuarios.correo;
                     email.Passwordcliente = usuarios.contrasena;
@@ -2081,9 +2055,9 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Users", "Home", null);
                 //FIN email
             }
-                catch
+                catch (Exception ex)
                 {
-                TempData["advertencia"] = "Something wrong happened, try again.";
+                TempData["advertencia"] = "Something wrong happened." + ex.Message;
                 return RedirectToAction("Users", "Home", null);
             }
 
@@ -2283,44 +2257,17 @@ namespace comerciamarketing_webapp.Controllers
                     var log = new List<ActivitiesM_log>();
                     log = (from l in db.ActivitiesM_log where (l.ID_usuario == rep.ID_usuario) select l).OrderByDescending(l => l.fecha_conexion).Take(5).ToList();
                     
-                    ViewBag.log = log;
+                    ViewBag.log = log.OrderByDescending(x=>x.fecha_conexion);
                     //********
 
                     //Activities 
                     var activity = new List<ActivitiesM>();
                     activity = (from l in db.ActivitiesM where (l.ID_usuarioEnd == rep.ID_usuario && l.date >= filtrostartdate && l.date <= filtroenddate) select l).OrderByDescending(l => l.date).ToList();
                     //Contamos y definimos por tipo
-                    int totalActivities = activity.Count();
-                    //1.Forms - 2.Audit - 3.SalesOrder - 4.Demos
-                    int totalForms = (from a in activity where (a.ID_activitytype == 1) select a).Count();
-                    int totalAudits = (from a in activity where (a.ID_activitytype == 2) select a).Count();
-                    int totalSales = (from a in activity where (a.ID_activitytype == 3) select a).Count();
-                    int totalDemos = (from a in activity where (a.ID_activitytype == 4) select a).Count();
-
-                    
-                    ViewBag.totalAct = totalActivities;
-                    ViewBag.totalForm = totalForms;
-                    ViewBag.totalAudit = totalAudits;
-                    ViewBag.totalSale = totalSales;
-                    ViewBag.totalDemo = totalDemos;
-                    //********
-                    //VISITS
-                    var visitas = new List<VisitsM>();
-
-                    var asv = (from e in db.VisitsM_representatives where (e.ID_usuario == rep.ID_usuario) select e.ID_visit).ToArray();
-
-                    visitas = db.VisitsM.Where(d => d.visit_date >= filtrostartdate && d.end_date <= filtroenddate && asv.Contains(d.ID_visit)).ToList();
-
-                    int totalVisits = visitas.GroupBy(d => d.ID_store).Count();
-                    ViewBag.totalVisitas = totalVisits;
-
-                    //LISTADO DE TIENDAS
-                    var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).Count();
-                    ViewBag.stores = stores;
 
                     ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
                     ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
-
+                    ViewBag.activitieslst = activity;
                     return View();
                 }
                 else {
@@ -3982,13 +3929,13 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 TempData["exito"] = "Route created successfully.";
-                return RedirectToAction("RoutesM_calendar", "Home", null);
+                return RedirectToAction("Calendar", "Admin", null);
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("RoutesM_calendar", "Home", null);
+                return RedirectToAction("Calendar", "Admin", null);
             }
 
 
@@ -5000,16 +4947,16 @@ namespace comerciamarketing_webapp.Controllers
                     db.SaveChanges();
 
                     TempData["exito"] = "Visit created successfully.";
-                return RedirectToAction("RoutesM_details", "Home", new { id=IDR });
+                return RedirectToAction("Calendar", "Admin", null);
             }
             else {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                    return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
+                    return RedirectToAction("Calendar", "Admin", null);
                 }
             }
             catch {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
+                return RedirectToAction("Calendar", "Admin", null);
             }
 
            
@@ -5093,12 +5040,12 @@ namespace comerciamarketing_webapp.Controllers
                 db.SaveChanges();
 
                 TempData["exito"] = "Route deleted successfully.";
-                return RedirectToAction("RoutesM_calendar", "Home", null);
+                return RedirectToAction("Calendar", "Admin", null);
             }
             catch
             {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                return RedirectToAction("RoutesM_calendar", "Home", null);
+                return RedirectToAction("Calendar", "Admin", null);
             }
 
 
@@ -5155,12 +5102,12 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 TempData["exito"] = "Visit deleted successfully.";
-                return RedirectToAction("RoutesM_details", "Home", new { id=routeid});
+                return RedirectToAction("Calendar", "Admin", null);
             }
             catch
             {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                return RedirectToAction("RoutesM_details", "Home", new { id = routeid });
+                return RedirectToAction("Calendar", "Admin", null);
             }
 
 

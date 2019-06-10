@@ -1,0 +1,629 @@
+﻿@{
+
+    ViewBag.Title = "Comercia Marketing - Template previewadmin";
+}
+
+
+<!-- page-body-wrapper ends -->
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <a href="@Url.Action("Visit_details", "SalesRepresentatives", new { id=ViewBag.idvisitareal})" class="btn btn-info">Back</a>
+                </div>
+                <div class="flex"></div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding sr">
+                <div class="card">
+                    <div class="card-header bg-img p-0 no-border" data-stellar-background-ratio="0.1" data-plugin="stellar">
+                        <div class="bg-light r-2x no-r-b">
+                            <div class="d-md-flex">
+                                <div class="p-4">
+                                    <div class="d-flex">
+                                        <a href="#">
+                                            <span class="avatar w-64">
+                                                <img src="~/Content/newstyle2/images/samples/online-store.png" alt=".">
+                                                <i class="on"></i>
+                                            </span>
+                                        </a>
+                                        <div class="mx-3">
+                                            <h5 class="mt-2">@ViewBag.storename</h5>
+                                            <div class="text-fade text-sm">
+                                                <span class="m-r">@ViewBag.address</span>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="flex"></span>
+                                <div class="align-items-center d-flex p-4">
+                                    <div class="toolbar">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
+
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+
+                        <!--PARA TITULOS -->
+                        <div class="card p-3 r-3x b-b b-b-danger">
+                            <h4 class="" style="text-align:center;">DEL FRUTAL VISIT REPORT 1.0</h4>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Area de foco (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="afoco_list" name="a_foco" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Display extra (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="dextra_list" name="d_extra" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Dia pico de venta (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="dpico_list" name="d_pico" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                            <option value="1">Dia 1</option>
+                                            <option value="2">Dia 2</option>
+                                            <option value="3">Dia 3</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Recepcion de inventario (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="dinventario_list" name="d_inventario" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                            <option value="1">Dia 1</option>
+                                            <option value="2">Dia 2</option>
+                                            <option value="3">Dia 3</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Reset de espacios (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="respacio_list" name="r_espacio" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Ubicacion pasillo (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="upasillo_list" name="u_pasillo" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Ubicacion pestana (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="upestana_list" name="u_pestana" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10">Fotografia antes</p>
+                                <div class="col-md-12">
+
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="foto_antes" data-max-file-size-preview="15M">
+                                    <img id="img_fotoantes" alt="your image" hidden />
+                                    <img id="resultimg_fotoantes" alt="your image" hidden />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10" style="font-weight:bold;">Del Frutal (Litro)</p>
+                                <div class="col-md-12">
+                                    <table id="delfrutallitro_tb" class="table" style="width:100%">
+                                        <tr>
+                                            <th colspan="2" style="font-weight:normal">Disponibilidad</th>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp1" value="false" />
+
+                                                        <i class="green"></i>
+                                                        Si
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp2" value="false" />
+
+                                                        <i class="green"></i>
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table" style="width:100%">
+                                        <tr>
+                                            <th style="font-weight:bold">Precio</th>
+                                            <th style="font-weight:bold">Frentes</th>
+                                            <th style="font-weight:bold">Inventario</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Manzana</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Naranja</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Mango</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Guava</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pera</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pina</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Banano/Fresa</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10" style="font-weight:bold;">Del Frutal (200 ml)</p>
+                                <div class="col-md-12">
+                                    <table id="delfrutallitro_tb" class="table" style="width:100%">
+                                        <tr>
+                                            <th colspan="2" style="font-weight:normal">Disponibilidad</th>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp1" value="false" />
+
+                                                        <i class="green"></i>
+                                                        Si
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp2" value="false" />
+
+                                                        <i class="green"></i>
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table" style="width:100%">
+                                        <tr>
+                                            <th style="font-weight:bold">Precio</th>
+                                            <th style="font-weight:bold">Frentes</th>
+                                            <th style="font-weight:bold">Inventario</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Manzana</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Naranja</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Mango</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Guava</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pera</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pina</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Banano/Fresa</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10" style="font-weight:bold;">Del Frutal (Lata)</p>
+                                <div class="col-md-12">
+                                    <table id="delfrutallitro_tb" class="table" style="width:100%">
+                                        <tr>
+                                            <th colspan="2" style="font-weight:normal">Disponibilidad</th>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp1" value="false" />
+
+                                                        <i class="green"></i>
+                                                        Si
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="mb-3 hRadio col-6">
+                                                    <label class="md-check">
+                                                        <input type="radio" class="form-check-input rad" name="radio_disp1" id="disp2" value="false" />
+
+                                                        <i class="green"></i>
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table" style="width:100%">
+                                        <tr>
+                                            <th style="font-weight:bold">Precio</th>
+                                            <th style="font-weight:bold">Frentes</th>
+                                            <th style="font-weight:bold">Inventario</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Manzana</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Naranja</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal;">Mango</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Guava</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pera</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Pina</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="font-weight:normal; ">Banano/Fresa</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td><input type="number" id="manzip1" name="manzip1" class="form-control currency" value="0" /></td>
+                                            <td><input type="number" id="manzip2" name="manzip2" class="form-control" value="0" /></td>
+                                            <td><input type="number" id="manzip3" name="manzip3" class="form-control" value="0" /></td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Display 1 (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="adisp1_list" name="a_disp1" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Display 2 (*)</p>
+                                    <div class="col-md-12">
+                                        <select id="adisp2_list" name="a_disp2" class="form-control" style="width:100%">
+                                            <option value="0">Seleccione..</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10" style="font-weight:bold;">Actividades de  la competencia</p>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Marca (*)</p>
+                                    <div class="col-md-12">
+
+                                        <input type="text" class="form-control" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Descuento (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control currency" value="0" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Promocion de precio (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control currency" value="0" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Atados (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control" value="0" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Impulso (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control" value="0" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> Degustacion (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control" value="0" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10">Espacio adicional</p>
+                                <div class="col-md-12">
+
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="foto_espacioadicional" data-max-file-size-preview="15M">
+                                    <img id="img_fotoespacioadicional" alt="your image" hidden />
+                                    <img id="resultimg_fotoespacioadicional" alt="your image" hidden />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="control-label col-md-10">Fotografia despues</p>
+                                <div class="col-md-12">
+
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="foto_despues" data-max-file-size-preview="15M">
+                                    <img id="img_fotodespues" alt="your image" hidden />
+                                    <img id="resultimg_fotodespues" alt="your image" hidden />
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><br />
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10 text-right">
+                        <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
+                        <input type="submit" value="Finish activity" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
+                        <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ############ Content END-->

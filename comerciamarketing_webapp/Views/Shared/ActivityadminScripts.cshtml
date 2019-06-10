@@ -6,6 +6,8 @@
 <script type="text/javascript">
     window.onload = function () {
         //PARA RADIO BUTTONS
+
+
         $('.parentdiv').on('change', '.rad', function () {
 
             var id = $(this).attr('id');
@@ -871,7 +873,7 @@
             },
             success: function (result) {
 
-                 var url = '@Url.Action("Detailsa", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                 var url = '@Url.Action("Visit_details", "SalesRepresentatives", new {id= ViewBag.idvisitareal })';
                 $("#loading").hide();
                     window.location.href = url;
 
@@ -1209,7 +1211,7 @@
             },
             success: function (result) {
 
-                 var url = '@Url.Action("Detailsa", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                 var url = '@Url.Action("Visit_details", "SalesRepresentatives", new {id= ViewBag.idvisitareal })';
                 $("#loading").hide();
                     window.location.href = url;
 
@@ -1243,7 +1245,7 @@
             },
             success: function (result) {
 
-                 var url = '@Url.Action("Detailsa", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                 var url = '@Url.Action("Visit_details", "SalesRepresentatives", new {id= ViewBag.idvisitareal })';
                 $("#loading").hide();
                     window.location.href = url;
 

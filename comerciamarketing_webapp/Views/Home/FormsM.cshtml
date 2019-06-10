@@ -3,118 +3,134 @@
     ViewBag.Title = "Comercia Marketing - FormsM";
 }
 
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">Forms Builder</h2>
+                    <small class="text-muted">
+                        Create your own forms to get
+                        <strong> marketing information</strong>
+                    </small>
+                </div>
+                <div class="flex"></div>
 
-<div class="container-fluid page-body-wrapper">
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="display-4">Forms</h4>
-                                <button class="btn btn-success" data-toggle="modal" data-target="#createModal" data-action="create">Add Form<i class="mdi mdi-plus"></i></button>
-                                <div class="row">
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row row-sm sr">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row row-sm">
+                            <table id="datatable2" class="table table-theme table-row v-middle">
+                                <thead>
+                                    <tr>
+                                        <th><span class="text-muted">ID</span></th>
+                              
+                                        <th><span class="text-muted">NAME</span></th>
+                                        <th><span class="text-muted">ACTIONS</span></th> 
+                                   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemForms in ViewBag.formslist)
+                                    {
+                                <tr class="" data-id="@itemForms.ID_form">
+                                    <td style="min-width:30px;text-align:center">
+                                        <small class="text-muted">@itemForms.ID_form</small>
+                                    </td>
 
-                                    <table id="order-listing" class="table-striped">
-                                        <thead>
+                                    <td class="flex">
+                                        <a href="#" class="item-title text-color ">@itemForms.name</a>
+                                        <div class="item-except text-muted text-sm h-1x">
+                                            @itemForms.query1
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#createModal" data-action="edit" data-idform="@itemForms.ID_form" data-name="@itemForms.name" data-description="@itemForms.description" data-activity="@itemForms.ID_activity"><i class="" data-feather="edit"></i></button>
+                                        <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal" data-idform="@itemForms.ID_form"><i class="" data-feather="delete"></i></button>
 
-                                            <tr>
+                                        @if (itemForms.ID_activity == 1)
+    {//Forms
+                                    <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="" data-feather="eye"></i></a>
 
-                                                <th scope="col">ID #</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Type of document</th>
-                                                <th scope="col">Actions</th>
-                                            </tr>
+}
+else if (itemForms.ID_activity == 2)
+{//Retail Audit
+                                    <a href="@Url.Action("Template_preview2", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="" data-feather="eye"></i></a>
 
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var itemForms in ViewBag.formslist)
-                                            {
-                                                <tr>
-                                                    <td scope="row" data-label="ID">
+}
+                                        @if (itemForms.ID_activity == 3)
+    {//Sales Orders
+                                    <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="" data-feather="eye"></i></a>
 
-                                                        <h6>
-                                                            <i class="mdi mdi-file-document icon-sm text-info"></i>
-                                                            @itemForms.ID_form
+}
+else if (itemForms.ID_activity == 4)//Demo
+{
+                                    <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="" data-feather="eye"></i></a>
+}
+                                    </td>
+                                </tr>
+                                    }
+                                </tbody>
+                            </table>
 
-                                                        </h6>
 
-                                                    </td>
-                                                    <td data-label="Name">@itemForms.name</td>
-                                                    <td data-label="Type of document">
-                                                        @itemForms.query1
-                                                    </td>
-                                                    <td align="left" data-label="Actions">
-                                                        <button type="button" class="btn btn-icons btn-rounded btn-outline-primary" data-toggle="modal" data-target="#createModal" data-action="edit" data-idform="@itemForms.ID_form" data-name="@itemForms.name" data-description="@itemForms.description" data-activity="@itemForms.ID_activity"><i class="mdi mdi-account-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></button>
-                                                        <button type="button" class="btn btn-icons btn-rounded btn-outline-danger" data-toggle="modal" data-target="#deleteModal" data-idform="@itemForms.ID_form"><i class="mdi mdi-delete" data-toggle="tooltip" data-placement="bottom" title="Delete"></i></button>
-                                                        @if (itemForms.ID_activity == 1)
-                                                        {//Forms
-                                                            <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
 
-                                                        }
-                                                        else if (itemForms.ID_activity == 2)
-                                                        {//Retail Audit
-                                                            <a href="@Url.Action("Template_preview2", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
 
-                                                        }
-                                                        @if (itemForms.ID_activity == 3)
-                                                        {//Sales Orders
-                                                            <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
-
-                                                        }
-                                                        else if (itemForms.ID_activity == 4)//Demo
-                                                        {
-                                                            <a href="@Url.Action("Template_preview", "FormsM", new { id=itemForms.ID_form})" class="btn btn-icons btn-rounded btn-outline-success text-center"><i class="mdi mdi-eye" data-toggle="tooltip" data-placement="bottom" title="Preview"></i></a>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            }
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+
+
+
                 </div>
-                @Html.Partial("~/Views/Shared/Footer2.cshtml")
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
     </div>
+    <!-- ############ Main END-->
 </div>
+<!-- ############ Content END-->
+
+<script>
+    window.onload = function () {
+
+        table = $('#datatable2').DataTable();
+
+
+
+    };
+</script>
 <!-- page-body-wrapper ends -->
 <!--DELETE FORM DATA STARTS-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             @using (Html.BeginForm("DeleteForm", "FormsM", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Form Data</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            
-                <div class="form-group">
-                    <label class="col-form-label">Are you sure you want to delete Form Data?</label>
-                    <input type="text" class="form-control" id="idFormD" name="idFormD" hidden>
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Form Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
 
-     
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">Delete</button>
-            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-        </div>}
+                    <div class="form-group">
+                        <label class="col-form-label">Are you sure you want to delete Form Data?</label>
+                        <input type="text" class="form-control" id="idFormD" name="idFormD" hidden>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>}
         </div>
     </div>
 </div>
@@ -322,9 +338,9 @@
                         <select class="form-control" id="vendors_list" onChange='getProducts()'>
                             <option data-hidden="true">Select vendor</option>
                             @foreach (var item in ViewBag.vendors)
-                {
-                    <option value="@item.CardCode">@item.CardName</option>
-    }
+                            {
+                                <option value="@item.CardCode">@item.CardName</option>
+                            }
 
                         </select>
                     </div>
@@ -338,45 +354,45 @@
                     </div>
                 </div>
                 <!--
-    <div class="form-group">
-        <p class="control-label col-md-8">Input format</p>
-        <div class="col-md-12">
-            <div class="form-group">
-                <div class="form-radio">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                        Numeric
-                    </label>
-                </div>
-                <div class="form-radio">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option2">
-                        Text
-                    </label>
-                </div>
-                <div class="form-radio">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option3">
-                        Single option
-                    </label>
-                </div>
-                <div class="form-radio">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option4">
-                        Multiple option
-                    </label>
-                </div>
-                <div class="form-radio">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option4">
-                        Label (subtitle)
-                    </label>
-                </div>
-            </div>
+                <div class="form-group">
+                    <p class="control-label col-md-8">Input format</p>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                    Numeric
+                                </label>
+                            </div>
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option2">
+                                    Text
+                                </label>
+                            </div>
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option3">
+                                    Single option
+                                </label>
+                            </div>
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option4">
+                                    Multiple option
+                                </label>
+                            </div>
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option4">
+                                    Label (subtitle)
+                                </label>
+                            </div>
+                        </div>
 
-        </div>
-    </div>
-        -->
+                    </div>
+                </div>
+                    -->
             </div>
             <div class="modal-footer">
                 <input type="button" value="Add" id="btn_agregarProducto" class="btn btn-primary" data-dismiss="modal">
@@ -485,7 +501,7 @@
                     <p class="control-label col-md-8">Items</p>
                     <div class="col-md-12">
                         <select class="form-control" id="displays_list" multiple="multiple">
-                           @foreach (var item in ViewBag.displaylist)
+                            @foreach (var item in ViewBag.displaylist)
                             {
                                 <option value="@item.ID_item">@item.description</option>
                             }

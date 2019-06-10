@@ -6,1379 +6,598 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head lang="en">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Comercia Marketing App">
     <title>Comercia Marketing</title>
-    <link rel="shortcut icon" href="~/Content/newstyle2/images/favicon-16x16.png" />
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/fonts.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/crumina-fonts.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/grid.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/base.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/blocks.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/layouts.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/modules.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/widgets-styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+    =========================
+    ICONS
+    ========================= -->
+    <!--IONICONS-->
+    <link href="https://cdn.jsdelivr.net/npm/ionicons@4.5.8/dist/css/ionicons.min.css" rel="stylesheet">
+    <!-- FONTAWESOME -->
+    <link rel="stylesheet" href="~/Content/landingpage/css/fontawesome-all.min.css">
+    <!--
+    =========================
+    THIRD PARTY PLUGINS
+    ========================= -->
+    <!-- MANIFIC POPUPS-->
+    <link rel="stylesheet" href="~/Content/landingpage/css/magnific-popup.css">
+    <!-- OWL CAROUSEL-->
+    <link rel="stylesheet" href="~/Content/landingpage/css/owl.carousel.min.css">
+    <!--SWIPER CAROUSEL-->
+    <link rel="stylesheet" href="~/Content/landingpage/css/swiper.min.css">
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="~/Content/landingpage/css/bootstrap.min.css">
 
-    <!--Plugins styles-->
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/jquery.mCustomScrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/swiper.min.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/primary-menu.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/landingpage/css/magnific-popup.css">
-    <!--Styles for RTL-->
-    <!--<link rel="stylesheet" type="text/css" href="~/Content/landingpage/rtl.css">-->
-    <!--External fonts-->
-    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <!--
+    =========================
+    MAIN STYLES
+    ========================= -->
+    <!-- MAIN STYLES-->
+    <link rel="stylesheet" href="~/Content/landingpage/css/styles.css">
+    <!-- RESPONSIVE -->
+    <link rel="stylesheet" href="~/Content/landingpage/css/responsive.css">
+    <!--
+    =========================
+    FAVICONS
+    ========================= -->
+    <link rel="shortcut icon" href="/favicon.ico"><!-- 16x16 size favicon -->
+    <!-- Hotjar Tracking Code for Fourtyfive.co -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 970565, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
 </head>
+<body class="x-hidden has-sticky-header">
 
-<body class=" ">
-    <!-- Header -->
-    <div class="top-bar top-bar-dark">
+    <!--
+    =========================
+    PRELOADER
+    ========================= -->
+    <div id="loading">
+        <div class="ripple ripple1"></div>
+        <div class="ripple ripple2"></div>
+        <div class="ripple ripple3"></div>
+        <div class="ripple ripple4"></div>
+    </div>
+    <!--END PRELOADER-->
+    <nav class="navbar navbar-expand-lg fixed-top custom-menu custom-menu__light">
         <div class="container">
-            <div class="top-bar-contact">
-                <div class="contact-item">
-                    <img src="~/Content/landingpage/img/united-states-of-america.png" class="flags" alt="flag">
-                    <select>
-                        <option value="1">English</option>
-                        <option value="2">Spanish</option>
-
-                    </select>
-                </div>
-
-            </div>
-            <div class="login-block">
-                <img src="~/Content/landingpage/img/signin_dark.png" class="sign-in">
-                <a href="@Url.Action("Index", "Home")">Sign in</a>
-            </div>
-            <div class="follow_us">
-                <span>Follow us:</span>
-                <div class="socials">
-                    <a href="https://www.facebook.com/ComerciaMarketing/" class="social__item">
-                        <img src="~/Content/landingpage/svg/circle-facebook.svg" alt="facebook">
-                    </a>
-
-                </div>
-            </div>
-            <a href="#" class="top-bar-close" id="top-bar-close-js">
-                <span></span>
-                <span></span>
+            <a class="navbar-brand" href="index.html">
+                <img src="~/Content/landingpage/images/demo/landing/LogoPNG-1.png" style="width:110;height: 50px;" alt="Image" class="logo-md">
             </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="menu-icon__circle">
+                </span>
+                <span class="menu-icon">
+                    <span class="menu-icon__bar"></span>
+                    <span class="menu-icon__bar"></span>
+                    <span class="menu-icon__bar"></span>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-lg-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#overview">
+                            Overview
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#clients">clients</a>
+                    </li>
+
+                </ul>
+                <div class="custom-menu__right">
+                    <a href="@Url.Action("Index","Home")" class="btn btn-primary btn-pills">Login</a>
+                    <p class="assistive-text d-md-none">Click on "Login" button to enter in our web application </p>
+                </div>
+            </div>
         </div>
-    </div>
-    <header class="header" id="site-header">
+    </nav>
+    <!--
+    =========================
+    HERO SECTION
+    ========================= -->
+    <header id="hero" class="hero">
         <div class="container">
-            <div class="header-content-wrapper">
-                <a href="#" id="top-bar-js" class="top-bar-link">TOPBAR</a>
-                <div class="logo">
-                    <a href="#" class="full-block-link"></a>
-
-                    <div class="logo-text">
-                        <img style="height: 50px; width:170px" src="~/Content/landingpage/img/landing/LogoPNG-1.png" alt="Comercia Marketing">
-                    </div>
-                </div>
-                <nav id="primary-menu" class="primary-menu">
-                    <!--
-                                        <a href='javascript:void(0)' id="menu-icon-trigger" class="menu-icon-trigger showhide">
-                                            <span class="mob-menu--title">Menu</span>
-                                            <span id="menu-icon-wrapper" class="menu-icon-wrapper" style="visibility: hidden">
-                                                <svg width="1000px" height="1000px">
-                                                    <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"></path>
-                                                    <path id="pathE" d="M 300 500 L 700 500"></path>
-                                                    <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
-
-                                         menu-icon-wrapper
-
-                                        <ul class="primary-menu-menu">
-                                            <li class="has-megamenu menu-item-has-children">
-                                                <a href="#">Menu</a>
-
-                                                <div class="megamenu" style="background-image: url('img/menu-bg.png');">
-                                                    <div class="megamenu-row">
-
-                                                        <div class="col3">
-                                                            <ul>
-                                                                <li class="megamenu-item-info">
-                                                                    <h5 class="megamenu-item-info-title">About us</h5>
-
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="#">The company<i class="seoicon-right-arrow"></i></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">Our team<i class="seoicon-right-arrow"></i></a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
-                                                        <div class="col3">
-                                                            <ul>
-                                                                <li class="megamenu-item-info">
-                                                                    <h5 class="megamenu-item-info-title">Services</h5>
-                                                                    <p class="megamenu-item-info-text">Services of Our Marketing Agency.</p>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="#">Service 1<i class="seoicon-right-arrow"></i></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">Service n<i class="seoicon-right-arrow"></i></a>
-                                                                </li>
-
-
-
-                                                            </ul>
-                                                        </div>
-                                                        <div class="col3">
-
-                                                        </div>
-
-
-                                                        <div class="col3">
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </li>
-
-
-
-                                        </ul>-->
-                </nav>
-                <!--
-                                <ul class="nav-add">
-                                    <li class="cart">
-
-                                        <a href="#" class="js-cart-animate">
-                                            <i class="seoicon-basket"></i>
-                                            <span class="cart-count">0</span>
-                                        </a>
-
-                                        <div class="cart-popup-wrap">
-                                            <div class="popup-cart">
-                                                <h4 class="title-cart">No products in the cart!</h4>
-                                                <p class="subtitle">Please make your choice.</p>
-                                                <div class="btn btn-small btn--dark">
-                                                    <span class="text">view all catalog</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li>
-
-                                    <li class="search search_main">
-                                        <a href="#" class="js-open-search">
-                                            <i class="seoicon-loupe"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <div class="user-menu open-overlay">
-                                    <a href="#" class="user-menu-content  js-open-aside">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </a>
+            <div class="row align-items-center">
+                <div class="col-12 col-sm-6">
+                    <div class="hero-content">
+                        <div class="hero-title__group">
+                            <div class="hero-title">
+                                <h2>We evaluate and potentialize latin products in the US market.</h2>
+                            </div>
+                            <div class="Hero--Subtitle">
+                                <p class="lead">We want to make a difference in the way your brands reach their customer.</p>
+                            </div>
+                        </div>
+                        <div class="hero-cta-group">
+                            <form action="" class="hero-form cta__large">
+                                <div class="input-group">
+                                    <label for="intro-email" class="sr-only">Email</label>
+                                    <input type="email" class="form-control" id="intro-email" placeholder="Enter your email">
+                                    <button type="submit" class="btn btn-secondary">Contact Us</button>
                                 </div>
-                            </div>
-                -->
-            </div>
-    </header>
-    <!-- ... End Header -->
-    <!-- Right-menu -->
-    <div class="mCustomScrollbar" data-mcs-theme="dark">
-        <div class="popup right-menu">
-            <div class="right-menu-wrap">
-                <div class="user-menu-close js-close-aside">
-                    <a href="#" class="user-menu-content  js-clode-aside">
-                        <span></span>
-                        <span></span>
-                    </a>
-                </div>
-                <div class="logo">
-                    <a href="#" class="full-block-link"></a>
-
-                    <div class="logo-text">
-                        <img style="height: 80px; width:270px" src="~/Content/landingpage/img/landing/LogoPNG-1.png" alt="CMK">
-                    </div>
-                </div>
-
-            </div>
-            <div class="widget login">
-                <h4 class="login-title">Sign In to Your Account</h4>
-                <input class="email input-standard-grey" placeholder="Username or Email" type="text">
-                <input class="password input-standard-grey" placeholder="Password" type="password">
-                <div class="login-btn-wrap">
-                    <div class="btn btn-medium btn--dark btn-hover-shadow">
-                        <span class="text">login now</span>
-                        <span class="semicircle"></span>
-                    </div>
-                    <!--
-                                        <div class="remember-wrap">
-
-                                            <div class="checkbox">
-                                                <input id="remember" type="checkbox" name="remember" value="remember">
-                                                <label for="remember">Remember Me</label>
-                                            </div>
-
-                                        </div>
-                    -->
-                </div>
-                <div class="helped">Lost your password?</div>
-                <!--<div class="helped">Register Now</div>-->
-            </div>
-
-            <!--
-                    <div class="widget contacts">
-
-                        <h4 class="contacts-title">Get In Touch</h4>
-                        <p class="contacts-text">Lorem ipsum dolor sit amet, duis metus ligula amet in purus,
-                            vitae donec vestibulum enim, tincidunt massa sit, convallis ipsum.
-                        </p>
-
-                        <div class="contacts-item">
-                            <img src="img/contact4.png" alt="phone">
-                            <div class="content">
-                                <a href="#" class="title">8 800 567.890.11</a>
-                                <p class="sub-title">Mon-Fri 9am-6pm</p>
-                            </div>
-                        </div>
-
-                        <div class="contacts-item">
-                            <img src="img/contact5.png" alt="phone">
-                            <div class="content">
-                                <a href="#" class="title">info@comerciamarketing.com</a>
-                                <p class="sub-title">online support</p>
-                            </div>
-                        </div>
-
-                        <div class="contacts-item">
-                            <img src="img/contact6.png" alt="phone">
-                            <div class="content">
-                                <a href="#" class="title">Nashville, Tennessee</a>
-                                <p class="sub-title">795 South Park Avenue</p>
-                            </div>
-                        </div>
-
-                    </div>
-            -->
-        </div>
-    </div>
-    <!-- ... End Right-menu -->
-    <div class="content-wrapper">
-        <div class="header-spacer"></div>
-        <!-- Main Slider -->
-        <div class="container-full-width">
-            <div class="swiper-container main-slider" data-effect="fade" data-autoplay="4000">
-                <!-- Additional required wrapper -->
-                <div class="swiper-wrapper">
-                    <!-- Slides
-                            <div class="swiper-slide bg-border-color main-slider-bg-dark" style="background-image: url('/Content/landingpage/img/landing/Fmerchandising.psd.jpg'); background-size: contain;background-position:center;background-repeat:no-repeat">-->
-                    <div class="swiper-slide bg-border-color main-slider-bg-dark">
-                        <div class="container table full-height">
-                            <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
-                                    <div class="slider-content">
-                                        <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
-                                            Merchandising
-                                        </h3>
-                                        <h5 class="slider-content-text c-dark" data-swiper-parallax="-200">
-                                            <ul class="list list--secondary" style="padding-left:50px">
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Planogram execution.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Product depth valuation</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">POP material placement</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">In store data collection</a>
-                                                </li>
-                                            </ul>
-                                        </h5>
-
-                                    </div>
-                                </div>
-                                @*<div class="col-lg-12 table-cell">
-                        <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                            <img src="~/Content/landingpage/img/landing/Fmerchandising.psd.jpg" alt="slider">
-                        </div>
-                    </div>*@
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide bg-border-color main-slider-bg-dark">
-                        <div class="container table full-height">
-                            <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
-                                    <div class="slider-content">
-                                        <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
-                                            Campain Design
-                                        </h3>
-                                        <h5 class="slider-content-text c-dark" data-swiper-parallax="-200">
-                                            <ul class="list list--secondary" style="padding-left:50px">
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Additional product exhibition.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">New product launch.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">360 Incentive Program (Store, Sales rep, Consumer)</a>
-                                                </li>
-
-                                            </ul>
-                                        </h5>
-
-                                    </div>
-                                </div>
-                                @*<div class="col-lg-6 table-cell">
-                        <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                            <img src="~/Content/landingpage/img/landing/F20Campaña.png.jpg" alt="slider">
-                        </div>
-                    </div>*@
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide bg-border-color main-slider-bg-dark">
-                        <div class="container table full-height">
-                            <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
-                                    <div class="slider-content">
-                                        <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
-                                            In Store Sampling
-                                        </h3>
-                                        <h5 class="slider-content-text c-dark" data-swiper-parallax="-200">
-                                            <ul class="list list--secondary" style="padding-left:50px">
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Product sampling.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Promotional material giveaway.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Promotions.</a>
-                                                </li>
-
-                                            </ul>
-                                        </h5>
-
-                                    </div>
-                                </div>
-                                @*<div class="col-lg-6 table-cell">
-                                    <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                                        <img src="~/Content/landingpage/img/landing/fbdemos.jpg" alt="slider">
-                                    </div>
-                                </div>*@
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide bg-border-color main-slider-bg-dark">
-                        <div class="container table full-height">
-                            <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
-                                    <div class="slider-content">
-                                        <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
-                                            Brand Activation
-                                        </h3>
-                                        <h5 class="slider-content-text c-dark" data-swiper-parallax="-200">
-                                            <ul class="list list--secondary" style="padding-left:50px">
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Brand embasador in events such as festivals and fairs.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Sampling.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Promotional material giveaway.</a>
-                                                </li>
-
-                                            </ul>
-                                        </h5>
-
-                                    </div>
-                                </div>
-                                @*<div class="col-lg-6 table-cell">
-                                    <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                                        <img src="~/Content/landingpage/img/landing/marca1.jpg" alt="slider">
-                                    </div>
-                                </div>*@
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide bg-border-color main-slider-bg-dark">
-                        <div class="container table full-height">
-                            <div class="row table-cell">
-                                <div class="col-lg-12 table-cell">
-                                    <div class="slider-content">
-                                        <h3 class="h1 slider-content-title c-dark" data-swiper-parallax="-100">
-                                            Market Research
-                                        </h3>
-                                        <h5 class="slider-content-text c-dark" data-swiper-parallax="-200">
-                                            <ul class="list list--secondary" style="padding-left:50px">
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Brand or product potencial.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Brand awareness.</a>
-                                                </li>
-                                                <li>
-                                                    <i class="seoicon-check"></i>
-                                                    <a href="#">Benchmark study.</a>
-                                                </li>
-
-                                            </ul>
-                                        </h5>
-
-                                    </div>
-                                </div>
-                                @*<div class="col-lg-6 table-cell">
-                                    <div class="slider-thumb" data-swiper-parallax="-300" data-swiper-parallax-duration="500">
-                                        <img src="~/Content/landingpage/img/landing/mejorespacio.jpg" alt="slider">
-                                    </div>
-                                </div>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Prev next buttons-->
-                <svg class="btn-next btn-next-black">
-                    <use xlink:href="#arrow-right"></use>
-                </svg>
-                <svg class="btn-prev btn-prev-black">
-                    <use xlink:href="#arrow-left"></use>
-                </svg>
-                <!--Pagination tabs-->
-                <div class="slider-slides">
-                    <a href="#" class="slides-item bg-border-color main-slider-bg-light">
-                        <div class="content">
-                            <div class="text-wrap">
-                                <h4 class="slides-title">Merchandising</h4>
-                            </div>
-                            <div class="slides-number">01</div>
-                        </div>
-                    </a>
-                    <a href="#" class="slides-item bg-primary-color">
-                        <div class="content">
-                            <div class="text-wrap">
-                                <h4 class="slides-title">Campain design</h4>
-
-                            </div>
-                            <div class="slides-number">02</div>
-                        </div>
-                    </a>
-                    <a href="#" class="slides-item bg-secondary-color">
-                        <div class="content">
-                            <div class="text-wrap">
-                                <h4 class="slides-title">In store sampling</h4>
-                            </div>
-                            <div class="slides-number">03</div>
-                        </div>
-                    </a>
-                    <a href="#" class="slides-item bg-orange-color">
-                        <div class="content">
-                            <div class="text-wrap">
-                                <h4 class="slides-title">Brand activation</h4>
-                            </div>
-                            <div class="slides-number">04</div>
-                        </div>
-                    </a>
-                    <a href="#" class="slides-item bg-green-color">
-                        <div class="content">
-                            <div class="text-wrap">
-                                <h4 class="slides-title">Market research</h4>
-                            </div>
-                            <div class="slides-number">05</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ... End Main Slider -->
-        <!-- Background-mountains -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="background-mountains medium-padding120 scrollme">
-                    <div class="images">
-                        <img src="~/Content/landingpage/img/mountain1.png" alt="mountain">
-                        <img src="~/Content/landingpage/img/mountain2.png" alt="mountain">
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
-                                <div class="heading align-center">
-                                    <h4 class="h1 heading-title">Who we are</h4>
-                                    <div class="heading-line">
-                                        <span class="short-line"></span>
-                                        <span class="long-line"></span>
-                                    </div>
-                                    <p class="heading-text">
-                                        Comercia Marketing ...
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <div class="info-box--standard-centered">
-                                    <div class="info-box-image">
-                                        <img src="~/Content/landingpage/img/info-box7.png" alt="image">
-                                    </div>
-                                    <div class="info-box-content">
-                                        <h4 class="info-box-title">Our mision</h4>
-                                        <p class="text">
-                                            Evaluate and potentialize latin products in the US market.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <div class="info-box--standard-centered">
-                                    <div class="info-box-image">
-                                        <img src="~/Content/landingpage/img/info-box8.png" alt="image">
-                                    </div>
-                                    <div class="info-box-content">
-                                        <h4 class="info-box-title">Our vision</h4>
-                                        <p class="text">
-                                            We want to make a difference in the way or brands reach their customer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <div class="info-box--standard-centered">
-                                    <div class="info-box-image">
-                                        <img src="~/Content/landingpage/img/info-box9.png" alt="image">
-                                    </div>
-                                    <div class="info-box-content">
-                                        <h4 class="info-box-title">Technology</h4>
-                                        <p class="text">
-                                            .
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <div class="info-box--standard-centered">
-                                    <div class="info-box-image">
-                                        <img src="~/Content/landingpage/img/info-box10.png" alt="image">
-                                    </div>
-                                    <div class="info-box-content">
-                                        <h4 class="info-box-title">Analytics</h4>
-                                        <p class="text">
-                                            .
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- End Background-mountains -->
-        <!-- Info-Box
-
-    <div class="container info-boxes pt100 pb100">
-
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box1.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Local Search Strategy</h5>
-                        <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                            sed diam nonummy nibh euismod.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box2.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Maps Search Optimization</h5>
-                        <p class="text">Claritas est etiam processus dynamicus,
-                            qui sequitur mutationem consuetudium lectorum.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box3.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Link Building & Content</h5>
-                        <p class="text">Investigationes demonstraverunt lectores
-                            legere me lius quod ii legunt saepius notare.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box4.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Paid Search Advertising</h5>
-                        <p class="text">Claritas est etiam processus dynamicus,
-                            qui sequitur mutationem consuetudium lectorum.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box5.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Custom Website Design</h5>
-                        <p class="text">Investigationes demonstraverunt lectores legere
-                            me lius quod ii legunt saepius notare.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <div class="info-box--standard" data-mh="info-boxes">
-                    <div class="info-box-image">
-                        <img src="img/info-box6.png" alt="image">
-                    </div>
-                    <div class="info-box-content">
-                        <h5 class="info-box-title">Custom Email Design</h5>
-                        <p class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                            sed diam nonummy nibh euismod.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-     End Info-Box -->
-        <!-- Offers
-
-    <div class="container">
-        <div class="row medium-padding120">
-            <div class="col-lg-12">
-                <div class="offers">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <h4 class="h1 heading-title">Our custom solution</h4>
-                                <div class="heading-line">
-                                    <span class="short-line"></span>
-                                    <span class="long-line"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <p class="heading-text">Claritas est etiam processus dynamicus, qui sequitur
-                                    mutationem consuetudium.
-                                </p>
-                            </div>
-
-                            <ul class="list list--secondary">
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Introduction</a>
-
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Growth</a>
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Maturity</a>
-                                </li>
-                                <li>
-                                    <i class="seoicon-check"></i>
-                                    <a href="#">Redefinition</a>
-                                </li>
-                            </ul>
-
-                        </div>
-
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="offers-thumb">
-                                <img src="img/landing/aliado.jpg" alt="offers">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     ... End Offers -->
-  
-
-        <!-- Post-slider -->
-        <div class="container">
-            <div class="recent-post-slider medium-padding120">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="heading">
-                            <h4 class="h1 heading-title">Who trust us</h4>
-                            <div class="heading-line">
-                                <span class="short-line"></span>
-                                <span class="long-line"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="theme-module news-slider-module">
-                    <div class="heading">
-                        <p class="heading-text">
-                            With only 2 years in the market, we have managed to contribute to the growth of more than 12 brands that have trusted us. <strong>Lets keep growing together!</strong>
-                        </p>
-                    </div>
-                    <div class="swiper-container top-pagination" data-show-items="3" data-scroll-items="2">
-                        <!-- If we need pagination -->
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide client-item">
-                                <a href="#" class="client-image">
-                                    <img src="~/Content/landingpage/img/landing/lamorenita.jpg" alt="logo" class="hover">
-                                </a>
-                            </div>
-                            <div class="swiper-slide client-item">
-                                <a href="#" class="client-image">
-                                    <img src="~/Content/landingpage/img/landing/FB20Ducal.png.jpg" alt="logo" class="hover">
-                                </a>
-                            </div>
-                            <div class="swiper-slide client-item">
-                                <a href="#" class="client-image">
-                                    <img src="~/Content/landingpage/img/landing/FB20Delpueblo.png.jpg" alt="logo" class="hover">
-                                </a>
-                            </div>
-
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Post-slider -->
-        <!-- SEO-Score -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="seo-score scrollme">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-xs-12 col-sm-12">
-                                <div class="seo-score-content align-center">
-                                    <div class="heading align-center">
-                                        <h4 class="h1 heading-title">Need more information?</h4>
-                                        <p class="heading-text">Send us a message!</p>
-                                    </div>
-                                    <div class="seo-score-form">
-                                        <form class="seo-score-form input-inline" method="post" action="send_mail.php">
-                                            <div class="row">
-                                                <div class="col-lg-8 no-padding col-md-12 col-xs-12 col-sm-12">
-                                                    <input name="permalink" class="input-dark site" required="required" placeholder="Type in your Company name">
-                                                </div>
-                                                <div class="col-lg-4 no-padding col-md-12 col-xs-12 col-sm-12">
-                                                    <input name="email" class="input-dark e-mail" required="required" placeholder="Your Email" type="email">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-8 no-padding col-md-12 col-xs-12 col-sm-12">
-                                                    <input type="text" class="input-dark site" required="required" placeholder="Type in your name">
-                                                </div>
-                                                <div class="col-lg-4 no-padding col-md-12 col-xs-12 col-sm-12">
-                                                    <input name="textee" class="input-dark e-mail" required="required" placeholder="Your telephone number" type="text">
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-medium btn--green btn-hover-shadow">
-                                                <span class="text">Send</span>
-                                                <span class="semicircle"></span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="images">
-                        <img src="~/Content/landingpage/img/seoscore1.png" alt="image">
-                        <img src="~/Content/landingpage/img/seoscore2.png" alt="image">
-                        <img src="~/Content/landingpage/img/seoscore3.png" alt="image">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ... End SEO-Score -->
-        <!-- Our-video -->
-        <!-- ... End Offers -->
-        <!-- Counters
-
-    <div class="container-fluid">
-        <div class="row bg-orange-color">
-            <div class="container">
-                <div class="row">
-                    <div class="counters">
-
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark" data-speed="2000" data-refresh-interval="3" data-to="5" data-from="0">5</span>
-                                </div>
-                                <span class="counter-title">Years of Service</span>
-
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="30" data-from="0">30+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Professionals</span>
-
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="6" data-from="0">6+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Satisfied Clients</span>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <div class="counter-item">
-                                <div class="counter-numbers counter">
-                                    <span class="c-dark"  data-speed="2000" data-refresh-interval="3" data-to="10" data-from="0">10+</span>
-                                    <div class="units c-dark">+</div>
-                                </div>
-                                <span class="counter-title">Satisfied Clients</span>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     End Counters -->
-        <!-- Testimonial-slider
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="testimonial-slider scrollme">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <div class="heading">
-                                <h4 class="h1 heading-title">Happy Clients
-                                    </h4>
-                                <div class="heading-line">
-                                    <span class="short-line bg-yellow-color"></span>
-                                    <span class="long-line bg-yellow-color"></span>
-                                </div>
-                                <p class="heading-text c-white">Claritas est etiam processus dynamicus, qui lectorum.
-                                </p>
-                            </div>
-                            <div class="signature js-animate-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60">
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M24.78 42.5C11.28 41.06.96 36 1.16 26.86 1.62 11.6 16.76 3.6 28.13 3.25c5.44-.16 9.8 2.38 10.2 5.8.86 7.66-19.23 15.62-19.23 15.62s17.86-6.57 24.66 2.2c2.8 3.6-11.8 10.65-11.8 10.65s-8.8 3.35-7.65-.24c1.78-5.52 16.8-10.1 18.42-10.3 3.17-.4 7.1-.4 8 .12 1.33.78-1.7 4.14-.94 4.86.76.72 3.82-2.55 3.94-1.97.12.57-.64 2.63.58 3 1.2.38 2.3-1.1 4.28-1.5 1.97-.4 1.83-.44 3.6-.12 1.76.32 2.1.64 3.47 1.4 1.36.74.86 2.22 1.96 1.6 1.1-.6 1.43-4.16 2.44-4.04 1.02.1.03 5.38 1.63 4.5 1.6-.85 4.74-7.97 4.74-7.97s-.82 4.04 0 3.93c3.14-.4 8.12-2.57 14.48-3.36 6.37-.78 8.67-.35 11 .24 1.92.48 2.67 2.3 2.67 2.3"
-                                          stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M113.7 15.75s-1.1-2.78-3.6-2.08c-5.83 1.62-16.2 7.68-16.44 15.63-.46 16.3 21.1 11.14 22.7 11 13.6-1.2 17.38-9.96 17.36-14.48-.06-14.3-19.07-10.3-21.07-10.07-7.9.92-10.48 1.57-10.48 1.57"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M119.7 1.05c-2.53 13.9-5.1 27.83-2.53 41.44" stroke-linecap="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M133.6 27.8c-6.62-.42-12.6.37-17.36 3.35"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4"
-                                          d="M131.52 32.77s3.95-.13 8.34-.93c2.4-.43 5-1.73 7.87-1.85 2.87-.12 1.74 1.44 3.6 1.38 4.62-.14 7.98-.3 14.92-.7 6.95-.4 9.76-2.76 12.86-.92 1.7 1 1.4 3.13 1.4 3.13"
-                                          stroke-linecap="round"></path>
-                                    <path fill="none" stroke="#2f2c2c" stroke-width="1.4" d="M153.52 31.03s2.27-2.74-.7-3.35c-3.36-.7-3.7 2.43-3.7 2.43"></path>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-7 col-lg-offset-1 col-md-8 col-sm-12 col-xs-12">
-
-                            <div class="testimonial-item">
-                                <!-- Slider main container
-                                <div class="swiper-container testimonial__thumb overflow-visible" data-effect="fade" data-loop="false">
-
-                                    <div class="swiper-wrapper">
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company CEO</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
-                                        <div class="testimonial-slider-item swiper-slide">
-                                            <div class="testimonial-content">
-                                                <p class="text" data-swiper-parallax="-200">Nam liber tempor cum soluta nobis eleifend option congue
-                                                    nihil imperdiet doming id quod mazim.
-                                                </p>
-                                                <a href="#" class="author" data-swiper-parallax="-150">Jonathan Simpson</a>
-                                                <a href="#" class="company" data-swiper-parallax="-150">Company</a>
-
-                                            </div>
-                                            <div class="avatar" data-swiper-parallax="-50">
-                                                <img src="img/avatar.png" alt="avatar">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- If we need pagination
-                                    <div class="swiper-pagination"></div>
-
-                                    <div class="quote">
-                                        <i class="seoicon-quotes"></i>
-                                    </div>
-                                </div>
-
-                                <div class="testimonial__thumb-img">
-                                    <img src="img/testimonial1.png" alt="image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-img">
-                    <img src="img/testimonial2.png" alt="image">
-                </div>
-            </div>
-        </div>
-    </div>
-
-     End Testimonial-slider -->
-        <!-- Recent-case -->
-        <!-- End Recent-case -->
-        <!-- Pricing table
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="pricing-tables medium-padding120 bg-border-color">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
-                            <div class="heading align-center">
-                                <h4 class="h1 heading-title">Our Pricing Packages</h4>
-                                <div class="heading-line">
-                                    <span class="short-line"></span>
-                                    <span class="long-line"></span>
-                                </div>
-                                <p class="heading-text">Claritas est etiam processus dynamicus,
-                                    qui sequitur mutationem consuetudium.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="pricing-tables-wrap">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing1.png" alt="personal">
-                                    </div>
-                                    <a href="#" class="pricing-title">Personal</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">5</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">300</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item">
-                                            -
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">15</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$49.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
-                                </div>
-
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing2.png" alt="personal">
-                                    </div>
-                                    <a href="#" class="pricing-title">Webmaster</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">25</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,900</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item include">
-                                            Includes Branded Reports
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">50</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$99.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="pricing-tables-item">
-                                    <div class="pricing-tables-icon">
-                                        <img src="img/pricing3.png" alt="personal">
-                                    </div>
-                                    <a href="#" class="pricing-title">Professional</a>
-                                    <ul class="pricing-tables-position">
-                                        <li class="position-item">
-                                            <span class="count">100</span>
-                                            Analytics Campaigns
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">7500</span>
-                                            Keywords
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">1,250,000</span>
-                                            Crawled Pages
-                                        </li>
-                                        <li class="position-item include">
-                                            Includes Branded Reports
-                                        </li>
-                                        <li class="position-item">
-                                            <span class="count">150</span>
-                                            Social Accounts
-                                        </li>
-                                    </ul>
-                                    <h4 class="rate">$169.99</h4>
-                                    <a href="20_checkout.html" class="btn btn-medium btn--dark">
-                                        <span class="text">Order Now!</span>
-                                        <span class="semicircle"></span>
-                                    </a>
-
-                                    <img src="img/pricing-dots.png" class="dots" alt="dots">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    End Pricing table -->
-        <!-- Clients -->
-        <!-- End Clients -->
-        <!-- Subscribe Form
-
-    <div class="container-fluid bg-green-color">
-        <div class="row">
-            <div class="container">
-
-                <div class="row">
-
-                    <div class="subscribe scrollme">
-
-                        <div class="col-lg-6 col-lg-offset-5 col-md-6 col-md-offset-5 col-sm-12 col-xs-12">
-                            <h4 class="subscribe-title">What are you waiting for, get in touch with us now!</h4>
-                            <form class="subscribe-form" method="post" action="import.php">
-                                <input class="email input-standard-grey input-white" name="email" required="required" placeholder="Your Email Address" type="email">
-                                <button class="subscr-btn">Send
-                                    <span class="semicircle--right"></span>
-                                </button>
+                                <!--<span class="assistive-text">14-day FREE trial - no credit card needed</span>-->
                             </form>
-
-
                         </div>
-
-                        <div class="images-block">
-                            <img src="img/subscr-gear.png" alt="gear" class="gear">
-                            <img src="img/subscr1.png" alt="mail" class="mail">
-                            <img src="img/subscr-mailopen.png" alt="mail" class="mail-2">
-                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-5 ml-auto">
+                    <div class="hero-figure">
+                        <img src="~/Content/landingpage/images/demo/hero-1-2.png" class="img-fluid w-100" alt="">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
-     End Subscribe Form -->
-    </div>
 
-    <!-- Footer -->
-    <footer class="footer js-fixed-footer" id="site-footer">
+    <!--
+        =========================
+        APP SCREENS SLIDER
+        ========================= -->
+    <section id="overview" class="section-spacer">
         <div class="container">
-            <div class="row">
-                <div class="info">
-                    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-                        <div class="heading">
-                            <h3 class="heading-title">Comercia Marketing</h3>
-                            <div class="heading-line">
-                                <span class="short-line"></span>
-                                <span class="long-line"></span>
-                            </div>
-                            <p class="heading-text">
-                                .
+            <div class="section-screens__inner">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <header class="section-header pt-100 text-center">
+                            <h2 class="section-title">Who we are</h2>
+                            <p class="lead">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus aut reiciendis
+                                praesentium.
+                            </p>
+
+                        </header>
+                    </div>
+                </div>
+
+                <div class="swiper-container screen-slider">
+                    <div class="screen-slider-wrapper swiper-wrapper ">
+                        <div class="screen-slider__item swiper-slide">
+                            <img src="~/Content/landingpage/images/demo/landing/FB%2520ESTUDIOS%2520DE%2520MERCADO.png.jpg" alt="Image">
+                        </div>
+                        <div class="screen-slider__item swiper-slide">
+                            <img src="~/Content/landingpage/images/demo/landing/FB%2520Campa%C3%B1a.png.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <!-- If we need navigation buttons or just delete them-->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+    <!--
+    =========================
+    FEATURES OVERVIEW
+    ========================= -->
+    <section id="hiw" class="section-spacer bg-very__gray">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <div class="feature-list-image">
+                        <img src="~/Content/landingpage/images/demo/featured-images/feature-image-4.png" class="img-fluid" alt="Image">
+                    </div>
+                </div>
+                <div class="col-sm-5 ml-auto">
+                    <div class="feature-list-wrapper">
+                        <div class="content-header">
+                            <h2 class="content-title">COMPETENT PROFESSIONAL STAFF</h2>
+                            <p>
+                                We have taken on new projects, expanded our professional staff, and have made plans to enhance our ongoing programs.
                             </p>
                         </div>
-                        <div class="socials">
-                            <a href="" class="social__item">
-                                <img src="~/Content/landingpage/svg/circle-facebook.svg" alt="facebook">
-                            </a>
-                            <a href="" class="social__item">
-                                <img src="~/Content/landingpage/svg/twitter.svg" alt="twitter">
+                        <ul class="list list-unstyled list-circle">
+                            <li>
+                                <span>Competent professional staff</span>
+                            </li>
+                            <li>
+                                <span></span>
+                            </li>
+                            <li>
+                                <span>Data collected in our cloud storage</span>
+                            </li>
+                            <li>
+                                <span>Reports</span>
+                            </li>
+                        </ul>
+                        <!--<a href="#" class="btn btn-link btn-link--secondary">
+                          Contact us
+                          <i class="icon ion-ios-arrow-round-forward"></i>
+                        </a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-spacer">
+        <div class="container">
+            <div class="row flex-column-reverse flex-sm-row align-items-center">
+                <div class="col-sm-5 mr-auto">
+                    <div class="feature-list-wrapper">
+                        <div class="content-header">
+                            <h2 class="content-title">TECHNOLOGY</h2>
+                            <p>
+                                We developed a web platform that sits at the core of all key business processes. Using new technologies we improve the way we get all merchandising information of your brand in the US market and then we put them in analytics dashboards.
+                            </p>
+                        </div>
+                        <ul class="list list-circle">
+                            <li>
+                                <span>Easy and powerful web app</span>
+                            </li>
+                            <li>
+                                <span>Responsive design</span>
+                            </li>
+                            <li>
+                                <span>Merchandising Reports</span>
+                            </li>
+                            <li>
+                                <span>24/7 Supports</span>
+                            </li>
+                        </ul>
+
+                        <!--<a href="#" class="btn btn-link btn-link--secondary">
+                          Explore all main characteristics
+                          <i class="icon ion-ios-arrow-round-forward"></i>
+                        </a>-->
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="feature-list-image">
+                        <img src="~/Content/landingpage/images/demo/featured-images/feature-image-3.png" class="img-fluid" alt="Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--
+    =========================
+    pricing TABLE
+    ========================= -->
+    <!--
+    =========================
+    CLIENTS LOGO
+    ========================= -->
+    <section id="services" class="section-spacer pricing-section bg-very__gray">
+        <div class="container">
+            <header class="section-header text-center">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">We have a high range of services for you</p>
+            </header>
+
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <div class="feature-card">
+                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__primary">
+                            <i class="icon ion-ios-keypad"></i>
+                        </div>
+                        <div class="feature-card__body">
+                            <h4 class="feature-title">Merchandising</h4>
+                            <p>
+                                Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug
+                            </p>
+                            <a href="#" class="btn btn-link btn-link--secondary">
+                                Learn more
+                                <i class="icon ion-ios-arrow-forward"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-12 col-xs-12">
-                        <div class="services">
-                            <div class="heading">
-                                <h3 class="heading-title">Services Provided</h3>
-                                <div class="heading-line">
-                                    <span class="short-line"></span>
-                                    <span class="long-line"></span>
-                                </div>
-                            </div>
-                            <ul class="list list--primary">
-                                <li>
-                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    <a href="#">Merchandising</a>
-                                </li>
-                                <li>
-                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    <a href="#">Campain design</a>
-                                </li>
-                                <li>
-                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    <a href="#">In store sampling</a>
-                                </li>
-                                <li>
-                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    <a href="#">Brand activation</a>
-                                </li>
-                                <li>
-                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    <a href="#">Market research</a>
-                                </li>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="feature-card">
+                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
+                            <i class="icon ion-ios-apps"></i>
+                        </div>
+                        <div class="feature-card__body">
+                            <h4 class="feature-title">Campain design</h4>
+                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
 
-                            </ul>
-                            <ul class="list list--primary"></ul>
+                            <a href="#" class="btn btn-link btn-link--secondary">
+                                Learn more
+                                <i class="icon ion-ios-arrow-forward"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="feature-card m-0">
+                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
+                            <i class="icon ion-ios-bug"></i>
+                        </div>
+                        <div class="feature-card__body">
+                            <h4 class="feature-title">In store sampling</h4>
+                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
+
+                            <a href="#" class="btn btn-link btn-link--secondary">
+                                Learn more
+                                <i class="icon ion-ios-arrow-forward"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="contacts">
 
-                    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-                        <div class="contacts-item">
-                            <div class="icon js-animate-icon">
-                                <svg enable-background="new 0 0 64 64" version="1.1" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" points="  54,17 32,36 10,17 " stroke="#f15b26" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" /><line fill="none" stroke="#f15b26" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="10.9" x2="26" y1="48" y2="36" /><path d="  M32.7,49H13c-2.2,0-4-1.8-4-4V19c0-2.2,1.8-4,4-4h38c2.2,0,4,1.8,4,4v15.5" fill="none" stroke="#f15b26" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" /><circle cx="44.9" cy="43.1" fill="none" r="10.1" stroke="#f15b26" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" /><path d="  M44,41.4c0,0-1.3,3.4-0.9,5.1c0.4,1.7,2.6,2.1,3.7,1.1" fill="none" stroke="#f15b26" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" /><g><circle cx="45.4" cy="38.3" fill="#DCE9EE" r="0.9" /><path d="M45.4,37.3c-0.5,0-0.9,0.4-0.9,0.9c0,0.5,0.4,0.9,0.9,0.9s0.9-0.4,0.9-0.9C46.4,37.8,46,37.3,45.4,37.3   L45.4,37.3z" fill="#f15b26" /></g></svg>
-                            </div>
-                            <div class="content">
-                                <a href="#" class="title">customercare@comerciamarketing.com</a>
-                                <p class="sub-title">Online support</p>
-                            </div>
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="feature-card">
+                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
+                            <i class="icon ion-ios-apps"></i>
+                        </div>
+                        <div class="feature-card__body">
+                            <h4 class="feature-title">Brand activation</h4>
+                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
+
+                            <a href="#" class="btn btn-link btn-link--secondary">
+                                Learn more
+                                <i class="icon ion-ios-arrow-forward"></i>
+                            </a>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                        <div class="contacts-item">
-                            <div class="icon js-animate-icon">
-                                <svg enable-background="new 0 0 64 64" version="1.1" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polygon fill="none" points="  38.7,36.4 56,32 38.7,27.6 42,22 36.4,25.3 32,8 27.6,25.3 22,22 25.3,27.6 8,32 25.3,36.4 22,42 27.6,38.7 32,56 36.4,38.7 42,42   " stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></polygon><circle cx="32" cy="32" fill="none" r="4" stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></circle><path d="  M26.1,53.2c-7.9-2.2-13.9-8.6-15.6-16.7" fill="none" stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></path><path d="  M53.5,36.9c-1.8,8.1-8.2,14.6-16.3,16.5" fill="none" stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></path><path d="  M36.9,10.5c8.2,1.9,14.7,8.3,16.6,16.6" fill="none" stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></path><path d="  M10.5,27.1c1.9-8.2,8.3-14.6,16.4-16.5" fill="none" stroke="#3cb878" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"></path></svg>
-                            </div>
-                            <div class="content">
-                                <a href="#" class="title">Nashville, Tennessee</a>
-                                <p class="sub-title">+1(615)928-9641</p>
-                            </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="feature-card m-0">
+                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
+                            <i class="icon ion-ios-bug"></i>
+                        </div>
+                        <div class="feature-card__body">
+                            <h4 class="feature-title">Market research</h4>
+                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
+
+                            <a href="#" class="btn btn-link btn-link--secondary">
+                                Learn more
+                                <i class="icon ion-ios-arrow-forward"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="sub-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <span>
-                            Copyright © 2018 <a href="index.html" class="sub-footer__link">Comercia Marketing</a>
-                        </span>
-                        <!--
-                            <span>
-                            Designed by <a href="#">Crumina</a>
-                        </span>
+    </section>
 
-                        <span>Developed by <a href="#">Francisco Velasquez</a></span>
-                        -->
-                        <a class="back-to-top" href="#">
-                            <svg class="back-to-top">
-                                <use xlink:href="#to-top"></use>
-                            </svg>
+    <!--
+    =========================
+    testimonialS WITH SLIDER
+    ========================= -->
+    <section id="clients" class="section-spacer pb-0 section--clients">
+        <div class="container">
+
+
+            <header class="section-header text-center w-100">
+                <h2 class="section-title">Trusted by most fast-forwarding brands</h2>
+            </header>
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <div class="client-logo__wrapper">
+                        <a href="" class="client-logo">
+                            <img src="~/Content/landingpage/images/demo/landing/customers/2CEBBA44.PNG" alt="Image">
                         </a>
+                        <a href="" class="client-logo">
+                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-mahler.jpg" alt="Image">
+                        </a>
+                        <a href="" class="client-logo">
+                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Goya.jpg" alt="Image">
+                        </a>
+                        <a href="" class="client-logo">
+                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Cremimex.jpg" alt="Image">
+                        </a>
+                        <a href="" class="client-logo">
+                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Klass.png" alt="Image">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--
+    =========================
+    FAQs
+    =========================
+    <section id="faqs" class="section-spacer section-faq">
+      <div class="container">
+        <header class="section-header text-center">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+        </header>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Life time support?</h5>
+                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
+                  be
+                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Is there limit users for each plans?</h5>
+                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
+                  be
+                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Can I cancel my monthly subscriptions?</h5>
+                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
+                  be
+                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Do I have to pay for all users?</h5>
+                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
+                  be
+                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-40 text-center">
+          <a href="#" class="btn btn-primary btn-lg">Talk to our team</a>
+        </div>
+      </div>
+    </section>-->
+    <!--
+    =========================
+    CALL TO ACTION MODULE
+    ========================= -->
+    <section id="try" class="section-spacer text-left pb-0 pt-50">
+        <div class="container">
+            <div class="callout">
+                <div class="callout-content">
+                    <div class="Callout--Header">
+                        <h2>Need help?</h2>
+                        <p class="lead">If you require information about any of our services or products, please contact us via our Customer Service Center.</p>
+                    </div>
+                </div>
+                <div class="callout-footer ml-lg-auto">
+                    <form action="">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Enter your email">
+                            <button type="submit" class="btn btn-primary">Contact us</button>
+                        </div>
+                    </form>
+                    <!--<p class="d-block text-sm">14 days free - no credit card required</p>-->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--
+    =========================
+    FOOTER
+    ========================= -->
+    <footer class="section-spacer footer-section">
+        <div class="container">
+            <div class="row flex-column-reverse flex-sm-row flex-lg-row">
+                <div class="col-md-4 col-12">
+                    <div class="footer-widget first-of-footer-widget">
+
+                        <p>Copyright &copy; 2019 Comercia Marketing. All Rights Reserved.</p>
+                        <a href="" class="d-block mb-10">+1(615)928-9641</a>
+                        <a href="">customercare@comerciamarketing.com</a>
+                        <ul class="social-list__inline mt-10">
+                            <li>
+                                <a href="">
+                                    <i class="icon ion-logo-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="icon ion-logo-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="icon ion-logo-linkedin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="icon ion-logo-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="icon ion-logo-youtube"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-10">
+                    <div class="row">
+                        <div class="col-md-4 col-6">
+                            <div class="footer-widget">
+                                <h4 class="footer-widget__title">Company</h4>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="#overview">Overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="#testimonial">testimonials</a>
+                                    </li>
+                                    <li>
+                                        <a href="#pricing">pricing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#faq">FAQs</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="footer-widget">
+                                <h4 class="footer-widget__title">Developers</h4>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="">Migrations</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">API (Comming soon)</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="footer-widget">
+                                <h4 class="footer-widget__title">Support</h4>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="">Help Center</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Privacy Policy</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Terms and Service</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- End Footer -->
-    <svg style="display:none;">
-        <symbol id="arrow-left" viewBox="122.9 388.2 184.3 85">
-            <path d="M124.1,431.3c0.1,2,1,3.8,2.4,5.2c0,0,0.1,0.1,0.1,0.1l34.1,34.1c1.6,1.6,3.7,2.5,5.9,2.5s4.3-0.9,5.9-2.4
-		c1.6-1.6,2.4-3.7,2.4-5.9s-0.9-3.9-2.4-5.5l-19.9-19.5h11.1c1.5,0,2.7-1.5,2.7-3c0-1.5-1.2-3-2.7-3h-17.6c-1.1,0-2.1,0.6-2.5,1.6
-		c-0.4,1-0.2,2.1,0.6,2.9l24.4,24.4c0.6,0.6,0.9,1.3,0.9,2.1s-0.3,1.6-0.9,2.1c-0.6,0.6-1.3,0.9-2.1,0.9s-1.6-0.3-2.1-0.9
-		l-34.2-34.2c0,0,0,0,0,0c-0.6-0.6-0.8-1.4-0.9-1.9c0,0,0,0,0,0c0-0.2,0-0.4,0-0.6c0.1-0.6,0.3-1.1,0.7-1.6c0-0.1,0.1-0.1,0.2-0.2
-		l34.1-34.1c0.6-0.6,1.3-0.9,2.1-0.9s1.6,0.3,2.1,0.9c0.6,0.6,0.9,1.3,0.9,2.1s-0.3,1.6-0.9,2.1l-24.4,24.4c-0.8,0.8-1,2-0.6,3
-		c0.4,1,1.4,1.7,2.5,1.7h125.7c1.5,0,2.7-1,2.7-2.5c0-1.5-1.2-2.5-2.7-2.5H152.6l19.9-20.1c1.6-1.6,2.4-3.8,2.4-6s-0.9-4.4-2.4-6
-		c-1.6-1.6-3.7-2.5-5.9-2.5s-4.3,0.9-5.9,2.4l-34.1,34.1c-0.2,0.2-0.3,0.3-0.5,0.5c-1.1,1.2-1.8,2.8-2,4.4
-		C124.1,430.2,124.1,430.8,124.1,431.3C124.1,431.3,124.1,431.3,124.1,431.3z"></path>
-            <path d="M283.3,427.9h14.2c1.7,0,3,1.3,3,3c0,1.7-1.4,3-3,3H175.1c-1.5,0-2.7,1.5-2.7,3c0,1.5,1.2,3,2.7,3h122.4
-		c4.6,0,8.4-3.9,8.4-8.5c0-4.6-3.8-8.5-8.4-8.5h-14.2c-1.5,0-2.7,1-2.7,2.5C280.7,426.9,281.8,427.9,283.3,427.9z"></path>
-        </symbol>
-        <symbol id="arrow-right" viewBox="122.9 388.2 184.3 85">
-            <path d="M305.9,430.2c-0.1-2-1-3.8-2.4-5.2c0,0-0.1-0.1-0.1-0.1l-34.1-34.1c-1.6-1.6-3.7-2.5-5.9-2.5c-2.2,0-4.3,0.9-5.9,2.4
-		c-1.6,1.6-2.4,3.7-2.4,5.9s0.9,4.1,2.4,5.7l19.9,19.6h-11.1c-1.5,0-2.7,1.5-2.7,3c0,1.5,1.2,3,2.7,3h17.6c1.1,0,2.1-0.7,2.5-1.7
-		c0.4-1,0.2-2.2-0.6-2.9l-24.4-24.5c-0.6-0.6-0.9-1.3-0.9-2.1s0.3-1.6,0.9-2.1c0.6-0.6,1.3-0.9,2.1-0.9c0.8,0,1.6,0.3,2.1,0.9
-		l34.2,34.2c0,0,0,0,0,0c0.6,0.6,0.8,1.4,0.9,1.9c0,0,0,0,0,0c0,0.2,0,0.4,0,0.6c-0.1,0.6-0.3,1.1-0.7,1.6c0,0.1-0.1,0.1-0.2,0.2
-		l-34.1,34.1c-0.6,0.6-1.3,0.9-2.1,0.9s-1.6-0.3-2.1-0.9c-0.6-0.6-0.9-1.3-0.9-2.1s0.3-1.6,0.9-2.1l24.4-24.4c0.8-0.8,1-1.9,0.6-2.9
-		c-0.4-1-1.4-1.6-2.5-1.6H158.1c-1.5,0-2.7,1-2.7,2.5c0,1.5,1.2,2.5,2.7,2.5h119.3l-19.9,20c-1.6,1.6-2.4,3.7-2.4,6s0.9,4.4,2.4,5.9
-		c1.6,1.6,3.7,2.5,5.9,2.5s4.3-0.9,5.9-2.4l34.1-34.1c0.2-0.2,0.3-0.3,0.5-0.5c1.1-1.2,1.8-2.8,2-4.4
-		C305.9,431.3,305.9,430.8,305.9,430.2C305.9,430.2,305.9,430.2,305.9,430.2z"></path>
-            <path d="M146.7,433.9h-14.2c-1.7,0-3-1.3-3-3c0-1.7,1.4-3,3-3h122.4c1.5,0,2.7-1.5,2.7-3c0-1.5-1.2-3-2.7-3H132.4
-		c-4.6,0-8.4,3.9-8.4,8.5c0,4.6,3.8,8.5,8.4,8.5h14.2c1.5,0,2.7-1,2.7-2.5C149.3,434.9,148.1,433.9,146.7,433.9z"></path>
-        </symbol>
-        <symbol id="to-top" viewBox="0 0 32 32">
-            <path d="M17,22 L25.0005601,22 C27.7616745,22 30,19.7558048 30,17 C30,14.9035809 28.7132907,13.1085075 26.8828633,12.3655101
-         L26.8828633,12.3655101 C26.3600217,9.87224935 24.1486546,8 21.5,8 C20.6371017,8 19.8206159,8.19871575 19.0938083,8.55288165
-         C17.8911816,6.43144875 15.6127573,5 13,5 C9.13400656,5 6,8.13400656 6,12 C6,12.1381509 6.00400207,12.275367 6.01189661,12.4115388
-          L6.01189661,12.4115388 C4.23965876,13.1816085 3,14.9491311 3,17 C3,19.7614237 5.23249418,22 7.99943992,22 L16,22 L16,16 L12.75,19.25
-           L12,18.5 L16.5,14 L21,18.5 L20.25,19.25 L17,16 L17,22 L17,22 Z M16,22 L16,27 L17,27 L17,22 L16,22 L16,22 Z" id="cloud-upload"></path>
-        </symbol>
-    </svg>
-    <!-- Overlay Search -->
-    <div class="overlay_search">
-        <div class="container">
-            <div class="row">
-                <div class="form_search-wrap">
-                    <form>
-                        <input class="overlay_search-input" placeholder="Type and hit Enter..." type="text">
-                        <a href="#" class="overlay_search-close">
-                            <span></span>
-                            <span></span>
-                        </a>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Overlay Search -->
-    <!-- JS Script -->
-    <script src="~/Content/landingpage/js/jquery-2.1.4.min.js"></script>
-    <!-- <script src="~/Content/landingpage/js/crum-mega-menu.js"></script>-->
-    <script src="~/Content/landingpage/js/swiper.jquery.min.js"></script>
-    <script src="~/Content/landingpage/js/theme-plugins.js"></script>
-    <script src="~/Content/landingpage/js/main.js"></script>
-    <script src="~/Content/landingpage/js/form-actions.js"></script>
-    <script src="~/Content/landingpage/js/velocity.min.js"></script>
-    <script src="~/Content/landingpage/js/ScrollMagic.min.js"></script>
-    <script src="~/Content/landingpage/js/animation.velocity.min.js"></script>
-
-    <!-- ...end JS Script -->
+    <script src="~/Content/landingpage/js/vendors/jquery.min.js"></script>
+    <script src="~/Content/landingpage/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/landingpage/js/vendors/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/landingpage/js/vendors/jquery.easing.min.js"></script>
+    <script src="~/Content/landingpage/js/vendors/swiper.min.js"></script>
+    <script src="~/Content/landingpage/js/vendors/owl.carousel.min.js"></script>
+    <script src="~/Content/landingpage/js/custom.js"></script>
 </body>
 </html>
 

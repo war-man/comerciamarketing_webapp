@@ -995,7 +995,7 @@ namespace comerciamarketing_webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRep(string IDrepEdit, string nombreE, string apellidoE, string correoE, string telefonoE, string listaCustomersE)
+        public ActionResult EditRep(string IDrepEdit, string nombreE, string apellidoE,string passwordE, string correoE, string telefonoE, string listaCustomersE)
         {
             try
             {
@@ -1008,11 +1008,12 @@ namespace comerciamarketing_webapp.Controllers
                 usuarios.apellido = apellidoE;
                 usuarios.correo = correoE;
                 usuarios.telefono = telefonoE;
+                usuarios.contrasena = passwordE;
                 usuarios.estados_influencia = listaCustomersE;
 
                 if (usuarios.contrasena == null)
                 {
-                    usuarios.contrasena = "c0m2018";
+                    usuarios.contrasena = "c0m2019";
                 }
 
                 if (usuarios.cargo == null)
@@ -1048,8 +1049,59 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Representatives", "Home", null);
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditUser(string IDrepEdit, string nombreE, string apellidoE, string passwordE, string correoE, string telefonoE)
+        {
+            try
+            {
 
-     
+
+                int IDrep = Convert.ToInt32(IDrepEdit);
+                Usuarios usuarios = db.Usuarios.Find(IDrep);
+
+                usuarios.nombre = nombreE;
+                usuarios.apellido = apellidoE;
+                usuarios.correo = correoE;
+                usuarios.telefono = telefonoE;
+                usuarios.contrasena = passwordE;
+
+                if (usuarios.contrasena == null)
+                {
+                    usuarios.contrasena = "c0m2019";
+                }
+
+                if (usuarios.cargo == null)
+                {
+                    usuarios.cargo = "";
+                }
+                if (usuarios.telefono == null)
+                {
+                    usuarios.telefono = "";
+                }
+                if (usuarios.estados_influencia == null)
+                {
+                    usuarios.estados_influencia = "";
+                }
+
+                //usuarios.fcreacion_usuario = DateTime.UtcNow;
+                usuarios.activo = true;
+
+
+                db.Entry(usuarios).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                TempData["exito"] = "User saved successfully.";
+                return RedirectToAction("Users", "Home", null);
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("Users", "Home", null);
+            }
+        }
+
         public ActionResult DeleteRep(string IDrepDelete)
         {
             try
@@ -1057,9 +1109,10 @@ namespace comerciamarketing_webapp.Controllers
                 int IDrep = Convert.ToInt32(IDrepDelete);
 
                 Usuarios usuarios = db.Usuarios.Find(IDrep);
-                db.Usuarios.Remove(usuarios);
+                usuarios.activo = false;
+                db.Entry(usuarios).State = EntityState.Modified;
                 db.SaveChanges();
-                TempData["exito"] = "User deleted successfully.";
+                TempData["exito"] = "User disabled successfully.";
                 return RedirectToAction("Representatives", "Home", null);
             }
             catch (Exception ex)

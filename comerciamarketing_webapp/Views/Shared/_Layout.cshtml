@@ -7,7 +7,14 @@
     <meta name="description" content="Comercia Marketing App">
     <title>@ViewData["Title"]</title>
 
-    @Html.Partial("~/Views/Shared/Styles2.cshtml")
+    <!-- style -->
+    <link href="~/Content/BasikTemplate/assets/css/fixedfooter.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    @Html.Partial("~/Views/Shared/Basik_Style.cshtml")
+    <link rel="shortcut icon" href="~/Content/newstyle2/images/favicon-16x16.png" />
+
+
+    <!-- style-->
     <style>
         #mydivInfo {
             position: absolute;
@@ -87,9 +94,8 @@
                 top: 0px;
                 left: 0px;
                 position: fixed;
-                opacity: 0.7;
                 background-color: #fff;
-                z-index: 99;
+                z-index: 1099;
                 text-align: center;
             }
 
@@ -97,7 +103,7 @@
                 margin-top: 20%;
             }
 
-            .hide {
+            .hide2 {
                 display: none;
             }
 
@@ -257,9 +263,8 @@
                 top: 0px;
                 left: 0px;
                 position: fixed;
-                opacity: 0.7;
                 background-color: #fff;
-                z-index: 99;
+                z-index: 1099;
                 text-align: center;
             }
 
@@ -267,11 +272,95 @@
                 margin-top: 20%;
             }
 
-            .hide {
+            .hide2 {
                 display: none;
             }
 
+            /*DATATABLES*/
+            table#dashboard_visits {
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
 
+                table#dashboard_visits tr {
+                    padding: .35em;
+                }
+
+                table#dashboard_visits th, table td {
+                    padding: .625em;
+                    text-align: left;
+                }
+
+                table#dashboard_visits th {
+                    font-size: .9em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#dashboard_visits td {
+                    font-size: .3em;
+                }
+            /**/
+            @@media screen and (max-width: 2000px) {
+
+                table#dashboard_visits td {
+                    font-size: .9em;
+                }
+            }
+
+            @@media screen and (max-width: 850px) {
+                table#dashboard_visits th {
+                    font-size: .8em;
+                    letter-spacing: .1em;
+                    text-transform: uppercase;
+                }
+
+                table#dashboard_visits td {
+                    font-size: .7em;
+                }
+            }
+
+
+
+            /**/
+            @@media screen and (max-width: 530px) {
+
+                table#dashboard_visits {
+                    border: 0;
+                }
+
+                    table#dashboard_visits thead {
+                        display: none;
+                    }
+
+                    table#dashboard_visits tr {
+                        border-bottom: 3px solid #ddd;
+                        display: block;
+                        margin-bottom: .625em;
+                    }
+
+                    table#dashboard_visits td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .8em;
+                        text-align: right;
+                    }
+
+                        table#dashboard_visits td:before {
+                            content: attr(data-label);
+                            float: left;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        table#dashboard_visits td:last-child {
+                            border-bottom: 0;
+                        }
+            }
+            /**/
+            /*END DATATABLES*/
             /*DATATABLES*/
             table#order-listing {
                 border-collapse: collapse;
@@ -520,6 +609,16 @@
                 text-align: center;
                 white-space: nowrap;
             }
+
+            .form-control.select2-container {
+                height: auto !important;
+                padding: 0;
+            }
+
+            #appendDivVisits {
+                max-height: calc(100vh - 210px);
+                overflow-y: auto;
+            }
         </style>
     }
 
@@ -534,41 +633,43 @@
     </script>
 
 </head>
-<body class="horizontal-menu-2">
-    <!--GLOBAL LOADER-->
+<body class="layout-row">
     <div id="loading" class="hide">
         <div id="loading-content">
+            <img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />
+            <div id="wave">
+                Loading
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
 
-
-            <div class="circle-loader"></div>
 
 
         </div>
     </div>
-    <!---->
-    <div style="background-color:#000">.</div>
-    <div class="container-scroller">
-        <!-- Horizontal Menu Start -->
-        @if (ViewBag.Title != "Comercia Marketing")
-        {
-            if (ViewBag.Title == "Comercia Marketing - Activityea")
-            {
+    <!-- Menu & Header -->
+    @Html.Partial("~/Views/Shared/Basik_menu.cshtml")
+    <!-- Menu & Header-->
+    <div id="main" class="layout-column flex">
+        @Html.Partial("~/Views/Shared/Basik_header.cshtml")
 
-            }
-            else
-            {
-                @Html.Partial("~/Views/Shared/Menu2.cshtml")
-            }
-
-        }
         <!-- Horizontal Menu Ends -->
         @RenderBody()
 
-    </div>
+        <!--Footer-->
+        @Html.Partial("~/Views/Shared/Basik_footer.cshtml")
 
-    @Html.Partial("~/Views/Shared/Scripts2.cshtml")
+        <!--Footer-->
+    </div>
+    @Html.Partial("~/Views/Shared/Basik_Scripts.cshtml")
 </body>
 </html>
+<script type="text/javascript">
+    // initialize Session Updater on page
+    //SessionUpdater.Setup('@Url.Action("KeepSessionAlive","Home")');
+</script>
+
 @if (ViewBag.Title != "Comercia Marketing - FormsM")
 {
     <script type="text/javascript">
@@ -620,299 +721,9 @@
         });
     </script>
 }
-@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
-{
-    <script type="text/javascript">
-        @*google.charts.load('current', {
-            'packages': ['geochart'],
-            // Note: you will need to get a mapsApiKey for your project.
-            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-            'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-        });
-        google.charts.setOnLoadCallback(drawRegionsMap);
-
-        function drawRegionsMap() {
-            var data = google.visualization.arrayToDataTable([
-                ['State', 'Visits'],
-                ['Alabama', 0],
-                ['Alaska', 0],
-                ['Arizona', 0],
-                ['Arkansas', 0],
-                ['California', 0],
-                ['Colorado', 0],
-                ['Connecticut', 0],
-                ['Delaware', 0],
-                ['Florida', 0],
-                ['Georgia', 0],
-                ['Hawaii', 0],
-                ['Idaho', 0],
-                ['Illinois', 0],
-                ['Indiana', 0],
-                ['Iowa', 0],
-                ['Kansas', 0],
-                ['Kentucky', 0],
-                ['Louisiana', 0],
-                ['Maine', 0],
-                ['Maryland', 0],
-                ['Massachusetts', 0],
-                ['Michigan', 0],
-                ['Minnesota', 0],
-                ['Mississippi', 0],
-                ['Missouri', 0],
-                ['Montana', 0],
-                ['Nebraska', 0],
-                ['Nevada', 0],
-                ['New Hampshire', 0],
-                ['New Jersey', 0],
-                ['New Mexico', 0],
-                ['New York', 0],
-                ['North Carolina', 0],
-                ['North Dakota', 0],
-                ['Ohio', 0],
-                ['Oklahoma', 0],
-                ['Oregon', 0],
-                ['Pennsylvania', 0],
-                ['Rhode Island', 0],
-                ['South Carolina', 0],
-                ['South Dakota', 0],
-                ['Tennessee', @ViewBag.rutascount],
-                ['Texas', 0],
-                ['Utah', 0],
-                ['Vermont', 0],
-                ['Virginia', 0],
-                ['Washington', 0],
-                ['West Virginia', 0],
-                ['Wisconsin', 0],
-                ['Wyoming', 0]
-            ]);
-
-            var options = {
-                width: 556,
-                height: 347,
-                region: "US",
-                resolution: "provinces"
-            };
-
-            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-
-            chart.draw(data, options);
-        }*@
-    </script>
-}
-
 
 @if (ViewBag.Title == "Comercia Marketing - Home")
 {
-    <script>
-    'use strict';
-    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
-    $(document).ready(function () {
-        Initialize();
-    });
-
-    function Initialize() {
-
-    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
-        zoom: 4,
-        scrollwheel: true,
-        center: { lat: 35.2289067, lng: -86.885620 }
-
-    });
-
-    var data = @Html.Raw(ViewBag.routes_map);
-    var markers = [];
-    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-    $.each(data, function (i, item) {
-        var marker;
-
-            var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
-
-
-            if (item.demo_state == 3) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-                });
-            }
-            if (item.demo_state == 2) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-
-                });
-            }
-            if (item.demo_state == 1) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-                });
-            }
-            if (item.demo_state == 4) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-                    //icon: image
-
-                });
-            }
-
-
-
-        // Make the marker-pin blue!
-        //if (item.demo_state == "3") {
-        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
-        //}
-        //if (item.demo_state == "2") {
-        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
-        //}
-        //if (item.demo_state == "1") {
-        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
-        //}
-        //if (item.demo_state == "4") {
-        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
-        //}
-
-        // put in some information about each json object - in this case, the opening hours.
-
-        //colocamos la url de la demo
-        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
-
-
-        //url = url.replace('DEMOID', item.id);
-
-        //var infowindow = new google.maps.InfoWindow({
-        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
-        //});
-        var estructuradiv = '<div  id="RouteDetails_' + item.id + '">';
-        estructuradiv += '<div class="card">';
-        estructuradiv += '<div class="card-body">';
-        estructuradiv += '<div class="row mt-4">';
-        estructuradiv += '<div class="col-md-12">';
-        estructuradiv += ' <h5>Visit details</h5>';
-        estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
-        estructuradiv += '<li class="nav-item">';
-        estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
-        estructuradiv += '</li>';
-        estructuradiv += '<li class="nav-item">';
-        estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
-        estructuradiv += '</li>';
-        estructuradiv += '</ul>';
-        estructuradiv += '<div class="tab-content tab-content-basic">';
-        estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
-        estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
-        estructuradiv += '<p class="mb-0" > STORE: ' + item.store + '</p>';
-        estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
-        estructuradiv += '<p > DATE: ' + item.date + '</p>';
-        estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
-        estructuradiv += '</div>';
-        estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
-        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-        estructuradiv += '</div>';
-
-
-        var infowindow = new google.maps.InfoWindow({
-            content: estructuradiv
-        });
-        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.open(map, marker);
-            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
-        });
-
-        marker.addListener('dblclick', function () {
-            map.setZoom(18);
-            map.setCenter(marker.getPosition());
-
-            // We get the map's default panorama and set up some defaults.
-            // Note that we don't yet set it visible.
-            panorama = map.getStreetView();
-            panorama.setPosition(marker.getPosition());
-            panorama.setPov(({
-                heading: 265,
-                pitch: 0
-            }));
-        });
-
-        //Agregamos el marcador al array de marcadores
-        markers.push(marker);
-
-
-    })
-
-
-    // Add a marker clusterer to manage the markers.
-    var markerCluster = new MarkerClusterer(map, markers,
-        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-
-
-
-
-
-}
-
-
-
-    //function myFunction(ID, store, customer, date, representatives, comment ) {
-    //    var id_mapitem = document.getElementById("map_id");
-    //    var store_mapitem = document.getElementById("map_storename");
-    //    var store_customeritem = document.getElementById("map_customername");
-    //    var store_dateitem = document.getElementById("map_date");
-    //    var store_representativeitem = document.getElementById("map_representatives");
-    //    var store_commentitem = document.getElementById("map_comment");
-
-
-    //    id_mapitem.innerText = "";
-    //    store_mapitem.innerText = "";
-    //    store_customeritem.innerText = "";
-    //    store_dateitem.innerText = "";
-    //    store_representativeitem.innerText = "";
-    //    store_commentitem.innerText = "";
-
-    //    id_mapitem.innerText = "Visit ID: " + ID;
-    //    store_mapitem.innerText = "Store: " + store;
-    //    //store_customeritem.innerText = "Customer: " + customer;
-    //    store_dateitem.innerText = "Date: " + date;
-    //    store_representativeitem.innerText = "Route: " + representatives;
-    //    store_commentitem.innerText = "Comment: " + comment;
-
-    //    var x = document.getElementById("RouteDetails");
-    //    if (x.style.display === "none") {
-    //        x.style.display = "block";
-    //    } else {
-    //        //x.style.display = "none";
-    //    }
-    //}
-
-    </script>
-    <!--PARA CERRAR DIV MAP-->
-    <script>
-        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
-
-        button.onclick = function () {
-            var div = document.getElementById('RouteDetails');
-            div.style.display = 'none';
-
-        };
-
-    </script>
-
 
     <script>
     $(function () {
@@ -1468,6 +1279,141 @@
 </script>
 
 <!--SELECT MULTI ROUTES-->
+@if (ViewBag.Title == "Comercia Marketing - Representatives")
+{
+    <script>
+        window.onload = function () {
+            table = $('#datatable2').DataTable();
+            
+            (function ($) {
+                'use strict';
+                $('#editModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    var nombreE = button.data('nombre');// Extract info from data-* attributes
+                    var apellidoE = button.data('apellido');
+                    var correoE = button.data('correo');
+                    var passE = button.data('pass');
+                    var telE = button.data('tel');
+                    var estadoE = button.data('estado');
+                    var customers = button.data('customers');
+                    var ID = button.data('usuario');
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
+                    modal.find('.modal-body input[name="nombreE"]').val(nombreE);
+                    modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
+                    modal.find('.modal-body input[name="passwordE"]').val(passE);
+                    modal.find('.modal-body input[name="correoE"]').val(correoE);
+                    modal.find('.modal-body input[name="telefonoE"]').val(telE);
+                    modal.find('.modal-body input[name="listaCustomersE"]').val(telE);
+                    $('#CustomersmultiE').val([customers]);
+                    $('#CustomersmultiE').trigger('change');
+                })
+            })(jQuery);
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    var nombreE = button.data('nombre');// Extract info from data-* attributes
+                    var apellidoE = button.data('apellido');
+                    var ID = button.data('usuario');
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
+
+                    modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
+                })
+            })(jQuery);
+
+
+
+
+        }
+
+        function myFunction() {
+            var x = document.getElementById("passwordE");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+
+}@if (ViewBag.Title == "Comercia Marketing - Users")
+{
+    <script>
+        window.onload = function () {
+
+            table = $('#datatable3').DataTable();
+
+            (function ($) {
+                'use strict';
+                $('#editModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    var nombreE = button.data('nombre');// Extract info from data-* attributes
+                    var apellidoE = button.data('apellido');
+                    var correoE = button.data('correo');
+                    var telE = button.data('tel');
+                    var passE = button.data('pass');
+                    var estadoE = button.data('estado');
+                    var customers = button.data('customers');
+                    var ID = button.data('usuario');
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
+                    modal.find('.modal-body input[name="nombreE"]').val(nombreE);
+                    modal.find('.modal-body input[name="passwordE"]').val(passE);
+                    modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
+                    modal.find('.modal-body input[name="correoE"]').val(correoE);
+                    modal.find('.modal-body input[name="telefonoE"]').val(telE);
+
+ 
+                })
+            })(jQuery);
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    var nombreE = button.data('nombre');// Extract info from data-* attributes
+                    var apellidoE = button.data('apellido');
+                    var ID = button.data('usuario');
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
+
+                    modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
+                })
+            })(jQuery);
+
+
+
+
+        }
+        function myFunction() {
+            var x = document.getElementById("passwordE");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+}
 @if (ViewBag.Title == "Comercia Marketing - RoutesM" || ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
 {
     <script>
@@ -1801,18 +1747,19 @@
 @if (TempData["advertencia"] != null)
 {
     <script type="text/javascript">
-        window.onload = function () {
+
+        $(document).ready(function () {
 
                 $.toast({
                     heading: 'Warning',
                     text: '@(TempData["advertencia"])',
                     showHideTransition: 'slide',
                     icon: 'warning',
+                    loader: false,
                     loaderBg: '#ff9900',
                     position: 'top-right'
                 })
-
-        };
+        });
     </script>
 }
 
@@ -1820,7 +1767,6 @@
 @if (TempData["exito"] != null)
 {
     <script type="text/javascript">
-        console.log("Success");
 
         $(document).ready(function () {
 
@@ -1957,6 +1903,301 @@
 {
     @Html.Partial("~/Views/Shared/Routes_calendarScriptCustomers.cshtml")
 }
+
+<!--New includes-->
+
+@if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
+{
+    @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
+    <script>
+        $(document).ready(function () {
+            setupEvents();
+
+            function setupEvents() {
+                $(document).on('click', '#dayview', function () {
+                    $('#fullcalendar').fullCalendar('changeView', 'basicDay');
+                    sr.sync();
+                });
+
+                $(document).on('click', '#weekview', function () {
+                    $('#fullcalendar').fullCalendar('changeView', 'basicWeek');
+                    sr.sync();
+                });
+
+                $(document).on('click', '#monthview', function () {
+                    $('#fullcalendar').fullCalendar('changeView', 'month');
+                    sr.sync();
+                });
+
+                $(document).on('click', '#todayview', function () {
+                    $('#fullcalendar').fullCalendar('today');
+                    sr.sync();
+                });
+
+                //$(document).on('click', '#btn-new', function () {
+                //    $('#newEvent').modal('show');
+                //    e = { title: '', description: '', start: moment(), end: moment().add(4, 'h'), participant: '1', type: '', className: 'block b-t b-t-2x b-primary' };
+                //    getEvent(e);
+                //});
+
+                //$(document).on('click', '#btn-save', function () {
+                //    var e = getEvent();
+                //    if (e.id) {
+                //        calendar.fullCalendar('updateEvent', e);
+                //    } else {
+                //        e.id = moment().toDate();
+                //        calendar.fullCalendar('renderEvent', e);
+                //    }
+                //    $('#newEvent').modal('hide');
+                //});
+            }
+        });
+    </script>
+    <script>
+        window.onload = function () {
+            (function ($) {
+                'use strict';
+                $('#deleteVisitModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDvisit = button.data("id");// Extract info from data-* attributes
+                    var Desvisit = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
+                    $("#descriptionD").text(Desvisit);
+
+                })
+            })(jQuery);
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDroute = button.data("IDr");// Extract info from data-* attributes
+                    //var Desroute = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
+                    //$("#descriptionD").text(Desroute);
+
+                })
+            })(jQuery);
+
+            (function ($) {
+                'use strict';
+                $('#editModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDroute = button.data("IDr");// Extract info from data-* attributes
+                    var Desroute = button.data("RepeatM");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
+                    $('.modal-body select[name="custedt"]').val(Desroute);
+                    //$("#descriptionD").text(Desroute);
+
+                })
+            })(jQuery);
+
+        }
+
+    </script>
+    <script>
+
+    $(document).ready(function () {
+        function modelMatcher(params, data) {
+            data.parentText = data.parentText || "";
+
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
+
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+                    child.parentText += data.parentText + " " + data.text;
+
+                    var matches = modelMatcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return modelMatcher(params, match);
+            }
+            };
+        function matcher(params, data) {
+            // Always return the object if there is nothing to compare
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            var original = data.text.toUpperCase();
+            var term = params.term.toUpperCase();
+
+            // Check if the text contains the term
+            if (original.indexOf(term) > -1) {
+                return data;
+            }
+
+            // Do a recursive check for options with children
+            if (data.children && data.children.length > 0) {
+                // Clone the data object if there are children
+                // This is required as we modify the object to remove any non-matches
+                var match = $.extend(true, {}, data);
+
+                // Check each child of the option
+                for (var c = data.children.length - 1; c >= 0; c--) {
+                    var child = data.children[c];
+
+                    var matches = matcher(params, child);
+
+                    // If there wasn't a match, remove the object in the array
+                    if (matches == null) {
+                        match.children.splice(c, 1);
+                    }
+                }
+
+                // If any children matched, return the new object
+                if (match.children.length > 0) {
+                    return match;
+                }
+
+                // If there were no matching children, check just the plain object
+                return matcher(params, match);
+            }
+
+            // If it doesn't contain the term, don't return anything
+            return null;
+        }
+
+
+        var json = JSON.parse('@Html.Raw(ViewBag.stores)')
+
+        var FRUIT_GROUPS = $.map(json, function (obj) {
+            obj.id = obj.id; // replace pk with your identifier
+            obj.text = obj.text;
+            obj.children = obj.children;
+            return obj;
+        });
+        $('#id_store').select2();
+
+        $('#storesmulti').select2({
+            multiple: true,
+            placeholder: "Select Customers...",
+            data: FRUIT_GROUPS,
+            query: function (options) {
+                var selectedIds = options.element.select2('val');
+                var data = jQuery.extend(true, {}, FRUIT_GROUPS);
+                var selectableGroups = $.map(data, function (group) {
+                    var areAllChildrenSelected = true,
+                        parentMatchTerm = false,
+                        anyChildMatchTerm = false;
+                    if (group.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0) {
+                        parentMatchTerm = true;
+                    }
+                    var i = group.children.length
+                    while (i--) {
+                        var child = group.children[i];
+
+                        if (selectedIds.indexOf(child.id) < 0) {
+                            areAllChildrenSelected = false;
+                        };
+
+                        if (options.term == '' || (child.text.toLowerCase().indexOf(options.term.toLowerCase()) >= 0)) {
+                            anyChildMatchTerm = true;
+                        }
+                        else if (!parentMatchTerm) {
+                            var index = group.children.indexOf(child);
+                            if (index > -1) {
+                                group.children.splice(index, 1);
+                            };
+                        };
+                    };
+
+                    return (!areAllChildrenSelected && (parentMatchTerm || anyChildMatchTerm)) ? group : null;
+                });
+
+                options.callback({ results: selectableGroups });
+            }
+        }).on('select2-selecting', function (e) {
+            var $select = $(this);
+            if (e.val == '') {
+                e.preventDefault();
+                $select.select2('data', $select.select2('data').concat(e.choice.children));
+                $select.select2('close');
+            }
+        });
+
+
+    var json = JSON.parse('@Html.Raw(ViewBag.usuarios)')
+
+    var data = $.map(json, function (obj) {
+        obj.id = obj.id; // replace pk with your identifier
+        obj.text = obj.text;
+        return obj;
+    });
+
+    $("#repmulti").select2({
+        multiple: true,
+        placeholder: "Select representatives...",
+        data: data
+
+        });
+
+        $("#formRoute").submit(function () {
+            $("#btn-save").hide();
+        });
+
+    });
+    </script>
+
+
+    @*<script>
+        'use strict';
+        // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+        $(document).ready(function () {
+            //Initialize();
+        });
+
+
+
+            </script>*@
+
+
+
+
+}
+
 <script>
     $(document).ready(function () {
 
@@ -2700,6 +2941,12 @@
 {
 
     <script>
+        $(document).ready(function () {
+            table = $('#activitieslst').DataTable();
+        });
+       
+
+
     $(function () {
         $('#click_filterR').click(function () {
 
@@ -2914,5 +3161,483 @@
             $("#brand").select2().select2('val', '@Html.Raw(ViewBag.branddef)');
 
         });*@
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Customers Map")
+{
+
+    <script>
+    'use strict';
+    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+    });
+
+    function Initialize() {
+
+    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+        zoom: 4,
+        scrollwheel: true,
+        center: { lat: 35.2289067, lng: -86.885620 }
+
+    });
+
+    var data = @Html.Raw(ViewBag.routes_map);
+    var markers = [];
+    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+    $.each(data, function (i, item) {
+        var marker;
+             var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+            var marker;
+
+
+
+
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image
+
+                });
+            }
+
+
+
+        // Make the marker-pin blue!
+        //if (item.demo_state == "3") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+        //}
+        //if (item.demo_state == "2") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        //}
+        //if (item.demo_state == "1") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+        //}
+        //if (item.demo_state == "4") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        //}
+
+        // put in some information about each json object - in this case, the opening hours.
+
+        //colocamos la url de la demo
+        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
+
+
+        //url = url.replace('DEMOID', item.id);
+
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+        //});
+        var estructuradiv = '<div  id="RouteDetails_' + item.id + '">';
+        estructuradiv += '<div class="card">';
+        estructuradiv += '<div class="card-body">';
+        estructuradiv += '<div class="row mt-4">';
+        estructuradiv += '<div class="col-md-12">';
+        estructuradiv += ' <h5>Visit details</h5>';
+        estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '</ul>';
+        estructuradiv += '<div class="tab-content tab-content-basic">';
+        estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
+        estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
+        estructuradiv += '<p class="mb-0" > STORE: ' + item.store + '</p>';
+        estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
+        estructuradiv += '<p > DATE: ' + item.date + '</p>';
+        estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
+        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: estructuradiv
+        });
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(4);
+            }
+        }
+        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+            toggleBounce();
+            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+        });
+
+        marker.addListener('dblclick', function () {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+
+            // We get the map's default panorama and set up some defaults.
+            // Note that we don't yet set it visible.
+            panorama = map.getStreetView();
+            panorama.setPosition(marker.getPosition());
+            panorama.setPov(({
+                heading: 265,
+                pitch: 0
+            }));
+        });
+
+        //Agregamos el marcador al array de marcadores
+        markers.push(marker);
+
+
+    })
+
+
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+
+
+
+
+}
+
+
+    </script>
+
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Admin Dashboard")
+{
+    <script>
+        var table = $('#dashboard_visits').DataTable({
+            dom: 'lfrtiBp',
+
+            "aLengthMenu": [
+                [5, 10, 15, -1],
+                [5, 10, 15, "All"]
+            ],
+            buttons: [
+                'excelHtml5',
+                'pdfHtml5'
+            ],
+            "iDisplayLength": 10,
+            "language": {
+                search: ""
+            }
+        });
+
+
+
+        $('input[type=radio][name=options]').change(function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var today = mm + '/' + dd + '/' + yyyy;
+
+            console.log(today);
+
+            if (this.value == 'Today') {
+
+                //table.columns(4).search("").draw();
+                table.columns(3).search("" + today + "", true, false, true).draw();
+            }
+            else if (this.value == 'Week') {
+                table.columns(3).search("").draw();
+            }
+        });
+
+        $(document).ready(function () {
+        // usa map
+            var mapa=$('#jqvmap-usa').vectorMap(
+                {
+                    map: 'usa_en',
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    borderWidth: 0.25,
+                    borderOpacity: 0.25,
+                    color: 'rgba(120,130,140, 0.1)',
+                    enableZoom: true,
+                    showTooltip: true,
+                    selectedColor: null,
+                    hoverColor: null,
+                    colors: {
+                      @Html.Raw(ViewBag.visitsbystaste)
+                    }
+
+                }
+                );
+
+
+
+        });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Sales Rep Dashboard")
+{
+    <script>
+        var table = $('#dashboard_visits').DataTable({
+            dom: 'lfrtiBp',
+
+            "aLengthMenu": [
+                [5, 10, 15, -1],
+                [5, 10, 15, "All"]
+            ],
+            buttons: [
+                'excelHtml5',
+                'pdfHtml5'
+            ],
+            "iDisplayLength": 10,
+            "language": {
+                search: ""
+            }
+        });
+
+
+
+        $('input[type=radio][name=options]').change(function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var today = mm + '/' + dd + '/' + yyyy;
+
+            console.log(today);
+
+            if (this.value == 'Today') {
+
+                //table.columns(4).search("").draw();
+                table.columns(3).search("" + today + "", true, false, true).draw();
+            }
+            else if (this.value == 'Week') {
+                table.columns(3).search("").draw();
+            }
+        });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Admin Reports details")
+{
+    <script>
+        $(document).ready(function () {
+
+            $('#chk_all').change(function () {
+                if (this.checked) {
+                    $('input.selectchk').prop("checked", true);
+                } else {
+                    $('input.selectchk').prop("checked", false);
+                }
+
+            });
+        });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Customer Report Details")
+{
+    <!--NEW TEMPLATE-->
+    <script>
+        $(document).ready(function () {
+            $("#btn-print").click(function () {
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each($('input.selectchk'), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Print_QuickVisit',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (result) {
+
+
+                            $("#previewEmbed").attr("src", result);
+
+                            $('#modal-backdrop-dark').modal('show');
+
+
+                        },
+                        error: function (request) {
+
+
+
+
+                        }
+                    });
+                } else {
+                    alert("Select at least one activity");
+                }
+
+            });
+
+
+            $('#chk_all').change(function () {
+                if (this.checked) {
+                    $('input.selectchk').prop("checked", true);
+                } else {
+                    $('input.selectchk').prop("checked", false);
+                }
+
+            });
+
+            //Export to excel
+
+
+
+
+            $("#btn-export").click(function () {
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each($('input.selectchk'), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Export_QuickVisit',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+                    alert("Select at least one activity");
+                }
+
+            });
+
+
+            $("#btn-images").click(function () {
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each($('input.selectchk'), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/DownloadZip',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+                    alert("Select at least one activity");
+                }
+
+            });
+
+        });
     </script>
 }

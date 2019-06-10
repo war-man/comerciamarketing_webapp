@@ -1747,12 +1747,12 @@ namespace comerciamarketing_webapp.Controllers
                 //************
 
                 TempData["exito"] = "Activity created successfully.";
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitaSO });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitaSO });
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitaSO });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitaSO });
             }
 
 
@@ -1984,11 +1984,11 @@ namespace comerciamarketing_webapp.Controllers
                 //************
 
                 TempData["exito"] = "Activity created successfully.";
-                return RedirectToAction("Detailsa", "VisitsMs", new { id= ID_visita});
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id= ID_visita});
             }
             catch (Exception ex){
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visita });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visita });
             }
          
             
@@ -2266,12 +2266,12 @@ namespace comerciamarketing_webapp.Controllers
                         if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)//Administrador
                         {
                             TempData["exito"] = "Activity created successfully.";
-                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                         }
                         else
                         {
                             TempData["exito"] = "Activity created successfully.";
-                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                         }
                     }
 
@@ -2282,12 +2282,12 @@ namespace comerciamarketing_webapp.Controllers
                     if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)//Administrador
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                     }
                     else
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                     }
                 }
 
@@ -2324,12 +2324,12 @@ namespace comerciamarketing_webapp.Controllers
                 //db.BulkDelete(lista_eliminar);
 
                 TempData["exito"] = "Activity deleted successfully.";
-                return RedirectToAction("Detailsa","VisitsMs", new { id=ID_visitA});
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id=ID_visitA});
 
             }
             catch (Exception ex){
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitA });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitA });
             }
 
 
@@ -2352,13 +2352,13 @@ namespace comerciamarketing_webapp.Controllers
            
 
                 TempData["exito"] = "Activity canceled successfully.";
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitCa });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitCa });
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitCa });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitCa });
             }
 
 
@@ -2376,13 +2376,13 @@ namespace comerciamarketing_webapp.Controllers
 
                
                 TempData["exito"] = "Representative removed successfully.";
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitU });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitU });
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Detailsa", "VisitsMs", new { id = ID_visitU });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitU });
             }
 
 
@@ -2823,7 +2823,14 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     //Cambiamos estado de visita global
                     visita.ID_visitstate = 2;
-                    visita.check_in = Convert.ToDateTime(check_in);
+                    try
+                    {
+                        visita.check_in = Convert.ToDateTime(check_in);
+                    }
+                    catch {
+                        visita.check_in = DateTime.UtcNow;
+                    }
+                    
                     db.Entry(visita).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -2845,7 +2852,15 @@ namespace comerciamarketing_webapp.Controllers
                         nuevoLog.longitude = lng;
                         nuevoLog.ID_usuario = IDU;
                         nuevoLog.ID_activity =0;
-                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        try
+                        {
+                            nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        }
+                        catch
+                        {
+                            nuevoLog.fecha_conexion  = DateTime.UtcNow;
+                        }
+                 
                         nuevoLog.query1 = ID_visit;
                         nuevoLog.query2 = "";
                         nuevoLog.action = "CHECK IN  - " + visita.store;
@@ -3068,7 +3083,7 @@ namespace comerciamarketing_webapp.Controllers
                     if (visita != null)
                     {
                         visita.ID_visitstate = 4; //FINALIZADO
-                        visita.check_in = Convert.ToDateTime(check_in);
+                        visita.check_out = Convert.ToDateTime(check_in);
                         db.Entry(visita).State = EntityState.Modified;
                         db.SaveChanges();
 

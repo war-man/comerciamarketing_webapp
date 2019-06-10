@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.title = "Comercia Marketing - Admin Reports details";
+}
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <div class="page-hero page-container " id="page-hero">
+        <div class="padding d-flex">
+            <div class="page-title">
+                <h2 class="text-md text-highlight">@ViewBag.ActivityName</h2>
+                <small class="text-muted">
+                    Activity type:
+                    <strong> @ViewBag.ActivityType</strong>
+                </small>
+            </div>
+            <div class="flex"></div>
+
+        </div>
+        <div class="d-flex flex">
+
+            <div class="d-flex flex" id="content-body">
+                <div class="d-flex flex-column flex" id="mail-list" data-plugin="mail">
+
+                    <div class="p-3">
+                        <div class="toolbar ">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Reports","Admin", new { id=ViewBag.id_customer})" class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Back" id="btn-back">
+                                    <i data-feather="chevron-left" class="text-muted"></i>
+                                </a>
+
+                            </div>
+                            <label class="ui-check m-0 ">
+                                <input type="checkbox" class="selectchkAll" id="chk_all" value="0">
+                                <i></i>
+                            </label>
+                            <form class="flex">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search" required>
+                                    <span class="input-group-append">
+                                        <button class="btn btn-white no-border btn-sm" type="button">
+                                            <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print .pdf" id="btn-print">
+                                    <i data-feather="printer"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Export to .xlsx or .csv" id="btn-export">
+                                    <i data-feather="save"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Download Images" id="btn-images">
+                                    <i data-feather="image"></i>
+                                </button>
+                            </div>
+                            <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
+                                <i data-feather="menu"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="scroll-y mx-3 mb-0 card">
+                        <div class="loading m-4"></div>
+                        <div class="list list-row hide">
+                            @foreach (var item in ViewBag.lstActivities)
+                            {
+                                <div class="list-item " data-id="@item.ID_activity">
+                                    <div>
+                                        <label class="ui-check m-0 ">
+                                            <input type="checkbox" class="selectchk" id="chk_@item.ID_activity" value="0">
+                                            <i></i>
+                                        </label>
+                                    </div>
+
+                                    <div>
+                                        <a href="app.mail.detail.html#8">
+                                            <span class="w-40 avatar gd-default" data-toggle-class="loading">
+
+                                                <i data-feather="file"></i>
+
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="flex">
+                                        <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.store</a>
+                                        <div class="item-except text-muted text-sm h-1x">
+                                            @item.Brand
+                                        </div>
+                                        <div class="item-tag tag hide">
+                                            Private
+                                        </div>
+                                    </div>
+                                    <div class="no-wrap">
+                                        <div class="item-date text-muted text-sm d-none d-md-block">@item.visitDate</div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="no-result hide">
+                            <div class="p-4 text-center">
+                                No Results
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-3 py-3 mt-auto">
+                        <div class="d-flex align-items-center">
+                            <div class="flex d-flex flex-row">
+                                <button class="btn btn-sm no-bg no-shadow px-0 pager-prev">
+                                    <i data-feather="chevron-left"></i>
+                                </button>
+                                <div class="pagination pagination-sm mx-1">
+                                </div>
+                                <button class="btn btn-sm no-bg no-shadow px-0 pager-next">
+                                    <i data-feather="chevron-right"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <span class="text-muted">Total:</span>
+                                <span id="count"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fade aside aside-sm" id="content-aside">
+                <div class="modal-dialog d-flex flex-column w-md bg-body" id="mail-nav">
+
+                    <div class="scrollable hover">
+                        <div class="p-2 px-3">
+                            <span class=" box-shadows btn-rounded gd-danger" id="btn-new-mail">
+                                Hint:
+                            </span>
+                        </div>
+                        <div class="sidenav my-3">
+                            <blockquote class="bg-white bg-primary--lt p-3 r">
+                                <em>Select at least one activity from the table to show images.</em>
+                            </blockquote>
+                            @*<div class="card" id="feed-2">
+                                    <div class="card-header d-flex">
+
+                                        <div class="mx-3">
+                                            <a href="#">Jacqueline Reid</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row row-xs">
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b4.jpg);"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b8.jpg);"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b14.jpg);"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>*@
+                            <nav class="nav-active-text-primary" data-nav hidden>
+                                <ul class="nav">
+                                    <li>
+                                        <a href="#inbox">
+                                            <span class="nav-icon">
+                                                <i data-feather="archive"></i>
+                                            </span>
+                                            <span class="nav-text">All</span>
+                                            <span class="nav-badge">
+                                                <b class="badge badge-pill gd-warning">58</b>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#sent">
+                                            <span class="nav-icon">
+                                                <i data-feather="file"></i>
+                                            </span>
+                                            <span class="nav-text">EDT Retail Audit</span>
+                                            <span class="nav-badge">
+                                                <b class="badge badge-pill gd-success">19</b>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#sent">
+                                            <span class="nav-icon">
+                                                <i data-feather="file"></i>
+                                            </span>
+                                            <span class="nav-text">Quick visit</span>
+                                            <span class="nav-badge">
+                                                <b class="badge badge-pill gd-success">39</b>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#sent">
+                                            <span class="nav-icon">
+                                                <i data-feather="file"></i>
+                                            </span>
+                                            <span class="nav-text">Visita 1.1</span>
+                                            <span class="nav-badge">
+                                                <b class="badge badge-pill gd-success">0</b>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-header d-flex">
+                                        <div class="py-2 text-muted">Brands</div>
+                                        <span class="flex"></span>
+                                        <div class="dropdown dropleft">
+
+                                            <div class="dropdown-menu w">
+                                                <div class="p-3">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-sm" id="newField" placeholder="New label" required>
+                                                        <span class="input-group-append">
+                                                            <button class="btn btn-white no-shadow btn-sm" type="button" id="newBtn">
+                                                                <i data-feather="check"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="app.mail.html#html5" class="link">
+                                            <span class="nav-badge">
+                                                <b class="badge badge-circle text-primary mx-1"></b>
+                                            </span>
+                                            <span class="nav-text name">Brand 1</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app.mail.html#bootstrap" class="link">
+                                            <span class="nav-badge">
+                                                <b class="badge badge-circle text-info mx-1"></b>
+                                            </span>
+                                            <span class="nav-text name">Brand 2</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app.mail.html#clients" class="link">
+                                            <span class="nav-badge">
+                                                <b class="badge badge-circle text-success mx-1"></b>
+                                            </span>
+                                            <span class="nav-text name">Brand 3</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app.mail.html#work" class="link">
+                                            <span class="nav-badge">
+                                                <b class="badge badge-circle text-warning mx-1"></b>
+                                            </span>
+                                            <span class="nav-text name">Brand 4</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ############ Main START-->
+    <!-- ############ Main END-->
+</div>
+
+<!-- .modal -->
+<div id="modal-backdrop-dark" class="modal fade" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <div class="modal-title text-md">Preview report</div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="DisplayPDF">
+                    <embed style="width:100%;height:700px; overflow:hidden" id="previewEmbed" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->

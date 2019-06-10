@@ -3,185 +3,179 @@
     ViewBag.Title = "Comercia Marketing - Representative_stats";
 }
 
-<!-- partial -->
-<div class="container-fluid page-body-wrapper">
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
 
-                        <div class="accordion basic-accordion" id="accordion" role="tablist">
-                            <div class="card">
-                                <div class="card-header" role="tab" id="headingOne">
-                                    <h6 class="mb-0">
-                                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                            <i class="card-icon mdi mdi-filter"></i>Filters
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">By Date</h4>
-                                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                                                            <i class="mdi mdi-calendar"></i>&nbsp;
-                                                            <span></span> <i class="fa fa-caret-down"></i>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <a href="#" class="btn btn-primary" id="click_filterR">Apply<i class="mdi mdi-check-all"></i></a>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
+            <div class="padding d-flex">
+                <div class="btn-group" style="margin-right:12px;">
+                    <a href="@Url.Action("Representatives","Home",null)" class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Back" id="btn-back">
+                        <i data-feather="chevron-left" class="text-muted"></i>
+                    </a>
 
                 </div>
-                <div class="row">
-                    <div class="col-md-6 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-0">Activities</h4>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-inline-block pt-3">
-                                        <div class="d-flex">
-                                            <h2 class="mb-0">@ViewBag.totalAct</h2>
-                                            <div class="d-flex align-items-center ml-2">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">@ViewBag.nombre </h2>
 
-
-                                            </div>
-                                        </div>
-                                        <small class="text-gray">Forms, Audits, Sales Orders, Demos</small>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <div class="bg-success px-4 py-2 rounded">
-                                            <i class="mdi mdi-file-document text-white icon-lg"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-0">Visited stores</h4>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-inline-block pt-3">
-                                        <div class="d-flex">
-                                            <h2 class="mb-0">@ViewBag.totalVisitas</h2>
-                                            <div class="d-flex align-items-center ml-2">
-
-                                            </div>
-                                        </div>
-                                        <small class="text-gray">of @ViewBag.stores stores</small>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <div class="bg-warning px-4 py-2 rounded">
-                                            <i class="mdi mdi-store text-white icon-lg"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <small class="text-muted">
+                        Sales Representative |
+                        <strong> @ViewBag.correo</strong>
+                    </small>
                 </div>
+                <div class="flex"></div>
+                <div>
+                    <a href="#" class="avatar w-40" data-pjax-state="">
+                        <img class="image" src="../assets/img/a2.jpg" alt=".">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+
                 <div class="row">
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Assigned customers</h4>
+
+                    <div class="col-sm-4">
+                        <p>Active Vendors</p>
+                        <table class="table table-theme v-middle">
+                            <thead class="text-muted">
+                                <tr>
+                                    <th></th>
+                                    <th>Vendor</th>
+                                    <th>Brands</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @foreach (var item in ViewBag.customers)
-                                {
-                                    <div class="wrapper d-flex align-items-center py-2 border-bottom">
-
-                                        <img class="img-sm rounded" src="~/Content/newstyle2/images/faces/factory.png" alt="profile">
-                                        
-                                            <div class="wrapper ml-3">
-                                                <h6 class="ml-1 mb-1">@item.name</h6>
-                                                <small class="text-muted mb-0"><i class="mdi mdi-map-marker-outline mr-1"></i>@item.address</small>
-                                            </div>
-                                        
-                                    </div>
-                                }
+                {
+                    <tr class=" v-middle" data-id="20">
+                        <td>
+                            <a href="#">
+                                <span class="w-32 avatar gd-info">
+                                    @Convert.ToString(item.name).Substring(0, 1)
+                                </span>
+                            </a>
+                        </td>
+                        <td class="flex">
+                            <a href="#" class="item-author text-color ">@item.name</a>
+                            <div class="item-except text-muted text-sm h-1x">
+                                @item.id
                             </div>
+                        </td>
+
+                        <td></td>
+
+                    </tr>
+}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-4">
+                        <p>Last updates</p>
+                        <div class="timeline p-4 block mb-4">
+                            @foreach (var log in ViewBag.log)
+            {
+                <div class="tl-item">
+                    <div class="tl-dot ">
+                    </div>
+                    <div class="tl-date text-muted">@log.fecha_conexion</div>
+                    <div class="tl-content">
+                        <div class="">@log.action</div>
+                    </div>
+                </div>
+}
                         </div>
                     </div>
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card text-center">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 d-flex">
+                        <div class="flex">
                             <div class="card-body">
-                                <img src="~/Content/newstyle2/images/faces/user.png" class="img-lg rounded-circle mb-2" alt="profile image" />
-                                <h4>@ViewBag.nombre</h4>
-                                <p class="text-muted">Sales Representative</p>
-                                <p class="mt-4 card-text">
-                                    @ViewBag.correo
-                                </p>
-                                <button class="btn btn-info btn-sm mt-3 mb-4">Activities</button>
-                                <div class="border-top pt-3">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <h6>@ViewBag.totalForm</h6>
-                                            <p>Forms</p>
+                                <div class="row row-sm">
+                                    <div class="col-sm-12">
+                                        <div class="p-3-4">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <div>Activities List</div>
+
+                                                </div>
+                                                <span class="flex"></span>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <h6>@ViewBag.totalAudit</h6>
-                                            <p>Retail Audits</p>
+
+                                        <div class="row">
+                                            <div class="table-responsive">
+                                                <table id="activitieslst" class="table table-theme table-row">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th scope="col">ID </th>
+
+                                                            <th scope="col">Activity</th>
+
+                                                            <th scope="col">Customer</th>
+
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Status</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var itemVisita in ViewBag.activitieslst)
+                {
+                                        <tr class=" v-middle">
+
+                                            <td>
+                                                @itemVisita.ID_activity
+
+                                            </td>
+
+                                            <td>@itemVisita.description</td>
+
+                                            <td>
+
+
+
+                                                <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
+                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.Customer<br />
+                                                    <span>Brands</span>
+                                                </a>
+
+                                            </td>
+                                            <td>@itemVisita.date.ToString("MM/dd/yyyy")</td>
+
+                                            <td data-label="Status">
+                                                @switch (itemVisita.isfinished)
+        {
+            case false: //Scheduled
+
+                                        <label class="badge badge-warning">Scheduled</label>
+
+break;
+case true: //Finished
+                                        <label class="badge badge-primary">Finished</label>
+break;
+}
+
+                                            </td>
+                                        </tr>
+}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <h6>@ViewBag.totalSale</h6>
-                                            <p>Sales Orders</p>
-                                        </div>
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <h6>@ViewBag.totalDemo</h6>
-                                            <p>Demos</p>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Last updates</h4>
-                                <ul class="bullet-line-list">
-                                    @foreach (var log in ViewBag.log)
-                                    {
-
-                                        <li>
-                                            <h6>@log.action</h6>
-
-                                            <p class="text-muted">
-                                                <i class="mdi mdi-clock"></i>
-                                                @log.fecha_conexion
-                                            </p>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                @Html.Partial("~/Views/Shared/Footer2.cshtml")
+
             </div>
 
         </div>
@@ -190,5 +184,5 @@
     <!-- partial:../../partials/_footer.html -->
     <!-- partial -->
 </div>
- 
+
 <!-- main-panel ends -->

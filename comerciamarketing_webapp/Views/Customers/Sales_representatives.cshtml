@@ -1,0 +1,200 @@
+﻿@model List<comerciamarketing_webapp.Models.Usuarios>
+
+@{
+    ViewBag.title = "Comercia Marketing";
+}
+
+        <!-- ############ Content START-->
+        <div id="content" class="flex ">
+            <!-- ############ Main START-->
+            <div class="d-flex flex fixed-content">
+                <div class="fade aside aside-sm" id="content-aside">
+                    <div class="modal-dialog d-flex flex-column w-md bg-body" id="user-nav">
+                        <div class="navbar">
+                            <span class="text-md mx-2">Groups</span>
+                            <div class="dropdown dropright">
+
+                                <div class="dropdown-menu w-lg">
+                                    <div class="p-3">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-sm" id="newField" placeholder="Group name" required>
+                                            <span class="input-group-append">
+                                                <button class="btn btn-white no-shadow btn-sm" type="button" id="newBtn">
+                                                    <i data-feather="check"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scrollable hover">
+                            <div class="sidenav p-2">
+                                <nav class="nav-active-text-primary" data-nav>
+                                    <ul class="nav">
+                                        <li>
+                                            <a href="app.user.html#all">
+                                                <span class="nav-text">All</span>
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-sm badge-pill gd-danger">@Model.Count()</b>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="nav-text">Brand 1</span>
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-sm badge-pill gd-info">0</b>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="nav-text">Brand 2</span>
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-sm badge-pill gd-info">0</b>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <!-- / -->
+                    </div>
+                </div>
+                <div class="d-flex flex" id="content-body">
+                    <div class="d-flex flex-column flex" id="user-list" data-plugin="user">
+                        <div class="p-3">
+                            <div class="toolbar ">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print general report" id="btn-trash">
+                                        <i data-feather="printer" class="text-muted"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-white sort " data-sort="item-author" data-toggle="tooltip" title="Sort">
+                                        <i class="sorting"></i>
+                                    </button>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-white" data-toggle="dropdown">A-Z</button>
+                                    <div class="dropdown-menu p-3" id="filter">
+                                        <span class="badge pointer">A</span>
+                                        <span class="badge pointer">B</span>
+                                        <span class="badge pointer">C</span>
+                                        <span class="badge pointer">D</span>
+                                        <span class="badge pointer">E</span>
+                                        <span class="badge pointer">F</span>
+                                        <span class="badge pointer">G</span>
+                                        <span class="badge pointer">H</span>
+                                        <span class="badge pointer">I</span>
+                                        <span class="badge pointer">J</span>
+                                        <span class="badge pointer">K</span>
+                                        <span class="badge pointer">L</span>
+                                        <span class="badge pointer">M</span>
+                                        <span class="badge pointer">N</span>
+                                        <span class="badge pointer">O</span>
+                                        <span class="badge pointer">P</span>
+                                        <span class="badge pointer">Q</span>
+                                        <span class="badge pointer">R</span>
+                                        <span class="badge pointer">S</span>
+                                        <span class="badge pointer">T</span>
+                                        <span class="badge pointer">U</span>
+                                        <span class="badge pointer">V</span>
+                                        <span class="badge pointer">W</span>
+                                        <span class="badge pointer">X</span>
+                                        <span class="badge pointer">Y</span>
+                                        <span class="badge pointer">Z</span>
+                                    </div>
+                                </div>
+                                <form class="flex">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search" required>
+                                        <span class="input-group-append">
+                                            <button class="btn btn-white no-border btn-sm" type="button">
+                                                <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                                <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
+                                    <i data-feather="menu"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="scroll-y mx-3 mb-0 card">
+                            <div class="loading m-4"></div>
+                            <div class="list list-row hide">
+                                @foreach (var salesRep in Model)
+                            {
+
+
+                                <div class="list-item" data-id="@salesRep.ID_usuario">
+
+                                    <div>
+                                        <a href="#">
+                                            <span class="w-40 avatar gd-danger" data-toggle-class="loading">
+                                                <span class="avatar-status on b-white avatar-right"></span> @salesRep.nombre.ToString().Substring(0, 1)
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="flex">
+                                        <a href="#" class="item-author text-color ">@salesRep.nombre @salesRep.apellido</a>
+                                        <div class="item-mail text-muted h-1x">
+                                            @salesRep.correo
+                                        </div>
+                                        <div class="item-tag tag hide">
+                                            Personal
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="item-action dropdown">
+                                            <a href="#" data-toggle="dropdown" class="text-muted">
+                                                <i data-feather="more-vertical"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                <a class="dropdown-item" href="#">
+                                                    Print Report
+                                                </a>
+                                                <a class="dropdown-item download">
+                                                    Download
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        }
+
+
+                            </div><br /><br /><br /><br />
+                            <div class="no-result hide">
+                                <div class="p-4 text-center">
+                                    No Results
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-3 py-3 mt-auto">
+                            <div class="d-flex align-items-center">
+                                <div class="flex d-flex flex-row">
+                                    <button class="btn btn-sm no-bg no-shadow px-0 pager-prev">
+                                        <i data-feather="chevron-left"></i>
+                                    </button>
+                                    <div class="pagination pagination-sm mx-1">
+                                    </div>
+                                    <button class="btn btn-sm no-bg no-shadow px-0 pager-next">
+                                        <i data-feather="chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="text-muted">Total:</span>
+                                    <span id="count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ############ Main END-->
+        </div>
+        <!-- ############ Content END-->

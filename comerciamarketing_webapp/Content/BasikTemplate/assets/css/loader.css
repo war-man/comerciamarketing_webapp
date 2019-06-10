@@ -1,0 +1,83 @@
+﻿div#wave {
+    position: relative;
+    margin-top: -60px;
+    display:inline-block
+
+}
+
+    div#wave .dot {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        margin-right: 3px;
+        background: #303131;
+        animation: wave 1.3s linear infinite;
+    }
+
+        div#wave .dot:nth-child(2) {
+            animation-delay: -1.1s;
+        }
+
+        div#wave .dot:nth-child(3) {
+            animation-delay: -0.9s;
+        }
+
+@keyframes wave {
+    0%, 60%, 100% {
+        transform: initial;
+    }
+
+    30% {
+        transform: translateY(-15px);
+    }
+}
+
+
+/* Customize website's scrollbar like Mac OS
+Not supports in Firefox and IE */
+
+.scrollbar {
+
+    height: 400px;
+    overflow-y: auto;
+
+}
+
+.force-overflow {
+    min-height: 400px;
+}
+
+#wrapper {
+    text-align: center;
+    margin: auto;
+}
+
+
+#style-11::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+}
+
+
+
+/**  STYLE 11 */
+#style-11::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+}
+
+#style-11::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(left, #fff, #e4e4e4);
+    border: 1px solid #aaa;
+}
+
+    #style-11::-webkit-scrollbar-thumb:hover {
+        background: #fff;
+    }
+
+    #style-11::-webkit-scrollbar-thumb:active {
+        background: linear-gradient(left, #22ADD4, #1E98BA);
+    }

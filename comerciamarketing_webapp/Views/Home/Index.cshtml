@@ -19,9 +19,9 @@
             top: 0px;
             left: 0px;
             position: fixed;
-            opacity: 0.7;
+
             background-color: #fff;
-            z-index: 99;
+            z-index: 1099;
             text-align: center;
         }
 
@@ -32,6 +32,9 @@
         .hide {
             display: none;
         }
+
+
+
     </style>
     <script type="text/javascript">
         var globallat = "";
@@ -78,13 +81,18 @@
     </script>
 
 </head>
-<body class="horizontal-menu-2" onload="javascript:initGeolocation()">
-    <!--GLOBAL LOADER-->
+<body class="horizontal-menu-2">
+    <!--GLOBAL LOADER  onload="javascript:initGeolocation()"-->
     <div id="loading" class="hide">
         <div id="loading-content">
+            <img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />
+            <div id="wave">
+                Loading
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
 
-
-            <div class="circle-loader"></div>
 
 
         </div>
@@ -135,9 +143,9 @@
                                     <p class="footer-text">Copyright © 2018 Comercia Marketing. All rights reserved.</p>
                                     <ul class="auth-footer text-gray">
                                         <!--
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-                -->
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Cookie Policy</a></li>
+                                            -->
                                     </ul>
                                 </div>
                             </form>
@@ -188,17 +196,23 @@
 
                     } else if( data.redireccion =="customer" ){
                         console.log("Login success")
-                      var url = '@Url.Action("CustomerM_stats", "Home", new { id="CM" })';
+                      var url = '@Url.Action("Dashboard", "Customers", new { id="CM" })';
 
 
                         url = url.replace('CM', data.cm);
                         window.location.href = url
 
 
-                    }else {
+                    } else if(data.redireccion == "salesreps") {
                         console.log("Login success")
                       
-                        window.location.href = '@Url.Action("Main", "Home")';
+                        window.location.href = '@Url.Action("Dashboard", "SalesRepresentatives")';
+
+
+                    }else if(data.redireccion == "admin") {
+                        console.log("Login success")
+                      
+                        window.location.href = '@Url.Action("Dashboard", "Admin")';
 
 
                     }

@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewBag.title = "Comercia Marketing";
+}
+
+        <!-- ############ Content START-->
+        <div id="content" class="flex ">
+            <!-- ############ Main START-->
+            <div class="d-flex flex">
+                <div class="fade aside aside-sm" id="content-aside">
+                    <div class="modal-dialog d-flex flex-column w-md bg-body" id="mail-nav">
+                        <div class="navbar">
+                            <span class="text-md">Reports</span>
+                        </div>
+                        <div class="scrollable hover">
+            
+                            <div class="sidenav my-3">
+                                <nav class="nav-active-text-primary" data-nav>
+                                    <ul class="nav">
+                                        <li>
+                                            <a href="#All">
+                                                <span class="nav-icon">
+                                                    <i data-feather="archive"></i>
+                                                </span>
+                                                <span class="nav-text">All</span>
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-pill gd-warning">@ViewBag.lstCount</b>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        @foreach (var item in ViewBag.lstTypes)
+    {
+                                    <li>
+                                        <a href="#@item.name">
+                                            <span class="nav-icon">
+                                                <i data-feather="file"></i>
+                                            </span>
+                                            <span class="nav-text">@item.name</span>
+                                            <span class="nav-badge">
+                                                <b class="badge badge-pill gd-success">@item.count</b>
+                                            </span>
+                                        </a>
+                                    </li>
+}
+                                        <li class="nav-header d-flex">
+                                            <div class="py-2 text-muted">Brands</div>
+                                            <span class="flex"></span>
+ 
+                                        </li>
+                                        <li>
+                                            <a href="#html5" class="link">
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-circle text-primary mx-1"></b>
+                                                </span>
+                                                <span class="nav-text name">Brand 1</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#2" class="link">
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-circle text-info mx-1"></b>
+                                                </span>
+                                                <span class="nav-text name">Brand 2</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#clients" class="link">
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-circle text-success mx-1"></b>
+                                                </span>
+                                                <span class="nav-text name">Brand 3</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#work" class="link">
+                                                <span class="nav-badge">
+                                                    <b class="badge badge-circle text-warning mx-1"></b>
+                                                </span>
+                                                <span class="nav-text name">Brand 4</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-deck hide" id="mail-deck">
+                    <div class="card card-origin alert p-0 m-0 b-a hide">
+                        <div class="card-header d-flex align-items-center bg-body">
+                            <div class="flex h-1x mx-1 mail-to">New search</div>
+                            <div class="ml-auto no-wrap">
+                                <a class="p-1">
+                                    <span>
+                                        <i data-feather="arrow-right" width="12" height="12"></i>
+                                    </span>
+                                </a>
+
+                                <a class="p-1 text-muted" data-dismiss="alert">
+                                    <i data-feather="x" width="12" height="12"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-2">
+                                    <input type="text" class="form-control" placeholder="Recipients">
+                                </div>
+                                <div>
+                                    <input type="text" class="form-control" placeholder="Subject">
+                                </div>
+                                <div class="note-editor-inline">
+                                    <textarea class="form-control summernote">
+                                        </textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex" id="content-body">
+                    <div class="d-flex flex-column flex" id="mail-list" data-plugin="mail">
+
+                        <div class="p-3">
+                            <div class="toolbar ">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print Summary" id="btn-print">
+                                        <i data-feather="printer" class="text-muted"></i>
+                                    </button>
+
+                                </div>
+                                <form class="flex">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search" required>
+                                        <span class="input-group-append">
+                                            <button class="btn btn-white no-border btn-sm" type="button">
+                                                <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                                <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
+                                    <i data-feather="menu"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="scroll-y mx-3 mb-0 card">
+                            <div class="loading m-4"></div>
+                            <div class="list list-row hide">
+                                @foreach (var item in ViewBag.lstTypes)
+    {
+                            <div class="list-item " data-id="@item.id">
+
+
+                                <div>
+                                    <a href="#@item.id">
+                                        <span class="w-40 avatar gd-default" data-toggle-class="loading">
+
+                                            <i data-feather="file"></i>
+
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="flex">
+                                    <a href="@Url.Action("Reports_details","Customers", new { id=ViewBag.id_customer, report=item.id})" class="item-title text-color h-1x">@item.name</a>
+                                    <div class="item-except text-muted text-sm h-1x">
+                                       @item.activitytype
+                                    </div>
+                                    <div class="item-tag tag hide"> <!--ACA COLOCAR LA MARCA-->
+                                        @item.name
+                                    </div>
+                                </div>
+                                @*<div class="no-wrap">
+            <div class="item-date text-muted text-sm d-none d-md-block">02/11/2019</div>
+        </div>*@
+                            </div>
+}
+
+                            </div>
+                            <div class="no-result hide">
+                                <div class="p-4 text-center">
+                                    No Results
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-3 py-3 mt-auto">
+                            <div class="d-flex align-items-center">
+                                <div class="flex d-flex flex-row">
+                                    <button class="btn btn-sm no-bg no-shadow px-0 pager-prev">
+                                        <i data-feather="chevron-left"></i>
+                                    </button>
+                                    <div class="pagination pagination-sm mx-1">
+                                    </div>
+                                    <button class="btn btn-sm no-bg no-shadow px-0 pager-next">
+                                        <i data-feather="chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="text-muted">Total:</span>
+                                    <span id="count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ############ Main END-->
+        </div>
+        <!-- ############ Content END-->

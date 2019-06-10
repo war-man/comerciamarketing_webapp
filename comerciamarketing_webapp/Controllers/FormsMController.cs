@@ -3440,7 +3440,43 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        public ActionResult ActivityonDF(int? id)
+        {
+            if (Session["IDusuario"] != null)
+            {
+                int ID = Convert.ToInt32(Session["IDusuario"]);
+                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
+                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+
+                var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
+
+                if (activity == null)
+                {
+                    //return RedirectToAction("Main", "Home");
+                }
+                else
+                {
+
+                    
+                   
+                    ViewBag.idvisitareal = activity.ID_visit;
+                    ViewBag.idvisita = 0; //activity.ID_activity;
+
+                    VisitsM visitsM = db.VisitsM.Where(a => a.ID_visit == activity.ID_visit).FirstOrDefault();
+                    ViewBag.storename = visitsM.store;
+                    ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
+
+                    
+                }
+                return View();
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
         public ActionResult Activityon(int? id)
         {
             if (Session["IDusuario"] != null)
@@ -3568,7 +3604,9 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.detailssql = FormsMDet;
 
                     Session["detailsForm"] = FormsMDet;
-
+                    VisitsM visitsM = db.VisitsM.Where(a=> a.ID_visit ==activity.ID_visit).FirstOrDefault();
+                    ViewBag.storename = visitsM.store;
+                    ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
 
                     return View();
                 }
@@ -3716,7 +3754,9 @@ namespace comerciamarketing_webapp.Controllers
 
                     Session["detailsForm"] = (from f in db.FormsM_details where (f.ID_visit == id) select f).ToList();
 
-
+                    VisitsM visitsM = db.VisitsM.Where(a => a.ID_visit == activity.ID_visit).FirstOrDefault();
+                    ViewBag.storename = visitsM.store;
+                    ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
 
                     return View();
                 }

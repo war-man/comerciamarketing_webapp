@@ -1,0 +1,321 @@
+﻿
+@{
+    ViewBag.title = "Comercia Marketing";
+}
+
+
+        <!-- ############ Content START-->
+        <div id="content" class="flex ">
+            <!-- ############ Main START-->
+            <div>
+                <div class="page-hero page-container " id="page-hero">
+                    <div class="padding d-flex">
+                        <div class="page-title">
+                            <h2 class="text-md text-highlight">Dashboard</h2>
+                            <small class="text-muted">
+                                Welcome,
+                                <strong>@ViewBag.username</strong>
+                            </small>
+                        </div>
+                        <div class="flex"></div>
+
+                    </div>
+                </div>
+                <div class="page-content page-container" id="page-content">
+                    <div class="padding">
+                        <div class="row row-sm sr">
+                            <div class="col-md-12 col-lg-8">
+                                <div class="row row-sm">
+                                    <div class="col-md-8">
+                                        <div class="row row-sm">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="row row-sm">
+                                                            <div class="col-5">
+                                                                <small class="text-muted">Your membership</small>
+                                                                <div class="mt-2 font-weight-500"><span class="text-info">@ViewBag.Membresia</span></div>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <small class="text-muted">Your company</small>
+                                                                <div class="text-highlight mt-2 font-weight-500">@ViewBag.Company</div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-sm">
+                                            <div class="col-12 d-flex">
+                                                <div class="card flex">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center text-hover-success">
+                                                            <div class="avatar w-56 m-2 no-shadow gd-info">
+                                                                <i data-feather="users"></i>
+                                                            </div>
+                                                            <div class="px-4 flex">
+                                                                <div>Assigned Sales Representatives</div>
+                                                                <div class="text-success text-md mt-2">
+                                                                    4
+                                                                </div>
+                                                            </div>
+                                                            <a href="@Url.Action("Sales_representatives","Customers", new { id=ViewBag.id_customer})" class="text-muted">
+                                                                <i data-feather="arrow-right"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        <div class="card flex">
+                                            <div class="card-body text-center">
+                                                <small class="text-muted">Reached customers</small>
+                                                <div class="pt-3">
+                                                    <div style="height: 120px" class="pos-rlt">
+                                                        <div class="pos-abt w-100 h-100 d-flex align-items-center justify-content-center">
+                                                            <div>
+                                                                <div class="text-highlight text-md">
+                                                                    <span data-plugin="countTo" data-option="{
+													from: 0,
+												    to: 50,
+												    refreshInterval: 15,
+												    speed: 1000,
+												    formatter: function (value, options) {
+												      return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+												    }
+												    }"></span>
+                                                                </div>
+                                                                <small class="text-muted">of xx</small>
+                                                            </div>
+                                                        </div>
+                                                        <canvas data-plugin="chartjs" id="chart-pie-1"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 d-flex">
+                                        <div class="card flex">
+                                            <div class="card-body">
+                                                <div class="row row-sm">
+                                                    <div class="col-sm-6">
+                                                        <div class="mb-2">
+                                                            <small class="text-muted">Activities statistics</small>
+                                                        </div>
+                                                        <div class="row row-sm">
+                                                            <div class="col-4">
+                                                                <div class="text-highlight text-md">52</div>
+                                                                <small>Activities</small>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="text-danger text-md">25</div>
+                                                                <small>Finished</small>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="text-md">27</div>
+                                                                <small>Remain</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6">
+                                                        <div class="mb-2 mt-2 mt-sm-0">
+                                                            <small class="text-muted">This week</small>
+                                                        </div>
+                                                        <div>Activities completion</div>
+                                                        <div class="progress no-bg mt-2 align-items-center circle" style="height:6px;">
+                                                            <div class="progress-bar circle gd-danger" style="width: 48%"></div>
+                                                            <span class="mx-2">48%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4 d-flex">
+                                <div class="card flex">
+                                    <div class="card-body">
+                                        <div class="px-4">
+
+                                            <div id="jqvmap-usa" data-plugin="vectorMap" style="height:200px" class="d-flex align-items-center justify-content-center">
+                                                <div class="loading"></div>
+                                            </div>
+                                            <div class="text-center mb-3">
+                                                <small class="text-muted">Your top states</small>
+                                            </div>
+                                            <div class="row text-center">
+                                                <div class="col">
+                                                    <span class="text-primary">Tennessee</span>
+                                                    <div class="text-muted text-sm">250</div>
+                                                </div>
+                                                <div class="col">
+                                                    Georgia
+                                                    <div class="text-muted text-sm">50</div>
+                                                </div>
+                                                <div class="col">
+                                                    Texas
+                                                    <div class="text-muted text-sm">200</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex">
+                                                <div class="text-highlight">65%</div>
+                                                <small class="h-1x">Distribuidora Limena TN</small>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted">Products</small>
+                                            </div>
+                                        </div>
+                                        <div class="w-50" style="height: 30px;">
+                                            <canvas data-plugin="chartjs" id="chart-line-1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex">
+                                                <div class="text-highlight">25%</div>
+                                                <small class="h-1x">Distribuidora Limena GR</small>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted">Products</small>
+                                            </div>
+                                        </div>
+                                        <div class="w-50" style="height: 30px;">
+                                            <canvas data-plugin="chartjs" id="chart-line-2"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="p-3-4">
+                                        <div class="d-flex mb-3">
+                                            <div>
+                                                <div>Activities by Brand</div>
+                                                <small class="text-muted">All brands: 12</small>
+                                            </div>
+                                            <span class="flex"></span>
+                                            <div>
+                                                <div class="btn-group btn-group-toggle" id="btn_l_4" data-toggle="buttons">
+                                                    <label class="btn active">
+                                                        <input type="radio" name="options"> Week
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="p-2" style="height: 364px">
+                                            <canvas data-plugin="chartjs" id="chart-line-4"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row row-sm">
+                                    <div class="col-md-12 d-flex">
+                                        <div class="card flex">
+                                            <div class="p-3-4">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <div>Activities</div>
+                                                        <small class="text-muted">By type</small>
+                                                    </div>
+                                                    <span class="flex"></span>
+                                                    <div>
+                                                        <a href="#" class="p-1 text-muted">
+                                                            <i data-feather="more-horizontal"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list list-row">
+                                                <div class="list-item " data-id="11">
+                                                    <div>
+                                                        <span class="badge badge-circle text-info"></span>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a href="#" class="item-title text-color h-1x">Quick Visit</a>
+                                                    </div>
+                                                    <div>
+                                                        <span class="item-amount text-sm text-muted">
+                                                            50
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="list-item " data-id="3">
+                                                    <div>
+                                                        <span class="badge badge-circle text-primary"></span>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a href="#" class="item-title text-color h-1x">Visita Version 1.1</a>
+                                                    </div>
+                                                    <div>
+                                                        <span class="item-amount text-sm text-muted">
+                                                            50
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="list-item " data-id="17">
+                                                    <div>
+                                                        <span class="badge badge-circle text-warning"></span>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a href="#" class="item-title text-color h-1x">Audit</a>
+                                                    </div>
+                                                    <div>
+                                                        <span class="item-amount text-sm text-muted">
+                                                            53
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="list-item " data-id="8">
+                                                    <div>
+                                                        <span class="badge badge-circle text-success"></span>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <a href="#" class="item-title text-color h-1x">EDT Visit Report</a>
+                                                    </div>
+                                                    <div>
+                                                        <span class="item-amount text-sm text-muted">
+                                                            4
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ############ Main END-->
+        </div>
+        <!-- ############ Content END-->

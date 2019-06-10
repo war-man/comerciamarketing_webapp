@@ -1,0 +1,186 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!-- endbuild -->
+<!--OLD TEMPLATE V2-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<!-- plugins:js -->
+<!--PREVENT SESSION-->
+@*<script src="~/Content/BasikTemplate/assets/js/keepAlive.js"></script>*@
+
+<script src="~/Content/newstyle2/vendors/js/vendor.bundle.base.js"></script>
+<script src="~/Content/newstyle2/vendors/js/vendor.bundle.addons.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
+<!-- End plugin js for this page-->
+<!-- inject:js -->
+
+<script src="~/Content/newstyle2/js/off-canvas.js"></script>
+<script src="~/Content/newstyle2/js/hoverable-collapse.js"></script>
+<script src="~/Content/newstyle2/js/misc.js"></script>
+<script src="~/Content/newstyle2/js/settings.js"></script>
+<script src="~/Content/newstyle2/js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page GENERAL-->
+<script src="~/Content/newstyle2/js/dashboard.js"></script>
+<script src="~/Content/newstyle2/js/horizontal-menu.js"></script>
+
+<script src="~/Content/newstyle2/js/formpickers.js"></script>
+
+<script src="~/Content/newstyle2/js/calendar.js"></script>
+
+<script src="~/Content/newstyle2/js/x-editable.js"></script>
+<script src="~/Content/newstyle2/js/dropify.js"></script>
+<script src="~/Content/newstyle2/js/dropzone.js"></script>
+<script src="~/Content/newstyle2/js/jquery-file-upload.js"></script>
+<script src="~/Content/newstyle2/js/formpickers.js"></script>
+<script src="~/Content/newstyle2/js/form-repeater.js"></script>
+
+<script src="~/Content/newstyle2/js/data-table.js"></script>
+<script src="~/Content/js/sisyphus.js"></script>
+<script src="~/Content/newstyle2/js/jquery.watermark.min.js"></script>
+<script src="~/Content/newstyle2/js/select2.js"></script>
+<script src="~/Content/newstyle2/js/screenfull.js"></script>
+
+<script src="~/Content/newstyle2/js/tooltips.js"></script>
+<script src="~/Content/newstyle2/js/popover.js"></script>
+<script src="~/Content/newstyle2/js/iCheck.js"></script>
+<script src="~/Content/newstyle2/js/typeahead.js"></script>
+<script src="~/Content/newstyle2/js/dropify.js"></script>
+<!-- Custom js for this page GOOGLE MAPS-->
+@if (ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - RoutesM details" || ViewBag.Title == "Comercia Marketing - Customers Map")
+{
+    <script src="~/Content/dist/js/map-icons.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&callback=Initialize"></script>
+    <script src="~/Content/newstyle2/js/google-maps.js"></script>
+    <script src="~/Content/newstyle2/js/owl.carousel.js"></script>
+
+}
+@if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
+{
+    <script src="~/Content/dist/js/map-icons.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g"></script>
+    <script src="~/Content/newstyle2/js/google-maps.js"></script>
+    <script src="~/Content/newstyle2/js/owl.carousel.js"></script>
+
+}
+
+<!--SCRIPTS FUERA DE PLANTILLA-->
+<script src="~/Content/js/sisyphus.js"></script>
+
+<!--Custom range date-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<!--DATATABLE-->
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+
+    <script src="~/Content/dist/js/map-icons.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&callback=Initialize"></script>
+    <script src="~/Content/newstyle2/js/google-maps.js"></script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Representative_stats")
+{
+
+}
+<!--<script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>-->
+<!--FORM BUILDER-->
+@if (ViewBag.Title == "Comercia Marketing - FormsM")
+{
+    <script src="~/Content/js/multiple-select.js"></script>
+    <script src="~/Content/js/jquery.nestable.js"></script>
+    <!--PARA DIVS PEGADIZOS-->
+
+
+
+
+
+}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>
+
+@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
+{
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+
+}
+@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - Template preview2on")
+{
+
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
+
+
+}
+@if (ViewBag.Title == "Comercia Marketing - Template preview" || ViewBag.Title == "Comercia Marketing - Activityea" || ViewBag.Title == "Comercia Marketing - Template previewadmin" || ViewBag.Title == "Comercia Marketing - Template previewsoon")
+{
+
+
+    <script src="~/Content/js/signature.js"></script>
+    <script src="~/Content/newstyle2/js/JIC.js"></script>
+}
+
+@if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
+{
+    <script type="text/javascript" src="~/Content/newstyle2/js/jquery.treegrid.js"></script>
+    <script type="text/javascript" src="~/Content/newstyle2/js/jquery.treegrid.bootstrap3.js"></script>
+}
+
+@if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
+{
+
+    <link rel="stylesheet" type="text/css" href="~/Content/newstyle2/css/retailauditresponsive.css" />
+
+
+}
+
+<!--NEW TEMPLATE-->
+<!-- build:js ../assets/js/site.min.js -->
+<!-- jQuery <script src="~/Content/BasikTemplate/libs/jquery/dist/jquery.min.js"></script>-->
+<!-- Bootstrap -->
+<script src="~/Content/BasikTemplate/libs/popper.js/dist/umd/popper.min.js"></script>
+
+<script src="~/Content/BasikTemplate/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- ajax page -->
+@*<script src="~/Content/BasikTemplate/libs/pjax/pjax.min.js"></script>
+    <script src="~/Content/BasikTemplate/assets/js/ajax.js"></script>*@
+<!-- lazyload plugin -->
+
+<script src="~/Content/BasikTemplate/assets/js/lazyload.config.js"></script>
+<script src="~/Content/BasikTemplate/assets/js/lazyload.js"></script>
+<script src="~/Content/BasikTemplate/assets/js/plugin.js"></script>
+<!-- scrollreveal -->
+<script src="~/Content/BasikTemplate/libs/scrollreveal/dist/scrollreveal.min.js"></script>
+<!-- feathericon -->
+<script src="~/Content/BasikTemplate/libs/feather-icons/dist/feather.min.js"></script>
+<script src="~/Content/BasikTemplate/assets/js/plugins/feathericon.js"></script>
+<!-- theme -->
+<script src="~/Content/BasikTemplate/assets/js/theme.js"></script>
+<script src="~/Content/BasikTemplate/assets/js/utils.js"></script>
+
+<!--SESSION UPDATE-->
+<script src="~/Content/BasikTemplate/assets/js/SessionUpdater.js"></script>
+
+<!--MAPS-->
+<script src="~/Content/BasikTemplate/libs/jqvmap/dist/jquery.vmap.js"></script>
+<script src="~/Content/BasikTemplate/libs/jqvmap/dist/maps/jquery.vmap.usa.js"></script>

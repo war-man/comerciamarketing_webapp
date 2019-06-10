@@ -2,114 +2,26 @@
 @{
     Layout = null;
 }
-
 <script>
-    (function ($) {
-        'use strict';
-        $(function () {
-            var style = getComputedStyle(document.body);
-            var today = new Date();
-            today.setHours(0, 0, 0, 0);
 
-            if ($('#calendar').length) {
-                $('#calendar').fullCalendar({
-                    header: {
-                        left: '',
-                        center: 'title',
-                        //right: 'month'
-                       // right: 'month,listWeek,listDay'
-                    },
-                    views: {
-                       // month: { buttonText: 'Month' }
-                        //listWeek: { buttonText: 'list week' },
-                        //listDay: { buttonText: 'list day' }
-                    },
 
-                    defaultDate: today,
-                    navLinks: false, // can click day/week names to navigate views
-                    editable: true,
-                    disableResizing: true,
-                    //showNonCurrentDates: false,
-                    eventLimit: false, // allow "more" link when too many events
-                    events: @Html.Raw(ViewBag.calroutes),
-                    eventDrop: function (event, delta, revertFunc) {
+    function getParticipant(event, size) {
+        var participant = '';
+        var size = size || 24;
 
-                        //alert("You change the date for the Route: " + event.title + ". The new date is: " + event.start.format());
+        //console.log(event.lstReps);
 
-                        if (!confirm("Are you sure about this change? All visits will change to the assigned date.")) {
-                            revertFunc();
-                        } else {
-                            //Hacemos el callback del procedimiento que cambiara todas las fechas
-                            
-                        var id_route = event.title.substr(0, event.title.indexOf(' '));
+        $.each(event.lstReps.split(','), function (index, value) {
+            participant += '<a title="' + value  + '" href="#" class="avatar w-' + size + '"><img src="../assets/img/a' + value + '.jpg"></a>';
+        });
+        return participant;
+    }
 
-                        //Guardamos en server
-                        $("#loading").show();
-                            $.ajax({
-                                url: '/Home/ChangeDates',
-                                type: 'POST',
-                                data: { 'route': id_route, 'nuevafecha': event.start.format() },
-                            cache: false,
-                            global: false,
-                            success: function (result) {
-                                $("#loading").hide();
-
-                                if (result.result == "success") {
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: 'Data saved.',
-                                        showHideTransition: 'slide',
-                                        icon: 'success',
-                                        loader: false,
-                                        loaderBg: '#004d00',
-                                        position: 'top-right'
-                                    })
-                                } else {
-                                    revertFunc();
-                                    $.toast({
-                                        heading: 'Warning',
-                                        text: result.result,
-                                        showHideTransition: 'slide',
-                                        icon: 'warning',
-                                        loaderBg: '#ff9900',
-                                        position: 'top-right'
-                                    })
-                                   
-                                }
-
-                            },
-                            error: function (request) {
-                                $("#loading").hide();
-                                revertFunc();
-
-                            }
-                        });
-                        }
-
-                    },
-                    eventAfterRender: function (event, element, view) {
-                        element.css("background", "#fff");
-                        element.css("border-color", "#000 !important");
-                        element.css("color", "#000");
-                        element.css("border", "solid !important");
-                    },
-                    eventResize: function (event, delta, revertFunc) {
-                        revertFunc();
-                        //alert(event.title + "start: " + event.start.format() + " end is now " + event.end.format());
-
-                        //if (!confirm("is this okay?")) {
-                        //    revertFunc();
-                        //}
-
-                    },
-
-                    eventClick: function (calEvent, jsEvent, view) {
+    function getEvent(event) {
 
                         //Llamamos con AJAX
 
-                        var id_route = calEvent.title.substr(0, calEvent.title.indexOf(' '));
-
-                        //Guardamos en server
+        var id_route = event.title.substr(0, event.title.indexOf(' '));
                         $("#loading").show();
                         $.ajax({
                             url: '/Home/GetVisits',
@@ -124,53 +36,303 @@
                                 var theDiv = document.getElementById("appendDivVisits");
                                 theDiv.innerHTML = "";
 
-                                var porcentaje = result.porcentaje;
-                                var url = '<a class="text-black" href="@Url.Action("RoutesM_details", "Home", new { id = "IDDERUTA" })">' + calEvent.title + '</a>';
-                                url = url.replace('IDDERUTA', id_route);
-
-                                document.getElementById("nameofroute").innerHTML = url;
-                                document.getElementById("porcentajeroute").innerHTML = (Math.round(porcentaje * 100) / 100) + "%";
-                                $("#progressbarroute").css("width", (Math.round(porcentaje * 100) / 100) + "%");
+                                //var porcentaje = result.porcentaje;
+                                document.getElementById("nameofroute").innerHTML = event.title;
+                                //document.getElementById("porcentajeroute").innerHTML = (Math.round(porcentaje * 100) / 100) + "%";
+                                //$("#progressbarroute").css("width", (Math.round(porcentaje * 100) / 100) + "%");
 
                                 var contents = '';
                                 $.each($.parseJSON(result.result), function (i, visitas) {
                                     count++;
-                                    contents = '<div class="item-wrapper d-flex pb-4 border-bottom">';
+                                    //contents = '<div class="item-wrapper d-flex pb-4 border-bottom">';
 
+                                    contents = '<div class="list-item " data-id="' + visitas.id +'">';
+                                    //contents += '<div>';
+                                    //contents += '<label class="ui-check m-0 ">'
+                                    //contents += '<input type="checkbox" name="visita" id="' + visitas.id + '">'
+                                    //contents += '<i></i>';
+                                    //contents += '</label>';
+                                    //contents += '</div>';
+                                    contents += '<div>';
                                     if (visitas.visitstate == 1) { //Cancelado
-                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                        contents += '<span class="badge badge-circle text-danger"></span>';
                                     } else if (visitas.visitstate == 2) { // En progreso
-                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                        contents += '<span class="badge badge-circle text-success"></span>';
                                     } else if (visitas.visitstate == 3) { //Agendado
-                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                        contents += '<span class="badge badge-circle text-warning"></span>';
                                     } else { //Finalizado
-                                        contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span></div>';
+                                        contents += '<span class="badge badge-circle text-info"></span>';
 
                                     }
 
-                                    var url = '@Url.Action("Detailsa", "VisitsMs", new { id= "idvisit"})';
-                                  
+                                    var url = '@Url.Action("Visit_details", "Admin", new { id= "idvisit", ID_Customer=ViewBag.customerID, brand = ViewBag.branddef})';
                                     url = url.replace('idvisit', visitas.id);
 
-                                    contents += '<div class="text-wrapper"><h6 class="d-block mb-1"><a href="' + url + '" class="text-black">' + visitas.store + ' </a></h6><small class="text-gray d-block">' + visitas.address + '</small></div>';
                                     contents += '</div>';
+                                    contents += '<div class="flex">';
+                                    contents += '<a href="' + url + '" class="item-author text-color " style="font-size:13px;">' + visitas.store + '</a>';
+                                    contents += '<div class="item-except text-muted text-sm h-1x" style="font-size:12px;">';
+                                    contents += '' + visitas.address + '';
+                                    contents += '</div>';
+                                    contents += '</div>';
+                                    if (visitas.visitstate !=4) {
+                                        contents += '<div>';
+                                        contents += '<a href="#" data-toggle="modal" data-target="#deleteVisitModal" data-ID="'+ visitas.id +'" data-description="'+ visitas.store +'"><span style="font-size:8px;" class="badge badge-warning text-uppercase" >Delete</span ></a >';
+                                        contents += '</div>';
+                                    }
+
+                                    contents += '</div>';
+
+
+
+                                    @*//var url = '@Url.Action("Detailsa", "VisitsMs", new { id= "idvisit"})';*@
+
+
+                                    //contents += '<div class="text-wrapper"><h6 class="d-block mb-1"><a href="' + url + '" class="text-black">' + visitas.store + ' </a></h6><small class="text-gray d-block">' + visitas.address + '</small></div>';
+                                    //contents += '</div>';
 
                                     theDiv.innerHTML += contents;
                                 });
                                 contents = '';
-                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 "></span>&nbsp; Canceled</div>';
-                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 "></span>&nbsp; In progress</div>';
-                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 "></span>&nbsp; Scheduled</div>';
-                                contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 "></span>&nbsp; Finished</div>';
-                                contents += '<hr>';
-                   
+                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-danger rounded-circle p-1 mt-2 "></span>&nbsp; Canceled</div>';
+                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-success rounded-circle p-1 mt-2 "></span>&nbsp; In progress</div>';
+                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-warning rounded-circle p-1 mt-2 "></span>&nbsp; Scheduled</div>';
+                                //contents += '<div class="status-wrapper d-flex align-items-start pr-3"><span class="bg-primary rounded-circle p-1 mt-2 "></span>&nbsp; Finished</div>';
+                                //contents += '<hr>';
+
                                 theDiv.innerHTML += contents;
                                 var theDivcount = document.getElementById("countVisits");
                                 theDivcount.innerHTML = count;
 
                                 $('#idroutedel').data('IDr', id_route); //setter
-                                $('#idrouteedit').data('IDr', id_route); 
-                                $('#idrouteedit').data('RepeatM', result.sel); 
+                                $('#ID_route').val(id_route); //setter
+                                $('#idrouteedit').data('IDr', id_route);
+                                $('#idrouteedit').data('RepeatM', result.sel);
+
+                                //BRANDS TAGS
+                                var theDivbrands = document.getElementById("brandtags");
+                                theDivbrands.innerHTML = "";
+                                var contentsbrands = '<label>Brands</label><br>';
+                                $.each($.parseJSON(result.result2), function (i, brands) {
+                                    contentsbrands += '<span style="font-size:9px;" class="badge badge-light text-uppercase" >' + brands.brand +'</span >';
+                                });
+                                ///
+                                theDivbrands.innerHTML = contentsbrands;
+
+                                var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+
+                                    zoom: 5,
+
+                                    scrollwheel: true,
+
+                                    center: { lat: 35.2289067, lng: -86.885620 }
+
+
+                                });
+
+                                var test = $.parseJSON(result.result);
+                                datatest = test.filter(function (visit) {
+                                    return (visit.visitstate == 4 || visit.visitstate == 2);
+                                });
+
+                                $("#distanceroute").html(0.00 + ' km');
+                                $("#durationroute").html(0 + " h, " + 0 + " m, " + 0 + " s");
+                                if (datatest.length > 0) {
+                                    directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+
+                                    var directionsDisplay;
+                                    var directionsService = new google.maps.DirectionsService();
+                                    directionsDisplay.setMap(map);
+
+                                    directionsDisplay.addListener('directions_changed', function () {
+                                        computeTotalDistance(directionsDisplay.getDirections());
+                                    });
+
+                                    calcRoute();
+
+                                    function computeTotalDistance(result) {
+                                        var total = 0;
+                                        var totalDuration = 0;
+                                        var myroute = result.routes[0];
+                                        for (var i = 0; i < myroute.legs.length; i++) {
+                                            total += myroute.legs[i].distance.value;
+                                            totalDuration += myroute.legs[i].duration.value;
+                                        }
+                                        total = total / 1000;
+                                        //totalDuration = totalDuration / 60;
+
+                                        $("#distanceroute").html(total.toFixed(2) + ' km');
+
+                                        //var days = totalDuration / 86400
+                                        var hours = totalDuration / 3600;
+                                        var minutes = totalDuration / 60;
+
+                                        //console.log(minutes + ' m');
+
+                                        //DISTANCE AND TIME
+                                        var seconds = parseInt(totalDuration, 10);
+
+                                        var days = Math.floor(seconds / (3600 * 24));
+                                        seconds -= days * 3600 * 24;
+                                        var hrs = Math.floor(seconds / 3600);
+                                        seconds -= hrs * 3600;
+                                        var mnts = Math.floor(seconds / 60);
+                                        seconds -= mnts * 60;
+                                        //console.log(days + " days, " + hrs + " h, " + mnts + " m, " + seconds + " s");
+                                        //$("#durationroute").html(days + " days, " + hrs + " h, " + mnts + " m, " + seconds + " s");
+                                        $("#durationroute").html(hrs + " h, " + mnts + " m, " + seconds + " s");
+                                    }
+
+                                    var data2;
+                                    function calcRoute() {
+
+                                        var arrayss = $.parseJSON(result.result);
+                                        data2 = arrayss.filter(function (visit) {
+                                            return (visit.visitstate == 4 || visit.visitstate == 2);
+                                        });
+
+
+
+                                        //console.log(data2);
+                                        var wayp = [];
+
+                                        $.each(data2, function (i, item) {
+                                            var wp = {
+                                                'location': new google.maps.LatLng(item.lng, item.lat),
+                                                'stopover': true
+                                            };
+
+
+                                            wayp.push(wp);
+                                        });
+
+                                        var f = data2.length - 1;
+
+                                        start = new google.maps.LatLng(data2[0].lng, data2[0].lat);
+                                        end = new google.maps.LatLng(data2[f].lng, data2[f].lat);
+
+                                        var request = {
+                                            origin: start,
+                                            destination: end,
+                                            waypoints: wayp,
+                                            optimizeWaypoints: true,
+
+                                            travelMode: google.maps.DirectionsTravelMode.DRIVING
+                                        };
+                                        directionsService.route(request, function (response, status) {
+                                            if (status == google.maps.DirectionsStatus.OK) {
+                                                //directionsDisplay.setOptions({ preserveViewport: true });//Si quisiera que el zoom fuera manejado por el control map pero hay que cambiarle el center
+                                                directionsDisplay.setDirections(response);
+
+                                            } else {
+                                                alert("directions response " + status);
+                                            }
+                                        });
+                                    }
+
+                            //END ROUTE WAYPOINTS
+                                }
+
+
+                                        
+
+                                //
+                            var markers = [];
+                            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+                                $.each($.parseJSON(result.result), function (i, item) {
+                                var marker;
+                                     var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+                                    var marker;
+
+
+                                    var number = 1 + i; // or whatever you want to do here
+                                    //console.log(number);
+                                if (item.visitstate == 3) {
+                                        marker = new mapIcons.Marker({
+                                            position: new google.maps.LatLng(item.lng, item.lat),
+                                            map: map,
+                                            animation: google.maps.Animation.DROP,
+                                            title: item.store,
+                                            icon: { url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png" }
+                                        });
+                                    }
+                                if (item.visitstate == 2) {
+                                        marker = new mapIcons.Marker({
+                                            position: new google.maps.LatLng(item.lng, item.lat),
+                                            map: map,
+                                            animation: google.maps.Animation.DROP,
+                                            title: item.store,
+                                            icon: { url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png" }
+
+
+
+                                        });
+                                    }
+                                if (item.visitstate == 1) {
+                                        marker = new mapIcons.Marker({
+                                            position: new google.maps.LatLng(item.lng, item.lat),
+                                            map: map,
+                                            animation: google.maps.Animation.DROP,
+                                            title: item.store
+
+                                        });
+                                    }
+                                if (item.visitstate == 4) {
+                                        marker = new mapIcons.Marker({
+                                            position: new google.maps.LatLng(item.lng, item.lat),
+                                            map: map,
+                                            animation: google.maps.Animation.DROP,
+                                            title: item.store,
+                                            //icon: image
+                                            icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=' + number + '|1A6CD7|000000',
+                                        });
+                                    }
+
+
+                                function toggleBounce() {
+                                    if (marker.getAnimation() !== null) {
+                                        marker.setAnimation(null);
+                                    } else {
+                                        marker.setAnimation(4);
+                                    }
+                                }
+                                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    //infowindow.open(map, marker);
+                                    toggleBounce();
+                                    //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+                                });
+
+                                marker.addListener('dblclick', function () {
+                                    map.setZoom(18);
+                                    map.setCenter(marker.getPosition());
+
+                                    // We get the map's default panorama and set up some defaults.
+                                    // Note that we don't yet set it visible.
+                                    panorama = map.getStreetView();
+                                    panorama.setPosition(marker.getPosition());
+                                    panorama.setPov(({
+                                        heading: 265,
+                                        pitch: 0
+                                    }));
+                                });
+
+                                //Agregamos el marcador al array de marcadores
+                                markers.push(marker);
+
+
+                            })
+
+
+                            // Add a marker clusterer to manage the markers.
+
+                                var markerCluster = new MarkerClusterer(map, markers,
+
+                                    { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+
+
+
                             },
                             error: function (request) {
                                 $("#loading").hide();
@@ -179,10 +341,79 @@
                             }
                         });
                         $("#hiddenDiv").css("display", "block");
-                        // change the border color just for fun
-                        $(".fc-h-event").css("border-color", "#000 !important");
-                        $(".fc-h-event").css("background", "#fff");
-                        $(this).css("background", "#00ce68");
+                        //// change the border color just for fun
+                        //$(".fc-h-event").css("border-color", "#000 !important");
+                        //$(".fc-h-event").css("background", "#fff");
+                        //$(this).css("background", "#00ce68");
+        return e;
+    }
+    (function ($) {
+        'use strict';
+        $(function () {
+            var style = getComputedStyle(document.body);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if ($('#fullcalendar').length) {
+               $('#fullcalendar').fullCalendar({
+                    header: {
+                        left: 'title, prev, next',
+                        center: '',
+                        //right: 'month'
+                       // right: 'month,listWeek,listDay'
+                    },
+                    views: {
+                       // month: { buttonText: 'Month' }
+                        //listWeek: { buttonText: 'list week' },
+                        //listDay: { buttonText: 'list day' }
+                    },
+
+                    contentHeight: 'auto',
+                   defaultView: 'basicWeek',
+
+                    defaultDate: today,
+                    navLinks: true, // can click day/week names to navigate views
+                   editable: false,
+                    weekNumbers: true,
+                    disableResizing: true,
+                    //showNonCurrentDates: false,
+                    eventLimit: false, // allow "more" link when too many events
+                    events: @Html.Raw(ViewBag.calroutes),
+                    eventDrop: function (event, delta, revertFunc) {
+
+                        if (!confirm("Are you sure about this change? All visits will change to the assigned date.")) {
+                            revertFunc();
+                        } else {
+
+                        }
+
+                    },
+                    eventAfterRender: function (event, element, view) {
+                        //element.css("background", "#fff");
+                        //element.css("border-color", "#000 !important");
+                        //element.css("color", "#000");
+                        //element.css("border", "solid !important");
+                    },
+                    eventResize: function (event, delta, revertFunc) {
+                        revertFunc();
+
+                    },
+
+                    eventClick: function (calEvent, jsEvent, view) {
+                        $('#modal-right').modal('show');
+                        e = calEvent;
+                        getEvent(calEvent);
+
+                    },
+                    viewRender: function (view, element) {
+                    // style
+
+                    },
+                    eventRender: function (event, element) {
+                        // render
+                        //element.find('.fc-content').append('<div class="mt-1 text-muted">' + event.title + '</div>');
+                        element.find('.fc-content').append('</br><div style="margin-top:6px;" class="text-sm hidden-folded text-muted">Complete: ' + parseFloat(event.porcentaje).toFixed(2) + '%</div><div class="progress flex" style="height:4px;"><div class="progress-bar gd-success" style="width:' + event.porcentaje + '%"></div></div>');
+                        element.find('.fc-content').append('<div class="d-flex my-3 avatar-group">' + getParticipant(event, 24) + '</div>');
                     }
 
 
@@ -193,88 +424,6 @@
 
 
 
-</script>
-<script>
-    var button = document.getElementById('close_divmap'); // Assumes element with id='button'
 
-    button.onclick = function () {
-        var div = document.getElementById('mydivInfo');
-        div.style.display = 'none';
-
-    };
 
 </script>
-<script>
-    $(function () {
-        $('#click_filterCalendar').click(function () {
-
-
-            var st = new Date($('#reportrange').data('daterangepicker').startDate);
-            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
-
-        var url = '@Url.Action("RoutesM_calendar", "Home", new { fstartd = "START", fendd = "FINISH"})';
-
-
-            url = url.replace('START', st.toLocaleDateString());
-
-        var newurl = url;
-
-
-            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
-        newurl = newurl.replace(/&amp;/g, "&");
-        //alert(newurl);
-        window.location.href = newurl;
-
-
-
-
-        });
-    });
-</script>
-
-<script>
-    //Make the DIV element draggagle:
-    dragElement(document.getElementById("mydivInfo"));
-
-    function dragElement(elmnt) {
-        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-            /* if present, the header is where you move the DIV from:*/
-            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-        } else {
-            /* otherwise, move the DIV from anywhere inside the DIV:*/
-            elmnt.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // calculate the new cursor position:
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            // set the element's new position:
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-            /* stop moving when mouse button is released:*/
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-</script>
-
