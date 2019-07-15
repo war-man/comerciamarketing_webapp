@@ -11,8 +11,7 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class RoutesM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,20 +19,15 @@ namespace comerciamarketing_webapp.Models
         {
             this.VisitsM = new HashSet<VisitsM>();
         }
-
-
+    
         public int ID_route { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime date { get; set; }
         public string query1 { get; set; }
         public string query2 { get; set; }
         public string query3 { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime end_date { get; set; }
         public int ID_empresa { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitsM> VisitsM { get; set; }
     }

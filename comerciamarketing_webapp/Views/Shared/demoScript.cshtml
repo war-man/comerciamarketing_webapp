@@ -1,0 +1,106 @@
+﻿﻿
+@{
+    Layout = null;
+}
+
+    <script>
+
+
+
+    </script>
+
+    <script>
+        window.onload = function () {
+            
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var defdate = yyyy + '-' + mm + '-' + dd + "T00:00:00";
+            document.getElementById("time").defaultValue = defdate;
+
+            $("#demotimetitle").show();
+            $("#demotimediv").show();
+
+
+            (function ($) {
+                'use strict';
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);// Button that triggered the modal
+
+                    var IDAct = button.data("id");// Extract info from data-* attributes
+                    var DesAct = button.data("description");
+
+
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this);
+                    //modal.find('.modal-title').text('Edit data: ' + recipient)
+                    modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
+                    $("#descriptionD").text(DesAct);
+
+                })
+            })(jQuery);
+
+        }
+
+        function getCustomers() {
+            var Idrep = $("#ID_rep").val();
+
+            if (Idrep == "0" || Idrep == null) {
+
+            } else {
+
+                $.ajax
+                    ({
+                        url: '/VisitsMs/GetCustomer_reps',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            ID_usuario: Idrep
+                        }),
+                        success: function (result) {
+
+                            $("#ID_vendor").html("");
+                            $("#ID_vendor").append($('<option></option>').val(0).html("Select a vendor"))
+                            $.each($.parseJSON(result), function (i, brands) {
+                                if (brands.isselected) {//si esta seleccionado
+                                    $("#ID_vendor").append
+                                        ($('<option selected></option>').val(brands.ID).html(brands.Name));
+
+
+                                } else {
+                                    $("#ID_vendor").append
+                                        ($('<option></option>').val(brands.ID).html(brands.Name));
+                                }
+
+
+                            }
+
+                            )
+                            $("#loading").hide();
+
+                        },
+                        error: function () {
+                            alert("Whooaaa! Something went wrong..")
+                            $("#loading").hide();
+                        },
+                    });
+            }
+
+
+        }
+
+
+
+    </script>
+

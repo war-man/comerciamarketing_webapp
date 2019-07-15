@@ -17,15 +17,12 @@ namespace comerciamarketing_webapp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Forms()
         {
-            this.Demos = new HashSet<Demos>();
             this.Forms_details = new HashSet<Forms_details>();
         }
     
         public int ID_form { get; set; }
         public string fdescription { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Demos> Demos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Forms_details> Forms_details { get; set; }
     }

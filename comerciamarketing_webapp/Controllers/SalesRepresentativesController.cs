@@ -15,12 +15,62 @@ namespace comerciamarketing_webapp.Controllers
         // GET: SalesRepresentatives
         public ActionResult Dashboard(string id, string fstartd, string fendd, string stores, string brands, string spartners)
         {
+
             Usuarios activeuser = Session["activeUser"] as Usuarios;
             if (activeuser != null)
             {
-                //HEADER
-                //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Sales Representatives";
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { access = false });
+                //try
+                //{
+                //    if (Request.Cookies["correo"] != null)
+                //    {
+                //        HttpCookie aCookieCorreo = Request.Cookies["correo"];
+                //        HttpCookie aCookiePassword = Request.Cookies["pass"];
+
+                //        var correo = Server.HtmlEncode(aCookieCorreo.Value).ToString();
+                //        var pass = Server.HtmlEncode(aCookiePassword.Value).ToString();
+
+                //        using (var db = new dbComerciaEntities())
+                //        {
+                //            Session["activeUser"] = (from c in db.Usuarios where (c.correo == correo && c.contrasena == pass) select c).FirstOrDefault();
+                //        }
+
+                //        activeuser = Session["activeUser"] as Usuarios;
+
+                //        if (activeuser != null)
+                //        {
+                //            Session["IDusuario"] = activeuser.ID_usuario.ToString();
+                //            Session["tipousuario"] = activeuser.ID_tipomembresia.ToString();
+                //            Session["tiporol"] = activeuser.ID_rol.ToString();
+                //            Session["ultimaconexion"] = "";
+                //            GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(activeuser.ID_empresa);
+
+                //            return RedirectToAction("Iniciar_sesion", "Home", new { usuariocorreo = correo, password = pass, rememberme = true });
+                //        }
+                //        else
+                //        {
+                //            return RedirectToAction("Index", "Home", new { access = false });
+                //        }
+                //    }
+                //    else
+                //    {
+                //        return RedirectToAction("Index", "Home", new { access = false });
+
+                //    }
+
+
+                //}
+                //catch
+                //{
+                //    return RedirectToAction("Index", "Home", new { access = false });
+                //}
+            }
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
                 ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
@@ -52,6 +102,8 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.id_customer = id;
                 ViewBag.Company = activeuser.Empresas.nombre;
 
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
 
                 var rutas = new List<VisitsM>();
                 int[] visitasarray = new int[] { };
@@ -102,13 +154,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.lstVendors = lstVendors.OrderBy(c=>c.name);
                 ViewBag.lstVendorsCount = lstVendors.Count();
                 return View(rutas);
-            }
-            else
-            {
 
-                return RedirectToAction("Index", "Home", new { access = false });
-
-            }
         }
 
         public class representativesVisit
@@ -129,7 +175,14 @@ namespace comerciamarketing_webapp.Controllers
             Usuarios activeuser = Session["activeUser"] as Usuarios;
             if (activeuser != null)
             {
-                using (var db = new dbComerciaEntities())
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+
+            using (var db = new dbComerciaEntities())
                 {
                     VisitsM visitsM = db.VisitsM.Find(id);
 
@@ -145,7 +198,7 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.idvisita = id;
 
                     ViewBag.storename = visitsM.store;
-
+                    ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
                     var geoLong = "";
                     var geoLat = "";
 
@@ -184,6 +237,13 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_usuarioEnd == activeuser.ID_usuario) select a).OrderBy(a => a.ID_activitytype).ThenBy(a => a.description).ToList();
                     }
+
+                    foreach (var item in activities)
+                    {
+                        item.query1 = "";
+                        item.query1 = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == item.ID_activity) select detalle.fdescription).FirstOrDefault();
+                    }
+
                     //CHECK OUT POR USUARIO
                     if (activeuser.ID_rol == 9 && activeuser.ID_tipomembresia == 8)
                     {
@@ -226,7 +286,7 @@ namespace comerciamarketing_webapp.Controllers
                     }
 
                     List<FormsM> activeForms = new List<FormsM>();
-                    activeForms = (from at in db.FormsM where (at.ID_empresa == GlobalVariables.ID_EMPRESA_USUARIO) select at).ToList();
+                    activeForms = (from at in db.FormsM where (at.ID_empresa == activeuser.ID_empresa) select at).ToList();
                     ViewBag.activeForms = activeForms;
                     //FIN FORMULARIOS
 
@@ -234,13 +294,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 }
                 
-            }
-            else
-            {
 
-                return RedirectToAction("Index", "Home", new { access = false });
-
-            }
 
         }
         //CLASE PARA ALMACENAR OBJETOS

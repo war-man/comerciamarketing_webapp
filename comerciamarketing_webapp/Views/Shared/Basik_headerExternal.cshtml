@@ -1,0 +1,94 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!-- ############ Header START-->
+<div id="header" class="page-header ">
+    <div class="navbar navbar-expand-lg">
+        <!-- brand -->
+        <a href="javascript:void(0);" class="navbar-brand d-lg-none">
+            <img src="~/Content/images/LogoPNG-1.png" class="brand-logo" />
+        </a>
+        <!-- / brand -->
+
+
+        <ul class="nav navbar-menu order-1 order-lg-2">
+            <li class="nav-item d-none d-sm-block">
+                <a class="nav-link px-2">
+                    <i data-feather="info"></i>
+                </a>
+            </li>
+            <!-- Notification -->
+            @*<li class="nav-item dropdown">
+                <a class="nav-link px-2 mr-lg-2" data-toggle="dropdown">
+                    <i data-feather="bell"></i>
+                    <span class="badge badge-pill badge-up bg-primary">0</span>
+                </a>
+                <!-- dropdown -->
+                <div class="dropdown-menu dropdown-menu-right mt-3 w-md animate fadeIn p-0">
+                    <div class="scrollable hover" style="max-height: 250px">
+                        <div class="list list-row">
+                            @*<div class="list-item " data-id="10">
+                            <div>
+                                <a href="#">
+                                    <span class="w-32 avatar gd-danger">
+                                        <img src="~/Content/BasikTemplate/assets/img/a10.jpg" alt=".">
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="flex">
+                                <div class="item-feed h-2x">
+                                    Developers of
+                                    <a href='#'>iAI</a>, the AI assistant based on Free Software
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="d-flex px-3 py-2 b-t">
+                        <div class="flex">
+                            <span>0 Notifications</span>
+                        </div>
+                        <a href="#">
+                            See all
+                            <i class="fa fa-angle-right text-muted"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- / dropdown -->
+            </li>*@
+            <!-- User dropdown menu -->
+            <!-- Navarbar toggle btn -->
+            @*<li class="nav-item d-lg-none">
+                <a class="nav-link px-1" data-toggle="modal" data-target="#aside">
+                    <i data-feather="menu"></i>
+                </a>
+            </li>*@
+            <li class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                    <span class="w-40 avatar gd-warning">
+                        <span class="avatar-status on b-white avatar-right"></span>
+                    </span>
+                </a>
+
+
+                <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
+                    <a class="dropdown-item" href="#">
+                        <span>Demos</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.faq.html">Need help?(comming)</a>*@
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.setting.html">
+                    <span>Account Settings</span>
+                </a>*@
+                    <a class="dropdown-item" href="@Url.Action("Internal", "Home")">Sign out</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<!-- ############ Header END-->

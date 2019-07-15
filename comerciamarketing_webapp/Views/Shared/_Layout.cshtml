@@ -13,6 +13,11 @@
     @Html.Partial("~/Views/Shared/Basik_Style.cshtml")
     <link rel="shortcut icon" href="~/Content/newstyle2/images/favicon-16x16.png" />
 
+    @if (ViewBag.Title == "Comercia Marketing - Template previewadmin")
+    {
+        @Html.Partial("~/Views/Shared/preview_styleimgactivity.cshtml")
+    }
+
 
     <!-- style-->
     <style>
@@ -88,24 +93,7 @@
                 font-size: 12px;
             }
 
-            #loading {
-                width: 100%;
-                height: 100%;
-                top: 0px;
-                left: 0px;
-                position: fixed;
-                background-color: #fff;
-                z-index: 1099;
-                text-align: center;
-            }
 
-            #loading-content {
-                margin-top: 20%;
-            }
-
-            .hide2 {
-                display: none;
-            }
 
 
             /*DATATABLES*/
@@ -257,24 +245,7 @@
                 font-size: 13px;
             }
 
-            #loading {
-                width: 100%;
-                height: 100%;
-                top: 0px;
-                left: 0px;
-                position: fixed;
-                background-color: #fff;
-                z-index: 1099;
-                text-align: center;
-            }
 
-            #loading-content {
-                margin-top: 20%;
-            }
-
-            .hide2 {
-                display: none;
-            }
 
             /*DATATABLES*/
             table#dashboard_visits {
@@ -619,6 +590,43 @@
                 max-height: calc(100vh - 210px);
                 overflow-y: auto;
             }
+
+            .responsive {
+                width: 100%;
+                height: auto;
+            }
+
+
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                position: fixed;
+                background-color: transparent;
+                z-index: 1099;
+                text-align: center;
+            }
+
+            #loading-content {
+                margin-top: 20%;
+            }
+
+            .hide2 {
+                display: none;
+            }
+
+            .jqvmap-region {
+                cursor: default !important;
+            }
+        </style>
+    }
+    @if (ViewBag.title == "Comercia Marketing - Calendar Admin Routes" || ViewBag.title == "Comercia Marketing - Calendar Customers Routes")
+    {
+        <style>
+            #map-with-marker img {
+                cursor: default !important;
+            }
         </style>
     }
 
@@ -634,9 +642,10 @@
 
 </head>
 <body class="layout-row">
-    <div id="loading" class="hide">
+    <div id="loading" class="hide2">
+
         <div id="loading-content">
-            <img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />
+            @*<img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />*@
             <div id="wave">
                 Loading
                 <span class="dot"></span>
@@ -648,26 +657,74 @@
 
         </div>
     </div>
-    <!-- Menu & Header -->
-    @Html.Partial("~/Views/Shared/Basik_menu.cshtml")
-    <!-- Menu & Header-->
+    @if (ViewBag.Title != "Comercia Marketing - Activityea")
+    {
+        <!-- Menu & Header -->
+        @Html.Partial("~/Views/Shared/Basik_menu.cshtml")
+        <!-- Menu & Header-->
     <div id="main" class="layout-column flex">
         @Html.Partial("~/Views/Shared/Basik_header.cshtml")
+
 
         <!-- Horizontal Menu Ends -->
         @RenderBody()
 
-        <!--Footer-->
+        <!-- Load Facebook SDK for JavaScript
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function () {
+                FB.init({
+                    xfbml: true,
+                    version: 'v3.3'
+                });
+            };
+
+
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+
+        <!-- Your customer chat code
+        <div class="fb-customerchat"
+             attribution=setup_tool
+             page_id="749323255217283">
+        </div>
+        Footer-->
         @Html.Partial("~/Views/Shared/Basik_footer.cshtml")
 
         <!--Footer-->
     </div>
+    }
+    else
+    {
+        <!-- Menu & Header -->
+        @Html.Partial("~/Views/Shared/Basik_menuExternal.cshtml");
+        <!-- Menu & Header-->
+        <div id="main" class="layout-column flex">
+            @Html.Partial("~/Views/Shared/Basik_headerExternal.cshtml")
+
+
+            <!-- Horizontal Menu Ends -->
+            @RenderBody()
+
+            <!--Footer-->
+            @Html.Partial("~/Views/Shared/Basik_footer.cshtml")
+
+            <!--Footer-->
+        </div>
+    }
+
     @Html.Partial("~/Views/Shared/Basik_Scripts.cshtml")
 </body>
 </html>
 <script type="text/javascript">
     // initialize Session Updater on page
-    //SessionUpdater.Setup('@Url.Action("KeepSessionAlive","Home")');
+    //SessionUpdater.Setup('@Url.Action("KeepSessionAlive", "Home")');
 </script>
 
 @if (ViewBag.Title != "Comercia Marketing - FormsM")
@@ -707,18 +764,18 @@
         });
     </script>
     <script>
-        var start = moment();
-        var end = moment();
+                var start = moment();
+                var end = moment();
 
-        $(function () {
-            $('input[name="dailyStatsM"]').daterangepicker({
-                startDate: start,
-                endDate: end,
-                autoApply: true,
-                minDate: moment().startOf('month'),
-                maxDate: moment().endOf('month')
-            });
-        });
+                $(function () {
+                    $('input[name="dailyStatsM"]').daterangepicker({
+                        startDate: start,
+                        endDate: end,
+                        autoApply: true,
+                        minDate: moment().startOf('month'),
+                        maxDate: moment().endOf('month')
+                    });
+                });
     </script>
 }
 
@@ -777,28 +834,30 @@
 @if (ViewBag.Title == "Comercia Marketing - RoutesM details")
 {
     <script>
-        window.onload = function () {
+                window.onload = function () {
 
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+                        
+                            var IDvisit = button.data("id");// Extract info from data-* attributes
+                            var Desvisit = button.data("description");
+        
+                        
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
+                            $("#descriptionD").text(Desvisit);
 
-                    var IDvisit = button.data("id");// Extract info from data-* attributes
-                    var Desvisit = button.data("description");
+                        })
+                    })(jQuery);
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
-                    $("#descriptionD").text(Desvisit);
-
-                })
-            })(jQuery);
-
-        }
+                    
+                }
 
     </script>
     @*<script>
@@ -862,400 +921,75 @@
                }
            });
         </script>*@
-    <script>
-        var autoDriveSteps = new Array();
-        var speedFactor = 10; // 10x faster animated drive
+    @*<script>
+                var autoDriveSteps = new Array();
+                var speedFactor = 10; // 10x faster animated drive
 
-        function setAnimatedRoute(origin, destination, map) {
-            // init routing services
-            var directionsService = new google.maps.DirectionsService;
+                function setAnimatedRoute(origin, destination, map) {
+                    // init routing services
+                    var directionsService = new google.maps.DirectionsService;
 
-            var directionsRenderer = new google.maps.DirectionsRenderer({
-                setMap: map
-            });
+                    var directionsRenderer = new google.maps.DirectionsRenderer({
+                        setMap: map
+                    });
 
-            //calculate route
-            directionsService.route({
-                origin: origin,
-                destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING
-            },
-                function (response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        // display the route
-                        directionsRenderer.setDirections(response);
+                    //calculate route
+                    directionsService.route({
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    },
+                        function (response, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                // display the route
+                                directionsRenderer.setDirections(response);
 
-                        // calculate positions for the animation steps
-                        // the result is an array of LatLng, stored in autoDriveSteps
-                        autoDriveSteps = new Array();
-                        var remainingSeconds = 0;
-                        var leg = response.routes[0].legs[0]; // supporting single route, single legs currently
-                        leg.steps.forEach(function (step) {
-                            var stepSeconds = step.duration.value;
-                            var nextStopSeconds = speedFactor - remainingSeconds;
-                            while (nextStopSeconds <= stepSeconds) {
-                                var nextStopLatLng = getPointBetween(step.start_location, step.end_location, nextStopSeconds / stepSeconds);
-                                autoDriveSteps.push(nextStopLatLng);
-                                nextStopSeconds += speedFactor;
+                                // calculate positions for the animation steps
+                                // the result is an array of LatLng, stored in autoDriveSteps
+                                autoDriveSteps = new Array();
+                                var remainingSeconds = 0;
+                                var leg = response.routes[0].legs[0]; // supporting single route, single legs currently
+                                leg.steps.forEach(function (step) {
+                                    var stepSeconds = step.duration.value;
+                                    var nextStopSeconds = speedFactor - remainingSeconds;
+                                    while (nextStopSeconds <= stepSeconds) {
+                                        var nextStopLatLng = getPointBetween(step.start_location, step.end_location, nextStopSeconds / stepSeconds);
+                                        autoDriveSteps.push(nextStopLatLng);
+                                        nextStopSeconds += speedFactor;
+                                    }
+                                    remainingSeconds = stepSeconds + speedFactor - nextStopSeconds;
+                                });
+                                if (remainingSeconds > 0) {
+                                    autoDriveSteps.push(leg.end_location);
+                                }
+                            } else {
+                                window.alert('Directions request failed due to ' + status);
                             }
-                            remainingSeconds = stepSeconds + speedFactor - nextStopSeconds;
                         });
-                        if (remainingSeconds > 0) {
-                            autoDriveSteps.push(leg.end_location);
+                }
+
+                // helper method to calculate a point between A and B at some ratio
+                function getPointBetween(a, b, ratio) {
+                    return new google.maps.LatLng(a.lat() + (b.lat() - a.lat()) * ratio, a.lng() + (b.lng() - a.lng()) * ratio);
+                }
+
+                // start the route simulation
+                function startRouteAnimation(marker) {
+                    var autoDriveTimer = setInterval(function () {
+                        // stop the timer if the route is finished
+                        if (autoDriveSteps.length === 0) {
+                            clearInterval(autoDriveTimer);
+                        } else {
+                            // move marker to the next position (always the first in the array)
+                            marker.setPosition(autoDriveSteps[0]);
+                            // remove the processed position
+                            autoDriveSteps.shift();
                         }
-                    } else {
-                        window.alert('Directions request failed due to ' + status);
-                    }
-                });
-        }
-
-        // helper method to calculate a point between A and B at some ratio
-        function getPointBetween(a, b, ratio) {
-            return new google.maps.LatLng(a.lat() + (b.lat() - a.lat()) * ratio, a.lng() + (b.lng() - a.lng()) * ratio);
-        }
-
-        // start the route simulation
-        function startRouteAnimation(marker) {
-            var autoDriveTimer = setInterval(function () {
-                // stop the timer if the route is finished
-                if (autoDriveSteps.length === 0) {
-                    clearInterval(autoDriveTimer);
-                } else {
-                    // move marker to the next position (always the first in the array)
-                    marker.setPosition(autoDriveSteps[0]);
-                    // remove the processed position
-                    autoDriveSteps.shift();
+                    },
+                        1000);
                 }
-            },
-                1000);
-        }
 
-    </script>
-    <script>
-    'use strict';
-    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
-    $(document).ready(function () {
-        Initialize();
-
-    });
-
-
-    function Initialize() {
-
-    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
-        zoom: 6,
-        scrollwheel: true,
-        center: { lat: 35.2289067, lng: -86.885620 }
-
-    });
-        directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-
-        var directionsDisplay;
-        var directionsService = new google.maps.DirectionsService();
-        directionsDisplay.setMap(map);
-
-        calcRoute();
-
-
-
-        var data2;
-                function calcRoute() {
-
-
-            data2 = @Html.Raw(ViewBag.routes_animated);
-            var wayp = [];
-
-            $.each(data2, function (i, item) {
-                var wp = {
-                    'location': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    'stopover': true
-                };
-
-
-                wayp.push(wp);
-            });
-
-            var f = data2.length -1;
-
-            start = new google.maps.LatLng(data2[0].GeoLong, data2[0].GeoLat);
-            end = new google.maps.LatLng(data2[f].GeoLong, data2[f].GeoLat);
-
-            var request = {
-                origin: start,
-                destination: end,
-                waypoints: wayp,
-                optimizeWaypoints: true,
-                travelMode: google.maps.DirectionsTravelMode.DRIVING
-            };
-            directionsService.route(request, function (response, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                     //directionsDisplay.setOptions({ preserveViewport: true });//Si quisiera que el zoom fuera manejado por el control map pero hay que cambiarle el center
-                    directionsDisplay.setDirections(response);
-
-                } else {
-                    alert("directions response " + status);
-                }
-            });
-        }
-        //EJEMPLO DE ICONS
-        //if (item.demo_state == 3) {
-        //    marker = new mapIcons.Marker({
-        //        position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-        //        map: map,
-        //        animation: google.maps.Animation.DROP,
-        //        title: item.PlaceName,
-
-        //        icon: {
-        //            path: mapIcons.shapes.MAP_PIN,
-        //            fillColor: '#ff9900',
-        //            fillOpacity: 1,
-        //            strokeColor: '',
-        //            strokeWeight: 0
-        //        },
-        //        map_icon_label: '<span class="map-icon map-icon-store"></span>'
-
-        //    });
-        //}
-
-
-    var data = @Html.Raw(ViewBag.routes_map);
-    var markers = [];
-    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-        $.each(data, function (i, item) {
-            var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
-            var marker;
-
-            if (item.demo_state == 3) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-                });
-            }
-            if (item.demo_state == 2) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-
-                });
-            }
-            if (item.demo_state == 1) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-
-                });
-            }
-            if (item.demo_state == 4) {
-                marker = new mapIcons.Marker({
-                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: item.PlaceName
-                    //icon: image,
-                    //label: '1'
-                });
-            }
-
-
-
-
-        // put in some information about each json object - in this case, the opening hours.
-
-        //colocamos la url de la demo
-        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
-
-        //var infowindow = new google.maps.InfoWindow({
-        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
-        //});
-
-        //url = url.replace('DEMOID', item.id);
-            var estructuradiv = '<div  id="RouteDetails_'+ item.id +'">';
-            estructuradiv += '<div class="card">';
-            estructuradiv += '<div class="card-body">';
-            estructuradiv += '<div class="row mt-4">';
-            estructuradiv += '<div class="col-md-12">';
-            estructuradiv += ' <h5>Visit details</h5>';
-            estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
-            estructuradiv += '<li class="nav-item">';
-            estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id +'" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
-            estructuradiv += '</li>';
-            estructuradiv += '<li class="nav-item">';
-            estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
-            estructuradiv += '</li>';
-            estructuradiv += '</ul>';
-            estructuradiv += '<div class="tab-content tab-content-basic">';
-            estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
-            estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
-            estructuradiv += '<p class="mb-0" > STORE: ' + item.store  +'</p>';
-            estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address +'</p>';
-            estructuradiv += '<p > DATE: ' +item.date +'</p>';
-            estructuradiv += '<p > REPRESENTATIVES: ' + item.representatives +'</p>';
-            estructuradiv += '</div>';
-            estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
-            estructuradiv += '<p > COMMENT: '+ item.comment +'</p>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-            estructuradiv += '</div>';
-
-
-        var infowindow = new google.maps.InfoWindow({
-            content: estructuradiv
-        });
-
-            function toggleBounce() {
-                if (marker.getAnimation() !== null) {
-                    marker.setAnimation(null);
-                } else {
-                    marker.setAnimation(4);
-                }
-            }
-        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.open(map, marker);
-            toggleBounce();
-            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
-        });
-
-        marker.addListener('dblclick', function () {
-            map.setZoom(18);
-            map.setCenter(marker.getPosition());
-
-            // We get the map's default panorama and set up some defaults.
-            // Note that we don't yet set it visible.
-            panorama = map.getStreetView();
-            panorama.setPosition(marker.getPosition());
-            panorama.setPov(({
-                heading: 265,
-                pitch: 0
-            }));
-        });
-
-        //Agregamos el marcador al array de marcadores
-        markers.push(marker);
-
-
-    })
-
-
-    //// Add a marker clusterer to manage the markers.
-    //var markerCluster = new MarkerClusterer(map, markers,
-    //    { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-       // PARA ANIMACION
-        //var startf = new google.maps.LatLng(data2[0].GeoLong, data2[0].GeoLat);
-        //var ef = data2.length - 1;
-        //var nmarker = new mapIcons.Marker({
-        //    position: startf,
-        //    Map: map,
-        //    icon: {
-        //        path: mapIcons.shapes.MAP_PIN,
-        //        fillColor: '#8862e0',
-        //        fillOpacity: 1,
-        //        strokeColor: '',
-        //        strokeWeight: 0
-        //    },
-        //    map_icon_label: '<span class="map-icon map-icon-taxi-stand"></span>'
-
-        //});
-
-        //var endf = new google.maps.LatLng(data2[ef].GeoLong, data2[ef].GeoLat);
-        //setAnimatedRoute(startf,endf, map);
-        //startRouteAnimation(nmarker);
-}
-
-
-
-    //function myFunction(ID, store, customer, date, representatives, comment ) {
-    //    var id_mapitem = document.getElementById("map_id");
-    //    var store_mapitem = document.getElementById("map_storename");
-    //    var store_customeritem = document.getElementById("map_customername");
-    //    var store_dateitem = document.getElementById("map_date");
-    //    var store_representativeitem = document.getElementById("map_representatives");
-    //    var store_commentitem = document.getElementById("map_comment");
-
-
-    //    id_mapitem.innerText = "";
-    //    store_mapitem.innerText = "";
-    //    store_customeritem.innerText = "";
-    //    store_dateitem.innerText = "";
-    //    store_representativeitem.innerText = "";
-    //    store_commentitem.innerText = "";
-
-    //    id_mapitem.innerText = "ID: " + ID;
-    //    store_mapitem.innerText = "STORE: " + store;
-    //    //store_customeritem.innerText = "Customer: " + customer;
-    //    store_dateitem.innerText = "DATE: " + date;
-    //    store_representativeitem.innerText = "REPRESENTATIVES: " + representatives;
-    //    store_commentitem.innerText = comment;
-
-    //    ////LLAMADA AJAX PARA TIMELINE
-    //    //$.ajax
-    //    //    ({
-    //    //        url: '/Home/GetTimeline',
-    //    //        type: 'POST',
-    //    //        datatype: 'application/json',
-    //    //        contentType: 'application/json',
-    //    //        data: JSON.stringify({
-    //    //            idvisit: ID
-    //    //        }),
-    //    //        success: function (result) {
-
-    //    //            $("#timelinemap").html("");
-    //    //            $.each($.parseJSON(result), function (i, brands) {
-
-    //    //                    $("#timelinemap").append
-    //    //                        ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
-
-
-
-
-    //    //            }
-
-    //    //            )
-    //    //            getProductsline();
-
-    //    //        },
-    //    //        error: function () {
-    //    //            alert("Whooaaa! Something went wrong..")
-    //    //        },
-    //    //    });
-    //    ////FIN LLAMADA AJAX
-
-    //    var x = document.getElementById("RouteDetails");
-    //    if (x.style.display === "none") {
-    //        x.style.display = "block";
-    //    } else {
-    //        //x.style.display = "none";
-    //    }
-    //}
-
-    </script>
-    <!--PARA CERRAR DIV MAP-->
-    <script>
-        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
-
-        button.onclick = function () {
-            var div = document.getElementById('RouteDetails');
-            div.style.display = 'none';
-
-        };
-
-    </script>
-
-
-
-
+    </script>*@
 
 
 }
@@ -1264,201 +998,201 @@
 
 
 
-<script>
-    $(document).ready(function () {
-        $('#storesM').on('change', function () {
-            var conceptName = $('#storesM').find(":selected").text();
+@*<script>
+        $(document).ready(function () {
+            $('#storesM').on('change', function () {
+                var conceptName = $('#storesM').find(":selected").text();
 
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
+                var optionSelected = $("option:selected", this);
+                var valueSelected = this.value;
 
-            alert(valueSelected);
+                alert(valueSelected);
+            });
         });
-    });
 
-</script>
+</script>*@
 
 <!--SELECT MULTI ROUTES-->
 @if (ViewBag.Title == "Comercia Marketing - Representatives")
 {
     <script>
-        window.onload = function () {
-            table = $('#datatable2').DataTable();
-            
-            (function ($) {
-                'use strict';
-                $('#editModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-                    var nombreE = button.data('nombre');// Extract info from data-* attributes
-                    var apellidoE = button.data('apellido');
-                    var correoE = button.data('correo');
-                    var passE = button.data('pass');
-                    var telE = button.data('tel');
-                    var estadoE = button.data('estado');
-                    var customers = button.data('customers');
-                    var ID = button.data('usuario');
+                window.onload = function () {
+                    table = $('#datatable2').DataTable();
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
-                    modal.find('.modal-body input[name="nombreE"]').val(nombreE);
-                    modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
-                    modal.find('.modal-body input[name="passwordE"]').val(passE);
-                    modal.find('.modal-body input[name="correoE"]').val(correoE);
-                    modal.find('.modal-body input[name="telefonoE"]').val(telE);
-                    modal.find('.modal-body input[name="listaCustomersE"]').val(telE);
-                    $('#CustomersmultiE').val([customers]);
-                    $('#CustomersmultiE').trigger('change');
-                })
-            })(jQuery);
+                    (function ($) {
+                        'use strict';
+                        $('#editModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+                            var nombreE = button.data('nombre');// Extract info from data-* attributes
+                            var apellidoE = button.data('apellido');
+                            var correoE = button.data('correo');
+                            var passE = button.data('pass');
+                            var telE = button.data('tel');
+                            var estadoE = button.data('estado');
+                            var customers = button.data('customers');
+                            var ID = button.data('usuario');
 
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-                    var nombreE = button.data('nombre');// Extract info from data-* attributes
-                    var apellidoE = button.data('apellido');
-                    var ID = button.data('usuario');
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
+                            modal.find('.modal-body input[name="nombreE"]').val(nombreE);
+                            modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
+                            modal.find('.modal-body input[name="passwordE"]').val(passE);
+                            modal.find('.modal-body input[name="correoE"]').val(correoE);
+                            modal.find('.modal-body input[name="telefonoE"]').val(telE);
+                            modal.find('.modal-body input[name="listaCustomersE"]').val(telE);
+                            $('#CustomersmultiE').val([customers]);
+                            $('#CustomersmultiE').trigger('change');
+                        })
+                    })(jQuery);
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+                            var nombreE = button.data('nombre');// Extract info from data-* attributes
+                            var apellidoE = button.data('apellido');
+                            var ID = button.data('usuario');
 
-                    modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
-                })
-            })(jQuery);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
 
-
+                            modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
+                        })
+                    })(jQuery);
 
 
-        }
 
-        function myFunction() {
-            var x = document.getElementById("passwordE");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
+
+                }
+
+                function myFunction() {
+                    var x = document.getElementById("passwordE");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
     </script>
 
 }@if (ViewBag.Title == "Comercia Marketing - Users")
 {
     <script>
-        window.onload = function () {
+                window.onload = function () {
 
-            table = $('#datatable3').DataTable();
+                    table = $('#datatable3').DataTable();
 
-            (function ($) {
-                'use strict';
-                $('#editModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-                    var nombreE = button.data('nombre');// Extract info from data-* attributes
-                    var apellidoE = button.data('apellido');
-                    var correoE = button.data('correo');
-                    var telE = button.data('tel');
-                    var passE = button.data('pass');
-                    var estadoE = button.data('estado');
-                    var customers = button.data('customers');
-                    var ID = button.data('usuario');
+                    (function ($) {
+                        'use strict';
+                        $('#editModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+                            var nombreE = button.data('nombre');// Extract info from data-* attributes
+                            var apellidoE = button.data('apellido');
+                            var correoE = button.data('correo');
+                            var telE = button.data('tel');
+                            var passE = button.data('pass');
+                            var estadoE = button.data('estado');
+                            var customers = button.data('customers');
+                            var ID = button.data('usuario');
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
-                    modal.find('.modal-body input[name="nombreE"]').val(nombreE);
-                    modal.find('.modal-body input[name="passwordE"]').val(passE);
-                    modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
-                    modal.find('.modal-body input[name="correoE"]').val(correoE);
-                    modal.find('.modal-body input[name="telefonoE"]').val(telE);
-
- 
-                })
-            })(jQuery);
-
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-                    var nombreE = button.data('nombre');// Extract info from data-* attributes
-                    var apellidoE = button.data('apellido');
-                    var ID = button.data('usuario');
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
-
-                    modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
-                })
-            })(jQuery);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="IDrepEdit"]').val(ID);
+                            modal.find('.modal-body input[name="nombreE"]').val(nombreE);
+                            modal.find('.modal-body input[name="passwordE"]').val(passE);
+                            modal.find('.modal-body input[name="apellidoE"]').val(apellidoE);
+                            modal.find('.modal-body input[name="correoE"]').val(correoE);
+                            modal.find('.modal-body input[name="telefonoE"]').val(telE);
 
 
+                        })
+                    })(jQuery);
+
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+                            var nombreE = button.data('nombre');// Extract info from data-* attributes
+                            var apellidoE = button.data('apellido');
+                            var ID = button.data('usuario');
+
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body label[id="repDelete"]').text(nombreE + " " + apellidoE);
+
+                            modal.find('.modal-body input[name="IDrepDelete"]').val(ID);
+                        })
+                    })(jQuery);
 
 
-        }
-        function myFunction() {
-            var x = document.getElementById("passwordE");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
+
+
+                }
+                function myFunction() {
+                    var x = document.getElementById("passwordE");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
     </script>
 }
 @if (ViewBag.Title == "Comercia Marketing - RoutesM" || ViewBag.Title == "Comercia Marketing - RoutesM_calendar")
 {
     <script>
-        window.onload = function () {
+                window.onload = function () {
 
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDroute = button.data("IDr");// Extract info from data-* attributes
-                    //var Desroute = button.data("description");
-
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
-                    //$("#descriptionD").text(Desroute);
-
-                })
-            })(jQuery);
-
-            (function ($) {
-                'use strict';
-                $('#editModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-
-                    var IDroute = button.data("IDr");// Extract info from data-* attributes
-                    var Desroute = button.data("RepeatM");
+                            var IDroute = button.data("IDr");// Extract info from data-* attributes
+                            //var Desroute = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
-                    $('.modal-body select[name="custedt"]').val(Desroute);
-                    //$("#descriptionD").text(Desroute);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
+                            //$("#descriptionD").text(Desroute);
 
-                })
-            })(jQuery);
+                        })
+                    })(jQuery);
 
-        }
+                    (function ($) {
+                        'use strict';
+                        $('#editModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+
+                            var IDroute = button.data("IDr");// Extract info from data-* attributes
+                            var Desroute = button.data("RepeatM");
+
+
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
+                            $('.modal-body select[name="custedt"]').val(Desroute);
+                            //$("#descriptionD").text(Desroute);
+
+                        })
+                    })(jQuery);
+
+                }
 
     </script>
     <script>
@@ -1695,33 +1429,33 @@
   });
     </script>
 }
-<script>
-    $(function () {
-        $('#click_filter').click(function () {
+@*<script>
+        $(function () {
+            $('#click_filter').click(function () {
 
 
-            var st = new Date($('#reportrange').data('daterangepicker').startDate);
-            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+                var st = new Date($('#reportrange').data('daterangepicker').startDate);
+                var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        var url = '@Url.Action("RoutesM", "Home", new { fstartd = "START", fendd = "FINISH"})';
-
-
-            url = url.replace('START', st.toLocaleDateString());
-
-        var newurl = url;
+            var url = 'Url.Action("RoutesM", "Home", new { fstartd = "START", fendd = "FINISH" })';
 
 
-            newurl = newurl.replace('FINISH', ed.toLocaleDateString());
-        newurl = newurl.replace(/&amp;/g, "&");
-        //alert(newurl);
-        window.location.href = newurl;
+                url = url.replace('START', st.toLocaleDateString());
+
+            var newurl = url;
+
+
+                newurl = newurl.replace('FINISH', ed.toLocaleDateString());
+            newurl = newurl.replace(/&amp;/g, "&");
+            //alert(newurl);
+            window.location.href = newurl;
 
 
 
 
+            });
         });
-    });
-</script>
+    </script>*@
 
 
 <!--NOTIFICACIONES GLOBALES-->
@@ -1784,73 +1518,73 @@
 }
 
 <script>
-    $(document).ready(function () {
-        (function ($) {
-            showSuccessToast = function () {
-                'use strict';
-                resetToastPosition();
-                $.toast({
-                    heading: 'Success',
-                    text: 'Saved.',
-                    loader: false,
-                    showHideTransition: 'slide',
-                    icon: 'success',
-                    loaderBg: '#004d00',
-                    position: 'top-right'
-                })
-            };
-            showInfoToast = function () {
-                'use strict';
-                resetToastPosition();
-                $.toast({
-                    heading: 'Info',
-                    text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
-                    showHideTransition: 'slide',
-                    icon: 'info',
-                    loaderBg: '#46c35f',
-                    position: 'top-right'
-                })
-            };
-            showWarningToast = function () {
-                'use strict';
-                resetToastPosition();
-                $.toast({
-                    heading: 'Warning',
-                    text: 'Wrong email or password.',
-                    showHideTransition: 'slide',
-                    icon: 'warning',
-                    loaderBg: '#ff9900',
-                    position: 'top-right'
-                })
-            };
-            showDangerToast = function () {
-                'use strict';
-                resetToastPosition();
-                $.toast({
-                    heading: 'Danger',
-                    text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
-                    showHideTransition: 'slide',
-                    icon: 'error',
-                    loaderBg: '#f2a654',
-                    position: 'top-right'
-                })
-            };
-            showWarning = function () {
-                'use strict';
-                resetToastPosition();
-                $.toast({
-                    heading: 'Warning',
-                    text: 'Whooaaa! Something went wrong...',
-                    showHideTransition: 'slide',
-                    icon: 'warning',
-                    loaderBg: '#ff9900',
-                    position: 'top-right'
-                })
-            };
+        $(document).ready(function () {
+            (function ($) {
+                showSuccessToast = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Saved.',
+                        loader: false,
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        loaderBg: '#004d00',
+                        position: 'top-right'
+                    })
+                };
+                showInfoToast = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Info',
+                        text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                        showHideTransition: 'slide',
+                        icon: 'info',
+                        loaderBg: '#46c35f',
+                        position: 'top-right'
+                    })
+                };
+                showWarningToast = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Wrong email or password.',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    })
+                };
+                showDangerToast = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Danger',
+                        text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+                        showHideTransition: 'slide',
+                        icon: 'error',
+                        loaderBg: '#f2a654',
+                        position: 'top-right'
+                    })
+                };
+                showWarning = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Whooaaa! Something went wrong...',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    })
+                };
 
 
-        })(jQuery);
-    });
+            })(jQuery);
+        });
 </script>
 
 <!--FIN NOTIFICACIONES GLOBALES-->
@@ -1859,6 +1593,11 @@
 {
 
     @Html.Partial("~/Views/Shared/ActivityScripts.cshtml")
+}
+@if (ViewBag.Title == "Comercia Marketing - Template previewadminS")
+{
+
+    @Html.Partial("~/Views/Shared/ActivityadminScriptsPreview.cshtml")
 }
 @if (ViewBag.Title == "Comercia Marketing - Template previewadmin")
 {
@@ -1890,6 +1629,12 @@
     @Html.Partial("~/Views/Shared/visitScript.cshtml")
 }
 
+@if (ViewBag.Title == "Comercia Marketing - Admin Demos")
+{
+    @Html.Partial("~/Views/Shared/demoScript.cshtml")
+}
+
+
 @if (ViewBag.Title == "Comercia Marketing - Store_statsadmin")
 {
     @Html.Partial("~/Views/Shared/visitScriptadmin.cshtml")
@@ -1905,115 +1650,120 @@
 }
 
 <!--New includes-->
-
+@if (ViewBag.Title == "Comercia Marketing - Calendar Customers Routes")
+{
+    @Html.Partial("~/Views/Shared/Routes_calendarCustomersScript.cshtml")
+}
 @if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
 {
     @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
+
+
     <script>
-        $(document).ready(function () {
-            setupEvents();
+                $(document).ready(function () {
+                    setupEvents();
 
-            function setupEvents() {
-                $(document).on('click', '#dayview', function () {
-                    $('#fullcalendar').fullCalendar('changeView', 'basicDay');
-                    sr.sync();
+                    function setupEvents() {
+                        $(document).on('click', '#dayview', function () {
+                            $('#fullcalendar').fullCalendar('changeView', 'basicDay');
+                            sr.sync();
+                        });
+
+                        $(document).on('click', '#weekview', function () {
+                            $('#fullcalendar').fullCalendar('changeView', 'basicWeek');
+                            sr.sync();
+                        });
+
+                        $(document).on('click', '#monthview', function () {
+                            $('#fullcalendar').fullCalendar('changeView', 'month');
+                            sr.sync();
+                        });
+
+                        $(document).on('click', '#todayview', function () {
+                            $('#fullcalendar').fullCalendar('today');
+                            sr.sync();
+                        });
+
+                        //$(document).on('click', '#btn-new', function () {
+                        //    $('#newEvent').modal('show');
+                        //    e = { title: '', description: '', start: moment(), end: moment().add(4, 'h'), participant: '1', type: '', className: 'block b-t b-t-2x b-primary' };
+                        //    getEvent(e);
+                        //});
+
+                        //$(document).on('click', '#btn-save', function () {
+                        //    var e = getEvent();
+                        //    if (e.id) {
+                        //        calendar.fullCalendar('updateEvent', e);
+                        //    } else {
+                        //        e.id = moment().toDate();
+                        //        calendar.fullCalendar('renderEvent', e);
+                        //    }
+                        //    $('#newEvent').modal('hide');
+                        //});
+                    }
                 });
-
-                $(document).on('click', '#weekview', function () {
-                    $('#fullcalendar').fullCalendar('changeView', 'basicWeek');
-                    sr.sync();
-                });
-
-                $(document).on('click', '#monthview', function () {
-                    $('#fullcalendar').fullCalendar('changeView', 'month');
-                    sr.sync();
-                });
-
-                $(document).on('click', '#todayview', function () {
-                    $('#fullcalendar').fullCalendar('today');
-                    sr.sync();
-                });
-
-                //$(document).on('click', '#btn-new', function () {
-                //    $('#newEvent').modal('show');
-                //    e = { title: '', description: '', start: moment(), end: moment().add(4, 'h'), participant: '1', type: '', className: 'block b-t b-t-2x b-primary' };
-                //    getEvent(e);
-                //});
-
-                //$(document).on('click', '#btn-save', function () {
-                //    var e = getEvent();
-                //    if (e.id) {
-                //        calendar.fullCalendar('updateEvent', e);
-                //    } else {
-                //        e.id = moment().toDate();
-                //        calendar.fullCalendar('renderEvent', e);
-                //    }
-                //    $('#newEvent').modal('hide');
-                //});
-            }
-        });
     </script>
     <script>
-        window.onload = function () {
-            (function ($) {
-                'use strict';
-                $('#deleteVisitModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                window.onload = function () {
+                    (function ($) {
+                        'use strict';
+                        $('#deleteVisitModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDvisit = button.data("id");// Extract info from data-* attributes
-                    var Desvisit = button.data("description");
-
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
-                    $("#descriptionD").text(Desvisit);
-
-                })
-            })(jQuery);
-
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-
-                    var IDroute = button.data("IDr");// Extract info from data-* attributes
-                    //var Desroute = button.data("description");
+                            var IDvisit = button.data("id");// Extract info from data-* attributes
+                            var Desvisit = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
-                    //$("#descriptionD").text(Desroute);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_visitD"]').val(IDvisit);
+                            $("#descriptionD").text(Desvisit);
 
-                })
-            })(jQuery);
+                        })
+                    })(jQuery);
 
-            (function ($) {
-                'use strict';
-                $('#editModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDroute = button.data("IDr");// Extract info from data-* attributes
-                    var Desroute = button.data("RepeatM");
+                            var IDroute = button.data("IDr");// Extract info from data-* attributes
+                            //var Desroute = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
-                    $('.modal-body select[name="custedt"]').val(Desroute);
-                    //$("#descriptionD").text(Desroute);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_routeD"]').val(IDroute);
+                            //$("#descriptionD").text(Desroute);
 
-                })
-            })(jQuery);
+                        })
+                    })(jQuery);
 
-        }
+                    (function ($) {
+                        'use strict';
+                        $('#editModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+
+                            var IDroute = button.data("IDr");// Extract info from data-* attributes
+                            var Desroute = button.data("RepeatM");
+
+
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_routeDedt"]').val(IDroute);
+                            $('.modal-body select[name="custedt"]').val(Desroute);
+                            //$("#descriptionD").text(Desroute);
+
+                        })
+                    })(jQuery);
+
+                }
 
     </script>
     <script>
@@ -2199,72 +1949,72 @@
 }
 
 <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $(".owl-example").owlCarousel({
-            // Most important owl features
-            items: 5,
-            itemsCustom: false,
-            itemsDesktop: [1199, 4],
-            itemsDesktopSmall: [980, 3],
-            itemsTablet: [768, 2],
-            itemsTabletSmall: false,
-            itemsMobile: [479, 1],
-            singleItem: false,
-            itemsScaleUp: false,
+            $(".owl-example").owlCarousel({
+                // Most important owl features
+                items: 5,
+                itemsCustom: false,
+                itemsDesktop: [1199, 4],
+                itemsDesktopSmall: [980, 3],
+                itemsTablet: [768, 2],
+                itemsTabletSmall: false,
+                itemsMobile: [479, 1],
+                singleItem: false,
+                itemsScaleUp: false,
 
-            //Basic Speeds
-            slideSpeed: 200,
-            paginationSpeed: 800,
-            rewindSpeed: 1000,
+                //Basic Speeds
+                slideSpeed: 200,
+                paginationSpeed: 800,
+                rewindSpeed: 1000,
 
-            //Autoplay
-            autoPlay: false,
-            stopOnHover: false,
+                //Autoplay
+                autoPlay: false,
+                stopOnHover: false,
 
-            // Navigation
-            navigation: false,
-            navigationText: ["prev", "next"],
-            rewindNav: true,
-            scrollPerPage: false,
+                // Navigation
+                navigation: false,
+                navigationText: ["prev", "next"],
+                rewindNav: true,
+                scrollPerPage: false,
 
-            //Pagination
-            pagination: true,
-            paginationNumbers: false,
+                //Pagination
+                pagination: true,
+                paginationNumbers: false,
 
-            // Responsive
-            responsive: true,
-            responsiveRefreshRate: 200,
-            responsiveBaseWidth: window,
+                // Responsive
+                responsive: true,
+                responsiveRefreshRate: 200,
+                responsiveBaseWidth: window,
 
-            // CSS Styles
-            baseClass: "owl-carousel",
-            theme: "owl-theme",
+                // CSS Styles
+                baseClass: "owl-carousel",
+                theme: "owl-theme",
 
-            //Lazy load
-            lazyLoad: false,
-            lazyFollow: true,
-            lazyEffect: "fade",
+                //Lazy load
+                lazyLoad: false,
+                lazyFollow: true,
+                lazyEffect: "fade",
 
-            //Auto height
-            autoHeight: false,
+                //Auto height
+                autoHeight: false,
 
-            //JSON
-            jsonPath: false,
-            jsonSuccess: false,
+                //JSON
+                jsonPath: false,
+                jsonSuccess: false,
 
-            //Mouse Events
-            dragBeforeAnimFinish: true,
-            mouseDrag: true,
-            touchDrag: true
+                //Mouse Events
+                dragBeforeAnimFinish: true,
+                mouseDrag: true,
+                touchDrag: true
 
 
+
+
+            });
 
 
         });
-
-
-    });
 </script>
 @if (ViewBag.Title != "Comercia Marketing - Template preview")
 {
@@ -2272,235 +2022,235 @@
 
 
 
-        $(document).ajaxStart(function () {
-            $("#loading").show();
-        }).ajaxStop(function () {
-            $("#loading").hide();
-        }).ajaxError(function () {
-            $("#loading").hide();
-        });
+                $(document).ajaxStart(function () {
+                    $("#loading").show();
+                }).ajaxStop(function () {
+                    $("#loading").hide();
+                }).ajaxError(function () {
+                    $("#loading").hide();
+                });
     </script>
 }
 <script>
-    $(function () {
-        $('#clickdiv').click(function () {
-            screenfull.request($('#contain22')[0]);
+        $(function () {
+            $('#clickdiv').click(function () {
+                screenfull.request($('#contain22')[0]);
+            });
         });
-    });
 </script>
 
 @if (ViewBag.Title == "Comercia Marketing - Store_stats")
 {
     <script>
-        document.getElementById("time").defaultValue = "2018-01-01T00:00:00";
+                document.getElementById("time").defaultValue = "2018-01-01T00:00:00";
 
-        function BuildEditorHeader(array) {
+                function BuildEditorHeader(array) {
 
-            array.forEach(function (element, root) {
-                var $th;
-                var $tr = "<tr id='headerR'></tr>";
-                $("#resultsRetail thead").append($tr);
-                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                if (element.id_resource == "24") {
+                    array.forEach(function (element, root) {
+                        var $th;
+                        var $tr = "<tr id='headerR'></tr>";
+                        $("#resultsRetail thead").append($tr);
+                        // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                        if (element.id_resource == "24") {
 
-                    $th = "<th>" + element.fdescription + "</th>";
-                }
+                            $th = "<th>" + element.fdescription + "</th>";
+                        }
 
-                $('#headerR').append($th);
-            });
-        };
-
-        function BuildEditorRows(array) {
-
-            array.forEach(function (element) {
-                var $tr = "<tr></tr>";
-                var $td;
-                // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
-                if (element.id_resource == "3") { //Products
-
-                    $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
-                    $("#resultsRetail tbody").append($tr);
-                    $("#resultsRetail tr:last").append($td);
-
-                    if (element.children != null) {
-                        BuildEditorRows(element.children);
-                    }
-                }
-
-                if (element.id_resource == "16") { //Multiple_choice
-
-                    $td = "<td data-label='" + element.fdescription + "'>";
-
-                    if (element.fvalue != 0) {
-
-                        $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
-                    } else {
-                        $td += "&nbsp;</td>";
-                    }
-
-
-                    $('#resultsRetail tr:last').append($td);
-                }
-                if (element.id_resource == "18") { //Input_number
-
-                    $td = "<td data-label='" + element.fdescription + "'>";
-
-                    $td += "<label>" + element.fvalue + "</label>";
-                    $td += "&nbsp;</td>";
-
-                    $('#resultsRetail tr:last').append($td);
-                }
-                if (element.id_resource == "21") { //Currency
-
-                    $td = "<td data-label='" + element.fdescription + "'>";
-
-                    $td += "$ <label>" + element.fvalueDecimal + "</label>";
-                    $td += "&nbsp;</td>";
-
-                    $('#resultsRetail tr:last').append($td);
-                }
-                if (element.id_resource == "6") { ///Input_text
-
-                    $td = "<td data-label='" + element.fdescription + "'>";
-
-                    $td += "<label>" + element.fsource + "</label>";
-                    $td += "&nbsp;</td>";
-
-                    $('#resultsRetail tr:last').append($td);
-                }
-            });
-        };
-
-        (function ($) {
-            'use strict';
-            $('#infoRetailModal').on('show.bs.modal', function (event) {
-
-                var button = $(event.relatedTarget);// Button that triggered the modal
-
-                var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
-                var DesAct = $(event.relatedTarget).data("name");
-
-
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                var modal = $(this);
-                //modal.find('.modal-title').text('Edit data: ' + recipient)
-
-                $.ajax
-                    ({
-                        url: '/Home/Getformdata',
-                        type: 'POST',
-                        datatype: 'application/json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            id_activity: IDform
-                        }),
-                        success: function (result) {
-
-
-                            $("#resultsRetail").find("tr").remove();
-                            $("#descriptionUDM").text(DesAct);
-
-                            BuildEditorHeader(result);
-                            BuildEditorRows(result);
-
-                        },
-                        error: function () {
-                            alert("Whooaaa! Something went wrong..")
-                        },
+                        $('#headerR').append($th);
                     });
+                };
+
+                function BuildEditorRows(array) {
+
+                    array.forEach(function (element) {
+                        var $tr = "<tr></tr>";
+                        var $td;
+                        // <!--PARA SUBTITULOS EN ESTE CASO SERA EL HEADER
+                        if (element.id_resource == "3") { //Products
+
+                            $td = "<td scope='col' style='text-align:left'><strong>" + element.fdescription + "</strong></td>";
+                            $("#resultsRetail tbody").append($tr);
+                            $("#resultsRetail tr:last").append($td);
+
+                            if (element.children != null) {
+                                BuildEditorRows(element.children);
+                            }
+                        }
+
+                        if (element.id_resource == "16") { //Multiple_choice
+
+                            $td = "<td data-label='" + element.fdescription + "'>";
+
+                            if (element.fvalue != 0) {
+
+                                $td += "<i class='mdi mdi-check icon-sm text-success'></i></td>";
+                            } else {
+                                $td += "&nbsp;</td>";
+                            }
+
+
+                            $('#resultsRetail tr:last').append($td);
+                        }
+                        if (element.id_resource == "18") { //Input_number
+
+                            $td = "<td data-label='" + element.fdescription + "'>";
+
+                            $td += "<label>" + element.fvalue + "</label>";
+                            $td += "&nbsp;</td>";
+
+                            $('#resultsRetail tr:last').append($td);
+                        }
+                        if (element.id_resource == "21") { //Currency
+
+                            $td = "<td data-label='" + element.fdescription + "'>";
+
+                            $td += "$ <label>" + element.fvalueDecimal + "</label>";
+                            $td += "&nbsp;</td>";
+
+                            $('#resultsRetail tr:last').append($td);
+                        }
+                        if (element.id_resource == "6") { ///Input_text
+
+                            $td = "<td data-label='" + element.fdescription + "'>";
+
+                            $td += "<label>" + element.fsource + "</label>";
+                            $td += "&nbsp;</td>";
+
+                            $('#resultsRetail tr:last').append($td);
+                        }
+                    });
+                };
+
+                (function ($) {
+                    'use strict';
+                    $('#infoRetailModal').on('show.bs.modal', function (event) {
+
+                        var button = $(event.relatedTarget);// Button that triggered the modal
+
+                        var IDform = $(event.relatedTarget).data("idform");// Extract info from data-* attributes
+                        var DesAct = $(event.relatedTarget).data("name");
+
+
+                        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                        var modal = $(this);
+                        //modal.find('.modal-title').text('Edit data: ' + recipient)
+
+                        $.ajax
+                            ({
+                                url: '/Home/Getformdata',
+                                type: 'POST',
+                                datatype: 'application/json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    id_activity: IDform
+                                }),
+                                success: function (result) {
+
+
+                                    $("#resultsRetail").find("tr").remove();
+                                    $("#descriptionUDM").text(DesAct);
+
+                                    BuildEditorHeader(result);
+                                    BuildEditorRows(result);
+
+                                },
+                                error: function () {
+                                    alert("Whooaaa! Something went wrong..")
+                                },
+                            });
 
 
 
 
-            })
-        })(jQuery);
+                    })
+                })(jQuery);
 
     </script>
 
     <script>
-        window.onload = function () {
+                window.onload = function () {
 
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                    (function ($) {
+                        'use strict';
+                        $('#deleteModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDAct = button.data("id");// Extract info from data-* attributes
-                    var DesAct = button.data("description");
-
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
-                    $("#descriptionD").text(DesAct);
-
-                })
-            })(jQuery);
-            (function ($) {
-                'use strict';
-                $('#cancelModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-
-                    var IDAct = button.data("id");// Extract info from data-* attributes
-                    var DesAct = button.data("description");
+                            var IDAct = button.data("id");// Extract info from data-* attributes
+                            var DesAct = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_activityCa"]').val(IDAct);
-                    $("#descriptionCa").text(DesAct);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
+                            $("#descriptionD").text(DesAct);
 
-                })
-            })(jQuery);
-            (function ($) {
-                'use strict';
-                $('#deleteRepModal').on('show.bs.modal', function (event) {
+                        })
+                    })(jQuery);
+                    (function ($) {
+                        'use strict';
+                        $('#cancelModal').on('show.bs.modal', function (event) {
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-
-                    var IDRep = button.data("id");// Extract info from data-* attributes
-                    var DesAct = button.data("description");
+                            var IDAct = button.data("id");// Extract info from data-* attributes
+                            var DesAct = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_repUD"]').val(IDRep);
-                    $("#descriptionUD").text(DesAct);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_activityCa"]').val(IDAct);
+                            $("#descriptionCa").text(DesAct);
 
-                })
-            })(jQuery);
-
-
-
-            (function ($) {
-                'use strict';
-                $('#copyModal').on('show.bs.modal', function (event) {
+                        })
+                    })(jQuery);
+                    (function ($) {
+                        'use strict';
+                        $('#deleteRepModal').on('show.bs.modal', function (event) {
 
 
-                    var button = $(event.relatedTarget);// Button that triggered the modal
+                            var button = $(event.relatedTarget);// Button that triggered the modal
 
-                    var IDRep = button.data("activity");// Extract info from data-* attributes
-                    var DesAct = button.data("description");
+                            var IDRep = button.data("id");// Extract info from data-* attributes
+                            var DesAct = button.data("description");
 
 
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_activityCopy"]').val(IDRep);
-                    $("#descriptionCopy").text(DesAct);
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_repUD"]').val(IDRep);
+                            $("#descriptionUD").text(DesAct);
 
-                })
-            })(jQuery);
-        }
+                        })
+                    })(jQuery);
+
+
+
+                    (function ($) {
+                        'use strict';
+                        $('#copyModal').on('show.bs.modal', function (event) {
+
+
+                            var button = $(event.relatedTarget);// Button that triggered the modal
+
+                            var IDRep = button.data("activity");// Extract info from data-* attributes
+                            var DesAct = button.data("description");
+
+
+                            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                            var modal = $(this);
+                            //modal.find('.modal-title').text('Edit data: ' + recipient)
+                            modal.find('.modal-body input[name="ID_activityCopy"]').val(IDRep);
+                            $("#descriptionCopy").text(DesAct);
+
+                        })
+                    })(jQuery);
+                }
 
     </script>
     if (ViewBag.estadovisita == 3)
@@ -2510,12 +2260,12 @@
         else
         {
             <script>
-                window.onload = function () {
-                    $("#activitiesdiv").addClass("disable")
-                        .click(function () {
-                            return false;
-                        });
-                }
+                                window.onload = function () {
+                                    $("#activitiesdiv").addClass("disable")
+                                        .click(function () {
+                                            return false;
+                                        });
+                                }
             </script>
         }
 
@@ -2734,13 +2484,13 @@
     </script>
     <!--PARA CERRAR DIV MAP-->
     <script>
-        var button = document.getElementById('close_divmap'); // Assumes element with id='button'
+                var button = document.getElementById('close_divmap'); // Assumes element with id='button'
 
-        button.onclick = function () {
-            var div = document.getElementById('RouteDetails');
-            div.style.display = 'none';
+                button.onclick = function () {
+                    var div = document.getElementById('RouteDetails');
+                    div.style.display = 'none';
 
-        };
+                };
 
     </script>
     <script>
@@ -2754,7 +2504,7 @@
             var idstore = document.getElementById('filterstore').value;
 
 
-        var url = '@Url.Action("CustomerM_stats", "Home", new { fstartd = "START", fendd = "FINISH", store="STORE"})';
+        var url = '@Url.Action("CustomerM_stats", "Home", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
 
 
             url = url.replace('START', st.toLocaleDateString());
@@ -2786,151 +2536,155 @@
 {
     <script>
 
-        function getbrands() {
-            var customerId = $("#customer_list").val();
+                function getbrands() {
+                    var customerId = $("#customer_list").val();
 
 
 
-            $.ajax
-                ({
-                    url: '/Home/Getbrands',
-                    type: 'POST',
-                    datatype: 'application/json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        customerID: customerId
+                    $.ajax
+                        ({
+                            url: '/Home/Getbrands',
+                            type: 'POST',
+                            datatype: 'application/json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                customerID: customerId
 
-                    }),
-                    success: function (result) {
+                            }),
+                            success: function (result) {
 
-                        $("#brands_list").html("");
-                        $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
-                        $.each($.parseJSON(result), function (i, brands) {
+                                $("#brands_list").html("");
+                                $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
+                                $.each($.parseJSON(result), function (i, brands) {
 
-                            $("#brands_list").append
-                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
-
-
-
-                        }
-
-                        )
-
-                    },
-                    error: function () {
-                        alert("Whooaaa! Something went wrong..")
-                    },
-                });
+                                    $("#brands_list").append
+                                        ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
 
 
 
-        }
+                                }
 
-        (function ($) {
-            'use strict';
-            $('#deleteModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);// Button that triggered the modal
+                                )
 
-                var ID = button.data("id");// Extract info from data-* attributes
-
-
-
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                var modal = $(this);
-                //modal.find('.modal-title').text('Edit data: ' + recipient)
-                modal.find('.modal-body input[name="idbrandD"]').val(ID);
+                            },
+                            error: function () {
+                                alert("Whooaaa! Something went wrong..")
+                            },
+                        });
 
 
-            })
-        })(jQuery);
+
+                }
+
+                (function ($) {
+                    'use strict';
+                    $('#deleteModal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget);// Button that triggered the modal
+
+                        var ID = button.data("id");// Extract info from data-* attributes
+
+
+
+                        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                        var modal = $(this);
+                        //modal.find('.modal-title').text('Edit data: ' + recipient)
+                        modal.find('.modal-body input[name="idbrandD"]').val(ID);
+
+
+                    })
+                })(jQuery);
     </script>
 }
 @if (ViewBag.Title == "Comercia Marketing - Store_statsadmin")
 {
     <script>
-        $("#demotimetitle").hide();
-        $("#demotimediv").hide();
+                $("#demotimetitle").hide();
+                $("#demotimediv").hide();
 
-        function getCustomers() {
-            var Idrep = $("#ID_rep").val();
+                $("#ID_form").select2();
+                $("#ID_rep").select2();
+                $("#ID_customer").select2();
 
-            if (Idrep == "0" || Idrep == null) {
+                function getCustomers() {
+                    var Idrep = $("#ID_rep").val();
 
-            } else {
+                    if (Idrep == "0" || Idrep == null) {
 
-                $.ajax
-                    ({
-                        url: '/VisitsMs/GetCustomer_reps',
-                        type: 'POST',
-                        datatype: 'application/json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            ID_usuario: Idrep
-                        }),
-                        success: function (result) {
+                    } else {
 
-                            $("#ID_customer").html("");
-                            $("#ID_customer").append($('<option></option>').val(0).html("Select a customer"))
-                            $.each($.parseJSON(result), function (i, brands) {
-                                if (brands.isselected) {//si esta seleccionado
-                                    $("#ID_customer").append
-                                        ($('<option selected></option>').val(brands.ID).html(brands.Name));
+                        $.ajax
+                            ({
+                                url: '/VisitsMs/GetCustomer_reps',
+                                type: 'POST',
+                                datatype: 'application/json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    ID_usuario: Idrep
+                                }),
+                                success: function (result) {
+
+                                    $("#ID_customer").html("");
+                                    $("#ID_customer").append($('<option></option>').val(0).html("Select a customer"))
+                                    $.each($.parseJSON(result), function (i, brands) {
+                                        if (brands.isselected) {//si esta seleccionado
+                                            $("#ID_customer").append
+                                                ($('<option selected></option>').val(brands.ID).html(brands.Name));
 
 
+                                        } else {
+                                            $("#ID_customer").append
+                                                ($('<option></option>').val(brands.ID).html(brands.Name));
+                                        }
+
+
+                                    }
+
+                                    )
+                                    $("#loading").hide();
+
+                                },
+                                error: function () {
+                                    alert("Whooaaa! Something went wrong..")
+                                    $("#loading").hide();
+                                },
+                            });
+                    }
+
+
+                }
+                function getActivity() {
+                    var Idact = $("#ID_form").val();
+
+                    $.ajax
+                        ({
+                            url: '/VisitsMs/GetType',
+                            type: 'POST',
+                            datatype: 'application/json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                ID_type: Idact
+                            }),
+                            success: function (result) {
+
+                                if (result != "4") {
+                                    $("#demotimetitle").hide();
+                                    $("#demotimediv").hide();
                                 } else {
-                                    $("#ID_customer").append
-                                        ($('<option></option>').val(brands.ID).html(brands.Name));
+                                    $("#demotimetitle").show();
+                                    $("#demotimediv").show();
                                 }
 
+                            },
+                            error: function () {
+                                //alert("Whooaaa! Something went wrong..")
 
-                            }
-
-                            )
-                            $("#loading").hide();
-
-                        },
-                        error: function () {
-                            alert("Whooaaa! Something went wrong..")
-                            $("#loading").hide();
-                        },
-                    });
-            }
-
-
-        }
-        function getActivity() {
-            var Idact = $("#ID_form").val();
-
-            $.ajax
-                ({
-                    url: '/VisitsMs/GetType',
-                    type: 'POST',
-                    datatype: 'application/json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        ID_type: Idact
-                    }),
-                    success: function (result) {
-
-                        if (result != "4") {
-                            $("#demotimetitle").hide();
-                            $("#demotimediv").hide();
-                        } else {
-                            $("#demotimetitle").show();
-                            $("#demotimediv").show();
-                        }
-
-                    },
-                    error: function () {
-                        //alert("Whooaaa! Something went wrong..")
-
-                    },
-                });
+                            },
+                        });
 
 
 
-        }
+                }
 
     </script>
 }
@@ -2944,7 +2698,7 @@
         $(document).ready(function () {
             table = $('#activitieslst').DataTable();
         });
-       
+
 
 
     $(function () {
@@ -2954,7 +2708,7 @@
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        var url = '@Url.Action("Representative_stats", "Home", new { id=ViewBag.ID_rep, fstartd = "START", fendd = "FINISH" })';
+        var url = '@Url.Action("Representative_stats", "Home", new { id = ViewBag.ID_rep, fstartd = "START", fendd = "FINISH" })';
 
 
             url = url.replace('START', st.toDateString());
@@ -2989,7 +2743,7 @@
             var idbra = $('#lstbrand').val();
             var idrep = $('#lstreps').val();
             var idsection = $('#lstsection').val();
-        var url = '@Url.Action("GalleryG", "VisitsMs", new { id="START", IDcustomer = ViewBag.customerID, brand = "DEFB", activityform="FINISH", showimg=true, rep="SELR", section ="PRSTI" })';
+        var url = '@Url.Action("GalleryG", "VisitsMs", new { id = "START", IDcustomer = ViewBag.customerID, brand = "DEFB", activityform = "FINISH", showimg = true, rep = "SELR", section = "PRSTI" })';
 
 
             url = url.replace('START', idvisita);
@@ -3027,7 +2781,7 @@
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        var url = '@Url.Action("CustomerM_stats", "Home", new { id=ViewBag.customerID, fstartd = "START", fendd = "FINISH", brand = "marca" })';
+        var url = '@Url.Action("CustomerM_stats", "Home", new { id = ViewBag.customerID, fstartd = "START", fendd = "FINISH", brand = "marca" })';
 
 
             url = url.replace('START', st.toDateString());
@@ -3061,7 +2815,7 @@
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        var url = '@Url.Action("StoreM_stats", "Home", new { id=ViewBag.ID_store, fstartd = "START", fendd = "FINISH" })';
+        var url = '@Url.Action("StoreM_stats", "Home", new { id = ViewBag.ID_store, fstartd = "START", fendd = "FINISH" })';
 
 
             url = url.replace('START', st.toLocaleDateString());
@@ -3087,27 +2841,27 @@
 
     <script>
 
-        $(document).ready(function () {
-            $('.parentdiv').click(function (e) {
-                var img = $(this).parent().parent().parent().find('img[data-enlargable]');
-                img.addClass('img-enlargable');
+                $(document).ready(function () {
+                    $('.parentdiv').click(function (e) {
+                        var img = $(this).parent().parent().parent().find('img[data-enlargable]');
+                        img.addClass('img-enlargable');
 
-                var src = img.attr('src');
+                        var src = img.attr('src');
 
-                $('<div>').css({
-                    background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
-                    backgroundSize: 'contain',
-                    width: '100%', height: '100%',
-                    position: 'fixed',
-                    zIndex: '10000',
-                    top: '0', left: '0',
-                    cursor: 'zoom-out'
-                }).click(function () {
-                    $(this).remove();
-                }).appendTo('body');
-            });
+                        $('<div>').css({
+                            background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
+                            backgroundSize: 'contain',
+                            width: '100%', height: '100%',
+                            position: 'fixed',
+                            zIndex: '10000',
+                            top: '0', left: '0',
+                            cursor: 'zoom-out'
+                        }).click(function () {
+                            $(this).remove();
+                        }).appendTo('body');
+                    });
 
-        });
+                });
     </script>
 }
 @if (ViewBag.Title == "Comercia Marketing - CustomersM stats")
@@ -3115,13 +2869,13 @@
     //update
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            $('.tree').treegrid({
-                expanderExpandedClass: 'mdi mdi-store',
-                expanderCollapsedClass: 'mdi mdi-store'
-            });
+                $(document).ready(function () {
+                    $('.tree').treegrid({
+                        expanderExpandedClass: 'mdi mdi-store',
+                        expanderCollapsedClass: 'mdi mdi-store'
+                    });
 
-        });
+                });
     </script>
 
     <script type="text/javascript">
@@ -3163,16 +2917,223 @@
         });*@
     </script>
 }
-@if (ViewBag.Title == "Comercia Marketing - Customers Map")
-{
 
+@if (ViewBag.Title == "Comercia Marketing - Admin Gallery")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+            var url = '@Url.Action("Gallery", "Admin", new { fstartd = "START", fendd = "FINISH", customersel = "CUSTSEL", brandsel = "BRANDSEL", idroute= ViewBag.routesel })';
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+            var newurl = url;
+            newurl = newurl.replace('FINISH', ed);
+            newurl = newurl.replace(/&amp;/g, "&");
+            window.location.href = newurl;
+        });
+        });
+
+        </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Admin Map")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+            var url = '@Url.Action("Map", "Admin", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+            var newurl = url;
+            newurl = newurl.replace('FINISH', ed);
+            newurl = newurl.replace(/&amp;/g, "&");
+            window.location.href = newurl;
+        });
+    });
+
+
+
+
+
+    </script>
     <script>
     'use strict';
     // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
     $(document).ready(function () {
         Initialize();
-    });
 
+
+
+
+    });
+        // Fn to allow an event to fire after all images are loaded
+        $.fn.imagesLoaded = function () {
+
+            // get all the images (excluding those with no src attribute)
+            var $imgs = this.find('img.lazy[src!=""]');
+            // if there's no images, just return an already resolved promise
+            if (!$imgs.length) { return $.Deferred().resolve().promise(); }
+
+            // for each image, add a deferred object to the array which resolves when the image is loaded (or if loading fails)
+            var dfds = [];
+            $imgs.each(function () {
+
+                var dfd = $.Deferred();
+                dfds.push(dfd);
+                var img = new Image();
+                img.onload = function () { dfd.resolve(); }
+                img.onerror = function () { dfd.resolve(); }
+                img.src = this.src;
+
+            });
+
+            // return a master promise object which will resolve when all the deferred objects have resolved
+            // IE - when all the images are loaded
+            return $.when.apply($, dfds);
+
+        }
+
+
+        function myfunopen2(id) {
+            $("#loading").show();
+            var idvisit = id.substring(8);
+            //alert(idvisit);
+
+            var idvisita = "";
+            idvisita = idvisit
+            var customerId = '@ViewBag.id_customer';
+                $.ajax
+                    ({
+                        url: '/Admin/GetImagesVisit',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            idvisit: idvisita,
+                            id_customer: customerId
+                        }),
+                        success: function (result) {
+
+                            $("#slider_" + idvisit).html("");
+                            $.each($.parseJSON(result), function (i, img) {
+                                $("#slider_" + idvisit).append('<li data-thumb="' + img.url + '"><img class="responsive lazy" src="' + img.url + '" /></li>');
+                                //$("#slider_" + idvisit).append('<li data-thumb="https://sachinchoolur.github.io/lightslider/img/thumb/cS-3.jpg"><img class="responsive" src="http://sachinchoolur.github.io/lightslider/img/cS-3.jpg" /></li>');
+                            });
+
+
+
+                            $("#slider_" + idvisit).imagesLoaded().then(function () {
+                                // do stuff after images are loaded here
+                                $(function () {
+                                    $('.lazy').Lazy();
+                                });
+
+                                setTimeout(
+                                    function () {
+                                        var slider = $("#slider_" + idvisit).lightSlider({
+                                            item: 1,
+                                            enableTouch: true,
+                                            gallery: true,
+                                            loop: true,
+                                            thumbItem: 7,
+                                        });
+                                        var idss = "#" + id;
+                                        $(idss).prop("onclick", null).off("click");
+                                        $(idss).prop('onclick', null);
+
+
+
+                                    }, 1000);
+
+                                $("#loading").hide();
+                            });
+
+
+
+
+
+
+
+
+
+                        },
+                        error: function () {
+                            $("#loading").hide();
+                            alert("Whooaaa! Something went wrong..")
+                        },
+                    });
+
+
+
+
+        }
     function Initialize() {
 
     var map = new google.maps.Map(document.getElementById('map-with-marker'), {
@@ -3259,7 +3220,7 @@
         //var infowindow = new google.maps.InfoWindow({
         //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
         //});
-        var estructuradiv = '<div  id="RouteDetails_' + item.id + '">';
+        var estructuradiv = '<div style="max-width: 280px;max-height: 240px;"  id="RouteDetails_' + item.id + '">';
         estructuradiv += '<div class="card">';
         estructuradiv += '<div class="card-body">';
         estructuradiv += '<div class="row mt-4">';
@@ -3270,7 +3231,7 @@
         estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
         estructuradiv += '</li>';
         estructuradiv += '<li class="nav-item">';
-        estructuradiv += '<a class="nav-link" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>';
+        estructuradiv += '<a class="nav-link" onclick="myfunopen2(this.id)" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Gallery</a>';
         estructuradiv += '</li>';
         estructuradiv += '</ul>';
         estructuradiv += '<div class="tab-content tab-content-basic">';
@@ -3280,9 +3241,14 @@
         estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
         estructuradiv += '<p > DATE: ' + item.date + '</p>';
         estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
+        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
         estructuradiv += '</div>';
         estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
-        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
+        estructuradiv += '<div class="demo">';
+        estructuradiv += '<ul class="lightSlider" id="slider_'+ item.id +'">';
+
+        estructuradiv += '</ul>';
+        estructuradiv += '</div>';
         estructuradiv += '</div>';
         estructuradiv += '</div>';
         estructuradiv += '</div>';
@@ -3306,6 +3272,7 @@
         google.maps.event.addListener(marker, 'click', function () {
             infowindow.open(map, marker);
             toggleBounce();
+
             //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
         });
 
@@ -3330,6 +3297,7 @@
     })
 
 
+
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers,
         { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
@@ -3345,8 +3313,606 @@
 
 }
 
+
+@if (ViewBag.Title == "Comercia Marketing - Customers Map")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Map_customers", "Customers", new {id= ViewBag.id_customer, fstartd = "START", fendd = "FINISH" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            //url = url.replace('STORE', idstore);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
+    <script>
+    'use strict';
+    // This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+
+
+
+
+    });
+        // Fn to allow an event to fire after all images are loaded
+        $.fn.imagesLoaded = function () {
+
+            // get all the images (excluding those with no src attribute)
+            var $imgs = this.find('img.lazy[src!=""]');
+            // if there's no images, just return an already resolved promise
+            if (!$imgs.length) { return $.Deferred().resolve().promise(); }
+
+            // for each image, add a deferred object to the array which resolves when the image is loaded (or if loading fails)
+            var dfds = [];
+            $imgs.each(function () {
+
+                var dfd = $.Deferred();
+                dfds.push(dfd);
+                var img = new Image();
+                img.onload = function () { dfd.resolve(); }
+                img.onerror = function () { dfd.resolve(); }
+                img.src = this.src;
+
+            });
+
+            // return a master promise object which will resolve when all the deferred objects have resolved
+            // IE - when all the images are loaded
+            return $.when.apply($, dfds);
+
+        }
+
+
+        function myfunopen2(id) {
+            $("#loading").show();
+            var idvisit = id.substring(8);
+            //alert(idvisit);
+
+            var idvisita = "";
+            idvisita = idvisit
+            var customerId = '@ViewBag.id_customer';
+                $.ajax
+                    ({
+                        url: '/Customers/GetImagesVisit',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            idvisit: idvisita,
+                            id_customer: customerId
+                        }),
+                        success: function (result) {
+
+                            $("#slider_" + idvisit).html("");
+                            $.each($.parseJSON(result), function (i, img) {
+                                $("#slider_" + idvisit).append('<li data-thumb="' + img.url + '"><img class="responsive lazy" src="' + img.url + '" /></li>');
+                                //$("#slider_" + idvisit).append('<li data-thumb="https://sachinchoolur.github.io/lightslider/img/thumb/cS-3.jpg"><img class="responsive" src="http://sachinchoolur.github.io/lightslider/img/cS-3.jpg" /></li>');
+                            });
+
+
+
+                            $("#slider_" + idvisit).imagesLoaded().then(function () {
+                                // do stuff after images are loaded here
+                                $(function () {
+                                    $('.lazy').Lazy();
+                                });
+
+                                setTimeout(
+                                    function () {
+                                        var slider = $("#slider_" + idvisit).lightSlider({
+                                            item: 1,
+                                            enableTouch: true,
+                                            gallery: true,
+                                            loop: true,
+                                            thumbItem: 7,
+                                        });
+                                        var idss = "#" + id;
+                                        $(idss).prop("onclick", null).off("click");
+                                        $(idss).prop('onclick', null);
+
+
+
+                                    }, 1000);
+
+                                $("#loading").hide();
+                            });
+
+
+
+
+
+
+
+
+
+                        },
+                        error: function () {
+                            $("#loading").hide();
+                            alert("Whooaaa! Something went wrong..")
+                        },
+                    });
+
+
+
+
+        }
+    function Initialize() {
+
+    var map = new google.maps.Map(document.getElementById('map-with-marker'), {
+        zoom: 4,
+        scrollwheel: true,
+        center: { lat: 35.2289067, lng: -86.885620 }
+
+    });
+
+    var data = @Html.Raw(ViewBag.routes_map);
+    var markers = [];
+    // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+    $.each(data, function (i, item) {
+        var marker;
+             var image = '@Url.Content("~/Content/newstyle2/images/marker32x32.png")';
+            var marker;
+
+
+
+
+            if (item.demo_state == 3) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 2) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+
+                });
+            }
+            if (item.demo_state == 1) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+
+                });
+            }
+            if (item.demo_state == 4) {
+                marker = new mapIcons.Marker({
+                    position: new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.PlaceName
+                    //icon: image
+
+                });
+            }
+
+
+
+        // Make the marker-pin blue!
+        //if (item.demo_state == "3") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+        //}
+        //if (item.demo_state == "2") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        //}
+        //if (item.demo_state == "1") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+        //}
+        //if (item.demo_state == "4") {
+        //    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        //}
+
+        // put in some information about each json object - in this case, the opening hours.
+
+        //colocamos la url de la demo
+        //var url = '@Url.Action("PreviewSendDemoResume", "Demos", new { id = "DEMOID" })';
+
+
+        //url = url.replace('DEMOID', item.id);
+
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: "<div class='infoDiv'><h8>Place: " + item.store + ".</h8><br>" + "<div><h8>Customer: " + item.customer + ".</h8><br><h8>Visit date: " + item.date + ".</h8><br><h8>Representatives: " + item.representatives + ".</h8><br><h8>Comment: " + item.comment + ".</h8><br><a href='" + "#" + "' class='btn btn-primary' target='_blank'>Preview</a></div></div>"
+        //});
+        var estructuradiv = '<div style="max-width: 280px;max-height: 240px;"  id="RouteDetails_' + item.id + '">';
+        estructuradiv += '<div class="card">';
+        estructuradiv += '<div class="card-body">';
+        estructuradiv += '<div class="row mt-4">';
+        estructuradiv += '<div class="col-md-12">';
+        estructuradiv += ' <h5>Visit details</h5>';
+        estructuradiv += '<ul class="nav nav-tabs tab-simple-styled" role="tablist">';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link active" id="tab-3-1_' + item.id + '" data-toggle="tab" href="#home-3-1_' + item.id + '" role="tab" aria-controls="home-3-1_' + item.id + '" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '<li class="nav-item">';
+        estructuradiv += '<a class="nav-link" onclick="myfunopen2(this.id)" id="tab-3-2_' + item.id + '" data-toggle="tab" href="#profile-3-2_' + item.id + '" role="tab" aria-controls="profile-3-2_' + item.id + '" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Gallery</a>';
+        estructuradiv += '</li>';
+        estructuradiv += '</ul>';
+        estructuradiv += '<div class="tab-content tab-content-basic">';
+        estructuradiv += '<div class="tab-pane fade show active" id="home-3-1_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-1_' + item.id + '">';
+        estructuradiv += '<p class="mb-0" > ID: ' + item.id + '</p>';
+        estructuradiv += '<p class="mb-0" > STORE: ' + item.store + '</p>';
+        estructuradiv += '<p class="mb-0"> ADDRESS: ' + item.address + '</p>';
+        estructuradiv += '<p > DATE: ' + item.date + '</p>';
+        estructuradiv += '<p > ROUTE: ' + item.representatives + '</p>';
+        estructuradiv += '<p > COMMENT: ' + item.comment + '</p>';
+        estructuradiv += '</div>';
+        estructuradiv += '<div class="tab-pane fade" id="profile-3-2_' + item.id + '" role="tabpanel" aria-labelledby="tab-3-2_' + item.id + '">';
+        estructuradiv += '<div class="demo">';
+        estructuradiv += '<ul class="lightSlider" id="slider_'+ item.id +'">';
+
+        estructuradiv += '</ul>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+        estructuradiv += '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: estructuradiv
+        });
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(4);
+            }
+        }
+        // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+            toggleBounce();
+
+            //myFunction(item.id, item.store, item.customer, item.date, item.representatives, item.comment);
+        });
+
+        marker.addListener('dblclick', function () {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+
+            // We get the map's default panorama and set up some defaults.
+            // Note that we don't yet set it visible.
+            panorama = map.getStreetView();
+            panorama.setPosition(marker.getPosition());
+            panorama.setPov(({
+                heading: 265,
+                pitch: 0
+            }));
+        });
+
+        //Agregamos el marcador al array de marcadores
+        markers.push(marker);
+
+
+    })
+
+
+
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+
+
+
+
+}
+
+
+    </script>
+
+}
+@if (ViewBag.Title == "Comercia Marketing - Customers Dashboard")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Dashboard", "Customers", new { fstartd = "START", fendd = "FINISH" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            //url = url.replace('STORE', idstore);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
+    <script>
+
+
+        $(document).ready(function () {
+        // usa map
+            var mapa=$('#jqvmap-usa').vectorMap(
+                {
+                    map: 'usa_en',
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    borderWidth: 0.25,
+                    borderOpacity: 0.25,
+                    color: 'rgba(120,130,140, 0.1)',
+                    enableZoom: false,
+                    showTooltip: true,
+                    selectedColor: null,
+                    hoverColor: null,
+                    colors: {
+                      @Html.Raw(ViewBag.visitsbystaste)
+                    }
+
+                }
+            );
+            var d_b_b = {
+                labels: [@Html.Raw(ViewBag.brandschart)],
+                datasets: [
+                    {
+                        label: 'Activities',
+                        data: [@Html.Raw(ViewBag.brandschartCount)],
+                        fill: true,
+                        backgroundColor: Utils.color(theme.color.info, 0.9),
+                        borderColor: 'transparent',
+                    }
+                ]
+            };
+            var ctx = document.getElementById('chart-brands');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'),
+                    {
+                        type: 'bar',
+                        data: d_b_b,
+                        options: {
+                            scales: {
+                                xAxes: [
+                                    {
+                                        barPercentage: 0.5,
+                                        categoryPercentage: 0.5
+                                    }
+                                ],
+
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                            }
+                        }
+                    }
+                );
+            }
+
+
+        });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Admin Demos")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            //url = url.replace('STORE', idstore);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+        });
+    });
+    </script>
+}
+
 @if (ViewBag.Title == "Comercia Marketing - Admin Dashboard")
 {
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+
+
+
+        var url = '@Url.Action("Dashboard", "Admin", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
+    </script>
     <script>
         var table = $('#dashboard_visits').DataTable({
             dom: 'lfrtiBp',
@@ -3379,7 +3945,7 @@
             if (mm < 10) {
                 mm = '0' + mm;
             }
-            var today = mm + '/' + dd + '/' + yyyy;
+            var today = dd + '/' + mm + '/' + yyyy;
 
             console.log(today);
 
@@ -3403,10 +3969,18 @@
                     borderWidth: 0.25,
                     borderOpacity: 0.25,
                     color: 'rgba(120,130,140, 0.1)',
-                    enableZoom: true,
+                    enableZoom: false,
                     showTooltip: true,
                     selectedColor: null,
                     hoverColor: null,
+                    //onRegionClick: function (element, code, region) {
+                    //    var message = 'You clicked "'
+                    //        + region
+                    //        + '" which has the code: '
+                    //        + code.toUpperCase();
+
+                    //    alert(message);
+                    //},
                     colors: {
                       @Html.Raw(ViewBag.visitsbystaste)
                     }
@@ -3415,34 +3989,135 @@
                 );
 
 
+            @*var d_b_b = {
+                labels: [@Html.Raw(ViewBag.brandschart)],
+                datasets: [
+                    {
+                        label: 'Activities',
+                        data: [@Html.Raw(ViewBag.brandschartCount)],
+                        fill: true,
+                        backgroundColor: Utils.color(theme.color.info, 0.9),
+                        borderColor: 'transparent',
+                    }
+                ]
+            };
 
+
+
+            var ctx = document.getElementById('chart-brands');
+            if (ctx) {
+                var chart = new Chart(ctx.getContext('2d'),
+                    {
+                        type: 'bar',
+                        data: d_b_b,
+                        options: {
+                            scales: {
+                                xAxes: [
+                                    {
+                                        barPercentage: 0.5,
+                                        categoryPercentage: 0.5,
+                                        ticks: {
+                                            autoSkip: false
+                                        }
+                                    }
+                                ],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+
+                        }
+
+                    }
+                );
+            }
+
+
+            document.getElementById("chart-brands").onclick = function (evt) {
+                var activePoints = chart.getElementsAtEvent(evt);
+
+                if (activePoints.length > 0) {
+                    //get the internal index of slice in pie chart
+                    var clickedElementindex = activePoints[0]["_index"];
+
+                    //get specific label by index
+                    var label = chart.data.labels[clickedElementindex];
+                    console.log(label);
+                    //get value by index
+                    var value = chart.data.datasets[0].data[clickedElementindex];
+                    console.log(value);
+                    /* other stuff that requires slice's label and value */
+
+                }
+            }
+
+
+
+            //TYPES
+            var d_b_b2 = {
+                labels: [@Html.Raw(ViewBag.stringsTypes)],
+                datasets: [
+                    {
+                        label: 'Types',
+                        data: [@Html.Raw(ViewBag.typescount)],
+                        fill: true,
+                        backgroundColor: Utils.color(theme.color.info, 0.9),
+                        borderColor: 'transparent',
+                    }
+                ]
+            };
+
+
+
+            var ctx2 = document.getElementById('chart-types');
+            if (ctx2) {
+                var chart2 = new Chart(ctx2.getContext('2d'),
+                    {
+                        type: 'bar',
+                        data: d_b_b2,
+                        options: {
+                            scales: {
+                                xAxes: [
+                                    {
+                                        barPercentage: 0.5,
+                                        categoryPercentage: 0.5,
+                                        ticks: {
+                                            autoSkip: false
+                                        }
+                                    }
+                                ],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+
+                        }
+
+                    }
+                );
+            }*@
+            /////////
         });
+
     </script>
+
+
 }
 @if (ViewBag.Title == "Comercia Marketing - Sales Rep Dashboard")
 {
     <script>
-        var table = $('#dashboard_visits').DataTable({
-            dom: 'lfrtiBp',
-
-            "aLengthMenu": [
-                [5, 10, 15, -1],
-                [5, 10, 15, "All"]
-            ],
-            buttons: [
-                'excelHtml5',
-                'pdfHtml5'
-            ],
-            "iDisplayLength": 10,
-            "language": {
-                search: ""
-            }
-        });
+    $(function () {
+        $('#click_filter').click(function () {
 
 
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
-        $('input[type=radio][name=options]').change(function () {
-            var today = new Date();
+            var today = st;
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
 
@@ -3453,35 +4128,252 @@
             if (mm < 10) {
                 mm = '0' + mm;
             }
-            var today = mm + '/' + dd + '/' + yyyy;
+            st = mm + '/' + dd + '/' + yyyy;
 
-            console.log(today);
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
 
-            if (this.value == 'Today') {
-
-                //table.columns(4).search("").draw();
-                table.columns(3).search("" + today + "", true, false, true).draw();
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
             }
-            else if (this.value == 'Week') {
-                table.columns(3).search("").draw();
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
             }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Dashboard", "SalesRepresentatives", new { fstartd = "START", fendd = "FINISH" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            //url = url.replace('STORE', idstore);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
         });
+    });
+
+
+
+
+
+    </script>
+    <script>
+                var table = $('#dashboard_visits').DataTable({
+                    dom: 'lfrtiBp',
+
+                    "aLengthMenu": [
+                        [5, 10, 15, -1],
+                        [5, 10, 15, "All"]
+                    ],
+                    buttons: [
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ],
+                    "iDisplayLength": 10,
+                    "language": {
+                        search: ""
+                    }
+
+
+
+                });
+                $(document).ready(function () {
+                    $('#todaybtn').trigger("click");
+                });
+
+
+                $('input[type=radio][name=options]').change(function () {
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1; //January is 0!
+
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd;
+                    }
+                    if (mm < 10) {
+                        mm = '0' + mm;
+                    }
+                    var today = dd + '/' + mm + '/' + yyyy;
+
+                    console.log(today);
+
+                    if (this.value == 'Today') {
+
+                        //table.columns(4).search("").draw();
+                        table.columns(3).search("" + today + "", true, false, true).draw();
+                    }
+                    else if (this.value == 'Week') {
+                        table.columns(3).search("").draw();
+                    }
+                });
+    </script>
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+        var url = '@Url.Action("Dashboard", "SalesRepresentatives", new { fstartd = "START", fendd = "FINISH" })';
+        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
+
+            url = url.replace('START', st);
+            //url = url.replace('STORE', idstore);
+        var newurl = url;
+
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+        //alert(newurl);
+        window.location.href = newurl;
+
+
+
+
+        });
+    });
+
+
+
+
+
     </script>
 }
-@if (ViewBag.Title == "Comercia Marketing - Admin Reports details")
+@if (ViewBag.Title == "Comercia Marketing - Template previewadmin")
 {
     <script>
-        $(document).ready(function () {
+                var modal;
+                $('.preview').on('click', function () {
+                    // Get the modal
 
-            $('#chk_all').change(function () {
-                if (this.checked) {
-                    $('input.selectchk').prop("checked", true);
-                } else {
-                    $('input.selectchk').prop("checked", false);
+
+                    modal = document.getElementById('myModal');
+
+                    // Get the image and insert it inside the modal - use its "alt" text as a caption
+                    var img = document.getElementById(this.id);
+                    var modalImg = document.getElementById("img01");
+                    var captionText = document.getElementById("caption");
+
+                    modal.style.display = "block";
+                    modalImg.src = img.src;
+                    captionText.innerHTML = "";
+
+                })
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function () {
+                    modal.style.display = "none";
                 }
 
-            });
+    </script>
+}
+@if (ViewBag.Title == "Comercia Marketing - Reports")
+{
+    <script>
+    $(function () {
+        $('#click_filter').click(function () {
+
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            //var idstore = document.getElementById('filterstore').value;
+
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+
+        var url = '@Url.Action("Reports", "Reports", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
+
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+        var newurl = url;
+            newurl = newurl.replace('FINISH', ed);
+        newurl = newurl.replace(/&amp;/g, "&");
+
+        window.location.href = newurl;
+
+
+
+
         });
+    });
+
+
+
+
+
     </script>
 }
 @if (ViewBag.Title == "Comercia Marketing - Customer Report Details")

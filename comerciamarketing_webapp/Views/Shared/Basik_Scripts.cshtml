@@ -52,16 +52,17 @@
 <script src="~/Content/newstyle2/js/typeahead.js"></script>
 <script src="~/Content/newstyle2/js/dropify.js"></script>
 <!-- Custom js for this page GOOGLE MAPS-->
-@if (ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - RoutesM details" || ViewBag.Title == "Comercia Marketing - Customers Map")
+@if (ViewBag.Title == "Comercia Marketing - Home" || ViewBag.Title == "Comercia Marketing - RoutesM details" || ViewBag.Title == "Comercia Marketing - Customers Map" || ViewBag.Title == "Comercia Marketing - Admin Map")
 {
     <script src="~/Content/dist/js/map-icons.js"></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&callback=Initialize"></script>
     <script src="~/Content/newstyle2/js/google-maps.js"></script>
     <script src="~/Content/newstyle2/js/owl.carousel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.3/js/lightslider.min.js"></script>
 
 }
-@if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
+@if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes" || ViewBag.Title == "Comercia Marketing - Calendar Customers Routes")
 {
     <script src="~/Content/dist/js/map-icons.js"></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
@@ -154,6 +155,12 @@
 
 }
 
+@if (ViewBag.title == "Comercia Marketing - Customers Gallery" || ViewBag.title == "Comercia Marketing - Admin Gallery")
+{
+    <script src="~/Content/BasikTemplate/assets/content-filter-master/js/jquery.mixitup.min.js"></script>
+    <script src="~/Content/BasikTemplate/assets/content-filter-master/js/main.js"></script> <!-- Resource jQuery -->
+}
+
 <!--NEW TEMPLATE-->
 <!-- build:js ../assets/js/site.min.js -->
 <!-- jQuery <script src="~/Content/BasikTemplate/libs/jquery/dist/jquery.min.js"></script>-->
@@ -184,3 +191,10 @@
 <!--MAPS-->
 <script src="~/Content/BasikTemplate/libs/jqvmap/dist/jquery.vmap.js"></script>
 <script src="~/Content/BasikTemplate/libs/jqvmap/dist/maps/jquery.vmap.usa.js"></script>
+
+
+<script src="https://kit.fontawesome.com/dab1920642.js"></script>
+
+<!-- cdnjs -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>

@@ -49,26 +49,26 @@
                             </thead>
                             <tbody>
                                 @foreach (var item in ViewBag.customers)
-                {
-                    <tr class=" v-middle" data-id="20">
-                        <td>
-                            <a href="#">
-                                <span class="w-32 avatar gd-info">
-                                    @Convert.ToString(item.name).Substring(0, 1)
-                                </span>
-                            </a>
-                        </td>
-                        <td class="flex">
-                            <a href="#" class="item-author text-color ">@item.name</a>
-                            <div class="item-except text-muted text-sm h-1x">
-                                @item.id
-                            </div>
-                        </td>
+                                {
+                                    <tr class=" v-middle" data-id="20">
+                                        <td>
+                                            <a href="#">
+                                                <span class="w-32 avatar gd-info">
+                                                    @Convert.ToString(item.name).Substring(0, 1)
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td class="flex">
+                                            <a href="#" class="item-author text-color ">@item.name</a>
+                                            <div class="item-except text-muted text-sm h-1x">
+                                                @item.id
+                                            </div>
+                                        </td>
 
-                        <td></td>
+                                        <td></td>
 
-                    </tr>
-}
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -76,16 +76,16 @@
                         <p>Last updates</p>
                         <div class="timeline p-4 block mb-4">
                             @foreach (var log in ViewBag.log)
-            {
-                <div class="tl-item">
-                    <div class="tl-dot ">
-                    </div>
-                    <div class="tl-date text-muted">@log.fecha_conexion</div>
-                    <div class="tl-content">
-                        <div class="">@log.action</div>
-                    </div>
-                </div>
-}
+                            {
+                                <div class="tl-item">
+                                    <div class="tl-dot ">
+                                    </div>
+                                    <div class="tl-date text-muted">@log.fecha_conexion</div>
+                                    <div class="tl-content">
+                                        <div class="">@log.action</div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -125,44 +125,44 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach (var itemVisita in ViewBag.activitieslst)
-                {
-                                        <tr class=" v-middle">
+                                                        {
+                                                            <tr class=" v-middle">
 
-                                            <td>
-                                                @itemVisita.ID_activity
+                                                                <td>
+                                                                    @itemVisita.ID_activity
 
-                                            </td>
+                                                                </td>
 
-                                            <td>@itemVisita.description</td>
+                                                                <td>@itemVisita.description</td>
 
-                                            <td>
+                                                                <td>
 
 
 
-                                                <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
-                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.Customer<br />
-                                                    <span>Brands</span>
-                                                </a>
+                                                                    <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
+                                                                        <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.Customer<br />
+                                                                        <span>Brands</span>
+                                                                    </a>
 
-                                            </td>
-                                            <td>@itemVisita.date.ToString("MM/dd/yyyy")</td>
+                                                                </td>
+                                                                <td>@itemVisita.date.ToString("MM/dd/yyyy")</td>
 
-                                            <td data-label="Status">
-                                                @switch (itemVisita.isfinished)
-        {
-            case false: //Scheduled
+                                                                <td data-label="Status">
+                                                                    @switch (itemVisita.isfinished)
+                                                                    {
+                                                                        case false: //Scheduled
 
-                                        <label class="badge badge-warning">Scheduled</label>
+                                                                            <label class="badge badge-warning">Scheduled</label>
 
-break;
-case true: //Finished
-                                        <label class="badge badge-primary">Finished</label>
-break;
-}
+                                                                            break;
+                                                                        case true: //Finished
+                                                                            <label class="badge badge-primary">Finished</label>
+                                                                            break;
+                                                                    }
 
-                                            </td>
-                                        </tr>
-}
+                                                                </td>
+                                                            </tr>
+                                                        }
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -186,3 +186,38 @@ break;
 </div>
 
 <!-- main-panel ends -->
+<!-- .modal -->
+<div id="modal-right_filter" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase">
+                        General filters
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Date</label>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="mdi mdi-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-calendar"></i>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info">Apply</button>
+
+                @*<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->

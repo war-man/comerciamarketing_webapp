@@ -1106,9 +1106,28 @@
                             fileData.append('idvisita', idvisita);
                             fileData.append('orientation', orientation);
                             //if true rotate to the right
-
+                            $('#maindivprogress_' + ID).show();
                             $.ajax({
                                 url: '/FormsM/UploadFiles',
+                                xhr: function () {
+                                    var xhr = new window.XMLHttpRequest();
+                                    xhr.upload.addEventListener("progress", function (evt) {
+                                        if (evt.lengthComputable) {
+                                            var percentComplete = (evt.loaded / evt.total) * 100;
+                                            //Do something with upload progress here
+                                            
+                                            $('#divprogress_' + ID).width(percentComplete + '%');
+                                            $('#imgprogress_' + ID).html(percentComplete.toFixed(2) + "%");
+                                            //console.log(percentComplete);
+                                            //console.log((evt.loaded / evt.total) * 100);
+                                            //$('progress').attr({
+                                            //    value: e.loaded,
+                                            //    max: e.total,
+                                            //});
+                                        }
+                                    }, false);
+                                    return xhr;
+                                },
                                 type: "POST",
                                 contentType: false, // Not to set any content header
                                 processData: false, // Not to process data

@@ -11,8 +11,7 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class ActivitiesM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,18 +19,14 @@ namespace comerciamarketing_webapp.Models
         {
             this.FormsM = new HashSet<FormsM>();
         }
-
+    
         public int ID_activity { get; set; }
         public int ID_visit { get; set; }
         public int ID_form { get; set; }
         public string ID_customer { get; set; }
         public string Customer { get; set; }
         public string comments { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime check_in { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime check_out { get; set; }
         public string query1 { get; set; }
         public int ID_empresa { get; set; }
@@ -39,13 +34,10 @@ namespace comerciamarketing_webapp.Models
         public string description { get; set; }
         public int ID_usuarioCreate { get; set; }
         public int ID_usuarioEnd { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime date { get; set; }
         public int ID_activitytype { get; set; }
         public string ID_usuarioEndString { get; set; }
-
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormsM> FormsM { get; set; }
         public virtual ActivitiesM_types ActivitiesM_types { get; set; }

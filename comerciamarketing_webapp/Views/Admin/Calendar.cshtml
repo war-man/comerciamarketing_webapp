@@ -26,15 +26,15 @@
             </div>
             <div class="nav-active-border b-success px-3">
                 <ul class="nav text-sm" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" id="dayview" data-toggle="tab">Day</a>
-                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="dayview" data-toggle="tab">Day</a>
+                        </li>*@
                     <li class="nav-item">
                         <a class="nav-link active" id="weekview" data-toggle="tab">Week</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="monthview" data-toggle="tab">Month</a>
-                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="monthview" data-toggle="tab">Month</a>
+                        </li>*@
                 </ul>
             </div>
         </div>
@@ -157,24 +157,20 @@
                         <div class="form-group row row-sm">
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input type="date" name="dateEdit" class="form-control">
+                                <label class="col-form-label" id="daterouteshow"></label>
                             </div>
 
                         </div>
                         <div class="form-group row row-sm">
                             <label class="col-sm-3 col-form-label">Estimated completion date</label>
                             <div class="col-sm-9">
-                                <input type="date" name="enddateEdit" class="form-control">
+                                <label class="col-form-label" id="dateendrouteshow"></label>
                             </div>
                         </div>
 
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group row row-sm">
-                            <label class="col-sm-3 col-form-label">Sales Representatives</label>
-                            <a title="Example1" href="#" class="avatar w-24"><img src="../assets/img/ss.jpg"></a>
-                            <a title="Example2" href="#" class="avatar w-24"><img src="../assets/img/ss.jpg"></a>
-                        </div>
+                    <div class="col-md-3" id="repsroute">
+
                     </div>
                     <div class="col-md-4" id="brandtags">
 
@@ -346,3 +342,5 @@
         </div>
     </div>
 </div>
+
+@Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")

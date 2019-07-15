@@ -20,7 +20,7 @@
             left: 0px;
             position: fixed;
 
-            background-color: #fff;
+            background-color: transparent;
             z-index: 1099;
             text-align: center;
         }
@@ -84,8 +84,9 @@
 <body class="horizontal-menu-2">
     <!--GLOBAL LOADER  onload="javascript:initGeolocation()"-->
     <div id="loading" class="hide">
+
         <div id="loading-content">
-            <img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />
+            @*<img src="~/Content/images/loadingpage.jpg" style="width:400px;position:relative; top:-15px;" />*@
             <div id="wave">
                 Loading
                 <span class="dot"></span>
@@ -119,7 +120,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="mdi mdi-account-outline"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Email" name="usuariocorreo" id="usuariocorreo" required autofocus>
+                                        <input type="text" class="form-control" placeholder="Email" value="@ViewBag.correo" name="usuariocorreo" id="usuariocorreo" required autofocus>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -127,15 +128,20 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="mdi mdi-lock-outline"></i></span>
                                         </div>
-                                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                                        <input type="password" class="form-control" placeholder="Password" value="@ViewBag.pass" name="password" id="password" required>
                                     </div>
                                 </div>
-                                <div class="form-check form-check-flat mt-0">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="ahahahahstayinalive" id="ahahahahstayinalive">
-                                        Keep me logged in
-                                    </label>
+                                <div class="form-group">
+                                    <div class="row" style="margin-left:25px;">
+                                        @Html.CheckBox("rememberme", (bool)ViewBag.remember, new { @class = "form-check-input" })
+                                        <label class="form-check-label">
+
+
+                                            Keep me logged in
+                                        </label>
+                                    </div>
                                 </div>
+
                                 <div class="form-group">
                                     <button class="btn btn-info submit-btn">LOG IN</button>
                                 </div>
@@ -170,7 +176,7 @@
         var password = $('#password').val();
 
         var rememberme = false;
-        if ($('#ahahahahstayinalive').is(":checked")) {
+        if ($('#rememberme').is(":checked")) {
             // it is checked
             rememberme = true;
         }
@@ -196,7 +202,7 @@
 
                     } else if( data.redireccion =="customer" ){
                         console.log("Login success")
-                      var url = '@Url.Action("Dashboard", "Customers", new { id="CM" })';
+                      var url = '@Url.Action("Dashboard", "Customers", new { customersel="CM" })';
 
 
                         url = url.replace('CM', data.cm);

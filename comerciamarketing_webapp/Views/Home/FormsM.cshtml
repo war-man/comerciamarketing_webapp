@@ -17,7 +17,9 @@
                     </small>
                 </div>
                 <div class="flex"></div>
-
+                <button data-toggle="modal" data-target="#createModal" data-action="create" class="btn btn-sm box-shadows btn-rounded gd-primary">
+                    Add Form
+                </button>
             </div>
         </div>
         <div class="page-content page-container" id="page-content">
@@ -138,185 +140,189 @@ else if (itemForms.ID_activity == 4)//Demo
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content ">
+            <div class="modal-header ">
+                <div class="modal-title text-md" id="titleform">Title</div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
             @using (Html.BeginForm("CreateForm", "FormsM", FormMethod.Post, new { onkeydown = "return event.keyCode!=13" }))
-            {
-                @Html.AntiForgeryToken()
+    {
+        @Html.AntiForgeryToken()
 
 
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="modal-body ">
-                    <input type="text" id="possibleID" name="possibleID" value="0" hidden />
-                    <input type="text" id="action" name="action" value="0" hidden />
-                    <div class="row ">
-                        <div class="col-md-12 grid-margin">
-                            <div class="card border-dark">
-                                <div class="content">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="modal-body ">
+            <input type="text" id="possibleID" name="possibleID" value="0" hidden />
+            <input type="text" id="action" name="action" value="0" hidden />
+            <div class="row ">
+                <div class="col-md-12 grid-margin">
+                    <div class="card border-dark">
+                        <div class="content">
 
-                                    <div class="form-horizontal col-md-12">
-                                        <h1 id="titleform" class="display-4 text-dark"><i class="mdi mdi-file-document"></i>Title</h1>
-                                        <p id="desform" class="display-5">Description</p>
-                                        <br />
-                                        <h3 class="display-5 text-warning">Description</h3>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <p class="control-label col-md-6">Form name*</p>
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control" required id="name" name="name" autocomplete="off" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <p class="control-label col-md-6">Description*</p>
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control" required id="description" name="description" autocomplete="off" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <p class="control-label col-md-12">Type of Activity</p>
-                                                    <div class="col-md-12">
-                                                        @Html.DropDownList("ID_activity", null, htmlAttributes: new { @class = "form-control", @id = "type" })
-                                                    </div>
-                                                </div>
-
+                            <div class="form-horizontal col-md-12">
+                                
+                                <p id="desform" class="display-5">Description</p>
+                                <br />
+                                <h5 class="display-5 text-md text-highlight">Description</h5>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="control-label col-md-6">Form name*</p>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" required id="name" name="name" autocomplete="off" />
                                             </div>
                                         </div>
                                     </div>
-
-
-
-                                    <div class="form-horizontal col-md-12">
-                                        <h3 class="display-5 text-warning">Questions & input fields</h3>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-md-4">
-
-                                                <div class="form-group">
-                                                    <p class="control-label col-md-12">Resource type</p>
-                                                    <div class="col-md-12">
-                                                        @Html.DropDownList("ID_formresourcetype", null, htmlAttributes: new { @class = "form-control", @id = "formresourcetype" })
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_label">
-                                                    <p class="control-label col-md-12">Text to show</p>
-                                                    <div class="col-md-12">
-                                                        <input type="text" id="label_toshow" class="form-control" autocomplete="off" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_category" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <select class="form-control" id="category_list">
-                                                            <option value="0">Select category</option>
-                                                            <option value="1">Flavor</option>
-                                                            <option value="2">Quality</option>
-                                                            <option value="3">Price</option>
-                                                            <option value="4">Packing</option>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_resourceR" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        @Html.DropDownList("ID_formresourcetypeRetail", null, htmlAttributes: new { @class = "form-control", @id = "resource_list" })
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_products" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <input type="button" value="Find products" class="btn btn-info" id="myBtn">
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group" id="div_samples" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <input type="button" value="Find samples" class="btn btn-info" id="myBtn_samples">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_displays" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <input type="button" value="Find displays" class="btn btn-info" id="myBtn_displays">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_gifts" style="display:none">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <input type="button" value="Find gifts" class="btn btn-info" id="myBtn_gifts">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="div_btnadd">
-                                                    <div class="col-md-offset-2 col-md-12 text-right">
-                                                        <input type="button" value="Add" id="btn_agregarObjeto" class="btn btn-info">
-                                                    </div>
-                                                </div><br />
-
-                                                <div class="form-group" id="menu-editor" style="display: none;">
-                                                    <hr />
-                                                    <div class="col-md-offset-2 col-md-12 text-left">
-                                                        <h3>Editing item <span id="currentEditName"></span></h3>
-                                                        <div class="form-group">
-                                                            <label for="addInputName">Text to show</label>
-                                                            <input type="text" class="form-control" id="editInputName" placeholder="Text to show">
-                                                        </div>
-                                                        <a class="btn btn-info" id="editButton" onclick="JavaScript:return editMenuItem(this);">Edit</a>
-
-                                                    </div>
-                                                </div><br />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="control-label col-md-6">Description*</p>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" required id="description" name="description" autocomplete="off" />
                                             </div>
-                                            <div class="col-md-8">
-
-                                                <div class="cf nestable-lists" id="rightss">
-
-                                                    <div class="dd" id="nestable">
-                                                        <ol class="dd-list" id="main_list"></ol>
-
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-12 text-right">
-
-                                                        <a id="clear_list" href="#" class="close btn btn-inverse-light" data-dismiss="alert" aria-label="close">Clear list</a>
-                                                    </div>
-                                                </div>
-
-
-
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <p class="control-label col-md-12">Type of Activity</p>
+                                            <div class="col-md-12">
+                                                @Html.DropDownList("ID_activity", null, htmlAttributes: new { @class = "form-control", @id = "type" })
                                             </div>
                                         </div>
 
-                                        <textarea id="nestable-output" name="nestable_output" hidden></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-horizontal col-md-12">
+                                <h5 class="display-5 text-md text-highlight">Questions & input fields</h5>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                        <div class="form-group">
+                                            <p class="control-label col-md-12">Resource type</p>
+                                            <div class="col-md-12">
+                                                @Html.DropDownList("ID_formresourcetype", null, htmlAttributes: new { @class = "form-control", @id = "formresourcetype" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_label">
+                                            <p class="control-label col-md-12">Text to show</p>
+                                            <div class="col-md-12">
+                                                <input type="text" id="label_toshow" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_category" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <select class="form-control" id="category_list">
+                                                    <option value="0">Select category</option>
+                                                    <option value="1">Flavor</option>
+                                                    <option value="2">Quality</option>
+                                                    <option value="3">Price</option>
+                                                    <option value="4">Packing</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_resourceR" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                @Html.DropDownList("ID_formresourcetypeRetail", null, htmlAttributes: new { @class = "form-control", @id = "resource_list" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_products" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <input type="button" value="Find products" class="btn btn-info" id="myBtn">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group" id="div_samples" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <input type="button" value="Find samples" class="btn btn-info" id="myBtn_samples">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_displays" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <input type="button" value="Find displays" class="btn btn-info" id="myBtn_displays">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_gifts" style="display:none">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <input type="button" value="Find gifts" class="btn btn-info" id="myBtn_gifts">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="div_btnadd">
+                                            <div class="col-md-offset-2 col-md-12 text-right">
+                                                <input type="button" value="Add" id="btn_agregarObjeto" class="btn btn-info">
+                                            </div>
+                                        </div><br />
+
+                                        <div class="form-group" id="menu-editor" style="display: none;">
+                                            <hr />
+                                            <div class="col-md-offset-2 col-md-12 text-left">
+                                                <h3>Editing item <span id="currentEditName"></span></h3>
+                                                <div class="form-group">
+                                                    <label for="addInputName">Text to show</label>
+                                                    <input type="text" class="form-control" id="editInputName" placeholder="Text to show">
+                                                </div>
+                                                <a class="btn btn-info" id="editButton" onclick="JavaScript:return editMenuItem(this);">Edit</a>
+
+                                            </div>
+                                        </div><br />
+                                    </div>
+                                    <div class="col-md-8">
+
+                                        <div class="cf nestable-lists" id="rightss">
+
+                                            <div class="dd" id="nestable">
+                                                <ol class="dd-list" id="main_list"></ol>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12 text-right">
+
+                                                <a id="clear_list" href="#" class="close btn btn-inverse-light" data-dismiss="alert" aria-label="close">Clear list</a>
+                                            </div>
+                                        </div>
+
 
 
                                     </div>
-
-
-
-
-
-
-
                                 </div>
 
-                            </div>
-                        </div>
-                    </div>
+                                <textarea id="nestable-output" name="nestable_output" hidden></textarea>
 
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info">Save</button>
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                </div>
-            }
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-info">Save</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+        </div>
+}
         </div>
     </div>
 </div>
@@ -540,6 +546,12 @@ else if (itemForms.ID_activity == 4)//Demo
                                 <label class="form-check-label">
                                     <input type="radio" class="form-check-input" name="optionsRadiosDisplay" id="optionsRadiosDisplay5" value="5">
                                     Label (subtitle)
+                                </label>
+                            </div>
+                            <div class="form-radio">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadiosDisplay" id="optionsRadiosDisplay6" value="6">
+                                    Item List
                                 </label>
                             </div>
                         </div>

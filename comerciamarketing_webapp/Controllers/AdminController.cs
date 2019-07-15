@@ -106,9 +106,403 @@ namespace comerciamarketing_webapp.Controllers
             public int ID_route { get; set; }
             public int ID_empresa { get; set; }
             public List<SimpleUserWithImg> lstUsers { get; set; }
+            public List<brandsinroute> lstBrands { get; set; }
+        }
+
+        public class activitiesTypes
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public string activitytype { get; set; }
+            public int count { get; set; }
+        }
+        public class Brands
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public int count { get; set; }
+        }
+
+        public ActionResult Map(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Customers";
+                ViewData["Page"] = "Map";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                //FILTROS
+                //Fechas
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
+                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
+                //
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+                ViewBag.id_customer = id;
+
+                ArrayList myArrList = new ArrayList();
+                using (var db = new dbComerciaEntities())
+                {
+
+                    if (customersel == "" || customersel == null || customersel=="0")
+                    {
+                        var visitsarr = (from a in db.ActivitiesM where ((a.date >= filtrostartdate && a.date <= filtroenddate)) select a.ID_visit).Distinct().ToArray();
+                        // Convertimos la lista a array
+                        var rutas = db.VisitsM.Where(c => visitsarr.Contains(c.ID_visit)).OrderBy(d => d.visit_date).ToList();
+
+                        myArrList.AddRange((from p in rutas
+                                            select new
+                                            {
+                                                id = p.ID_visit,
+                                                representatives = p.city,
+                                                store = p.store,
+                                                address = p.address,
+                                                GeoLong = p.geoLong,
+                                                GeoLat = p.geoLat,
+                                                demo_state = p.ID_visitstate,
+                                                customer = p.customer,
+                                                date = p.visit_date.ToLongDateString(),
+                                                comment = p.comments
+                                            }).ToList());
+                    }
+                    else {
+                            var visitsarr = (from a in db.ActivitiesM where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate)) select a.ID_visit).Distinct().ToArray();
+                            // Convertimos la lista a array
+                            var rutas = db.VisitsM.Where(c => visitsarr.Contains(c.ID_visit)).OrderBy(d => d.visit_date).ToList();
+
+                            myArrList.AddRange((from p in rutas
+                                                select new
+                                                {
+                                                    id = p.ID_visit,
+                                                    representatives = p.city,
+                                                    store = p.store,
+                                                    address = p.address,
+                                                    GeoLong = p.geoLong,
+                                                    GeoLat = p.geoLat,
+                                                    demo_state = p.ID_visitstate,
+                                                    customer = p.customer,
+                                                    date = p.visit_date.ToLongDateString(),
+                                                    comment = p.comments
+                                                }).ToList());
+                        
+
+
+                    }
+
+
+
+
+                }
+                ViewBag.routes_map = JsonConvert.SerializeObject(myArrList);
+                try
+                {
+
+                    using (var CMKdb = new COM_MKEntities())
+                    {
+                        //LISTADO DE CLIENTES
+                        var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                        ViewBag.customerssel = customers.ToList();
+
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.CustomerSelCode = "0";
+                        }
+                        else
+                        {
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+                            ViewBag.CustomersLabel = nameC.CardName;
+                            ViewBag.CustomerSelCode = nameC.CardCode;
+                        }
+
+                        var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+                        else
+                        {
+                            //ViewBag.BrandLabel = brandcmk.FirmName;
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = brandcmk.FirmCode;
+                        }
+
+
+                    }
+
+                }
+
+                catch
+                {
+
+                    ViewBag.CustomersLabel = "All Customers";
+                    ViewBag.customerssel = new List<OCRD>();
+                    ViewBag.CustomerSelCode = "0";
+                    ViewBag.BrandLabel = "All Brands";
+                    ViewBag.BrandSelCode = "0";
+                }
+
+
+                return View();
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+
+
+        }
+
+        public ActionResult Gallery(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, int? idvisit, int? idroute, string customersel)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Customers";
+                ViewData["Page"] = "Gallery";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+                ViewBag.id_customer = id;
+                ViewBag.routesel = idroute;
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+                //filtros de fecha
+                //filtros de fecha //MENSUAL
+                //var sunday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                //var saturday = sunday.AddMonths(1).AddDays(-1);
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+                //FILTROS**************
+
+                if (fstartd == null || fstartd == "")
+                {
+                    filtrostartdate = sunday;
+                }
+                else
+                {
+                    filtrostartdate = Convert.ToDateTime(fstartd);
+                }
+
+                if (fendd == null || fendd == "")
+                {
+                    filtroenddate = saturday;
+                }
+                else
+                {
+                    filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
+                }
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                List<ImgGallery> detalles;
+                IQueryable<ActivitiesM> actividadesList;
+                try
+                {
+                    using (var db = new dbComerciaEntities())
+                    {
+                        var visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute) select f.ID_visit).ToArray();
+                        if (customersel == null || customersel == "" || customersel =="0")
+                        {
+                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_empresa == activeuser.ID_empresa) select e);
+                        }
+                        else {
+                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_empresa == activeuser.ID_empresa && e.ID_customer==customersel) select e);
+                        }
+                            
+                        var actividades = actividadesList.Select(a => a.ID_activity).ToArray();
+
+                        //var detalles = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit) && b.ID_formresourcetype == 5) select b).ToList();
+
+                        detalles = (from a in db.FormsM_details
+                                        join b in actividadesList on a.ID_visit equals b.ID_activity
+                                        join c in db.VisitsM on b.ID_visit equals c.ID_visit
+                                        where (actividades.Contains(a.ID_visit) && a.ID_formresourcetype == 5)
+                                        select new ImgGallery
+                                        {
+                                            idImg = a.ID_details,
+                                            Customer = b.Customer,
+                                            Activity = b.description,
+                                            Url = a.fsource,
+                                            IDStore =c.ID_store,
+                                            Store = c.ID_store + " - " +c.store,
+                                            Section = a.fdescription == "PICTURE 1" ? "BEFORE" : a.fdescription == "PICTURE 2" ? "AFTER" : a.fdescription == "CONDICION FINAL DE LA TIENDA (DESPUES)" ? "AFTER" : a.fdescription == "Tomar fotografia inicial" ? "BEFORE" : a.fdescription == "Foto de herramientas" ? "TOOLS" : a.fdescription == "Foto de la competencia" ? "TOOLS" : "OTHER",
+                                            Rep = (from usu in db.Usuarios where (usu.ID_usuario == b.ID_usuarioEnd) select usu.nombre + " " + usu.apellido).FirstOrDefault(),
+                                            IDBrand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == b.ID_activity) select detalle.fvalueText).FirstOrDefault(),
+                                            Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == b.ID_activity) select detalle.fdescription).FirstOrDefault(),
+
+                                        }).ToList();
+
+                        detalles = detalles.Where(c => c.Url != null && !c.Url.Equals(string.Empty) && c.Brand != null).ToList();
+
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+
+                        }
+                        else {
+                            var brandstring = brandsel.ToString();
+                            detalles = detalles.Where(c => c.IDBrand == brandstring).ToList();
+                        }
+
+
+                            var brandslst = (from a in detalles select a.Brand).Distinct().OrderBy(a => a).ToList();
+                        var sectionlst = (from a in detalles select a.Section).Distinct().OrderBy(a=>a).ToList();
+                        var replst = (from a in detalles select a.Rep).Distinct().ToList();
+                        var activitylst = (from a in detalles select a.Activity).Distinct().ToList();
+                        var storeslst = (from a in detalles select a.Store).Distinct().ToList();
+
+                        ViewBag.brandslst = brandslst;
+                        ViewBag.sectionlst = sectionlst;
+                        ViewBag.replst = replst;
+                        ViewBag.activitylst = activitylst;
+                        ViewBag.storelst = storeslst;
+
+
+                            var routes = (from c in db.RoutesM where ((c.date >= filtrostartdate && c.date <= filtroenddate) && c.ID_empresa == 2) select c).ToList();
+                            ViewBag.routeslst = routes;
+
+
+
+                       
+
+
+                      
+                    }
+
+                    try
+                    {
+
+                        using (var CMKdb = new COM_MKEntities())
+                        {
+                            //LISTADO DE CLIENTES
+                            var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                            ViewBag.customerssel = customers.ToList();
+
+                            if (customersel == null || customersel == "" || customersel == "0")
+                            {
+                                ViewBag.CustomersLabel = "All Customers";
+                                ViewBag.CustomerSelCode = "0";
+                            }
+                            else
+                            {
+                                var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
+
+                            var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                            if (brandsel == null || brandsel == 0)
+                            {
+                                ViewBag.BrandLabel = "All Brands";
+                                ViewBag.BrandSelCode = "0";
+                            }
+                            else
+                            {
+                                ViewBag.BrandLabel = brandcmk.FirmName;
+                                ViewBag.BrandSelCode = brandcmk.FirmCode;
+                            }
+
+
+                        }
+
+                    }
+
+                    catch
+                    {
+
+                        ViewBag.CustomersLabel = "All Customers";
+                        ViewBag.customerssel = new List<OCRD>();
+                        ViewBag.CustomerSelCode = "0";
+                        ViewBag.BrandLabel = "All Brands";
+                        ViewBag.BrandSelCode = "0";
+                    }
+
+                    return View(detalles);
+                }
+                catch (Exception ex)
+                {
+
+                    TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                    return RedirectToAction("Gallery", "Admin", new { id = 0 });
+
+
+                }
+
+
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+
+
+        }
+
+        public class ImgGallery
+        {
+            public int idImg { get; set; }
+            public string Customer { get; set; }
+            public string IDBrand { get; set; }
+            public string Brand { get; set; }
+            public string Activity { get; set; }
+            public string Url { get; set; }
+            public string Section { get; set; }
+            public string Rep { get; set; }
+            public string IDStore { get; set; }
+            public string Store { get; set; }
+        }
+
+        public class brandsinroute
+        {
+            public string brand { get; set; }
+            public int count { get; set; }
         }
         // GET: SalesRepresentatives
-        public ActionResult Dashboard(string id, string fstartd, string fendd, string stores, string brands, string spartners)
+        public ActionResult Dashboard(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners,string customersel)
         {
             Usuarios activeuser = Session["activeUser"] as Usuarios;
             if (activeuser != null)
@@ -147,14 +541,117 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.id_customer = id;
                 ViewBag.Company = activeuser.Empresas.nombre;
 
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                
 
                 var rutas = new List<CustomVisit>();
                 int[] visitasarray = new int[] { };
-                    using (var db = new dbComerciaEntities())
+                IQueryable<activitiesVisitsBrands> lstActivities;
+
+                using (var db = new dbComerciaEntities())
                     {
 
+                    //filtros
+                    if (customersel == null || customersel == "" || customersel=="0")
+                    {
+                        lstActivities = (from a in db.ActivitiesM
+                                         join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                         where ((a.date >= filtrostartdate && a.date <= filtroenddate) && a.ID_empresa == activeuser.ID_empresa)
+                                         select new activitiesVisitsBrands
+                                         {
+                                             ID_activity = a.ID_activity,
+                                             ID_visit = a.ID_visit,
+                                             ID_form = a.ID_form,
+                                             formName = a.description,
+                                             ID_store = b.ID_store,
+                                             store = b.store,
+                                             visitDate = b.visit_date,
+                                             ID_customer = a.ID_customer,
+                                             Customer = a.Customer,
+                                             isfinished = a.isfinished,
+                                             id_usuarioend = a.ID_usuarioEnd,
+                                             id_usuarioendexternal = a.ID_usuarioEndString,
+                                             id_activitytype = a.ID_activitytype,
+                                             ActivityName = "",
+                                             Comments = a.comments,
+                                             ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                             Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                             count = 0
+                                         });
+                    }
+                    else {
+                        if (brandsel == null || brandsel == 0)
+                        {
+
+                            lstActivities = (from a in db.ActivitiesM
+                                             join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                             where ((a.date >= filtrostartdate && a.date <= filtroenddate) && a.ID_empresa == activeuser.ID_empresa && a.ID_customer == customersel)
+                                             select new activitiesVisitsBrands
+                                             {
+                                                 ID_activity = a.ID_activity,
+                                                 ID_visit = a.ID_visit,
+                                                 ID_form = a.ID_form,
+                                                 formName = a.description,
+                                                 ID_store = b.ID_store,
+                                                 store = b.store,
+                                                 visitDate = b.visit_date,
+                                                 ID_customer = a.ID_customer,
+                                                 Customer = a.Customer,
+                                                 isfinished = a.isfinished,
+                                                 id_usuarioend = a.ID_usuarioEnd,
+                                                 id_usuarioendexternal = a.ID_usuarioEndString,
+                                                 id_activitytype = a.ID_activitytype,
+                                                 ActivityName = "",
+                                                 Comments = a.comments,
+                                                 ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                 Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                 count = 0
+                                             });
+
+                        }
+                        else {
+
+                            lstActivities = (from a in db.ActivitiesM
+                                             join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                             where ((a.date >= filtrostartdate && a.date <= filtroenddate) && a.ID_empresa == activeuser.ID_empresa && a.ID_customer == customersel)
+                                             select new activitiesVisitsBrands
+                                             {
+                                                 ID_activity = a.ID_activity,
+                                                 ID_visit = a.ID_visit,
+                                                 ID_form = a.ID_form,
+                                                 formName = a.description,
+                                                 ID_store = b.ID_store,
+                                                 store = b.store,
+                                                 visitDate = b.visit_date,
+                                                 ID_customer = a.ID_customer,
+                                                 Customer = a.Customer,
+                                                 isfinished = a.isfinished,
+                                                 id_usuarioend = a.ID_usuarioEnd,
+                                                 id_usuarioendexternal = a.ID_usuarioEndString,
+                                                 id_activitytype = a.ID_activitytype,
+                                                 ActivityName = "",
+                                                 Comments = a.comments,
+                                                 ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                 Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                 count = 0
+                                             });
+                            var brandstring = brandsel.ToString();
+                            lstActivities = lstActivities.Where(c => c.ID_brand == brandstring);
+                        }
+
+
+                    }
+
+
+
+
+                    var visitsarr = (from a in lstActivities select a.ID_visit).Distinct().ToArray();
+
+
                     rutas = (from a in db.VisitsM
-                             where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_empresa == activeuser.ID_empresa)
+                             where ((visitsarr.Contains(a.ID_visit)))
                              select new CustomVisit
                              {
                                  ID_visit = a.ID_visit,
@@ -179,11 +676,120 @@ namespace comerciamarketing_webapp.Controllers
                                  ID_empresa = a.ID_empresa,
                                  lstUsers = (from t1 in a.VisitsM_representatives
                                              join t2 in db.Usuarios on t1.ID_usuario equals t2.ID_usuario
-                                             select new SimpleUserWithImg { ID_user = t1.ID_usuario, Name = t2.nombre + " " + t2.apellido,Email=t2.correo, img = "" }).ToList()
-                                   }).ToList();
+                                             select new SimpleUserWithImg { ID_user = t1.ID_usuario, Name = t2.nombre + " " + t2.apellido,Email=t2.correo, img = "" }).ToList(),
+                                 lstBrands = (from t1 in lstActivities
+                                              join t2 in db.FormsM_details on t1.ID_activity equals t2.ID_visit
+                                              where (t1.ID_visit == a.ID_visit && t2.ID_formresourcetype == 13 && t2.fdescription != "")
+                                              select new brandsinroute { brand = t2.fdescription, count = 0 }).Distinct().ToList()
+                }).ToList();
 
-                    visitasarray = rutas.Select(d => d.ID_visit).ToArray();
+                    //                List<activitiesTypes> distinct = new List<activitiesTypes>();
+                    //                List<Brands> distinctBrands = new List<Brands>();
+                    //                distinctBrands = (from b in lstActivities
+                    //                                  group b by b.ID_brand into g
+                    //                                  //where (g.Key != "" && g.Key != null && g.Key !="0")
+                    //                                  select new Brands
+                    //                                  {
+                    //                                      id = g.Key == "" ? "0" : g.Key == null ? "0" : g.Key,
+                    //                                      name = g.Key == "" ? "NA" : g.Key == null ? "NA" : g.Key == "0" ? "NA" : g.Select(m => m.Brand).FirstOrDefault(),
+                    //                                      count = lstActivities
+                    //.Where(x => x.ID_brand == g.Key)
+                    //.Select(x => x).Count()
+                    //                                  }).ToList();
+
+                    //                distinctBrands = (from p in distinctBrands
+                    //                                  group p by p.id into g
+                    //                                  select new Brands
+                    //                                  {
+                    //                                      id = g.Key,
+                    //                                      /**/
+                    //                                      name = g.Select(e => e.name).FirstOrDefault(),
+                    //                                      count = g.Select(e => e.count).FirstOrDefault()
+                    //                                  }).ToList();
+
+                    //                List<string> stringsBrands = distinctBrands.Select(s => "'" + s.name + "'").ToList();
+
+                    //                var stringtextBrands = string.Join(",", stringsBrands);
+                    //                ViewBag.brandschart = stringtextBrands;
+
+                    //                List<string> brandscount = distinctBrands.Select(s => s.count.ToString()).ToList();
+
+                    //                var stringtextBrandsCount = string.Join(",", brandscount);
+                    //                ViewBag.brandschartCount = stringtextBrandsCount;
+
+
+                    //                distinct = (from b in lstActivities
+                    //                            select new activitiesTypes
+                    //                            {
+                    //                                id = b.ID_form,
+                    //                                name = b.formName,
+                    //                                activitytype = b.ActivityName,
+                    //                                count = lstActivities
+                    //.Where(x => x.ID_form == b.ID_form)
+                    //.Select(x => x).Count()
+                    //                            }).Distinct().ToList();
+
+                    //                List<string> stringsTypes = distinct.Select(s => "'" + s.name + "'").ToList();
+
+                    //                var stringtextTypes = string.Join(",", stringsTypes);
+                    //                ViewBag.stringsTypes = stringtextTypes;
+
+                    //                List<string> typescount = distinct.Select(s => s.count.ToString()).ToList();
+
+                    //                var stringtextTypesCount = string.Join(",", typescount);
+                    //                ViewBag.typescount = stringtextTypesCount;
+
+                    //                ViewBag.lstTypes = distinct;
+                    //                ViewBag.brands = distinctBrands;
+
+                }
+
+                try
+                {
+
+                    using (var CMKdb = new COM_MKEntities())
+                    {
+                        //LISTADO DE CLIENTES
+                        var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                        ViewBag.customerssel = customers.ToList();
+
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.CustomerSelCode = "0";
+                        }
+                        else
+                        {
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+                            ViewBag.CustomersLabel = nameC.CardName;
+                            ViewBag.CustomerSelCode = nameC.CardCode;
+                        }
+
+                        var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                        if (brandsel == null || brandsel==0)
+                        {
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+                        else {
+                            ViewBag.BrandLabel =  brandcmk.FirmName;
+                            ViewBag.BrandSelCode = brandcmk.FirmCode;
+                        }
+
+
                     }
+
+                }
+                
+                catch {
+
+                        ViewBag.CustomersLabel = "All Customers";
+                    ViewBag.customerssel = new List<OCRD>();
+                    ViewBag.CustomerSelCode = "0";
+                    ViewBag.BrandLabel = "All Brands";
+                    ViewBag.BrandSelCode = "0";
+                }
 
 
                 var result = rutas.GroupBy(x => x.state).
@@ -215,6 +821,214 @@ namespace comerciamarketing_webapp.Controllers
 
             }
         }
+        public class demosVendor
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public int count { get; set; }
+        }
+        public ActionResult Demos(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                //FILTROS
+                //Fechas
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
+                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
+                //
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                var demos = new List<Demos>();
+                List<Usuarios> usuarios = new List<Usuarios>();
+                int[] visitasarray = new int[] { };
+                using (var db = new dbComerciaEntities())
+                {
+                    if (customersel == null || customersel == "" || customersel == "0")
+                    {
+
+                        demos = (from a in db.Demos
+                                 where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate))
+                                 select a
+                 ).ToList();
+
+                        //Lista de usuarios representantes
+
+                        usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).ToList();
+
+
+                        List<FormsM> activeForms = new List<FormsM>();
+                        activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                        ViewBag.activeForms = activeForms;
+                    }
+                    else {
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+                            demos = (from a in db.Demos
+                                     where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Vendor == customersel)
+                                     select a
+                             ).ToList();
+
+                            //Lista de usuarios representantes
+
+                            usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).ToList();
+
+
+                            List<FormsM> activeForms = new List<FormsM>();
+                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                            ViewBag.activeForms = activeForms;
+                        }
+                        else {
+
+                            var brandstring = brandsel.ToString();
+                            demos = (from a in db.Demos
+                                     where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Vendor == customersel && a.ID_brands == brandstring)
+                                     select a
+                             ).ToList();
+
+                            //Lista de usuarios representantes
+
+                            usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).ToList();
+
+
+                            List<FormsM> activeForms = new List<FormsM>();
+                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                            ViewBag.activeForms = activeForms;
+                        }
+
+                    }
+
+
+
+
+
+                }
+
+                var distinct = (from b in demos
+                            select new demosVendor
+                            {
+                                id = b.ID_Vendor,
+                                name = b.vendor,
+                                count = demos
+.Where(x => x.ID_Vendor == b.ID_Vendor)
+.Select(x => x).Count()
+                            }).ToList();
+
+                ViewBag.distinctVendor = distinct.GroupBy(c=>c.id).Select(i => i.FirstOrDefault()).ToList();
+                ViewBag.countdemos = demos.Count();
+
+
+
+                ViewBag.representatives = usuarios;
+                using (var CMKdb = new COM_MKEntities())
+                {
+                    var usuariosdemo = CMKdb.OCRD.Where(b => b.Series == 70 && b.CardName != null && b.CardName != "" && b.CardType == "s").OrderBy(b => b.CardName).ToList();
+
+                    List<demosReps> selectList_usuarios = new List<demosReps>();
+                    selectList_usuarios = (from st in usuariosdemo
+                                           select new demosReps
+                                           {
+                                               ID = Convert.ToString(st.CardCode),
+                                               name = st.CardName.ToString() + " - " + st.E_Mail.ToString()
+                                           }).ToList();
+                    ViewBag.reps_demos = selectList_usuarios;
+
+                    List<OCRD> customers = new List<OCRD>();
+                    customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
+                    ViewBag.customers = customers.ToList();
+
+                    //LISTADO DE TIENDAS
+                    var storesd = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.stores = storesd.ToList();
+                }
+                try
+                {
+
+                    using (var CMKdb = new COM_MKEntities())
+                    {
+                        //LISTADO DE CLIENTES
+                        var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                        ViewBag.customerssel = customers.ToList();
+
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.CustomerSelCode = "0";
+                        }
+                        else
+                        {
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+                            ViewBag.CustomersLabel = nameC.CardName;
+                            ViewBag.CustomerSelCode = nameC.CardCode;
+                        }
+
+                        var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+                        else
+                        {
+                            ViewBag.BrandLabel = brandcmk.FirmName;
+                            ViewBag.BrandSelCode = brandcmk.FirmCode;
+                        }
+
+
+                    }
+
+                }
+
+                catch
+                {
+
+                    ViewBag.CustomersLabel = "All Customers";
+                    ViewBag.customerssel = new List<OCRD>();
+                    ViewBag.CustomerSelCode = "0";
+                    ViewBag.BrandLabel = "All Brands";
+                    ViewBag.BrandSelCode = "0";
+                }
+
+
+                return View(demos);
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+        }
+
+        
+
 
         public class representativesVisit
         {
@@ -246,7 +1060,7 @@ namespace comerciamarketing_webapp.Controllers
                     //Datos de visita
                     //Route
                     ViewBag.route = visitsM.ID_route;
-
+                    ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
                     ViewBag.idvisita = id;
 
                     ViewBag.storename = visitsM.store;
@@ -288,6 +1102,11 @@ namespace comerciamarketing_webapp.Controllers
                     else
                     {
                         activities = (from a in db.ActivitiesM where (a.ID_visit == id && a.ID_usuarioEnd == activeuser.ID_usuario) select a).OrderBy(a => a.ID_activitytype).ThenBy(a => a.description).ToList();
+                    }
+
+                    foreach (var item in activities) {
+                        item.query1 = "";
+                        item.query1 = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == item.ID_activity) select detalle.fdescription).FirstOrDefault();
                     }
                     //CHECK OUT POR USUARIO
                     if (activeuser.ID_rol == 9 && activeuser.ID_tipomembresia == 8)
@@ -740,7 +1559,161 @@ namespace comerciamarketing_webapp.Controllers
             public int visitascanceladas { get; set; }
         }
 
-        public ActionResult Calendar(string id, string fstartd, string fendd, string stores, string brands, string spartners)
+        public ActionResult GetEvents(DateTime startf, DateTime endf)
+        {
+            try
+            {
+
+                var rutas = new List<CustomRoutes>();
+
+                using (var db = new dbComerciaEntities())
+                {
+                    
+
+                    rutas = (from a in db.RoutesM
+                             where ((a.date >= startf && a.end_date <= endf) && a.ID_empresa == 2) //EMPRESA POR DEFECTO
+                             select new CustomRoutes
+                             {
+
+                                 ID_route = a.ID_route,
+                                 date = a.date,
+                                 query1 = a.query1,
+                                 query2 = a.query2,
+                                 query3 = a.query3,
+                                 end_date = a.end_date,
+                                 ID_empresa = a.ID_empresa,
+                                 porcentaje = 0,
+                                 visitasfinalizadas = 0,
+                                 visitasagendadas = 0,
+                                 visitascanceladas = 0,
+                                 visitasenprogreso = 0,
+                                 visitasenRuta = (from t1 in a.VisitsM
+                                                  select new CustomVisitforRoutes
+                                                  {
+                                                      ID_visit = t1.ID_visit,
+                                                      ID_customer = t1.ID_customer,
+                                                      customer = t1.customer,
+                                                      ID_store = t1.ID_store,
+                                                      store = t1.store,
+                                                      address = t1.address,
+                                                      city = t1.city,
+                                                      state = t1.state,
+                                                      zipcode = t1.zipcode,
+                                                      visit_date = t1.visit_date,
+                                                      ID_visitstate = t1.ID_visitstate,
+                                                      comments = t1.comments,
+                                                      check_in = t1.check_in,
+                                                      check_out = t1.check_out,
+                                                      end_date = t1.end_date,
+                                                      geoLat = t1.geoLat,
+                                                      geoLong = t1.geoLong,
+                                                      extra_hours = t1.extra_hours,
+                                                      ID_route = t1.ID_route,
+                                                      ID_empresa = t1.ID_empresa,
+                                                      lstUsers = (from t2 in t1.VisitsM_representatives
+                                                                  join t3 in db.Usuarios on t2.ID_usuario equals t3.ID_usuario
+                                                                  select new SimpleUserforRoutes { ID_user = t2.ID_usuario, Name = t3.nombre + " " + t3.apellido, Email = t3.correo, img = "", EstadoVisita = 0 }).ToList()
+                                                  }).ToList()
+                             }).ToList();
+                }
+
+                //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
+                decimal totalRutas = rutas.Count();
+                foreach (var rutait in rutas)
+                {
+
+                    rutait.visitascanceladas = rutait.visitasenRuta.Where(r => r.ID_visitstate == 1 && r.ID_route == rutait.ID_route).Count();
+                    rutait.visitasfinalizadas = rutait.visitasenRuta.Where(r => (r.ID_visitstate == 4 || r.ID_visitstate == 1) && r.ID_route == rutait.ID_route).Count();
+                    rutait.visitasenprogreso = rutait.visitasenRuta.Where(r => r.ID_visitstate == 2 && r.ID_route == rutait.ID_route).Count();
+                    rutait.visitasagendadas = rutait.visitasenRuta.Where(r => r.ID_visitstate == 3 && r.ID_route == rutait.ID_route).Count();
+                    totalRutas = (from e in rutait.visitasenRuta where (e.ID_route == rutait.ID_route) select e).Count();
+
+                    //ViewBag.finished = finishedorCanceled;
+
+                    if (totalRutas != 0)
+                    {
+                        if (rutait.visitasenprogreso != 0 && rutait.visitasfinalizadas != 0)
+                        {
+                            decimal n = (rutait.visitasfinalizadas / totalRutas) * 100;
+                            decimal m = (rutait.visitasenprogreso / totalRutas) * 50;
+                            rutait.porcentaje = (n + m);
+
+                        }
+                        else if (rutait.visitasenprogreso == 0 && rutait.visitasfinalizadas != 0)
+                        {
+
+                            rutait.porcentaje = (((Convert.ToDecimal(rutait.visitasfinalizadas) / totalRutas) * 100));
+                        }
+                        else if (rutait.visitasenprogreso != 0 && rutait.visitasfinalizadas == 0)
+                        {
+                            rutait.porcentaje = (((Convert.ToDecimal(rutait.visitasenprogreso) / totalRutas) * 50));
+                        }
+                        else
+                        {
+                            rutait.query3 = (Convert.ToDecimal(0)).ToString();
+                        }
+
+
+                    }
+                    else
+                    {
+                        rutait.porcentaje = 0;
+                    }
+                }
+
+                List<Routes_calendar> rutaslst = new List<Routes_calendar>();
+                foreach (var item in rutas)
+                {
+                    Routes_calendar rt = new Routes_calendar();
+
+                    rt.title = item.ID_route + " - " + item.query2.ToUpper();
+                    rt.url = "";
+                    rt.start = item.date.ToString("yyyy-MM-dd");
+                    rt.end = item.end_date.AddDays(1).ToString("yyyy-MM-dd");
+                    if (item.porcentaje == 0)
+                    {
+                        rt.className = "block b-t b-t-2x b-warning";//"#2081d6";
+                    }
+                    else if (item.porcentaje > 1 && item.porcentaje < 99)
+                    {
+                        rt.className = "block b-t b-t-2x b-success";//"#2081d6";
+                    }
+                    else if (item.porcentaje > 99)
+                    {
+                        rt.className = "block b-t b-t-2x b-info";//"#2081d6";
+                    }
+                    List<string> reps = new List<string>();
+
+                    foreach (var vis in item.visitasenRuta)
+                    {
+                        foreach (var user in vis.lstUsers)
+                        {
+                            if (!reps.Contains(user.Name))
+                            {
+                                reps.Add(user.Name);
+                            }
+                        }
+                    }
+
+                    rt.porcentaje = item.porcentaje;
+                    rt.lstReps = string.Join(",", reps);
+                    rutaslst.Add(rt);
+                }
+                //}
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                string result = javaScriptSerializer.Serialize(rutaslst);
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            catch
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+        public ActionResult Calendar(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
             Usuarios activeuser = Session["activeUser"] as Usuarios;
             if (activeuser != null)
@@ -775,10 +1748,10 @@ namespace comerciamarketing_webapp.Controllers
                 int empresadef = 2;
                 //filtros de fecha
                 //filtros de fecha //MENSUAL
-                var sunday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                var saturday = sunday.AddMonths(1).AddDays(-1);
-                //var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                //var saturday = sunday.AddDays(6).AddHours(23);
+                //var sunday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                //var saturday = sunday.AddMonths(1).AddDays(-1);
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
@@ -995,6 +1968,53 @@ namespace comerciamarketing_webapp.Controllers
                     //LISTADO DE REPRESENTANTES
                     using (var CMKdb = new COM_MKEntities())
                     {
+                        try
+                        {
+                                //LISTADO DE CLIENTES
+                                var customerslst = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                                ViewBag.customerssel = customerslst.ToList();
+
+                                if (customersel == null || customersel == "" || customersel == "0")
+                                {
+                                    ViewBag.CustomersLabel = "All Customers";
+                                    ViewBag.CustomerSelCode = "0";
+                                }
+                                else
+                                {
+                                    var nameC = customerslst.Where(a => a.CardCode == customersel).FirstOrDefault();
+                                    ViewBag.CustomersLabel = nameC.CardName;
+                                    ViewBag.CustomerSelCode = nameC.CardCode;
+                                }
+
+                                var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                                if (brandsel == null || brandsel == 0)
+                                {
+                                    ViewBag.BrandLabel = "All Brands";
+                                    ViewBag.BrandSelCode = "0";
+                                }
+                                else
+                                {
+                                    ViewBag.BrandLabel = brandcmk.FirmName;
+                                    ViewBag.BrandSelCode = brandcmk.FirmCode;
+                                }
+
+
+                            }
+
+                        
+
+                        catch
+                        {
+
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.customerssel = new List<OCRD>();
+                            ViewBag.CustomerSelCode = "0";
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+
+
                         ViewBag.usuarios = JsonConvert.SerializeObject(myArrList);
                         //LISTADO DE RUTAS
                         var rutass = CMKdb.C_ROUTES.OrderBy(c => c.Code);
@@ -1079,7 +2099,7 @@ namespace comerciamarketing_webapp.Controllers
                     //Filtros viewbag
 
                     ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
-                    ViewBag.filtrofechaend = filtroenddate.ToShortDateString(); ;
+                    ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
                     //*****************
 
                     List<Routes_calendar> rutaslst = new List<Routes_calendar>();
@@ -1132,223 +2152,10 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
-        public class activitiesTypes
-        {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string activitytype { get; set; }
-            public int count { get; set; }
-        }
-        public class Brands
-        {
-            public string id { get; set; }
-            public string name { get; set; }
-            public int count { get; set; }
-        }
-        public ActionResult Reports(string id, string fstartd, string fendd, string stores, string brands, string spartners)
-        {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
-            {
-                //HEADER
-                //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Admin";
-                ViewData["Page"] = "Reports";
-                ViewBag.menunameid = "marketing_menu";
-                ViewBag.submenunameid = "";
-                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
-                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
-                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
-                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
-
-                //ViewData["nameUser"] = 
-                ////NOTIFICATIONS
-                //DateTime now = DateTime.Today;
-                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
-                //ViewBag.lstAlerts = lstAlerts;
-
-                //FIN HEADER
-                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
-                ViewBag.id_customer = id;
-
-                //FILTROS
-                //Fechas
-                DateTime filtrostartdate;
-                DateTime filtroenddate;
-
-                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                var saturday = sunday.AddDays(6).AddHours(23);
-
-                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
-                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
-                //
-                List<activitiesTypes> distinct = new List<activitiesTypes>();
-                List<Brands> distinctBrands = new List<Brands>();
-                int contf = 0;
-
-                    using (var db = new dbComerciaEntities())
-                    {
 
 
 
-                        var lstActivities = (from a in db.ActivitiesM
-                                             join b in db.VisitsM on a.ID_visit equals b.ID_visit
-
-                                             where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished==true)
-                                             //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
-                                             select new activitiesVisitsBrands
-                                             {
-                                                 ID_activity = a.ID_activity,
-                                                 ID_visit = a.ID_visit,
-                                                 ID_form = a.ID_form,
-                                                 formName = a.description,
-                                                 ID_store = b.ID_store,
-                                                 store = b.store,
-                                                 visitDate = b.visit_date,
-                                                 ID_customer = a.ID_customer,
-                                                 Customer = a.Customer,
-                                                 isfinished = a.isfinished,
-                                                 id_usuarioend = a.ID_usuarioEnd,
-                                                 id_usuarioendexternal = a.ID_usuarioEndString,
-                                                 id_activitytype = a.ID_activitytype,
-                                                 ActivityName = "",
-                                                 Comments = a.comments,
-                                                 ID_brand = db.FormsM_details.Where(detalle=>detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c=> c.fvalueText).FirstOrDefault(),
-                                                 Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                                 count = 0
-                                             });
-                        contf = lstActivities.Count();
-
-                        distinct = (from b in lstActivities
-                                    select new activitiesTypes
-                                    {
-                                        id = b.ID_form,
-                                        name = b.formName,
-                                        activitytype = b.ActivityName,
-                                        count = lstActivities
-        .Where(x => x.ID_form == b.ID_form)
-        .Select(x => x).Count()
-                                    }).Distinct().ToList();
-
-
-                    distinctBrands = (from b in lstActivities
-                                      group b by b.ID_brand into g
-                                      where (g.Key !="" || g.Key !=null)
-                                      select new Brands
-                                {
-                                    id = g.Key,
-                                    name = g.Select(m=>m.Brand).FirstOrDefault(),
-                                    count = 0
-                                }).ToList();
-
-                }
-                
-
-
-                ViewBag.lstTypes = distinct;
-                ViewBag.brands = distinctBrands;
-                ViewBag.lstCount = contf;
-
-                return View();
-            }
-            else
-            {
-
-                return RedirectToAction("Index", "Home", new { access = false });
-
-            }
-
-
-        }
-        public ActionResult Reports_details(string id, int report, string fstartd, string fendd, string stores, string brands, string spartners)
-        {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
-            {
-                //HEADER
-                //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Admin";
-                ViewData["Page"] = "Reports";
-                ViewBag.menunameid = "marketing_menu";
-                ViewBag.submenunameid = "";
-                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
-                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
-                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
-                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
-
-                //ViewData["nameUser"] = 
-                ////NOTIFICATIONS
-                //DateTime now = DateTime.Today;
-                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
-                //ViewBag.lstAlerts = lstAlerts;
-
-                //FIN HEADER
-
-
-                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
-                ViewBag.id_customer = id;
-                //FILTROS
-                //Fechas
-                DateTime filtrostartdate;
-                DateTime filtroenddate;
-
-                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-                var saturday = sunday.AddDays(6).AddHours(23);
-
-                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
-                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
-                //
-                using (var db = new dbComerciaEntities())
-                {
-
-
-
-                    var lstActivities = (from a in db.ActivitiesM
-                                         join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                 
-                                         where (a.date >= filtrostartdate && a.date <= filtroenddate)
-                                         //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
-                                         select new activitiesVisitsBrands
-                                         {
-                                             ID_activity = a.ID_activity,
-                                             ID_visit = a.ID_visit,
-                                             ID_form = a.ID_form,
-                                             formName = a.description,
-                                             ID_store = b.ID_store,
-                                             store = b.store,
-                                             visitDate = b.visit_date,
-                                             ID_customer = a.ID_customer,
-                                             Customer = a.Customer,
-                                             isfinished = a.isfinished,
-                                             id_usuarioend = a.ID_usuarioEnd,
-                                             id_usuarioendexternal = a.ID_usuarioEndString,
-                                             id_activitytype = a.ID_activitytype,
-                                             ActivityName = "",
-                                             Comments = a.comments,
-                                             ID_brand = "",
-                                             Brand = (from detalle in db.FormsM_details where(detalle.ID_formresourcetype==13 && detalle.ID_visit==a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                             count = 0
-                                         });
-
-                    ViewBag.ActivityName = lstActivities.Where(a => a.ID_form == report).FirstOrDefault().formName;
-                    ViewBag.ActivityType = lstActivities.Where(a => a.ID_form == report).FirstOrDefault().ActivityName;
-                    ViewBag.lstActivities = lstActivities.Where(a => a.ID_form == report).ToList();
-                }
-
-  
-
-
-
-                return View();
-            }
-            else
-            {
-
-                return RedirectToAction("Index", "Home", new { access = false });
-
-            }
-
-
-        }
+        
+       
     }
 }

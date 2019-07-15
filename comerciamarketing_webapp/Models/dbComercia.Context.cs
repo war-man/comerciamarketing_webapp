@@ -33,7 +33,6 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<Empresas> Empresas { get; set; }
         public virtual DbSet<historial_conexiones> historial_conexiones { get; set; }
         public virtual DbSet<Demo_state> Demo_state { get; set; }
-        public virtual DbSet<Demos> Demos { get; set; }
         public virtual DbSet<form_resource_type> form_resource_type { get; set; }
         public virtual DbSet<Forms> Forms { get; set; }
         public virtual DbSet<Forms_details> Forms_details { get; set; }
@@ -51,5 +50,7 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<Brand_competitors> Brand_competitors { get; set; }
         public virtual DbSet<Items_displays> Items_displays { get; set; }
         public virtual DbSet<promotions_v1> promotions_v1 { get; set; }
+        public virtual DbSet<Demos> Demos { get; set; }
+        public virtual DbSet<FormsM_detailsDemos> FormsM_detailsDemos { get; set; }
     }
 }

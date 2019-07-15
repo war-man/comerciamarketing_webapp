@@ -1,0 +1,119 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!-- .modal -->
+<div id="modal-right_filter" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase">
+                        General filters
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Date</label>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="mdi mdi-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-calendar"></i>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Customer</label>
+                        <select id="customersel" name="customersel" onchange="getBrands()" class="form-control">
+                            @foreach (var item in ViewBag.customerssel)
+                            {
+                                if (item.CardCode == ViewBag.CustomerSelCode)
+                                {
+                                    <option value="@item.CardCode" selected>@item.CardCode - @item.CardName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.CardCode">@item.CardCode - @item.CardName</option>
+                                }
+
+                            }
+                        </select>
+                        <hr />
+                    </div>                    
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Brand</label>
+                        <select id="brandsel"  name="brandsel" class="form-control">
+                        </select>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="click_filter" class="btn btn-info">Apply</button>
+
+                @*<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->
+
+<script>
+    window.onload = function () {
+        $("#customersel").select2();
+        getBrands();
+    };
+
+
+    function getBrands() {
+   
+        var customerId = $("#customersel").val();
+
+        if (customerId == "0") {
+
+        } else {
+            $("#loading").show();
+            $.ajax
+                ({
+                    url: '/Home/Getbrands',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        customerID: customerId
+                    }),
+                    success: function (result) {
+
+                        $("#brandsel").html("");
+                        $("#brandsel").append($('<option></option>').val(0).html("ALL BRANDS"))
+                        $.each($.parseJSON(result), function (i, brands) {
+
+                            $("#brandsel").append
+                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+
+                        })
+
+                         //Verificamos si habia uno previo seleccionado
+            $("#brandsel").val(@ViewBag.BrandSelCode).change();
+                        $("#loading").hide();
+                    },
+                    error: function () {
+                        $("#loading").hide();
+                        alert("Whooaaa! Something went wrong..")
+                    },
+                });
+
+           
+        }
+
+
+
+
+    }
+</script>
+

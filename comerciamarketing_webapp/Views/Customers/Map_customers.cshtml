@@ -3,44 +3,44 @@
     ViewBag.title = "Comercia Marketing - Customers Map";
 }
 
-        <!-- ############ Content START-->
-        <div id="content" class="flex ">
-            <!-- ############ Main START-->
-            <div>
-                <div class="b-b">
-                    <div class="d-flex padding">
-                        <div>
-                            <h2 class="text-md text-highlight">
-                                Map report
-                            </h2>
-
-                        </div>
-                        <span class="flex"></span>
-                        <div>
-
-                        </div>
-                    </div>
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="b-b">
+            <div class="d-flex padding">
+                <div>
+                    <h2 class="text-md text-highlight">
+                        Visits Map View
+                    </h2>
 
                 </div>
-                <!-- / .modal -->
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
+                <span class="flex"></span>
+                <div>
 
-
-                            <!--MAPA-->
-                            <div style="width:100%; height:800px;">
-                                <div id="map-with-marker" class="google-map" style="width: 100%; height: 100%">
-                                    <div class="loading m-4"></div>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
                 </div>
             </div>
-            <!-- ############ Main END-->
+
         </div>
-        <!-- ############ Content END-->
+        <!-- / .modal -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <!--MAPA-->
+                    <div style="width:100%; height:800px;">
+                        <div id="map-with-marker" class="google-map" style="width: 100%; height: 100%">
+                            <div class="loading m-4"></div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+@Html.Partial("~/Views/Shared/FilterControlCustomer.cshtml")

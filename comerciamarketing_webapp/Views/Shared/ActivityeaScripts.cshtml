@@ -373,7 +373,7 @@
         var now = new Date();
 
         $.ajax({
-            url: '/FormsM/Save_activity',
+            url: '/FormsM/Save_activityDemo',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
             cache: false,
@@ -528,7 +528,7 @@
         //});
         var now = new Date();
         $.ajax({
-            url: '/FormsM/Save_activity',
+            url: '/FormsM/Save_activityDemo',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
             cache: false,
@@ -897,7 +897,7 @@
             $('#loading').show();
             setTimeout(function () {
                 $('#loading').hide();
-            }, 2000);
+            }, 3000);
 
             //COPIAMOS LA IMG A UN IMG INPUT
             var url = $(this).val();
@@ -997,9 +997,28 @@
                             fileData.append('idvisita', idvisita);
                             fileData.append('orientation', orientation);
                             //if true rotate to the right
-
+                            $('#maindivprogress_' + ID).show();
                             $.ajax({
-                                url: '/FormsM/UploadFiles',
+                                url: '/FormsM/UploadFilesDemo',
+                                xhr: function () {
+                                    var xhr = new window.XMLHttpRequest();
+                                    xhr.upload.addEventListener("progress", function (evt) {
+                                        if (evt.lengthComputable) {
+                                            var percentComplete = (evt.loaded / evt.total) * 100;
+                                            //Do something with upload progress here
+
+                                            $('#divprogress_' + ID).width(percentComplete + '%');
+                                            $('#imgprogress_' + ID).html(percentComplete.toFixed(2) + "%");
+                                            //console.log(percentComplete);
+                                            //console.log((evt.loaded / evt.total) * 100);
+                                            //$('progress').attr({
+                                            //    value: e.loaded,
+                                            //    max: e.total,
+                                            //});
+                                        }
+                                    }, false);
+                                    return xhr;
+                                },
                                 type: "POST",
                                 contentType: false, // Not to set any content header
                                 processData: false, // Not to process data
@@ -1094,7 +1113,7 @@
 
         var now = new Date();
         $.ajax({
-            url: '/FormsM/Finish_activity',
+            url: '/FormsM/Finish_activityDemo',
             type: 'POST',
             data: { 'id': idvisita, 'lat': lat, 'lng': lng, 'check_out': now.toLocaleString("en-US", { hour12: true }) },
             complete: function () {
@@ -1128,7 +1147,7 @@
 
         var now = new Date();
         $.ajax({
-            url: '/FormsM/Finish_activity',
+            url: '/FormsM/Finish_activityDemo',
             type: 'POST',
             data: { 'id': idvisita, 'lat': "", 'lng': "", 'check_out': now.toLocaleString("en-US", { hour12: true }) },
             complete: function () {
@@ -1136,7 +1155,7 @@
             },
             success: function (result) {
 
-                 var url = '@Url.Action("Details", "VisitsMs", new {id= ViewBag.idvisitareal })';
+                var url = '@Url.Action("Activity_ea", "FormsM", new { codigo= "ACCMK00" + ViewBag.idvisita })';
                 $("#loading").hide();
                     window.location.href = url;
 
@@ -1179,7 +1198,7 @@
         });
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemosDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1222,7 +1241,7 @@
         });
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/Save_activityByitemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1264,7 +1283,7 @@
         });
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1311,7 +1330,7 @@
         });
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1366,7 +1385,7 @@
 
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1421,7 +1440,7 @@
 
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1466,7 +1485,7 @@
 
 
         $.ajax({
-            url: '/FormsM/Save_activityByitem',
+            url: '/FormsM/save_activitybyItemDemos',
             type: 'POST',
             data: { 'id': idvisita, 'objects': objects },
             cache: false,
@@ -1499,6 +1518,7 @@
             $(document).ready(function () {
 
                 $("#modal_demoform").modal('show');
+              //  $("#modal_demoform").removeClass("hide");
             });
         </script>
     }

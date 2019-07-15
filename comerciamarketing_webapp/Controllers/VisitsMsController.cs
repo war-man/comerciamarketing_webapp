@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Xml.Linq;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
 using Ionic.Zip;
@@ -525,7 +526,7 @@ namespace comerciamarketing_webapp.Controllers
                     dCookie.Expires = DateTime.Now.AddMonths(3);
                     Response.Cookies.Add(dCookie);
                 }
-                return RedirectToAction("Details", "VisitsMs", new { id = id });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = id });
 
             }
             else
@@ -1761,6 +1762,199 @@ namespace comerciamarketing_webapp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor, string ID_rep, DateTime time)
+        {
+            try
+            {
+                int IDForm = Convert.ToInt32(ID_form);
+ 
+
+                int esDemoUser = 0;//Variable para identificar si el usuario seleccionado es demo o es un reps
+                esDemoUser = 1;
+
+                //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
+                Demos nuevaActividad = new Demos();
+
+                nuevaActividad.ID_formM = Convert.ToInt32(ID_form);
+                nuevaActividad.ID_Vendor = ID_Vendor;
+                nuevaActividad.vendor = "";
+                nuevaActividad.ID_Store = "";
+                nuevaActividad.store = "";
+                var vendor = (from c in CMKdb.OCRD where (c.CardCode == ID_Vendor) select c).FirstOrDefault();
+                if (vendor != null)
+                {
+                    nuevaActividad.vendor = vendor.CardName;
+                }
+
+
+
+
+                //STORE
+                var storeSAP = (from s in CMKdb.OCRD where (s.CardCode == ID_customer) select s).FirstOrDefault();
+                if (storeSAP != null)
+                {
+                    nuevaActividad.ID_Store = ID_customer;
+                    nuevaActividad.store=storeSAP.CardName;
+                    nuevaActividad.address = storeSAP.MailAddres;
+                    nuevaActividad.city = storeSAP.MailCity;
+                    nuevaActividad.ID_brands = "";
+                    nuevaActividad.Brands = "";
+
+                    if (storeSAP.MailZipCod == null)
+                    {
+                        nuevaActividad.zipcode = "";
+                    }
+                    else { nuevaActividad.zipcode = storeSAP.MailZipCod; }
+
+                    if (storeSAP.State2 == null)
+                    {
+                        nuevaActividad.state = "";
+                    }
+                    else { nuevaActividad.state = storeSAP.State2; }
+                    //GEOLOCALIZACION
+                    try
+                    {
+                        string address = storeSAP.CardName.ToString() + ", " + storeSAP.MailAddres.ToString() + ", " + storeSAP.MailCity.ToString() + ", " + storeSAP.MailZipCod.ToString();
+                        string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                        WebRequest request = WebRequest.Create(requestUri);
+                        WebResponse response = request.GetResponse();
+                        XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                        XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                        XElement locationElement = result.Element("geometry").Element("location");
+                        XElement lat = locationElement.Element("lat");
+                        XElement lng = locationElement.Element("lng");
+                        //NO SE PORQUE LO TIRA AL REVEZ
+                        nuevaActividad.geoLat = lng.Value;
+                        nuevaActividad.geoLong = lat.Value;
+                        //FIN
+
+                    }
+                    catch
+                    {
+                        nuevaActividad.geoLong = "";
+                        nuevaActividad.geoLat = "";
+                    }
+                }
+
+                //FIN
+                nuevaActividad.ID_demostate = 3;
+                nuevaActividad.comments = "";
+                nuevaActividad.check_in = DateTime.Today.Date;
+                nuevaActividad.end_date = DateTime.Today.Date;
+                nuevaActividad.ID_empresa = 2;
+                nuevaActividad.ID_userCreate = 0;
+                nuevaActividad.visit_date = DateTime.Today.Date;
+                nuevaActividad.ID_formM = Convert.ToInt32(ID_form);
+                nuevaActividad.ID_userEnd = 0;
+                nuevaActividad.ID_ExternalUser = ID_rep;
+                nuevaActividad.extra_hours = 0;
+
+                var usuario = (from a in CMKdb.OCRD where (a.CardCode == ID_rep) select a).FirstOrDefault();
+
+                nuevaActividad.UserName = usuario.CardName;
+
+                //guardamos
+                db.Demos.Add(nuevaActividad);
+                db.SaveChanges();
+
+                //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
+                //Guardamos el detalle
+                //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).AsNoTracking().ToList();
+
+                var sql = @"usp_CreateFormDetailDemo @IDVisit, @IDForm";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@IDVisit", nuevaActividad.ID_demo),
+                    new SqlParameter("@IDForm", IDForm));
+
+                //enviamoS correo SI ES UN USUARIO DEMO
+                if (esDemoUser == 1)
+                {
+                    //Obtenemos el nombre de las marcas o brands por cada articulo
+                    var listadeItems = (from d in db.FormsM_detailsDemos where (d.ID_visit == nuevaActividad.ID_demo && d.ID_formresourcetype == 3) select d).ToList();
+
+
+                    foreach (var itemd in listadeItems)
+                    {
+                        itemd.fdescription = (from k in CMKdb.OITM join j in CMKdb.OMRC on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+                    }
+
+                    var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+                    var brandstoshow = "";
+                    int count = 0;
+                    foreach (var items in brands)
+                    {
+                        if (count == 0)
+                        {
+                            try
+                            {
+                                brandstoshow = items.fdescription.ToString();
+                            }
+                            catch
+                            {
+                                brandstoshow = "";
+                            }
+
+                        }
+                        else
+                        {
+                            try
+                            {
+                                brandstoshow += ", " + items.fdescription.ToString();
+                            }
+                            catch
+                            {
+                                brandstoshow = "";
+                            }
+                        }
+                        count += 1;
+                    }
+                    //*******************************
+                    try
+                    {
+                      
+                        //Enviamos correo para notificar
+                        dynamic email = new Email("newdemo_alert");
+                        email.To = usuario.E_Mail.ToString();
+                        email.From = "donotreply@comerciamarketing.com";
+                        email.Vendor = brandstoshow;
+                        email.Date = Convert.ToDateTime(nuevaActividad.visit_date).ToLongDateString();
+                        email.Time = Convert.ToDateTime(nuevaActividad.visit_date).ToLongTimeString();
+                        email.Place = nuevaActividad.store + ", " + nuevaActividad.address + ", " + nuevaActividad.city + ", " + nuevaActividad.state;
+                        //email.link = "https://comerciamarketing.com/Home/Internal" + demos.ID_demo + Server.HtmlDecode("&") + "id_form=" + demos.ID_form;
+                        email.link = "https://comerciamarketing.com/Home/Internal";
+                        email.accesscode = "ACCMK00" + nuevaActividad.ID_demo.ToString();
+                        email.enddate = Convert.ToDateTime(nuevaActividad.visit_date).AddDays(1).ToLongDateString();
+                        email.Send();
+
+                        //FIN email
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                //************
+
+                TempData["exito"] = "Demo created successfully.";
+                return RedirectToAction("Demos", "Admin", null);
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Demos", "Admin", null);
+            }
+
+
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateActivity(string ID_form, string ID_customer, string ID_visita, string ID_rep, DateTime time)
         {
             try
@@ -2213,11 +2407,11 @@ namespace comerciamarketing_webapp.Controllers
                         if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)//Administrador
                         {
                             TempData["advertencia"] = "Something wrong happened, try again.";
-                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                         }
                         else {
                             TempData["advertencia"] = "Something wrong happened, try again.";
-                            return RedirectToAction("Detailsa", "VisitsMs", new { id = IDVisit });
+                            return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDVisit });
                         }
 
                     }
@@ -2452,12 +2646,12 @@ namespace comerciamarketing_webapp.Controllers
                     if (modulo == "visits")
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDV });
                     }
                     else
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("DetailsC", "VisitsMs", new { id = IDV, ID_customer = IDcustomer });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDV, ID_customer = IDcustomer });
                     }
 
                 }
@@ -2793,12 +2987,12 @@ namespace comerciamarketing_webapp.Controllers
                     if (modulo == "visits")
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDV });
                     }
                     else
                     {
                         TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                        return RedirectToAction("Details", "VisitsMs", new { id = IDV });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = IDV });
                     }
 
                 }
@@ -4218,7 +4412,7 @@ namespace comerciamarketing_webapp.Controllers
                     else
                     {
                         TempData["exito"] = "No emails contacts.";
-                        return RedirectToAction("Detailsa", "VisitsMs", new { id = visit.ID_visit });
+                        return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = visit.ID_visit });
                     }
 
 
@@ -4229,12 +4423,12 @@ namespace comerciamarketing_webapp.Controllers
                 {
 
                     TempData["advertenca"] = "Something went wrong, please try again. " + e.Message;
-                    return RedirectToAction("Detailsa", "VisitsMs", new { id = visit.ID_visit });
+                    return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = visit.ID_visit });
                 }
 
 
                 TempData["exito"] = "Emails sent successfully.";
-                return RedirectToAction("Detailsa", "VisitsMs", new { id=visit.ID_visit });
+                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id=visit.ID_visit });
             }
             else
             {
@@ -4261,6 +4455,224 @@ namespace comerciamarketing_webapp.Controllers
             public string geoLong { get; set; }
             public string geoLat { get; set; }
         }
+        public ActionResult Demo_preview(int? id)
+        {
+
+            var demo_header = (from a in db.Demos where (a.ID_demo == id) select a).ToList();
+
+            if (demo_header.Count > 0)
+
+            {
+
+
+                //Existen datos
+                //Buscamos los detalles
+                //3 - Products | 4- Products samples | 6 - Input_text | 10- GIFT
+                var demo_details = (from b in db.FormsM_detailsDemos where (b.ID_visit == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+                var result = demo_details
+                        .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
+                        .Select(cl => new FormsM_detailsDemos
+                        {
+                            ID_details = cl.First().ID_details,
+                            ID_formresourcetype = cl.First().ID_formresourcetype,
+                            fsource = cl.First().fsource,
+                            fdescription = cl.First().fdescription,
+                            fvalue = cl.Sum(c => c.fvalue),
+                            ID_formM = cl.First().ID_formM,
+                            ID_visit = cl.First().ID_visit,
+                            original = cl.First().original,
+                            obj_order = cl.First().obj_order,
+                            obj_group = cl.First().obj_group
+                        }).ToList();
+
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemosPreview.rpt"));
+
+                rd.SetDataSource(demo_header);
+
+                rd.Subreports[0].SetDataSource(result);
+
+                //Verificamos si existen fotos en el demo (MAX 3 fotos)
+                var fotos = (from c in db.FormsM_detailsDemos where (c.ID_visit == id && c.ID_formresourcetype == 5) select c).ToList();
+
+                int fotosC = fotos.Count();
+
+
+
+
+
+                if (fotosC == 3)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+                    if (fotos[2].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg3", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    }
+
+               
+
+                }
+                else if (fotosC == 2)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+
+                    rd.SetParameterValue("urlimg3", "");
+
+
+                }
+                else if (fotosC == 1)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+
+                    rd.SetParameterValue("urlimg2", "");
+
+                    rd.SetParameterValue("urlimg3", "");
+
+               
+
+                }
+                else
+                {
+
+                    rd.SetParameterValue("urlimg1", "");
+                    rd.SetParameterValue("urlimg2", "");
+                    rd.SetParameterValue("urlimg3", "");
+             
+                }
+
+
+                //Verificams si existe firma electronica
+                var firma = (from d in db.FormsM_details where (d.ID_visit == id && d.ID_formresourcetype == 9) select d).ToList();
+
+                int firmaC = firma.Count();
+
+
+
+
+                if (firmaC == 1)
+                {
+
+                    string data = firma[0].fsource;
+                    if (data != "")
+                    {
+                        var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+                        var binData = Convert.FromBase64String(base64Data);
+
+                        using (var streamf = new MemoryStream(binData))
+                        {
+
+                            Bitmap myImage = new Bitmap(streamf);
+
+                            // Assumes myImage is the PNG you are converting
+                            using (var b = new Bitmap(myImage.Width, myImage.Height))
+                            {
+                                b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+
+                                using (var g = Graphics.FromImage(b))
+                                {
+                                    g.Clear(Color.White);
+                                    g.DrawImageUnscaled(myImage, 0, 0);
+                                }
+
+                                // Now save b as a JPEG like you normally would
+
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod.jpg");
+                                b.Save(path, ImageFormat.Jpeg);
+
+
+                                rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+                            }
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimgsign", "");
+
+                    }
+
+                }
+                else
+                {
+                    rd.SetParameterValue("urlimgsign", "");
+                }
+
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+
+
+                return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+        }
+
         public ActionResult PreviewDemoResumeByCustomer(string id)
         {
             //DateTime today_init_hour = DateTime.Today;

@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.title = "Comercia Marketing - Calendar Customers Routes";
+}
+
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="b-b">
+            <div class="d-flex padding">
+                <div>
+                    <h2 class="text-md text-highlight">
+                        Scheduled Routes
+                    </h2>
+                    <small class="text-muted">@DateTime.Today.ToLongDateString()</small>
+                    <a class="badge badge-sm badge-pill b-a mx-1">Today</a>
+                </div>
+                <span class="flex"></span>
+                <div>
+
+                </div>
+            </div>
+            <div class="nav-active-border b-success px-3">
+                <ul class="nav text-sm" role="tablist">
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="dayview" data-toggle="tab">Day</a>
+                        </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link active" id="weekview" data-toggle="tab">Week</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="monthview" data-toggle="tab">Month</a>
+                        </li>*@
+                </ul>
+            </div>
+        </div>
+
+        <div id="fullcalendar" data-plugin="fullCalendar">
+            <div class="loading m-4"></div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+<!-- .modal -->
+<div id="modal-right" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl" style="width:800px;">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase" id="nameofroute">
+
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group row row-sm">
+                            <label class="col-sm-3 col-form-label">Date</label>
+                            <div class="col-sm-9">
+                                <label class="col-form-label" id="daterouteshow"></label>
+                            </div>
+
+                        </div>
+                        <div class="form-group row row-sm">
+                            <label class="col-sm-3 col-form-label">Estimated completion date</label>
+                            <div class="col-sm-9">
+                                <label class="col-form-label" id="dateendrouteshow"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3" id="repsroute">
+
+                    </div>
+                    <div class="col-md-4" id="brandtags">
+
+                        @*<button type="button" class="btn btn-success" data-dismiss="modal">Save</button>*@
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="scrollbar col-md-6" id="style-11">
+                        <div class="force-overflow">
+
+                            <div id="hiddenDiv" style="display:none">
+                                @*<a href="#" id="idroutedel" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-IDr=""><i class="close ml-auto mdi mdi-close-circle-outline"></i>Eliminar Ruta</a>*@
+
+
+                                <div class="d-flex align-items-center">
+                                    <small class="font-weight-bold mr-2 mb-0">Visits</small>
+                                    <span class="badge bg-info-lt" id="countVisits">
+                                        0
+                                    </span>
+
+                                </div>
+                                <div class="list list-row" id="appendDivVisits">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="width:100%; height:400px;">
+                            <div id="map-with-marker" class="google-map" style="width: 100%; height: 100%">
+                                <div class="loading m-4"></div>
+                            </div>
+                        </div>
+                        <div class="row row-sm">
+                            <div class="col-4">
+                                <small class="text-muted">Distance</small>
+                                <div class="mt-2 font-weight-500" id="distanceroute"></div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Driving time</small>
+                                <div class="text-highlight mt-2 font-weight-500" id="durationroute"></div>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">Duration</small>
+                                <div class="mt-2 font-weight-500" id="waypointroute"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+@Html.Partial("~/Views/Shared/FilterControlCustomer.cshtml")

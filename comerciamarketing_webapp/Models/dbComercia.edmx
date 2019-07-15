@@ -104,18 +104,28 @@
           <Property Name="ID_demo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_Vendor" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="vendor" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_brands" Type="varchar(max)" />
+          <Property Name="Brands" Type="varchar(max)" />
           <Property Name="ID_Store" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="store" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="visit_date" Type="datetime" />
-          <Property Name="ID_usuario" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar(max)" />
+          <Property Name="city" Type="varchar" MaxLength="250" />
+          <Property Name="zipcode" Type="varchar" MaxLength="50" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="visit_date" Type="datetime" Nullable="false" />
+          <Property Name="ID_userCreate" Type="int" />
+          <Property Name="ID_userEnd" Type="int" />
+          <Property Name="ID_ExternalUser" Type="varchar" MaxLength="50" />
           <Property Name="ID_demostate" Type="int" />
-          <Property Name="comments" Type="text" />
-          <Property Name="ID_form" Type="int" />
-          <Property Name="end_date" Type="datetime" />
-          <Property Name="check_in" Type="datetime" />
+          <Property Name="comments" Type="varchar(max)" />
+          <Property Name="ID_formM" Type="int" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="check_in" Type="datetime" Nullable="false" />
           <Property Name="geoLong" Type="varchar" MaxLength="50" />
           <Property Name="geoLat" Type="varchar" MaxLength="50" />
-          <Property Name="extra_hours" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="extra_hours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ID_empresa" Type="int" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -175,10 +185,32 @@
           <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_formresourcetype" Type="int" Nullable="false" />
           <Property Name="fsource" Type="text" Nullable="false" />
-          <Property Name="fdescription" Type="text" Nullable="false" />
+          <Property Name="fdescription" Type="varchar(max)" />
           <Property Name="fvalue" Type="int" Nullable="false" />
           <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="fvalueText" Type="text" Nullable="false" />
+          <Property Name="fvalueText" Type="varchar(max)" />
+          <Property Name="ID_formM" Type="int" Nullable="false" />
+          <Property Name="ID_visit" Type="int" Nullable="false" />
+          <Property Name="original" Type="bit" Nullable="false" />
+          <Property Name="obj_order" Type="int" Nullable="false" />
+          <Property Name="obj_group" Type="int" Nullable="false" />
+          <Property Name="idkey" Type="int" Nullable="false" />
+          <Property Name="parent" Type="int" Nullable="false" />
+          <Property Name="query1" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="query2" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormsM_detailsDemos">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_formresourcetype" Type="int" Nullable="false" />
+          <Property Name="fsource" Type="varchar(max)" Nullable="false" />
+          <Property Name="fdescription" Type="varchar(max)" />
+          <Property Name="fvalue" Type="int" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="fvalueText" Type="varchar(max)" />
           <Property Name="ID_formM" Type="int" Nullable="false" />
           <Property Name="ID_visit" Type="int" Nullable="false" />
           <Property Name="original" Type="bit" Nullable="false" />
@@ -256,9 +288,9 @@
           </Key>
           <Property Name="ID_route" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="date" Type="datetime" Nullable="false" />
-          <Property Name="query1" Type="text" Nullable="false" />
+          <Property Name="query1" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="query2" Type="text" Nullable="false" />
-          <Property Name="query3" Type="text" Nullable="false" />
+          <Property Name="query3" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="end_date" Type="datetime" Nullable="false" />
           <Property Name="ID_empresa" Type="int" Nullable="false" />
         </EntityType>
@@ -382,30 +414,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Demos__ID_form__08B54D69">
-          <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
-          <End Role="Demos" Type="Self.Demos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Forms">
-              <PropertyRef Name="ID_form" />
-            </Principal>
-            <Dependent Role="Demos">
-              <PropertyRef Name="ID_form" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Forms_det__ID_fo__0D7A0286">
-          <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
-          <End Role="Forms_details" Type="Self.Forms_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Forms">
-              <PropertyRef Name="ID_form" />
-            </Principal>
-            <Dependent Role="Forms_details">
-              <PropertyRef Name="ID_form" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Forms_det__ID_fo__0E6E26BF">
           <End Role="form_resource_type" Type="Self.form_resource_type" Multiplicity="0..1" />
           <End Role="Forms_details" Type="Self.Forms_details" Multiplicity="*" />
@@ -518,6 +526,7 @@
           <EntitySet Name="Forms_details" EntityType="Self.Forms_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormsM" EntityType="Self.FormsM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormsM_details" EntityType="Self.FormsM_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormsM_detailsDemos" EntityType="Self.FormsM_detailsDemos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_displays" EntityType="Self.Items_displays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="promotions_v1" EntityType="Self.promotions_v1" Schema="dbo" store:Type="Tables" />
@@ -534,14 +543,6 @@
           <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="Self.FK__Demos__ID_demost__04E4BC85">
             <End Role="Demo_state" EntitySet="Demo_state" />
             <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Demos__ID_form__08B54D69" Association="Self.FK__Demos__ID_form__08B54D69">
-            <End Role="Forms" EntitySet="Forms" />
-            <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Forms_det__ID_fo__0D7A0286" Association="Self.FK__Forms_det__ID_fo__0D7A0286">
-            <End Role="Forms" EntitySet="Forms" />
-            <End Role="Forms_details" EntitySet="Forms_details" />
           </AssociationSet>
           <AssociationSet Name="FK__Forms_det__ID_fo__0E6E26BF" Association="Self.FK__Forms_det__ID_fo__0E6E26BF">
             <End Role="form_resource_type" EntitySet="form_resource_type" />
@@ -664,18 +665,9 @@
           </AssociationSet>
           <EntitySet Name="historial_conexiones" EntityType="dbComerciaModel.historial_conexiones" />
           <EntitySet Name="Demo_state" EntityType="dbComerciaModel.Demo_state" />
-          <EntitySet Name="Demos" EntityType="dbComerciaModel.Demos" />
           <EntitySet Name="form_resource_type" EntityType="dbComerciaModel.form_resource_type" />
           <EntitySet Name="Forms" EntityType="dbComerciaModel.Forms" />
           <EntitySet Name="Forms_details" EntityType="dbComerciaModel.Forms_details" />
-          <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="dbComerciaModel.FK__Demos__ID_demost__04E4BC85">
-            <End Role="Demo_state" EntitySet="Demo_state" />
-            <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Demos__ID_form__08B54D69" Association="dbComerciaModel.FK__Demos__ID_form__08B54D69">
-            <End Role="Forms" EntitySet="Forms" />
-            <End Role="Demos" EntitySet="Demos" />
-          </AssociationSet>
           <AssociationSet Name="FK__Forms_det__ID_fo__0E6E26BF" Association="dbComerciaModel.FK__Forms_det__ID_fo__0E6E26BF">
             <End Role="form_resource_type" EntitySet="form_resource_type" />
             <End Role="Forms_details" EntitySet="Forms_details" />
@@ -714,6 +706,12 @@
           <EntitySet Name="Brand_competitors" EntityType="dbComerciaModel.Brand_competitors" />
           <EntitySet Name="Items_displays" EntityType="dbComerciaModel.Items_displays" />
           <EntitySet Name="promotions_v1" EntityType="dbComerciaModel.promotions_v1" />
+          <EntitySet Name="Demos" EntityType="dbComerciaModel.Demos" />
+          <AssociationSet Name="FK__Demos__ID_demost__04E4BC85" Association="dbComerciaModel.FK__Demos__ID_demost__04E4BC85">
+            <End Role="Demo_state" EntitySet="Demo_state" />
+            <End Role="Demos" EntitySet="Demos" />
+          </AssociationSet>
+          <EntitySet Name="FormsM_detailsDemos" EntityType="dbComerciaModel.FormsM_detailsDemos" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -816,28 +814,6 @@
           <Property Name="sdescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demo_state" ToRole="Demos" />
         </EntityType>
-        <EntityType Name="Demos">
-          <Key>
-            <PropertyRef Name="ID_demo" />
-          </Key>
-          <Property Name="ID_demo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_Vendor" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="vendor" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="visit_date" Type="DateTime" Precision="3" />
-          <Property Name="ID_usuario" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="ID_demostate" Type="Int32" />
-          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ID_form" Type="Int32" />
-          <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
-          <NavigationProperty Name="Forms" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Demos" ToRole="Forms" />
-          <Property Name="end_date" Type="DateTime" Precision="3" />
-          <Property Name="check_in" Type="DateTime" Precision="3" />
-          <Property Name="geoLong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="geoLat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="extra_hours" Type="Decimal" Precision="18" Scale="0" />
-        </EntityType>
         <EntityType Name="form_resource_type">
           <Key>
             <PropertyRef Name="ID_formresourcetype" />
@@ -852,7 +828,6 @@
           </Key>
           <Property Name="ID_form" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Demos" Relationship="dbComerciaModel.FK__Demos__ID_form__08B54D69" FromRole="Forms" ToRole="Demos" />
           <NavigationProperty Name="Forms_details" Relationship="dbComerciaModel.FK__Forms_det__ID_fo__0D7A0286" FromRole="Forms" ToRole="Forms_details" />
         </EntityType>
         <EntityType Name="Forms_details">
@@ -872,30 +847,6 @@
           <Property Name="obj_order" Type="Int32" />
           <Property Name="obj_group" Type="Int32" />
         </EntityType>
-        <Association Name="FK__Demos__ID_demost__04E4BC85">
-          <End Type="dbComerciaModel.Demo_state" Role="Demo_state" Multiplicity="0..1" />
-          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Demo_state">
-              <PropertyRef Name="ID_demostate" />
-            </Principal>
-            <Dependent Role="Demos">
-              <PropertyRef Name="ID_demostate" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Demos__ID_form__08B54D69">
-          <End Type="dbComerciaModel.Forms" Role="Forms" Multiplicity="0..1" />
-          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Forms">
-              <PropertyRef Name="ID_form" />
-            </Principal>
-            <Dependent Role="Demos">
-              <PropertyRef Name="ID_form" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Forms_det__ID_fo__0E6E26BF">
           <End Type="dbComerciaModel.form_resource_type" Role="form_resource_type" Multiplicity="0..1" />
           <End Type="dbComerciaModel.Forms_details" Role="Forms_details" Multiplicity="*" />
@@ -1037,9 +988,9 @@
           </Key>
           <Property Name="ID_route" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="query1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="query2" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="query3" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="query3" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="VisitsM" Relationship="dbComerciaModel.FK__VisitsM__ID_rout__18B6AB08" FromRole="RoutesM" ToRole="VisitsM" />
           <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ID_empresa" Type="Int32" Nullable="false" />
@@ -1078,10 +1029,10 @@
           <Property Name="ID_details" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_formresourcetype" Type="Int32" Nullable="false" />
           <Property Name="fsource" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="fdescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fvalue" Type="Int32" Nullable="false" />
           <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="fvalueText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fvalueText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ID_formM" Type="Int32" Nullable="false" />
           <Property Name="ID_visit" Type="Int32" Nullable="false" />
           <Property Name="original" Type="Boolean" Nullable="false" />
@@ -1209,6 +1160,71 @@
           <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Demos">
+          <Key>
+            <PropertyRef Name="ID_demo" />
+          </Key>
+          <Property Name="ID_demo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Vendor" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="vendor" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_brands" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Brands" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="zipcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="visit_date" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="ID_userCreate" Type="Int32" />
+          <Property Name="ID_userEnd" Type="Int32" />
+          <Property Name="ID_ExternalUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_demostate" Type="Int32" />
+          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_formM" Type="Int32" />
+          <Property Name="end_date" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="check_in" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="geoLong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="geoLat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="extra_hours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ID_empresa" Type="Int32" />
+          <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Demos__ID_demost__04E4BC85">
+          <End Type="dbComerciaModel.Demo_state" Role="Demo_state" Multiplicity="0..1" />
+          <End Type="dbComerciaModel.Demos" Role="Demos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Demo_state">
+              <PropertyRef Name="ID_demostate" />
+            </Principal>
+            <Dependent Role="Demos">
+              <PropertyRef Name="ID_demostate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FormsM_detailsDemos">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_formresourcetype" Type="Int32" Nullable="false" />
+          <Property Name="fsource" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fvalue" Type="Int32" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="fvalueText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_formM" Type="Int32" Nullable="false" />
+          <Property Name="ID_visit" Type="Int32" Nullable="false" />
+          <Property Name="original" Type="Boolean" Nullable="false" />
+          <Property Name="obj_order" Type="Int32" Nullable="false" />
+          <Property Name="obj_group" Type="Int32" Nullable="false" />
+          <Property Name="idkey" Type="Int32" Nullable="false" />
+          <Property Name="parent" Type="Int32" Nullable="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="query2" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1305,27 +1321,6 @@
               <MappingFragment StoreEntitySet="Demo_state">
                 <ScalarProperty Name="sdescription" ColumnName="sdescription" />
                 <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Demos">
-            <EntityTypeMapping TypeName="dbComerciaModel.Demos">
-              <MappingFragment StoreEntitySet="Demos">
-                <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
-                <ScalarProperty Name="geoLat" ColumnName="geoLat" />
-                <ScalarProperty Name="geoLong" ColumnName="geoLong" />
-                <ScalarProperty Name="check_in" ColumnName="check_in" />
-                <ScalarProperty Name="end_date" ColumnName="end_date" />
-                <ScalarProperty Name="ID_form" ColumnName="ID_form" />
-                <ScalarProperty Name="comments" ColumnName="comments" />
-                <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
-                <ScalarProperty Name="ID_usuario" ColumnName="ID_usuario" />
-                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
-                <ScalarProperty Name="store" ColumnName="store" />
-                <ScalarProperty Name="ID_Store" ColumnName="ID_Store" />
-                <ScalarProperty Name="vendor" ColumnName="vendor" />
-                <ScalarProperty Name="ID_Vendor" ColumnName="ID_Vendor" />
-                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1603,6 +1598,60 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="ID_datap" ColumnName="ID_datap" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demos">
+            <EntityTypeMapping TypeName="dbComerciaModel.Demos">
+              <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
+                <ScalarProperty Name="geoLat" ColumnName="geoLat" />
+                <ScalarProperty Name="geoLong" ColumnName="geoLong" />
+                <ScalarProperty Name="check_in" ColumnName="check_in" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="ID_formM" ColumnName="ID_formM" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ID_demostate" ColumnName="ID_demostate" />
+                <ScalarProperty Name="ID_ExternalUser" ColumnName="ID_ExternalUser" />
+                <ScalarProperty Name="ID_userEnd" ColumnName="ID_userEnd" />
+                <ScalarProperty Name="ID_userCreate" ColumnName="ID_userCreate" />
+                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="store" ColumnName="store" />
+                <ScalarProperty Name="ID_Store" ColumnName="ID_Store" />
+                <ScalarProperty Name="Brands" ColumnName="Brands" />
+                <ScalarProperty Name="ID_brands" ColumnName="ID_brands" />
+                <ScalarProperty Name="vendor" ColumnName="vendor" />
+                <ScalarProperty Name="ID_Vendor" ColumnName="ID_Vendor" />
+                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormsM_detailsDemos">
+            <EntityTypeMapping TypeName="dbComerciaModel.FormsM_detailsDemos">
+              <MappingFragment StoreEntitySet="FormsM_detailsDemos">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="idkey" ColumnName="idkey" />
+                <ScalarProperty Name="obj_group" ColumnName="obj_group" />
+                <ScalarProperty Name="obj_order" ColumnName="obj_order" />
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+                <ScalarProperty Name="ID_formM" ColumnName="ID_formM" />
+                <ScalarProperty Name="fvalueText" ColumnName="fvalueText" />
+                <ScalarProperty Name="fvalueDecimal" ColumnName="fvalueDecimal" />
+                <ScalarProperty Name="fvalue" ColumnName="fvalue" />
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="fsource" ColumnName="fsource" />
+                <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
+                <ScalarProperty Name="ID_details" ColumnName="ID_details" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

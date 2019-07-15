@@ -3,231 +3,91 @@
     ViewBag.Title = "Comercia Marketing - RoutesM details";
 }
 
-<div class="container-fluid page-body-wrapper">
-    <div class="main-panel">
-        <div class="content-wrapper">
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                @*<div class="page-title">
 
-            <div class="container">
-
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10 text-right">
-
-                            <a href="@Url.Action("RoutesM_calendar", "Home")" class="btn btn-info">Back</a>
-                        </div>
-                    </div>
+                    <a href="@Url.Action("Dashboard", "SalesRepresentatives")" class="btn btn-info mt-3 mb-4">Back</a>
+                </div>*@
+                <div class="flex"></div>
+                <div>
+                    @*<h2 class="text-md text-highlight">Visits</h2>
+                        <small class="text-muted"></small>*@
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-around">
-                            <div class="profile-info d-flex align-items-center">
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding sr">
+                <div class="card">
+                    <div class="card-header bg-img p-0 no-border" data-stellar-background-ratio="0.1" data-plugin="stellar">
+                        <div class="bg-light r-2x no-r-b">
+                            <div class="d-md-flex">
+                                <div class="p-4">
+                                    <div class="d-flex">
+                                        <a href="#">
+                                            <span class="avatar w-64">
+                                                <img src="~/Content/newstyle2/images/shutterstock_251629510-3-768x537.jpg" alt=".">
+                                                <i class="on"></i>
+                                            </span>
+                                        </a>
+                                        <div class="mx-3">
+                                            <h5 class="mt-2">Route: @ViewBag.routename</h5>
+                                            <div class="text-fade text-sm">
+                                                <span class="m-r">Date: @ViewBag.date</span>
 
-                                <div class="wrapper pl-4">
-                                    <h2 class="display-3 text-warning">@ViewBag.routename</h2>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <img class="img-sm rounded" src="~/Content/newstyle2/images/samples/schedule.png" alt="profile">
-                                    <div class="d-flex flex-column ml-2">
-                                        <span class="d-flex flex-column">
-                                            <small class="mb-0"><div class="badge badge-warning"></div>SCHEDULED</small>
-                                            <p class="font-weight-bold">@ViewBag.onhold</p>
-                                        </span>
-                                        <small>@ViewBag.onholdP.ToString("F") % total</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <img class="img-sm rounded" src="~/Content/newstyle2/images/samples/smartphone.png" alt="profile">
-                                    <div class="d-flex flex-column ml-2">
-                                        <span class="d-flex flex-column">
-                                            <small class="mb-0"><div class="badge badge-success"></div>IN PROGRESS</small>
-                                            <p class="font-weight-bold">@ViewBag.inprogress</p>
-                                        </span>
-                                        <small>@ViewBag.inprogressP.ToString("F") % total</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <img class="img-sm rounded" src="~/Content/newstyle2/images/samples/web-design.png" alt="profile">
-                                    <div class="d-flex flex-column ml-2">
-                                        <span class="d-flex flex-column">
-                                            <small class="mb-0"><div class="badge badge-primary"></div>FINISHED</small>
-                                            <p class="font-weight-bold">@ViewBag.finished</p>
-                                        </span>
-                                        <small>@ViewBag.finishedP.ToString("F") % total</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <img class="img-sm rounded" src="~/Content/newstyle2/images/samples/browser.png" alt="profile">
-                                    <div class="d-flex flex-column ml-2">
-                                        <span class="d-flex flex-column">
-                                            <small class="mb-0"><div class="badge badge-danger"></div>CANCELED</small>
-                                            <p class="font-weight-bold">@ViewBag.canceled</p>
-                                        </span>
-                                        <small>@ViewBag.canceledP.ToString("F") % total</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--MAPA-->
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- <a href="#map-with-marker" id="click_animation">Iniciar animacion</a>-->
-                                <div class="map-container">
-                                    <div id="map-with-marker" class="google-map"></div>
-
-                                    <div class="col-md-4 grid-margin stretch-card " style="position: absolute; top: 100px;display:none;" id="RouteDetails">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <button type="button" class="close" aria-label="Close" id="close_divmap">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <div class="row mt-4">
-                                                    <div class="col-md-12">
-                                                        <h5>Visit details</h5>
-
-                                                        <ul class="nav nav-tabs tab-simple-styled" role="tablist">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link active" id="tab-3-1" data-toggle="tab" href="#home-3-1" role="tab" aria-controls="home-3-1" aria-selected="true"><i class="mdi mdi-weather-night"></i>Resume</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" id="tab-3-2" data-toggle="tab" href="#profile-3-2" role="tab" aria-controls="profile-3-2" aria-selected="false"><i class="mdi mdi-tag-multiple"></i>Comments</a>
-                                                            </li>
-                                                            <!--
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" id="tab-3-3" data-toggle="tab" href="#contact-3-3" role="tab" aria-controls="contact-3-3" aria-selected="false"><i class="mdi mdi-border-outside"></i>Timeline</a>
-                                                            </li>-->
-                                                        </ul>
-                                                        <div class="tab-content tab-content-basic">
-                                                            <div class="tab-pane fade show active" id="home-3-1" role="tabpanel" aria-labelledby="tab-3-1">
-                                                                <p class="mb-0" id="map_id"></p>
-                                                                <p id="map_customername"></p>
-                                                                <p id="map_storename"></p>
-                                                                <p id="map_date"></p>
-                                                                <p id="map_representatives"></p>
-                                                            </div>
-                                                            <div class="tab-pane fade" id="profile-3-2" role="tabpanel" aria-labelledby="tab-3-2">
-                                                                <p id="map_comment"></p>
-                                                            </div>
-                                                            <!--<div class="tab-pane fade" id="contact-3-3" role="tabpanel" aria-labelledby="tab-3-3">
-
-                                                                <div class="card" style="height: 500px; bottom:10px;display:block">
-                                                                    <div class="card-body" style="height: 500px;overflow: auto; bottom:10px;display:block">
-
-                                                                        <ul class="bullet-line-list pb-3" id="timelinemap">
-                                                                            <li>
-                                                                                <div class="d-flex align-items-center justify-content-between">
-                                                                                    <div class="d-flex">
-
-                                                                                        <div class="ml-3">
-                                                                                            <h6 class="mb-0">Check in</h6>
-                                                                                            <small class="text-muted">
-                                                                                                Start
-                                                                                            </small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <small class="d-block mb-0">02</small>
-                                                                                        <small class="text-muted d-block">pm</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="d-flex align-items-center justify-content-between">
-                                                                                    <div class="d-flex">
-
-                                                                                        <div class="ml-3">
-                                                                                            <h6 class="mb-0">Form</h6>
-                                                                                            <small class="text-muted">
-                                                                                                Data saved
-                                                                                            </small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <small class="d-block mb-0">03</small>
-                                                                                        <small class="text-muted d-block">pm</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="d-flex align-items-center justify-content-between">
-                                                                                    <div class="d-flex">
-
-                                                                                        <div class="ml-3">
-                                                                                            <h6 class="mb-0">Form</h6>
-                                                                                            <small class="text-muted">
-                                                                                                Data saved
-                                                                                            </small>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <small class="d-block mb-0">04</small>
-                                                                                        <small class="text-muted d-block">pm</small>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-
-
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>-->
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
+                                            <br />
+
                                         </div>
                                     </div>
+                                </div>
+                                <span class="flex"></span>
+                                <div class="align-items-center d-flex p-4">
+                                    <div class="toolbar">
 
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                        {
+                                            <a href="#" style="padding: 20px 12px;margin-left:0%; margin-top:2px;" class="btn  btn-success" data-toggle="modal" data-target="#createModal">Add visit<i class="mdi mdi-plus"></i></a>
+
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="p-3">
+                        <div class="d-flex">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" data-toggle="tab" data-target="#tab_1">Visits</a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_2">Route</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_3">Location</a>
+                                </li>*@
+
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <!--FIN-->
-                <!--VISITS LIST-->
                 <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Visits list</h4>
-                                <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add visit<i class="mdi mdi-plus"></i></button>
-                                <div class="row">
-
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active card" id="tab_1">
+                                @if (ViewBag.visitas.Count == 0)
+                                {
+                                    <label>No activities to show</label>
+                                    <hr />
+                                }
+                                else
+                                {
+                                    
                                     <table id="order-listing" class="table-striped">
                                         <thead>
                                             <tr>
@@ -253,20 +113,13 @@
                                                     </td>
 
                                                     <td data-label="Store">
-                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
-                                                    <a class="text-black" href="@Url.Action("Detailsa", "VisitsMs", new { id=itemVisita.ID_visit})">
-                                                        <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                        <span class="text-primary">@itemVisita.address</span>
-                                                    </a>
-}
-else
-{
-                                                    <a class="text-black" href="@Url.Action("Detailsa", "VisitsMs", new { id=itemVisita.ID_visit})">
-                                                        <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                        <span class="text-primary">@itemVisita.address</span>
-                                                    </a>
-}
+
+                                                            <a class="text-black" href="@Url.Action("Visit_details", "Admin", new { id=itemVisita.ID_visit})">
+                                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                <span class="text-primary">@itemVisita.address</span>
+                                                            </a>
+                                                        
+   
 
                                                     </td>
                                                     <td data-label="Representatives">@itemVisita.city &nbsp;</td>
@@ -297,54 +150,46 @@ else
                                                         }
 
                                                     </td>
-                                                    @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-                                                    {
+        
                                                         <td data-label="Actions">
                                                             &nbsp;
-                                                            <a href="#" class="count online ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@itemVisita.ID_visit" data-description="@itemVisita.store">
-                                                                <i class="close ml-auto mdi mdi-close-circle-outline"></i>
+                                                            <a href="#" class="btn btn-sm btn-outline-danger ml-auto" data-toggle="modal" data-target="#deleteModal" data-ID="@itemVisita.ID_visit" data-description="@itemVisita.store">
+                                                                Delete
 
                                                             </a>
                                                         </td>
-                                                    }
+                                                    
                                                 </tr>
                                             }
                                         </tbody>
                                     </table>
 
-                                </div>
+                                 
+                                }
+
+
+
+                            @*</div>
+                            <div class="tab-pane fade" id="tab_2">
+
                             </div>
+                            <div class="tab-pane fade" id="tab_3">
+
+                            </div>*@
                         </div>
                     </div>
                 </div>
-                <!--CALENDAR-->
-                @*<div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="col-md-12">
-                                        <div id="calendar"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
-
-                @Html.Partial("~/Views/Shared/Footer2.cshtml")
             </div>
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:../../partials/_footer.html -->
-        <!-- partial -->
     </div>
-    <!-- main-panel ends -->
+    <!-- ############ Main END-->
 </div>
-<!-- page-body-wrapper ends -->
+<!-- ############ Content END-->
 <!--CRESTE USER DATA STARTS-->
 <div class="modal fade" id="createModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            @using (Html.BeginForm("CreateVisitRoute", "Home", FormMethod.Post))
+            @using (Html.BeginForm("CreateVisitRouteR2", "Home", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
@@ -359,7 +204,7 @@ else
                         <label for="recipient-name" class="col-form-label">Store:</label>
 
                         <div class="form-group">
-                            <select class="js-example-basic-single" name="id_store" id="id_store" style="width:100%">
+                            <select class="form-control" name="id_store" id="id_store" style="width:100%">
                                 <option value="">Select a store</option>
                                 @foreach (var itemStores in ViewBag.stores)
                                 {
@@ -387,7 +232,7 @@ else
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            @using (Html.BeginForm("DeleteVisit", "Home", FormMethod.Post))
+            @using (Html.BeginForm("DeleteVisitR2", "Home", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
@@ -401,7 +246,7 @@ else
                     <div class="form-group">
                         <label class="col-form-label">Are you sure you want to delete this Visit?</label><br />
                         <strong><label id="descriptionD" class="col-form-label"></label></strong>
-                        <input type="text" id="ID_visitD" name="ID_visitD" hidden />
+                        <input type="text" id="ID_visitD" name="ID_visitD" hidden/>
 
                     </div>
 

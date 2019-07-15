@@ -4,6 +4,8 @@
 }
 
 <!-- build:css ../assets/css/site.min.css -->
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css" />
 <link rel="stylesheet" href="~/Content/BasikTemplate/assets/css/bootstrap.css" type="text/css" />
 <link rel="stylesheet" href="~/Content/BasikTemplate/assets/css/theme.css" type="text/css" />
 <link rel="stylesheet" href="~/Content/BasikTemplate/assets/css/style.css" type="text/css" />
@@ -16,8 +18,20 @@
 
 <!--MAPS-->
 <link rel="stylesheet" href="~/Content/BasikTemplate/libs/jqvmap/dist/jqvmap.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/css/multiple-select.css">
+
+
 <link rel="stylesheet" href="~/Content/BasikTemplate/assets/css/loader.css">
 
 <!--Nestable-->
 <link rel="stylesheet" href="~/Content/newstyle2/css/nestable.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.3/css/lightslider.min.css">
+<!--DATE RANGE-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+@if (ViewBag.title == "Comercia Marketing - Customers Gallery" || ViewBag.title == "Comercia Marketing - Admin Gallery")
+{
+
+    <link rel="stylesheet" href="~/Content/BasikTemplate/assets/content-filter-master/css/style.css"> <!-- Resource style -->
+}
+

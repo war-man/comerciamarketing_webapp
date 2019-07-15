@@ -9,10 +9,10 @@
     <div>
         <div class="page-hero page-container " id="page-hero">
             <div class="padding d-flex">
-                @*<div class="page-title">
+                <div class="page-title">
 
                     <a href="@Url.Action("RoutesM_details", "Home", new { id= ViewBag.route})" class="btn btn-info mt-3 mb-4">Back</a>
-                </div>*@
+                </div>
                 <div class="flex"></div>
                 <div>
                     @*<h2 class="text-md text-highlight">Visits</h2>
@@ -183,7 +183,7 @@ else
                                                             <div class="card-body">
                                                                 <div class="card-text">
                                                                     <small class="d-block">Customer: @activity.Customer</small>
-                                                                    <small class="d-block">Brand: </small>
+                                                                    <small class="d-block">Brand: @activity.query1</small>
 
                                                                     @*<small class="d-block">Assigned rep : @activity.ID_customer</small>*@
 
@@ -422,7 +422,7 @@ else
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select id="ID_form" name="ID_form" class="js-example-basic-single" style="width:100%" onChange='getActivity()'>
+                                            <select id="ID_form" name="ID_form" class="form-control" style="width:100%" onChange='getActivity()'>
                                                 <option value="0">Select an activity</option>
                                                 <optgroup label="Demos">
                                                     @foreach (var form in ViewBag.activeforms)
@@ -433,32 +433,34 @@ else
                                                         }
                                                     }
                                                 </optgroup>
-                                                <optgroup label="Forms"></optgroup>
-                                                @foreach (var form in ViewBag.activeforms)
-                                                {
-                                                    if (form.ID_activity == 1)
-                                                    {
-                                                        <option value="@form.ID_form">@form.name</option>
-                                                    }
-                                                }
-                                                <optgroup label="Audits"></optgroup>
-                                                @foreach (var form in ViewBag.activeforms)
-                                                {
-                                                    if (form.ID_activity == 2)
-                                                    {
-                                                        <option value="@form.ID_form">@form.name</option>
-                                                    }
-                                                }
+                                                <optgroup label="Forms">
+                                                    @foreach (var form in ViewBag.activeforms)
+    {
+        if (form.ID_activity == 1)
+        {
+                                                <option value="@form.ID_form">@form.name</option>
+}
+}
+                                                </optgroup>
+                                                <optgroup label="Audits">
+                                                    @foreach (var form in ViewBag.activeforms)
+    {
+        if (form.ID_activity == 2)
+        {
+                                                <option value="@form.ID_form">@form.name</option>
+}
+}
+                                                </optgroup>
                                                 <optgroup label="Sales Order">
                                                     @foreach (var form in ViewBag.activeforms)
-                                                    {
-                                                        if (form.ID_activity == 3)
-                                                        {
-                                                            <option value="@form.ID_form">@form.name</option>
-                                                        }
-                                                    }
+    {
+        if (form.ID_activity == 3)
+        {
+                                                <option value="@form.ID_form">@form.name</option>
+}
+}
                                                 </optgroup>
-                                            </select>
+</select>
                                         </div>
                                     </div>
                                 </div>
@@ -479,7 +481,7 @@ else
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_rep" id="ID_rep" class="js-example-basic-single" style="width:100%" onChange='getCustomers()'>
+                                            <select name="ID_rep" id="ID_rep" class="form-control" style="width:100%" onChange='getCustomers()'>
                                                 <option id="0">Select a representative</option>
                                                 <optgroup label="Sales Representatives">
 
@@ -508,7 +510,7 @@ else
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <select name="ID_customer" id="ID_customer" class="js-example-basic-single" style="width:100%"></select>
+                                            <select name="ID_customer" id="ID_customer" class="form-control" style="width:100%"></select>
                                         </div>
                                     </div>
                                 </div>

@@ -971,7 +971,7 @@ namespace comerciamarketing_webapp.Controllers
                     //Enviamos correo para notificar
                     dynamic email = new Email("email_confirmationReps");
                     email.To = usuarios.correo.ToString();
-                    email.From = "customercare@comerciamarketing.com";
+                    email.From = "donotreply@comerciamarketing.com";
                     email.Nombrecliente = usuarios.nombre + " " + usuarios.apellido;
                     email.Correocliente = usuarios.correo;
                     email.Passwordcliente = usuarios.contrasena;

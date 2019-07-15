@@ -1,603 +1,560 @@
-﻿
+﻿@using Recaptcha.Web.Mvc
 @{
-    ViewBag.Title = "Comercia Marketing";
-    Layout = null;
-}
+        ViewBag.Title = "Comercia Marketing";
+        Layout = null;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Comercia Marketing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Comercia Marketing</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--
     =========================
     ICONS
     ========================= -->
-    <!--IONICONS-->
-    <link href="https://cdn.jsdelivr.net/npm/ionicons@4.5.8/dist/css/ionicons.min.css" rel="stylesheet">
-    <!-- FONTAWESOME -->
-    <link rel="stylesheet" href="~/Content/landingpage/css/fontawesome-all.min.css">
-    <!--
+        <!--IONICONS-->
+        <link href="https://cdn.jsdelivr.net/npm/ionicons@4.5.8/dist/css/ionicons.min.css" rel="stylesheet">
+        <!-- FONTAWESOME -->
+        <link rel="stylesheet" href="~/Content/landingpage/css/fontawesome-all.min.css">
+        <!--
     =========================
     THIRD PARTY PLUGINS
     ========================= -->
-    <!-- MANIFIC POPUPS-->
-    <link rel="stylesheet" href="~/Content/landingpage/css/magnific-popup.css">
-    <!-- OWL CAROUSEL-->
-    <link rel="stylesheet" href="~/Content/landingpage/css/owl.carousel.min.css">
-    <!--SWIPER CAROUSEL-->
-    <link rel="stylesheet" href="~/Content/landingpage/css/swiper.min.css">
-    <!-- BOOTSTRAP -->
-    <link rel="stylesheet" href="~/Content/landingpage/css/bootstrap.min.css">
+        <!-- MANIFIC POPUPS-->
+        <link rel="stylesheet" href="~/Content/landingpage/css/magnific-popup.css">
+        <!-- OWL CAROUSEL-->
+        <link rel="stylesheet" href="~/Content/landingpage/css/owl.carousel.min.css">
+        <!--SWIPER CAROUSEL-->
+        <link rel="stylesheet" href="~/Content/landingpage/css/swiper.min.css">
+        <!-- BOOTSTRAP -->
+        <link rel="stylesheet" href="~/Content/landingpage/css/bootstrap.min.css">
 
-    <!--
+        <!--
     =========================
     MAIN STYLES
     ========================= -->
-    <!-- MAIN STYLES-->
-    <link rel="stylesheet" href="~/Content/landingpage/css/styles.css">
-    <!-- RESPONSIVE -->
-    <link rel="stylesheet" href="~/Content/landingpage/css/responsive.css">
-    <!--
+        <!-- MAIN STYLES-->
+        <link rel="stylesheet" href="~/Content/landingpage/css/styles.css">
+        <!-- RESPONSIVE -->
+        <link rel="stylesheet" href="~/Content/landingpage/css/responsive.css">
+
+        <!--
+
     =========================
     FAVICONS
     ========================= -->
-    <link rel="shortcut icon" href="/favicon.ico"><!-- 16x16 size favicon -->
-    <!-- Hotjar Tracking Code for Fourtyfive.co -->
-    <script>
-        (function (h, o, t, j, a, r) {
-            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-            h._hjSettings = { hjid: 970565, hjsv: 6 };
-            a = o.getElementsByTagName('head')[0];
-            r = o.createElement('script'); r.async = 1;
-            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-    </script>
-</head>
-<body class="x-hidden has-sticky-header">
+        <link rel="shortcut icon" href="~/Content/newstyle2/images/favicon-16x16.png" /><!-- 16x16 size favicon -->
 
-    <!--
-    =========================
-    PRELOADER
-    ========================= -->
-    <div id="loading">
-        <div class="ripple ripple1"></div>
-        <div class="ripple ripple2"></div>
-        <div class="ripple ripple3"></div>
-        <div class="ripple ripple4"></div>
-    </div>
-    <!--END PRELOADER-->
-    <nav class="navbar navbar-expand-lg fixed-top custom-menu custom-menu__light">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="~/Content/landingpage/images/demo/landing/LogoPNG-1.png" style="width:110;height: 50px;" alt="Image" class="logo-md">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="menu-icon__circle">
-                </span>
-                <span class="menu-icon">
-                    <span class="menu-icon__bar"></span>
-                    <span class="menu-icon__bar"></span>
-                    <span class="menu-icon__bar"></span>
-                </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-lg-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#overview">
-                            Overview
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#clients">clients</a>
-                    </li>
+        <link rel="stylesheet" href="~/Content/landingpage/css/slippry.css">
+        <!-- Hotjar Tracking Code for Fourtyfive.co -->
+        <script>
+            (function (h, o, t, j, a, r) {
+                h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+                h._hjSettings = { hjid: 970565, hjsv: 6 };
+                a = o.getElementsByTagName('head')[0];
+                r = o.createElement('script'); r.async = 1;
+                r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        </script>
+    </head>
+    <body class="x-hidden">
 
-                </ul>
-                <div class="custom-menu__right">
-                    <a href="@Url.Action("Index","Home")" class="btn btn-primary btn-pills">Login</a>
-                    <p class="assistive-text d-md-none">Click on "Login" button to enter in our web application </p>
+        <!--
+        =========================
+        PRELOADER
+        ========================= -->
+        <div id="loading">
+            <div class="ripple ripple1"></div>
+            <div class="ripple ripple2"></div>
+            <div class="ripple ripple3"></div>
+            <div class="ripple ripple4"></div>
+        </div>
+        <!--END PRELOADER-->
+        <nav class="navbar navbar-expand-lg fixed-top custom-menu custom-menu__light" style="background-color: #451C60 !important;">
+
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="~/Content/landingpage/images/main/LogoPNG-1blanco.png" style="width:150px;height: 50px;" alt="Image" class="logo-md">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="menu-icon__circle">
+                    </span>
+                    <span class="menu-icon">
+                        <span class="menu-icon__bar"></span>
+                        <span class="menu-icon__bar"></span>
+                        <span class="menu-icon__bar"></span>
+                    </span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-lg-auto" style="padding-top:20px;">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#overview">
+                                QUIÉNES SOMOS
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">SERVICIOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#clients">CLIENTES</a>
+                        </li>
+
+                    </ul>
+                    <div class="custom-menu__right">
+                        <a href="@Url.Action("Index","Home")" class="btn btn-comercia" style="font-family: Gotham; font-size:11px;margin-bottom:-14px;">INICIAR SESIÓN</a>
+                        <p class="assistive-text d-md-none">Clic en el boton "Iniciar sesión" para entrar a nuestra aplicación web</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-    <!--
-    =========================
-    HERO SECTION
-    ========================= -->
-    <header id="hero" class="hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-12 col-sm-6">
-                    <div class="hero-content">
-                        <div class="hero-title__group">
-                            <div class="hero-title">
-                                <h2>We evaluate and potentialize latin products in the US market.</h2>
-                            </div>
-                            <div class="Hero--Subtitle">
-                                <p class="lead">We want to make a difference in the way your brands reach their customer.</p>
-                            </div>
+
+        </nav>
+        <!--
+        =========================
+        HERO SECTION
+        ========================= -->
+        <header id="hero" class="hero" style="background-image: url('/Content/landingpage/images/main/Headers/header01.jpg');background-repeat: no-repeat;
+  background-size:cover;">
+            <div class="container" style="padding-top:190px;">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-6 ml-auto" style="top:-80px">
+                        <div class="hero-figure">
+                            <img src="~/Content/landingpage/images/main/icons/1x/Asset%206.png" class="img-fluid w-100" alt="">
                         </div>
-                        <div class="hero-cta-group">
-                            <form action="" class="hero-form cta__large">
+                    </div>
+                    <div class="col-12 col-md-6 maincontentheader" style="padding-left: 20px">
+                        <div class="hero-content">
+                            <div class="hero-title__group">
+                                <div class="hero-title">
+                                    <h2 style="color:white;font-family: Gotham">EVALUAMOS Y POTENCIALIZAMOS PRODUCTOS LATINOS EN EL MERCADO DE ESTADOS UNIDOS.</h2>
+                                </div>
+                                <div class="Hero--Subtitle">
+                                    <p class="lead" style="color:white;font-family: Gotham;font-weight: 300 !important">Queremos marcar la diferencia en la manera en la que nuestras marcas llegan a sus clientes.</p>
+                                </div>
+                            </div>
+                            <div class="hero-cta-group">
+
                                 <div class="input-group">
-                                    <label for="intro-email" class="sr-only">Email</label>
-                                    <input type="email" class="form-control" id="intro-email" placeholder="Enter your email">
-                                    <button type="submit" class="btn btn-secondary">Contact Us</button>
+                                    <a href="#contactus" class="btn btn-comercia" style="font-family: Gotham; font-size:11px;">CONTÁCTENOS</a>
                                 </div>
                                 <!--<span class="assistive-text">14-day FREE trial - no credit card needed</span>-->
-                            </form>
+
+                                <div style="padding-top: 50px;font-family: Gotham; font-size:24px; color:white;font-weight: 100;">
+                                    FOLLOW US
+                                    <a href="https://www.facebook.com/ComerciaMarketing/" target="_blank" title="Facebook"><img src="~/Content/landingpage/images/main/icons/1x/Asset%204.png" style="padding-left:20px;"></a>
+                                    <a href="https://www.instagram.com/comerciamarketing/" target="_blank" title="Instagram"><img src="~/Content/landingpage/images/main/icons/1x/Asset%205.png" style="padding-left:20px;"></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-5 ml-auto">
-                    <div class="hero-figure">
-                        <img src="~/Content/landingpage/images/demo/hero-1-2.png" class="img-fluid w-100" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
 
-
-    <!--
-        =========================
-        APP SCREENS SLIDER
-        ========================= -->
-    <section id="overview" class="section-spacer">
-        <div class="container">
-            <div class="section-screens__inner">
-                <div class="row">
-                    <div class="col-md-8 mx-auto">
-                        <header class="section-header pt-100 text-center">
-                            <h2 class="section-title">Who we are</h2>
-                            <p class="lead">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus aut reiciendis
-                                praesentium.
-                            </p>
-
-                        </header>
-                    </div>
-                </div>
-
-                <div class="swiper-container screen-slider">
-                    <div class="screen-slider-wrapper swiper-wrapper ">
-                        <div class="screen-slider__item swiper-slide">
-                            <img src="~/Content/landingpage/images/demo/landing/FB%2520ESTUDIOS%2520DE%2520MERCADO.png.jpg" alt="Image">
-                        </div>
-                        <div class="screen-slider__item swiper-slide">
-                            <img src="~/Content/landingpage/images/demo/landing/FB%2520Campa%C3%B1a.png.jpg" alt="Image">
-                        </div>
-                    </div>
-                    <!-- If we need navigation buttons or just delete them-->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
                 </div>
             </div>
-
-
-
-        </div>
-    </section>
-    <!--
-    =========================
-    FEATURES OVERVIEW
-    ========================= -->
-    <section id="hiw" class="section-spacer bg-very__gray">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-sm-6">
-                    <div class="feature-list-image">
-                        <img src="~/Content/landingpage/images/demo/featured-images/feature-image-4.png" class="img-fluid" alt="Image">
-                    </div>
-                </div>
-                <div class="col-sm-5 ml-auto">
-                    <div class="feature-list-wrapper">
-                        <div class="content-header">
-                            <h2 class="content-title">COMPETENT PROFESSIONAL STAFF</h2>
-                            <p>
-                                We have taken on new projects, expanded our professional staff, and have made plans to enhance our ongoing programs.
-                            </p>
-                        </div>
-                        <ul class="list list-unstyled list-circle">
-                            <li>
-                                <span>Competent professional staff</span>
-                            </li>
-                            <li>
-                                <span></span>
-                            </li>
-                            <li>
-                                <span>Data collected in our cloud storage</span>
-                            </li>
-                            <li>
-                                <span>Reports</span>
-                            </li>
-                        </ul>
-                        <!--<a href="#" class="btn btn-link btn-link--secondary">
-                          Contact us
-                          <i class="icon ion-ios-arrow-round-forward"></i>
-                        </a>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section-spacer">
-        <div class="container">
-            <div class="row flex-column-reverse flex-sm-row align-items-center">
-                <div class="col-sm-5 mr-auto">
-                    <div class="feature-list-wrapper">
-                        <div class="content-header">
-                            <h2 class="content-title">TECHNOLOGY</h2>
-                            <p>
-                                We developed a web platform that sits at the core of all key business processes. Using new technologies we improve the way we get all merchandising information of your brand in the US market and then we put them in analytics dashboards.
-                            </p>
-                        </div>
-                        <ul class="list list-circle">
-                            <li>
-                                <span>Easy and powerful web app</span>
-                            </li>
-                            <li>
-                                <span>Responsive design</span>
-                            </li>
-                            <li>
-                                <span>Merchandising Reports</span>
-                            </li>
-                            <li>
-                                <span>24/7 Supports</span>
-                            </li>
-                        </ul>
-
-                        <!--<a href="#" class="btn btn-link btn-link--secondary">
-                          Explore all main characteristics
-                          <i class="icon ion-ios-arrow-round-forward"></i>
-                        </a>-->
-
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="feature-list-image">
-                        <img src="~/Content/landingpage/images/demo/featured-images/feature-image-3.png" class="img-fluid" alt="Image">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--
-    =========================
-    pricing TABLE
-    ========================= -->
-    <!--
-    =========================
-    CLIENTS LOGO
-    ========================= -->
-    <section id="services" class="section-spacer pricing-section bg-very__gray">
-        <div class="container">
-            <header class="section-header text-center">
-                <h2 class="section-title">Our Services</h2>
-                <p class="section-subtitle">We have a high range of services for you</p>
-            </header>
-
-            <div class="row">
-                <div class="col-md-4 col-12">
-                    <div class="feature-card">
-                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__primary">
-                            <i class="icon ion-ios-keypad"></i>
-                        </div>
-                        <div class="feature-card__body">
-                            <h4 class="feature-title">Merchandising</h4>
-                            <p>
-                                Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug
-                            </p>
-                            <a href="#" class="btn btn-link btn-link--secondary">
-                                Learn more
-                                <i class="icon ion-ios-arrow-forward"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="feature-card">
-                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
-                            <i class="icon ion-ios-apps"></i>
-                        </div>
-                        <div class="feature-card__body">
-                            <h4 class="feature-title">Campain design</h4>
-                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
-
-                            <a href="#" class="btn btn-link btn-link--secondary">
-                                Learn more
-                                <i class="icon ion-ios-arrow-forward"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="feature-card m-0">
-                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
-                            <i class="icon ion-ios-bug"></i>
-                        </div>
-                        <div class="feature-card__body">
-                            <h4 class="feature-title">In store sampling</h4>
-                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
-
-                            <a href="#" class="btn btn-link btn-link--secondary">
-                                Learn more
-                                <i class="icon ion-ios-arrow-forward"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <div class="feature-card">
-                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
-                            <i class="icon ion-ios-apps"></i>
-                        </div>
-                        <div class="feature-card__body">
-                            <h4 class="feature-title">Brand activation</h4>
-                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
-
-                            <a href="#" class="btn btn-link btn-link--secondary">
-                                Learn more
-                                <i class="icon ion-ios-arrow-forward"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <div class="feature-card m-0">
-                        <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
-                            <i class="icon ion-ios-bug"></i>
-                        </div>
-                        <div class="feature-card__body">
-                            <h4 class="feature-title">Market research</h4>
-                            <p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>
-
-                            <a href="#" class="btn btn-link btn-link--secondary">
-                                Learn more
-                                <i class="icon ion-ios-arrow-forward"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!--
-    =========================
-    testimonialS WITH SLIDER
-    ========================= -->
-    <section id="clients" class="section-spacer pb-0 section--clients">
-        <div class="container">
-
-
-            <header class="section-header text-center w-100">
-                <h2 class="section-title">Trusted by most fast-forwarding brands</h2>
-            </header>
-            <div class="row">
-                <div class="col-12 mx-auto">
-                    <div class="client-logo__wrapper">
-                        <a href="" class="client-logo">
-                            <img src="~/Content/landingpage/images/demo/landing/customers/2CEBBA44.PNG" alt="Image">
-                        </a>
-                        <a href="" class="client-logo">
-                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-mahler.jpg" alt="Image">
-                        </a>
-                        <a href="" class="client-logo">
-                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Goya.jpg" alt="Image">
-                        </a>
-                        <a href="" class="client-logo">
-                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Cremimex.jpg" alt="Image">
-                        </a>
-                        <a href="" class="client-logo">
-                            <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Klass.png" alt="Image">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--
-    =========================
-    FAQs
-    =========================
-    <section id="faqs" class="section-spacer section-faq">
-      <div class="container">
-        <header class="section-header text-center">
-          <h2 class="section-title">Frequently Asked Questions</h2>
         </header>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Life time support?</h5>
-                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
-                  be
-                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Is there limit users for each plans?</h5>
-                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
-                  be
-                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Can I cancel my monthly subscriptions?</h5>
-                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
-                  be
-                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Do I have to pay for all users?</h5>
-                <p>Hiss and stare at nothing then run suddenly away. Lick human with sandpaper tongue paw at your fat belly
-                  be
-                  a nyan cat, feel great about it, be annoying 24/7 poop rainbows in litter box all day.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mt-40 text-center">
-          <a href="#" class="btn btn-primary btn-lg">Talk to our team</a>
-        </div>
-      </div>
-    </section>-->
-    <!--
-    =========================
-    CALL TO ACTION MODULE
-    ========================= -->
-    <section id="try" class="section-spacer text-left pb-0 pt-50">
-        <div class="container">
-            <div class="callout">
-                <div class="callout-content">
-                    <div class="Callout--Header">
-                        <h2>Need help?</h2>
-                        <p class="lead">If you require information about any of our services or products, please contact us via our Customer Service Center.</p>
-                    </div>
-                </div>
-                <div class="callout-footer ml-lg-auto">
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter your email">
-                            <button type="submit" class="btn btn-primary">Contact us</button>
-                        </div>
-                    </form>
-                    <!--<p class="d-block text-sm">14 days free - no credit card required</p>-->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--
-    =========================
-    FOOTER
-    ========================= -->
-    <footer class="section-spacer footer-section">
-        <div class="container">
-            <div class="row flex-column-reverse flex-sm-row flex-lg-row">
-                <div class="col-md-4 col-12">
-                    <div class="footer-widget first-of-footer-widget">
 
-                        <p>Copyright &copy; 2019 Comercia Marketing. All Rights Reserved.</p>
-                        <a href="" class="d-block mb-10">+1(615)928-9641</a>
-                        <a href="">customercare@comerciamarketing.com</a>
-                        <ul class="social-list__inline mt-10">
-                            <li>
-                                <a href="">
-                                    <i class="icon ion-logo-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <i class="icon ion-logo-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <i class="icon ion-logo-linkedin"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <i class="icon ion-logo-instagram"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <i class="icon ion-logo-youtube"></i>
-                                </a>
-                            </li>
-                        </ul>
+
+
+        <!--
+            =========================
+            APP SCREENS SLIDER
+            ========================= -->
+        <div id="overview"></div>
+        <ul id="demo1">
+            <li><a href="#slide1"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Competitividad.png"></a></li>
+            <li><a href="#slide2"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Cuidamosdenuestragente.png"></a></li>
+            <li><a href="#slide3"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Disciplina.png"> </a></li>
+            <li><a href="#slide3"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Innovacion.png"> </a></li>
+            <li><a href="#slide3"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Motivacion.png"> </a></li>
+        </ul>
+
+
+        <!--
+        =========================
+        FEATURES OVERVIEW
+        ========================= -->
+        <section class="section-spacer equipoprofesional" style="background-image: url('/Content/landingpage/images/main/Headers/header03.jpg');background-repeat: no-repeat;
+  background-size:cover;background-position:center">
+         
+            <div class="container" style="padding-top: 40px;">
+                <div class="row flex-column-reverse flex-sm-row align-items-center">
+                    <div class="col-sm-6">
+                        <div class="feature-list-wrapper">
+                            <div class="content-header">
+                                <h2 class="content-title tituloequipo" style="font-family: Gotham;font-weight:bold; color:#652D90; font-size: 36px;">EQUIPO PROFESIONAL A TU DISPOSICIÓN</h2><br>
+                                <p class="textoequipo" style="font-family: Gotham; color:#626366; font-size: 25px;line-height: 1.2">
+                                    Hemos tomado nuevos retos expandiendo nuestro personal, con profesionales competentes capaces de hacer sobresalir nuestras marcas.
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8 col-sm-10">
-                    <div class="row">
-                        <div class="col-md-4 col-6">
-                            <div class="footer-widget">
-                                <h4 class="footer-widget__title">Company</h4>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="">Home</a>
-                                    </li>
-                                    <li>
-                                        <a href="#overview">Overview</a>
-                                    </li>
-                                    <li>
-                                        <a href="#testimonial">testimonials</a>
-                                    </li>
-                                    <li>
-                                        <a href="#pricing">pricing</a>
-                                    </li>
-                                    <li>
-                                        <a href="#faq">FAQs</a>
-                                    </li>
-                                </ul>
+                <div class="row flex-column-reverse flex-sm-row align-items-center">
+                    <ul class="list firstlist" style="margin-top:70px;list-style:none;margin-left: -32px;">
+                        <li style="padding-bottom: 8px;">
+                            <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                            <span class="spanfirst" style="font-family: Gotham; font-weight:bold; font-size: 16px;color:#652D90">PERSONAL CALIFICADO</span>
+                        </li>
+                        <li style="padding-bottom: 8px;">
+                            <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                            <span class="spanfirst" style="font-family: Gotham;font-weight:bold; font-size: 16px;color:#652D90">ATENCIÓN EN LOS ESTADOS DE DISTRIBUCIÓN</span>
+                        </li>
+                        <li style="padding-bottom: 8px;">
+                            <div class="">
+                                <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                                <span class="spanfirst" style="font-family: Gotham;font-weight:bold; font-size: 16px;color:#652D90">COLOCACIÓN DE PRODUCTOS EN BASE A VISIBILIDAD ESTRATEGICA</span>
+                            </div>
+                    
+                        </li>
+                        <li style="padding-bottom: 8px;">
+                            <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                            <span class="spanfirst" style="font-family: Gotham;font-weight:bold; font-size: 16px;color:#652D90">ENTRE OTROS</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="hiw" class="section-spacer" style="background-image: url('/Content/landingpage/images/main/Headers/header04.jpg');background-repeat: no-repeat;
+  background-size:cover;background-position:center">
+            <div class="container">
+                <div class="row align-items-center">
+
+                    <div class="col-sm-8 ml-auto">
+                        <div class="feature-list-wrapper">
+                            <div class="content-header">
+                                <h2 class="content-title titulotecnologias" style="font-family: Gotham;font-weight:bold;color:#E5ED25;; font-size: 36px;">APLICACIÓN DE NUEVAS TECNOLOGÍAS</h2><br /><br />
+                                <p class="textotecnologias" style="font-family: Gotham;color:#FFF;; font-size: 25px;line-height: 1.2">
+                                    Siempre tratamos de estar a la vanguardia, es por eso que desarrollamos nuestra propia plataforma web la cual, es el núcleo de todos los proceso claves de nuestro negocio. Utilizando estas herramientas mejoramos la forma de hacer mercadeo para tu marca en el mercado de Estados Unidos.
+                                </p>
+                            </div><br>
+                            <ul class="list" style="list-style:none;margin-left: -42px;">
+                                <li style="padding-bottom: 8px;">
+                                    <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                                    <span class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">APLICACIÓN WEB FÁCIL E INTUITIVA PARA SU USO</span>
+                                </li>
+                                <li style="padding-bottom: 8px;">
+                                    <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                                    <span class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">ACCESO DESDE CUALQUIER DISPOSITIVO CON CONEXIÓN A INTERNET</span>
+                                </li>
+                                <li style="padding-bottom: 8px;">
+                                    <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                                    <span  class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">REPORTES DE MERCADEO Y EXPORTACIÓN DE INFORMACIÓN</span>
+                                </li>
+                                <li style="padding-bottom: 8px;">
+                                    <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
+                                    <span class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">SOPORTE 24/7</span>
+                                </li>
+                            </ul>
+                            <!--<a href="#" class="btn btn-link btn-link--secondary">
+                              Contact u
+                              <i class="icon ion-ios-arrow-round-forward"></i>
+                            </a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        =========================
+        pricing TABLE
+        ========================= -->
+        <!--
+        =========================
+        CLIENTS LOGO
+        ========================= -->
+        <section id="services" class="section-spacer pricing-section bg-very__gray">
+            <div class="container">
+                <header class="section-header text-center">
+                    <h1 class="section-title titleservicios" style="font-family: Gotham;font-weight:bold;color:#652D90">NUESTROS SERVICIOS</h1>
+                    <p class="section-subtitle subservicios" style="font-family: Gotham; font-size: 24px;font-weight: 100">Tenemos un alto rango de servicios para tu marca</p>
+                </header>
+
+                <div class="row">
+                    <div class="col-md-4 col-12 divservicios">
+                        <div class="feature-card">
+                            <div class="u-icon u-icon__circle u-icon__lg bg-dimped__primary">
+                                <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%201.png">
+                            </div>
+                            <div class="feature-card__body">
+                                <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">MERCADEO GENERAL</h4>
+
+                                <!--<a href="#" class="btn btn-link btn-link--secondary">Learn more
+                                  <i class="icon ion-ios-arrow-forward"></i>
+                                </a>-->
                             </div>
                         </div>
-                        <div class="col-md-4 col-6">
-                            <div class="footer-widget">
-                                <h4 class="footer-widget__title">Developers</h4>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="">Migrations</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">API (Comming soon)</a>
-                                    </li>
-                                </ul>
+                    </div>
+                    <div class="col-md-4 col-12 divservicios" >
+                        <div class="feature-card">
+                            <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
+                                <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%202.png">
+                            </div>
+                            <div class="feature-card__body">
+                                <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">DISEÑO DE CAMPAÑAS</h4>
+
+
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="footer-widget">
-                                <h4 class="footer-widget__title">Support</h4>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="">Help Center</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Privacy Policy</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Terms and Service</a>
-                                    </li>
-                                </ul>
+                    </div>
+                    <div class="col-md-4 col-12 divservicios">
+                        <div class="feature-card m-0">
+                            <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
+                                <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%203.png">
+                            </div>
+                            <div class="feature-card__body">
+                                <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">MUESTRA EN TIENDAS</h4>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row divserviciosrow">
+                    <div class="col-md-6 col-12 divservicios">
+                        <div class="feature-card">
+                            <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
+                                <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%201.png">
+                            </div>
+                            <div class="feature-card__body">
+                                <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">ACTIVACIÓN DE MARCAS</h4>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 divservicios">
+                        <div class="feature-card m-0">
+                            <div class="u-icon u-icon__circle u-icon__lg bg-dimped__cyan">
+                                <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%201.png">
+                            </div>
+                            <div class="feature-card__body">
+                                <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">POSICIONAMIENTO DE MERCADO</h4>
+                                @*<p>Aesthetic jean shorts glossier lo-fi DIY thundercats fashion axe echo park copper mug</p>*@
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
-    <script src="~/Content/landingpage/js/vendors/jquery.min.js"></script>
-    <script src="~/Content/landingpage/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="~/Content/landingpage/js/vendors/jquery.magnific-popup.min.js"></script>
-    <script src="~/Content/landingpage/js/vendors/jquery.easing.min.js"></script>
-    <script src="~/Content/landingpage/js/vendors/swiper.min.js"></script>
-    <script src="~/Content/landingpage/js/vendors/owl.carousel.min.js"></script>
-    <script src="~/Content/landingpage/js/custom.js"></script>
-</body>
+        </section>
+
+        <!--
+        =========================
+        testimonialS WITH SLIDER
+        ========================= -->
+        <section id="clients" class="section-spacer pb-0 section--clients">
+            <div class="container">
+
+
+                <header class="section-header text-center w-100">
+                    <h1 class="section-title confiantitle" style="font-family: Gotham;color:#652D90">MARCAS QUE CONFÍAN EN NUESTRO TRABAJO</h1>
+                </header>
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <div class="client-logo__wrapper">
+                            <a href="" class="client-logo">
+                                <img src="~/Content/landingpage/images/demo/landing/customers/2CEBBA44.PNG" alt="Image">
+                            </a>
+                            <a href="" class="client-logo">
+                                <img src="~/Content/landingpage/images/demo/landing/customers/Logo-mahler.jpg" alt="Image">
+                            </a>
+                            <a href="" class="client-logo">
+                                <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Goya.jpg" alt="Image">
+                            </a>
+                            <a href="" class="client-logo">
+                                <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Cremimex.jpg" alt="Image">
+                            </a>
+                            <a href="" class="client-logo">
+                                <img src="~/Content/landingpage/images/demo/landing/customers/Logo-Klass.png" alt="Image">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><br><br>
+        <!--
+        =========================
+        FAQs
+        =========================
+
+        </section>-->
+        <!--
+        =========================
+        CALL TO ACTION MODULE
+        ========================= -->
+        <section id="contactus" class="section-spacer" style="background-image: url('/Content/landingpage/images/main/icons/1x/Asset%2010.png')">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 style="color:white; font-family: Gotham;" class="necesitasayuda">¿NECESITÁS AYUDA?</h2><br>
+                        <p class="necesitasayudatext" style="color:white; font-family: Gotham;font-size: 26px;font-weight: 300;text-align: justify">Si requieres de más información sobre alguno de nuestros servicios, por favor contáctanos a través de nuestro servicio al cliente.</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-block-2 w-form">
+                            @using (Html.BeginForm("SendMessage", "Home", FormMethod.Post,
+new { enctype = "multipart/form-data", @class = "form-2" }))
+    {
+                        <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Nombre" data-name="Nombre" placeholder="Tu nombre" id="Nombre" required="">
+                        <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Empresa" data-name="Empresa" placeholder="Tu empresa" id="Empresa" required="">
+                        <input type="email" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="email" data-name="Email" placeholder="Tu correo electrónico" id="email" required="">
+                        <textarea id="Mensaje" name="Mensaje" data-name="Mensaje" placeholder="Escribe tu mensaje aquí" required="" class="form-control"></textarea>
+                                <div class="input-group">
+                            
+                            @Html.Recaptcha(theme: Recaptcha.Web.RecaptchaTheme.Clean)
+                            <button type="submit" class="btn btn-comercia" style="font-family: Gotham; font-size:14px;padding-bottom:55px;line-height: 45px;">Contáctanos</button>
+                        </div>
+            
+
+                        }
+
+
+                        @if (ViewBag.showmessage == 1)
+{
+                        <div class="w-form-done" style="display:inline-block !important;color:white;">
+                            <div>Thank you! Your submission has been received!</div>
+                        </div>
+}
+else if (ViewBag.showmessage == 3)
+{
+                        <div class="w-form-fail" style="display:inline-block !important;color:white;">
+                            <div>Please complete the reCAPTCHA.</div>
+                        </div>
+}
+else if (ViewBag.showmessage == 4)
+{
+                        <div class="w-form-fail" style="display:inline-block !important;color:white;">
+                            <div>The reCAPTCHA is incorrect.</div>
+                        </div>
+}
+else if (ViewBag.showmessage == 0)
+{
+
+}
+
+
+
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </section>
+        <!--
+        =========================
+        FOOTER
+        ========================= -->
+        <footer class="section-spacer footer-section">
+            <div class="container">
+                <div class="row flex-column-reverse flex-sm-row flex-lg-row">
+                    <div class="col-md-4 col-12">
+                        <div class="footer-widget first-of-footer-widget">
+
+                            <p style="font-family: Gotham;font-size: 14px;">Copyright &copy; 2019 Comercia Marketing. <br>All Rights Reserved.</p>
+                            <a href="" class="d-block mb-10" style="font-family: Gotham;font-size: 14px;">+1(615)928-9641</a>
+                            <a href="" style="font-family: Gotham;font-size: 14px;">customercare@comerciamarketing.com</a>
+                            <ul class="social-list__inline mt-10">
+                                <li>
+                                    <a href="https://www.facebook.com/ComerciaMarketing/" target="_blank" title="Facebook"><img src="~/Content/landingpage/images/main/icons/1x/Asset%204.png" style="padding-right:5px;"></a>
+
+                                </li>
+                                <li>
+                                    <a href="https://www.instagram.com/comerciamarketing/" target="_blank" title="Instagram"><img src="~/Content/landingpage/images/main/icons/1x/Asset%205.png" style="padding-right:20px;"></a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-10">
+                        <div class="row">
+                            <div class="col-md-4 col-6">
+                                <div class="footer-widget">
+                                    <h4 class="footer-widget__title" style="font-family: Gotham;color:#652D90">Comercia Marketing</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="">Inicio</a>
+                                        </li>
+                                        <li>
+                                            <a href="#overview">Quiénes somos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#services">Servicios</a>
+                                        </li>
+                                        <li>
+                                            <a href="#clients">Clientes</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="footer-widget">
+                                    <h4 class="footer-widget__title" style="font-family: Gotham;color:#652D90">Desarrolladores</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="">Migraciones</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">API (muy pronto)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="footer-widget">
+                                    <h4 class="footer-widget__title" style="font-family: Gotham;color:#652D90">Soporte</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="">Centro de ayuda</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Política de privacidad</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Términos y condiciones</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Ingreso por tóken</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="~/Content/landingpage//js/vendors/jquery.min.js"></script>
+        <script src="~/Content/landingpage//js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="~/Content/landingpage//js/vendors/jquery.magnific-popup.min.js"></script>
+        <script src="~/Content/landingpage//js/vendors/jquery.easing.min.js"></script>
+        <script src="~/Content/landingpage//js/vendors/swiper.min.js"></script>
+        <script src="~/Content/landingpage//js/vendors/owl.carousel.min.js"></script>
+        <script src="~/Content/landingpage//js/custom.js"></script>
+        <script src="~/Content/landingpage//js/slippry.min.js"></script>
+        <script>
+            $(function () {
+                var demo1 = $("#demo1").slippry({
+                    transition: 'fade',
+                    // useCSS: true,
+                    speed: 1000,
+                    // pause: 3000,
+                    auto: true,
+                    // preload: 'visible',
+                    // autoHover: false
+                });
+
+            });
+        </script>
+    </body>
 </html>
-

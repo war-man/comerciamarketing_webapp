@@ -15,17 +15,56 @@
         <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
             <form class="input-group m-2 my-lg-0 ">
                 <div class="input-group-prepend">
+                    @if (ViewBag.title == "Comercia Marketing - Admin Demos" || ViewBag.title == "Comercia Marketing - Admin Dashboard" || ViewBag.title == "Comercia Marketing - Representative_stats" || ViewBag.title == "Comercia Marketing - Admin Map" || ViewBag.title == "Comercia Marketing - Admin Gallery" || ViewBag.title == "Comercia Marketing - Reports")
+                    {
 
-                    <span class="mx-2">
+                <span class="mx-2">
 
-                        <span class="text-xs text-muted">From 02/10/2019 to 07/10/2019 </span>
-                        <span class="text-xs text-muted">| All Brands </span>
-                        <span class="text-xs text-muted">| All Stores </span>
-                        <span class="text-xs text-muted">| All Strategic Partners </span>
-                        <a class="btn">
-                            <i data-feather="search"></i>
-                        </a>
+                    <span class="text-xs text-muted">
+                        From @ViewBag.filtrofechastart to @ViewBag.filtrofechaend
                     </span>
+                    <span class="text-xs text-muted">| Customer: @ViewBag.CustomersLabel </span>
+                    <span class="text-xs text-muted">| Brand: @ViewBag.BrandLabel </span>
+                    <a class="btn" data-toggle="modal" data-target="#modal-right_filter">
+                        <i data-feather="search"></i>
+                    </a>
+                </span>
+                    }
+                    else if (ViewBag.title == "Comercia Marketing - Customers Map" || ViewBag.title == "Comercia Marketing - Customers Dashboard")
+                    {
+
+                <span class="mx-2">
+
+                    <span class="text-xs text-muted">
+                        From @ViewBag.filtrofechastart to @ViewBag.filtrofechaend
+                    </span>
+                    @*<span class="text-xs text-muted">| All Brands </span>
+                    <span class="text-xs text-muted">| All Stores </span>
+                    <span class="text-xs text-muted">| All Strategic Partners </span>*@
+                    <a class="btn" data-toggle="modal" data-target="#modal-right_filter">
+                        <i data-feather="search"></i>
+                    </a>
+                </span>
+}
+
+
+else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
+{
+                <span class="mx-2">
+
+                    <span class="text-xs text-muted">
+                        From @ViewBag.filtrofechastart to @ViewBag.filtrofechaend
+                    </span>
+                    @*<span class="text-xs text-muted">| All Brands </span>
+                    <span class="text-xs text-muted">| All Stores </span>
+                    <span class="text-xs text-muted">| All Strategic Partners </span>*@
+                    <a class="btn" data-toggle="modal" data-target="#modal-right_filter">
+                        <i data-feather="search"></i>
+                    </a>
+                </span>
+}
+
+
 
                 </div>
 
@@ -35,139 +74,51 @@
 
         <ul class="nav navbar-menu order-1 order-lg-2">
             <li class="nav-item d-none d-sm-block">
-                <a class="nav-link px-2" data-toggle="fullscreen" data-plugin="fullscreen">
-                    <i data-feather="maximize"></i>
+                <a class="nav-link px-2">
+                    <i data-feather="info"></i>
                 </a>
             </li>
             <!-- Notification -->
-            <li class="nav-item dropdown">
+            @*<li class="nav-item dropdown">
                 <a class="nav-link px-2 mr-lg-2" data-toggle="dropdown">
                     <i data-feather="bell"></i>
-                    <span class="badge badge-pill badge-up bg-primary">5</span>
+                    <span class="badge badge-pill badge-up bg-primary">0</span>
                 </a>
                 <!-- dropdown -->
                 <div class="dropdown-menu dropdown-menu-right mt-3 w-md animate fadeIn p-0">
                     <div class="scrollable hover" style="max-height: 250px">
                         <div class="list list-row">
-                            <div class="list-item " data-id="10">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-danger">
-                                            <img src="~/Content/BasikTemplate/assets/img/a10.jpg" alt=".">
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        Developers of
-                                        <a href='#'>iAI</a>, the AI assistant based on Free Software
-                                    </div>
+                            @*<div class="list-item " data-id="10">
+                            <div>
+                                <a href="#">
+                                    <span class="w-32 avatar gd-danger">
+                                        <img src="~/Content/BasikTemplate/assets/img/a10.jpg" alt=".">
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="flex">
+                                <div class="item-feed h-2x">
+                                    Developers of
+                                    <a href='#'>iAI</a>, the AI assistant based on Free Software
                                 </div>
                             </div>
-                            <div class="list-item " data-id="12">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-info">
-                                            A
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        <a href='#'>Support</a> team updated the status
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-item " data-id="6">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-danger">
-                                            <img src="~/Content/BasikTemplate/assets/img/a6.jpg" alt=".">
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        Just saw this on the
-                                        <a href='#'>eBay</a> dashboard, dude is an absolute unit.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-item " data-id="11">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-info">
-                                            K
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        Prepare the documentation for the
-                                        <a href='#'>Fitness app</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-item " data-id="13">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-primary">
-                                            L
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        Thanks! Awesome to see good support on Twitter
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-item " data-id="15">
-                                <div>
-                                    <a href="#">
-                                        <span class="w-32 avatar gd-success">
-                                            J
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="flex">
-                                    <div class="item-feed h-2x">
-                                        Fun project from this weekend. Both computer replicas are fully functional
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+
                         </div>
                     </div>
                     <div class="d-flex px-3 py-2 b-t">
                         <div class="flex">
-                            <span>6 Notifications</span>
+                            <span>0 Notifications</span>
                         </div>
-                        <a href="page.setting.html">
+                        <a href="#">
                             See all
                             <i class="fa fa-angle-right text-muted"></i>
                         </a>
                     </div>
                 </div>
                 <!-- / dropdown -->
-            </li>
+            </li>*@
             <!-- User dropdown menu -->
-            <li class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
-                    <span class="avatar w-24"><img src="~/Content/BasikTemplate/assets/img/a4.jpg" alt="..."></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
-                    <a class="dropdown-item" href="page.profile.html">
-                        <span>@ViewBag.username</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="page.faq.html">Need help?</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="page.setting.html">
-                        <span>Account Settings</span>
-                    </a>
-                    <a class="dropdown-item" href="signin.html">Sign out</a>
-                </div>
-            </li>
             <!-- Navarbar toggle btn -->
             <li class="nav-item d-lg-none">
                 <a href="#" class="nav-link px-2" data-toggle="collapse" data-toggle-class data-target="#navbarToggler">
@@ -179,6 +130,28 @@
                     <i data-feather="menu"></i>
                 </a>
             </li>
+            <li class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                    <span class="w-40 avatar gd-warning">
+                        <span class="avatar-status on b-white avatar-right"></span>
+                    </span>
+                </a>
+
+
+                <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
+                    <a class="dropdown-item" href="#">
+                        <span>@ViewBag.username</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.faq.html">Need help?(comming)</a>*@
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.setting.html">
+                    <span>Account Settings</span>
+                </a>*@
+                    <a class="dropdown-item" href="@Url.Action("Cerrar_sesion", "Home")">Sign out</a>
+                </div>
+            </li>
+
         </ul>
     </div>
 </div>

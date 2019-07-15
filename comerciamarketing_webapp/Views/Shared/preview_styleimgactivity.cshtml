@@ -1,0 +1,348 @@
+﻿
+@{
+    Layout = null;
+}
+
+<style>
+    .preview {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .preview:hover {
+            opacity: 0.7;
+        }
+
+    /* The Modal (background) */
+    .modalImg {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 999999; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-contentImg {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Caption of Modal Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+    }
+
+    /* Add Animation */
+    .modal-contentImg, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @@-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @@keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* 100% Image Width on Smaller Screens */
+    @@media only screen and (max-width: 700px) {
+        .modal-contentImg {
+            width: 100%;
+        }
+    }
+
+
+
+    .divtable .tr {
+        overflow: hidden;
+        clear: both;
+        border-top: 2px solid #dfdfdf;
+    }
+
+    .divtable .th,
+    .divtable .td {
+        padding: 5px 10px;
+        float: left;
+    }
+
+    .divtable .th {
+        font-weight: bold;
+    }
+
+
+    @@media (max-width: 1767px) {
+
+        .accordion-xs .headings {
+            display: none;
+        }
+
+        .accordion-xs .tr {
+            border-bottom-color: #dfdfdf;
+        }
+
+        .accordion-xs .th,
+        .accordion-xs .td {
+            float: none;
+            width: auto;
+            padding: 0;
+        }
+
+        .accordion-xs .accordion-xs-toggle {
+            background-color: white;
+            color: #000;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+            .accordion-xs .accordion-xs-toggle:hover {
+                background-color: #efedea;
+            }
+
+            .accordion-xs .accordion-xs-toggle:after {
+                content: '\2b';
+                float: right;
+            }
+
+            .accordion-xs .accordion-xs-toggle.collapsed:after {
+                content: '\2212';
+            }
+
+        .accordion-xs-collapse .inner {
+            padding: 10px;
+        }
+
+        .accordion-xs-collapse .td:before {
+            font-weight: bold;
+        }
+
+        .accordion-xs-collapse .lastname:before {
+            content: 'Last Name: ';
+        }
+
+        .accordion-xs-collapse .username:before {
+            content: 'Username: ';
+        }
+
+        .accordion-xs .accordion-xs-toggle:after {
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: 300;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+        }
+    }
+
+
+    #rightss {
+        height: 500px;
+        overflow-y: scroll;
+    }
+
+    .modal {
+        overflow: auto !important;
+    }
+
+    #sig-canvas {
+        width: 200px;
+        height: 150px;
+        border-style: dashed;
+        border-radius: 0.50px;
+        border-color: lightgray;
+    }
+
+    .currency {
+    }
+
+    .currency-symbol {
+        position: absolute;
+        padding: 7px 4px 0px;
+        font-size: 13px;
+    }
+
+    .currency-symbolv2 {
+        position: absolute;
+        padding: 1px 4px 0px;
+        font-size: 12px;
+    }
+
+    #loading {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+        text-align: center;
+    }
+
+    #loading-content {
+        margin-top: 20%;
+    }
+
+    .hide {
+        display: none;
+    }
+
+
+    /*DATATABLES*/
+    table {
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+        table tr {
+            padding: .35em;
+        }
+
+        table th, table td {
+            padding: .625em;
+            text-align: left;
+        }
+
+        table th {
+            font-size: .9em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        table td {
+            font-size: .3em;
+        }
+    /**/
+    @@media screen and (max-width: 2000px) {
+
+        table td {
+            font-size: .9em;
+        }
+    }
+
+    @@media screen and (max-width: 850px) {
+        table th {
+            font-size: .8em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        table td {
+            font-size: .7em;
+        }
+    }
+
+    /**/
+    /**/
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
+    @@media screen and (max-width: 400px) {
+
+        table {
+            border: 0;
+        }
+
+            table thead {
+                display: none;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: left;
+            }
+
+                table td:before {
+                    content: attr(data-label);
+                    float: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                table td:last-child {
+                    border-bottom: 0;
+                }
+    }
+    /**/
+    /*END DATATABLES*/
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

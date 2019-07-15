@@ -109,7 +109,7 @@
       afterReveal:function (el) {
         $(el).css('transform', 'none');
         if(!noticed){
-          notie.alert({ text: 'Try add some labels' });
+          notie.alert({ text: 'Select one activity from the list to show information.' });
           noticed = true;
         }
       }

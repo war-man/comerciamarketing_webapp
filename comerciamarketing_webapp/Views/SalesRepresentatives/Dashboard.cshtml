@@ -3,217 +3,218 @@
     ViewBag.title = "Comercia Marketing - Sales Rep Dashboard";
 
     var modelcount = Model.Count();
-    if (modelcount == 0) {
+    if (modelcount == 0)
+    {
         modelcount = 1;
     }
 }
 
 
-        <!-- ############ Content START-->
-        <div id="content" class="flex ">
-            <!-- ############ Main START-->
-            <div>
-                <div class="page-hero page-container " id="page-hero">
-                    <div class="padding d-flex">
-                        <div class="page-title">
-                            <h2 class="text-md text-highlight">Home</h2>
-                            <small class="text-muted">
-                                Welcome,
-                                <strong>@ViewBag.username</strong>
-                            </small>
-                        </div>
-                        <div class="flex"></div>
-
-                    </div>
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">Home</h2>
+                    <small class="text-muted">
+                        Welcome,
+                        <strong>@ViewBag.username</strong>
+                    </small>
                 </div>
-                <div class="page-content page-container" id="page-content">
-                    <div class="padding">
-                        <div class="row row-sm sr">
-                            <div class="col-md-12 col-lg-8">
+                <div class="flex"></div>
+
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row row-sm sr">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="row row-sm">
+                            <div class="col-md-12">
                                 <div class="row row-sm">
-                                    <div class="col-md-12">
-                                        <div class="row row-sm">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="row row-sm">
-                                                            <div class="col-5">
-                                                                <small class="text-muted">Your membership</small>
-                                                                <div class="mt-2 font-weight-500"><span class="text-info">@ViewBag.Membresia</span></div>
-                                                            </div>
-                                                            <div class="col-7">
-                                                                <small class="text-muted">Your company</small>
-                                                                <div class="text-highlight mt-2 font-weight-500">@ViewBag.Company</div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-12 d-flex">
-                                        <div class="card flex">
+                                    <div class="col-12">
+                                        <div class="card">
                                             <div class="card-body">
                                                 <div class="row row-sm">
-                                                    <div class="col-sm-12">
-                                                        <div class="mb-2">
-                                                            <small class="text-muted">Visits statistics</small>
-                                                        </div>
-                                                        <div class="row row-sm">
-                                                            <div class="col-4">
-                                                                <div class="text-highlight text-md">@Model.Count()</div>
-                                                                <small>Visits</small>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <div class="text-md">@Model.Where(a => a.ID_visitstate == 4).Count()</div>
-                                                                <small>Finished</small>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <div class="text-danger text-md">@Model.Where(a => a.ID_visitstate == 3 || a.ID_visitstate == 2).Count()</div>
-                                                                <small>Remain</small>
-                                                            </div>
-                                                        </div>
+                                                    <div class="col-5">
+                                                        <small class="text-muted">Your membership</small>
+                                                        <div class="mt-2 font-weight-500"><span class="text-info">@ViewBag.Membresia</span></div>
                                                     </div>
-                                                    <div class="col-12 col-sm-12">
-                                                        <div class="mb-2 mt-2 mt-sm-0">
-                                                            <small class="text-muted">This week</small>
-                                                        </div>
-                                                        <div>Visits completion</div>
-                                                        <div class="progress no-bg mt-2 align-items-center circle" style="height:6px;">
-                                                            <div class="progress-bar circle gd-danger" style="width: @Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count())/ Convert.ToDecimal(modelcount)*100),2)%"></div>
-                                                            <span class="mx-2">@Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count()) / Convert.ToDecimal(modelcount) * 100), 2)%</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 d-flex">
-                                        <div class="card flex">
-                                            <div class="card-body">
-                                                <div class="row row-sm">
-                                                    <div class="col-sm-12">
-                                                        <div class="p-3-4">
-                                                            <div class="d-flex">
-                                                                <div>
-                                                                    <div>Visits List</div>
-
-                                                                </div>
-                                                                <span class="flex"></span>
-                                                                <div>
-                                                                    <div class="btn-group-toggle" data-toggle="buttons">
-                                                                        <label class="btn">
-                                                                            <input type="radio" name="options" value="Today">Today
-                                                                        </label>
-                                                                        <label class="btn active">
-                                                                            <input type="radio" name="options" value="Week">Week
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="table-responsive">
-                                                                <table id="dashboard_visits" class="table table-theme table-row v-middle" data-plugin="dataTable">
-                                                                    <thead>
-                                                                        <tr>
-
-                                                                            <th scope="col">ID </th>
-
-                                                                            <th scope="col">Route</th>
-
-                                                                            <th scope="col">Store</th>
-                                                                            <th scope="col">Date</th>
-
-
-                                                                            <th scope="col">Status</th>
-
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach (var itemVisita in Model)
-                {
-                                                        <tr>
-
-                                                            <td scope="row" data-label="ID">
-                                                                @itemVisita.ID_visit
-
-                                                            </td>
-
-                                                            <td data-label="Route">@itemVisita.city</td>
-
-                                                            <td data-label="Store">
-
-
-
-                                                                <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
-                                                                    <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                                    <span class="text-primary">@itemVisita.address</span>
-                                                                </a>
-
-                                                            </td>
-                                                            <td data-label="Date">@itemVisita.visit_date.ToString("dd/MM/yyyy")</td>
-
-
-
-                                                            <td data-label="Status">
-                                                                @switch (itemVisita.ID_visitstate)
-        {
-            case 1: //Canceled
-                                                        <label class="badge badge-danger">Canceled</label>
-break;
-case 2: //In Progress
-                                                        <label class="badge badge-success">In progress</label>
-break;
-case 3: //Scheduled
-
-                                                        <label class="badge badge-warning">Scheduled</label>
-
-break;
-case 4: //Finished
-                                                        <label class="badge badge-primary">Finished</label>
-break;
-}
-
-                                                            </td>
-                                                        </tr>
-}
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
+                                                    <div class="col-7">
+                                                        <small class="text-muted">Your company</small>
+                                                        <div class="text-highlight mt-2 font-weight-500">@ViewBag.Company</div>
                                                     </div>
 
                                                 </div>
                                             </div>
+
                                         </div>
+
                                     </div>
 
                                 </div>
+
                             </div>
-                            <div class="col-md-12 col-lg-4 d-flex">
-                                <div class="card pb-3">
-                                    <div class="p-3-4">
-                                        <div class="d-flex">
-                                            <div>
-                                                <div>Assigned Vendors</div>
-                                                <small class="text-muted">Active: @ViewBag.lstVendorsCount</small>
+
+                            <div class="col-md-12 d-flex">
+                                <div class="card flex">
+                                    <div class="card-body">
+                                        <div class="row row-sm">
+                                            <div class="col-sm-12">
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Visits statistics</small>
+                                                </div>
+                                                <div class="row row-sm">
+                                                    <div class="col-4">
+                                                        <div class="text-highlight text-md">@Model.Count()</div>
+                                                        <small>Visits</small>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="text-md">@Model.Where(a => a.ID_visitstate == 4).Count()</div>
+                                                        <small>Finished</small>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="text-danger text-md">@Model.Where(a => a.ID_visitstate == 3 || a.ID_visitstate == 2).Count()</div>
+                                                        <small>Remain</small>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span class="flex"></span>
-       
+                                            <div class="col-12 col-sm-12">
+                                                <div class="mb-2 mt-2 mt-sm-0">
+                                                    <small class="text-muted">This week</small>
+                                                </div>
+                                                <div>Visits completion</div>
+                                                <div class="progress no-bg mt-2 align-items-center circle" style="height:6px;">
+                                                    <div class="progress-bar circle gd-danger" style="width: @Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count())/ Convert.ToDecimal(modelcount)*100),2)%"></div>
+                                                    <span class="mx-2">@Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count()) / Convert.ToDecimal(modelcount) * 100), 2)%</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="list list-row">
-                                        @foreach (var vendor in ViewBag.lstVendors)
-    {
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex">
+                                <div class="card flex">
+                                    <div class="card-body">
+                                        <div class="row row-sm">
+                                            <div class="col-sm-12">
+                                                <div class="p-3-4">
+                                                    <div class="d-flex">
+                                                        <div>
+                                                            <div>Visits List</div>
+
+                                                        </div>
+                                                        <span class="flex"></span>
+                                                        <div>
+                                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                                <label class="btn active">
+                                                                    <input type="radio" name="options" id="todaybtn" value="Today">Today
+                                                                </label>
+                                                                <label class="btn">
+                                                                    <input type="radio" name="options" value="Week">Week
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="table-responsive">
+                                                        <table id="dashboard_visits" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                                            <thead>
+                                                                <tr>
+
+                                                                    <th scope="col">ID </th>
+
+                                                                    <th scope="col">Route</th>
+
+                                                                    <th scope="col">Store</th>
+                                                                    <th scope="col">Date</th>
+
+
+                                                                    <th scope="col">Status</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var itemVisita in Model)
+                                                                {
+                                                                    <tr>
+
+                                                                        <td scope="row" data-label="ID">
+                                                                            @itemVisita.ID_visit
+
+                                                                        </td>
+
+                                                                        <td data-label="Route">@itemVisita.city</td>
+
+                                                                        <td data-label="Store">
+
+
+
+                                                                            <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
+                                                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                                <span class="text-primary">@itemVisita.address</span>
+                                                                            </a>
+
+                                                                        </td>
+                                                                        <td data-label="Date">@itemVisita.visit_date.ToString("dd/MM/yyyy")</td>
+
+
+
+                                                                        <td data-label="Status">
+                                                                            @switch (itemVisita.ID_visitstate)
+                                                                            {
+                                                                                case 1: //Canceled
+                                                                                    <label class="badge badge-danger">Canceled</label>
+                                                                                    break;
+                                                                                case 2: //In Progress
+                                                                                    <label class="badge badge-success">In progress</label>
+                                                                                    break;
+                                                                                case 3: //Scheduled
+
+                                                                                    <label class="badge badge-warning">Scheduled</label>
+
+                                                                                    break;
+                                                                                case 4: //Finished
+                                                                                    <label class="badge badge-primary">Finished</label>
+                                                                                    break;
+                                                                            }
+
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-4 d-flex">
+                        <div class="card pb-3">
+                            <div class="p-3-4">
+                                <div class="d-flex">
+                                    <div>
+                                        <div>Assigned Vendors</div>
+                                        <small class="text-muted">Active: @ViewBag.lstVendorsCount</small>
+                                    </div>
+                                    <span class="flex"></span>
+
+                                </div>
+                            </div>
+                            <div class="list list-row">
+                                @foreach (var vendor in ViewBag.lstVendors)
+                                {
                                     <div class="list-item " data-id="@vendor.ID">
                                         <div>
                                             <label class="ui-check m-0 ui-check-rounded ui-check-md">
@@ -231,19 +232,54 @@ break;
                                         </div>
 
                                     </div>
-}
+                                }
 
 
-                                    </div>
-                                </div>
                             </div>
-
-
-
                         </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+<!-- .modal -->
+<div id="modal-right_filter" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase">
+                        General filters
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Date</label>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="mdi mdi-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-calendar"></i>
+                        </div>
+                        <hr />
                     </div>
                 </div>
             </div>
-            <!-- ############ Main END-->
+            <div class="modal-footer">
+                <button type="button" id="click_filter" class="btn btn-info">Apply</button>
+
+                @*<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>*@
+            </div>
         </div>
-        <!-- ############ Content END-->
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->

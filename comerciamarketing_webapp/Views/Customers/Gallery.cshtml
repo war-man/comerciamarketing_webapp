@@ -1,0 +1,167 @@
+﻿@model List<comerciamarketing_webapp.Controllers.CustomersController.ImgGallery>
+@{
+    ViewBag.title = "Comercia Marketing - Customers Gallery";
+}
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">Gallery</h2>
+                    <small class="text-muted">
+                        See all taken images by our
+                        <strong>Merchandisers</strong>
+                    </small>
+                </div>
+                <div class="flex"></div>
+
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row row-sm sr">
+                    <div class="col-md-12 col-lg-12">
+                        @*<header class="cd-header">
+                                <h1>Content Filters</h1>
+                            </header>*@
+                        <main class="cd-main-content">
+                            <div class="cd-tab-filter-wrapper">
+                                <div class="cd-tab-filter">
+                                    <ul class="cd-filters">
+                                        <li class="placeholder">
+                                            <a data-type="all" href="#0">All</a> <!-- selected option on mobile -->
+                                        </li>
+                                        <li class="filter"><a class="selected" href="#0" data-type="all">All Brands</a></li>
+                                        @foreach (var brand in ViewBag.brandslst)
+    {
+                                    <li class="filter" data-filter=".@Convert.ToString(brand).Replace(" ", "")"><a href="#0" data-type="@brand">@brand</a></li>
+}
+                                    </ul> <!-- cd-filters -->
+                                </div> <!-- cd-tab-filter -->
+                            </div> <!-- cd-tab-filter-wrapper -->
+                            <section class="cd-gallery">
+                                <ul>
+                                    @foreach (var img in Model)
+    {
+        if (img.Url == null || img.Url == "")
+        {
+
+        }
+        else
+        {
+                                <li class="mix @img.Brand.Replace(" ", "") @img.Section @img.Rep.Replace(" ", "")"><img src="@Url.Content(img.Url)" alt="Image @img.idImg"></li>
+}
+
+
+}
+                                    <li class="gap"></li>
+                                    <li class="gap"></li>
+                                    <li class="gap"></li>
+                                </ul>
+                                <div class="cd-fail-message">No results found</div>
+                            </section> <!-- cd-gallery -->
+                            <div class="cd-filter">
+                                <form>
+                                    @*<div class="cd-filter-block">
+                                        <h4>Search</h4>
+
+                                        <div class="cd-filter-content">
+                                            <input type="search" placeholder="...">
+                                        </div> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->*@
+                                    <div class="cd-filter-block">
+                                        <h4>By Merchandiser</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            @foreach (var rep in ViewBag.replst)
+    {
+                                        <li>
+                                            <input class="filter" data-filter=".@Convert.ToString(rep).Replace(" ", "")" type="checkbox" id="checkbox_@Convert.ToString(rep).Replace(" ", "")">
+                                            <label class="checkbox-label" for="checkbox_@Convert.ToString(rep).Replace(" ", "")">@rep</label>
+                                        </li>
+}
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->
+                                    @*<div class="cd-filter-block">
+                                            <h4>By activity</h4>
+
+                                            <div class="cd-filter-content">
+                                                <div class="cd-select cd-filters">
+                                                    <select class="filter" name="selectThis" id="selectThis">
+                                                        <option value="">Choose an option</option>
+                                                        <option value=".option1">Option 1</option>
+                                                        <option value=".option2">Option 2</option>
+                                                        <option value=".option3">Option 3</option>
+                                                        <option value=".option4">Option 4</option>
+                                                    </select>
+                                                </div> <!-- cd-select -->
+                                            </div> <!-- cd-filter-content -->
+                                        </div> <!-- cd-filter-block -->*@
+                                    <div class="cd-filter-block">
+                                        <h4>By sections</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            <li>
+                                                <input class="filter" data-filter="" type="radio" name="radioButton" id="radio1" checked>
+                                                <label class="radio-label" for="radio1">All</label>
+                                            </li>
+                                            @foreach (var sectionlst in ViewBag.sectionlst)
+    {
+                                        <li>
+                                            <input class="filter" data-filter=".@sectionlst" type="radio" name="radioButton" id="rad_@sectionlst">
+                                            <label class="radio-label" for="rad_@sectionlst">@sectionlst</label>
+                                        </li>
+}
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->
+                                </form>
+                                <a href="#0" class="cd-close">Close</a>
+                            </div> <!-- cd-filter -->
+                            <a href="#0" class="cd-filter-trigger">Filters</a>
+                        </main> <!-- cd-main-content -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+<!-- ############ Content END-->
+<!-- .modal -->
+<div id="modal-right_filter" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase">
+                        General filters
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Date</label>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="mdi mdi-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-calendar"></i>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="click_filter" class="btn btn-info">Apply</button>
+
+                @*<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->

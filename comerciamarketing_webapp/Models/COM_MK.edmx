@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="Code" />
           </Key>
-          <Property Name="Code" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="U_Frequency" Type="smallint" />
           <Property Name="U_CardCode" Type="nvarchar" MaxLength="10" />
           <Property Name="U_Route" Type="nvarchar" MaxLength="50" />
@@ -19,8 +19,8 @@
           <Key>
             <PropertyRef Name="Code" />
           </Key>
-          <Property Name="Code" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="OCRD">
           <Key>
@@ -309,7 +309,7 @@
           <Property Name="CertBKeep" Type="char" MaxLength="1" />
           <Property Name="WHShaamGrp" Type="char" MaxLength="1" />
           <Property Name="IndustryC" Type="int" />
-          <Property Name="DatevAcct" Type="int" />
+          <Property Name="DatevAcct" Type="nvarchar" MaxLength="9" />
           <Property Name="DatevFirst" Type="char" MaxLength="1" />
           <Property Name="GTSRegNum" Type="nvarchar" MaxLength="20" />
           <Property Name="GTSBankAct" Type="nvarchar" MaxLength="80" />
@@ -323,7 +323,7 @@
           <Property Name="CpnNo" Type="int" />
           <Property Name="NTSWebSite" Type="smallint" />
           <Property Name="DflIBAN" Type="nvarchar" MaxLength="50" />
-          <Property Name="Series" Type="smallint" />
+          <Property Name="Series" Type="int" />
           <Property Name="Number" Type="int" />
           <Property Name="EDocExpFrm" Type="int" />
           <Property Name="TaxIdIdent" Type="char" MaxLength="1" />
@@ -362,6 +362,32 @@
           <Property Name="EdrsToBP" Type="char" MaxLength="1" />
           <Property Name="CreateTS" Type="int" />
           <Property Name="UpdateTS" Type="int" />
+          <Property Name="EDocGenTyp" Type="char" MaxLength="1" />
+          <Property Name="eStreet" Type="nvarchar" MaxLength="38" />
+          <Property Name="eStreetNum" Type="nvarchar" MaxLength="4" />
+          <Property Name="eBuildnNum" Type="int" />
+          <Property Name="eZipCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="eCityTown" Type="nvarchar" MaxLength="48" />
+          <Property Name="eCountry" Type="nvarchar" MaxLength="3" />
+          <Property Name="eDistrict" Type="nvarchar" MaxLength="3" />
+          <Property Name="RepFName" Type="nvarchar" MaxLength="20" />
+          <Property Name="RepSName" Type="nvarchar" MaxLength="36" />
+          <Property Name="RepCmpName" Type="nvarchar" MaxLength="36" />
+          <Property Name="RepFisCode" Type="nvarchar" MaxLength="16" />
+          <Property Name="RepAddID" Type="nvarchar" MaxLength="28" />
+          <Property Name="PECAddr" Type="nvarchar" MaxLength="254" />
+          <Property Name="IPACodePA" Type="nvarchar" MaxLength="32" />
+          <Property Name="PriceMode" Type="char" MaxLength="1" />
+          <Property Name="EffecPrice" Type="char" MaxLength="1" />
+          <Property Name="TxExMxVdTp" Type="char" MaxLength="1" />
+          <Property Name="MerchantID" Type="nvarchar" MaxLength="15" />
+          <Property Name="UseBilAddr" Type="char" MaxLength="1" />
+          <Property Name="NaturalPer" Type="char" MaxLength="1" />
+          <Property Name="DPPStatus" Type="char" MaxLength="1" />
+          <Property Name="EnAddID" Type="ntext" />
+          <Property Name="EncryptIV" Type="nvarchar" MaxLength="100" />
+          <Property Name="EnDflAccnt" Type="ntext" />
+          <Property Name="EnDflIBAN" Type="ntext" />
           <Property Name="U_STOPD" Type="numeric" Precision="19" Scale="6" />
           <Property Name="U_ROUTED" Type="nvarchar" MaxLength="30" />
           <Property Name="U_REGIOND" Type="nvarchar" MaxLength="3" />
@@ -401,7 +427,7 @@
           <Key>
             <PropertyRef Name="ItemCode" />
           </Key>
-          <Property Name="ItemCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ItemCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar" MaxLength="100" />
           <Property Name="FrgnName" Type="nvarchar" MaxLength="100" />
           <Property Name="ItmsGrpCod" Type="smallint" />
@@ -420,7 +446,7 @@
           <Property Name="MaxLevel" Type="numeric" Precision="19" Scale="6" />
           <Property Name="DfltWH" Type="nvarchar" MaxLength="8" />
           <Property Name="CardCode" Type="nvarchar" MaxLength="15" />
-          <Property Name="SuppCatNum" Type="nvarchar" MaxLength="17" />
+          <Property Name="SuppCatNum" Type="nvarchar" MaxLength="50" />
           <Property Name="BuyUnitMsr" Type="nvarchar" MaxLength="100" />
           <Property Name="NumInBuy" Type="numeric" Precision="19" Scale="6" />
           <Property Name="ReorderQty" Type="numeric" Precision="19" Scale="6" />
@@ -652,7 +678,7 @@
           <Property Name="UserSign2" Type="smallint" />
           <Property Name="Spec" Type="nvarchar" MaxLength="30" />
           <Property Name="TaxCtg" Type="nvarchar" MaxLength="4" />
-          <Property Name="Series" Type="smallint" />
+          <Property Name="Series" Type="int" />
           <Property Name="Number" Type="int" />
           <Property Name="FuelCode" Type="int" />
           <Property Name="BeverTblC" Type="nvarchar" MaxLength="2" />
@@ -702,6 +728,26 @@
           <Property Name="CompoWH" Type="char" MaxLength="1" />
           <Property Name="CreateTS" Type="int" />
           <Property Name="UpdateTS" Type="int" />
+          <Property Name="VirtAstItm" Type="char" MaxLength="1" />
+          <Property Name="SouVirAsst" Type="nvarchar" MaxLength="50" />
+          <Property Name="InCostRoll" Type="char" MaxLength="1" />
+          <Property Name="PrdStdCst" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="EnAstSeri" Type="char" MaxLength="1" />
+          <Property Name="LinkRsc" Type="nvarchar" MaxLength="50" />
+          <Property Name="OnHldPert" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="onHldLimt" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="PriceUnit" Type="int" />
+          <Property Name="GSTRelevnt" Type="char" MaxLength="1" />
+          <Property Name="SACEntry" Type="int" />
+          <Property Name="GstTaxCtg" Type="char" MaxLength="1" />
+          <Property Name="AssVal4WTR" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="ExcImpQUoM" Type="int" />
+          <Property Name="ExcFixAmnt" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="ExcRate" Type="numeric" Precision="19" Scale="6" />
+          <Property Name="SOIExc" Type="char" MaxLength="1" />
+          <Property Name="TNVED" Type="nvarchar" MaxLength="10" />
+          <Property Name="Imported" Type="char" MaxLength="1" />
+          <Property Name="AutoBatch" Type="char" MaxLength="1" />
           <Property Name="U_Country" Type="nvarchar" MaxLength="20" />
           <Property Name="U_SRP" Type="numeric" Precision="19" Scale="6" />
           <Property Name="U_CommissionA" Type="numeric" Precision="19" Scale="6" />
@@ -788,8 +834,8 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Key>
             <PropertyRef Name="Code" />
           </Key>
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OCRD">
           <Key>
@@ -1078,7 +1124,7 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Property Name="CertBKeep" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="WHShaamGrp" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="IndustryC" Type="Int32" />
-          <Property Name="DatevAcct" Type="Int32" />
+          <Property Name="DatevAcct" Type="String" MaxLength="9" Unicode="true" FixedLength="false" />
           <Property Name="DatevFirst" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="GTSRegNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="GTSBankAct" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
@@ -1165,12 +1211,38 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Property Name="U_StoreSize" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="U_CardCodeDLI" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="U_Classification" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="EDocGenTyp" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="eStreet" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="eStreetNum" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="eBuildnNum" Type="Int32" />
+          <Property Name="eZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="eCityTown" Type="String" MaxLength="48" FixedLength="false" Unicode="true" />
+          <Property Name="eCountry" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="eDistrict" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="RepFName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RepSName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="RepCmpName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="RepFisCode" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="RepAddID" Type="String" MaxLength="28" FixedLength="false" Unicode="true" />
+          <Property Name="PECAddr" Type="String" MaxLength="254" FixedLength="false" Unicode="true" />
+          <Property Name="IPACodePA" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="PriceMode" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EffecPrice" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TxExMxVdTp" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="MerchantID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="UseBilAddr" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="NaturalPer" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="DPPStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EnAddID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EncryptIV" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EnDflAccnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnDflIBAN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OITM">
           <Key>
             <PropertyRef Name="ItemCode" />
           </Key>
-          <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ItemName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FrgnName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ItmsGrpCod" Type="Int16" />
@@ -1189,7 +1261,7 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Property Name="MaxLevel" Type="Decimal" Precision="19" Scale="6" />
           <Property Name="DfltWH" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="CardCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="SuppCatNum" Type="String" MaxLength="17" FixedLength="false" Unicode="true" />
+          <Property Name="SuppCatNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BuyUnitMsr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="NumInBuy" Type="Decimal" Precision="19" Scale="6" />
           <Property Name="ReorderQty" Type="Decimal" Precision="19" Scale="6" />
@@ -1497,6 +1569,26 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Property Name="U_CustomerCM" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="U_Category" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="U_UoM" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="VirtAstItm" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SouVirAsst" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InCostRoll" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="PrdStdCst" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="EnAstSeri" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="LinkRsc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OnHldPert" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="onHldLimt" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="PriceUnit" Type="Int32" />
+          <Property Name="GSTRelevnt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SACEntry" Type="Int32" />
+          <Property Name="GstTaxCtg" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AssVal4WTR" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="ExcImpQUoM" Type="Int32" />
+          <Property Name="ExcFixAmnt" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="ExcRate" Type="Decimal" Precision="19" Scale="6" />
+          <Property Name="SOIExc" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TNVED" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Imported" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AutoBatch" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="OMRC">
           <Key>
@@ -1524,8 +1616,8 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Key>
             <PropertyRef Name="Code" />
           </Key>
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="U_Frequency" Type="Int16" />
           <Property Name="U_CardCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="U_Route" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1547,6 +1639,32 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <EntitySetMapping Name="OCRD">
             <EntityTypeMapping TypeName="COM_MKModel.OCRD">
               <MappingFragment StoreEntitySet="OCRD">
+                <ScalarProperty Name="EnDflIBAN" ColumnName="EnDflIBAN" />
+                <ScalarProperty Name="EnDflAccnt" ColumnName="EnDflAccnt" />
+                <ScalarProperty Name="EncryptIV" ColumnName="EncryptIV" />
+                <ScalarProperty Name="EnAddID" ColumnName="EnAddID" />
+                <ScalarProperty Name="DPPStatus" ColumnName="DPPStatus" />
+                <ScalarProperty Name="NaturalPer" ColumnName="NaturalPer" />
+                <ScalarProperty Name="UseBilAddr" ColumnName="UseBilAddr" />
+                <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
+                <ScalarProperty Name="TxExMxVdTp" ColumnName="TxExMxVdTp" />
+                <ScalarProperty Name="EffecPrice" ColumnName="EffecPrice" />
+                <ScalarProperty Name="PriceMode" ColumnName="PriceMode" />
+                <ScalarProperty Name="IPACodePA" ColumnName="IPACodePA" />
+                <ScalarProperty Name="PECAddr" ColumnName="PECAddr" />
+                <ScalarProperty Name="RepAddID" ColumnName="RepAddID" />
+                <ScalarProperty Name="RepFisCode" ColumnName="RepFisCode" />
+                <ScalarProperty Name="RepCmpName" ColumnName="RepCmpName" />
+                <ScalarProperty Name="RepSName" ColumnName="RepSName" />
+                <ScalarProperty Name="RepFName" ColumnName="RepFName" />
+                <ScalarProperty Name="eDistrict" ColumnName="eDistrict" />
+                <ScalarProperty Name="eCountry" ColumnName="eCountry" />
+                <ScalarProperty Name="eCityTown" ColumnName="eCityTown" />
+                <ScalarProperty Name="eZipCode" ColumnName="eZipCode" />
+                <ScalarProperty Name="eBuildnNum" ColumnName="eBuildnNum" />
+                <ScalarProperty Name="eStreetNum" ColumnName="eStreetNum" />
+                <ScalarProperty Name="eStreet" ColumnName="eStreet" />
+                <ScalarProperty Name="EDocGenTyp" ColumnName="EDocGenTyp" />
                 <ScalarProperty Name="U_Classification" ColumnName="U_Classification" />
                 <ScalarProperty Name="U_CardCodeDLI" ColumnName="U_CardCodeDLI" />
                 <ScalarProperty Name="U_StoreSize" ColumnName="U_StoreSize" />
@@ -1923,6 +2041,26 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <EntitySetMapping Name="OITM">
             <EntityTypeMapping TypeName="COM_MKModel.OITM">
               <MappingFragment StoreEntitySet="OITM">
+                <ScalarProperty Name="AutoBatch" ColumnName="AutoBatch" />
+                <ScalarProperty Name="Imported" ColumnName="Imported" />
+                <ScalarProperty Name="TNVED" ColumnName="TNVED" />
+                <ScalarProperty Name="SOIExc" ColumnName="SOIExc" />
+                <ScalarProperty Name="ExcRate" ColumnName="ExcRate" />
+                <ScalarProperty Name="ExcFixAmnt" ColumnName="ExcFixAmnt" />
+                <ScalarProperty Name="ExcImpQUoM" ColumnName="ExcImpQUoM" />
+                <ScalarProperty Name="AssVal4WTR" ColumnName="AssVal4WTR" />
+                <ScalarProperty Name="GstTaxCtg" ColumnName="GstTaxCtg" />
+                <ScalarProperty Name="SACEntry" ColumnName="SACEntry" />
+                <ScalarProperty Name="GSTRelevnt" ColumnName="GSTRelevnt" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="onHldLimt" ColumnName="onHldLimt" />
+                <ScalarProperty Name="OnHldPert" ColumnName="OnHldPert" />
+                <ScalarProperty Name="LinkRsc" ColumnName="LinkRsc" />
+                <ScalarProperty Name="EnAstSeri" ColumnName="EnAstSeri" />
+                <ScalarProperty Name="PrdStdCst" ColumnName="PrdStdCst" />
+                <ScalarProperty Name="InCostRoll" ColumnName="InCostRoll" />
+                <ScalarProperty Name="SouVirAsst" ColumnName="SouVirAsst" />
+                <ScalarProperty Name="VirtAstItm" ColumnName="VirtAstItm" />
                 <ScalarProperty Name="U_UoM" ColumnName="U_UoM" />
                 <ScalarProperty Name="U_Category" ColumnName="U_Category" />
                 <ScalarProperty Name="U_CustomerCM" ColumnName="U_CustomerCM" />

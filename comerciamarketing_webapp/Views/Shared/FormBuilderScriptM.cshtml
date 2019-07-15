@@ -27,148 +27,173 @@
             if (descripciontp == "Title") {
 
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-format-title icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-format-title icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
 
-                $("ol#main_list").append("<li  class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li  class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
             } else if (descripciontp == "Subtitle") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+
+            } else if (descripciontp == "Table") {
+                var divlo = "<div class='media'>";
+                //divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
             } else if (descripciontp == "DynamicProducts") { //NUEVO
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+
+
+            } else if (descripciontp == "DynamicBrandsCompetitors") { //NUEVO
+                var divlo = "<div class='media'>";
+                //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Customers") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-account icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-account icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Item_list") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-keyboard-caps icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-keyboard-caps icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Brands") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-beta icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-beta icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Products_line") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-package-variant icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-package-variant icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Brand_competitors") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-gamepad-variant icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-gamepad-variant icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Multiple_choice") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
+               ///divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Select") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-format-list-bulleted-type icon-md align-self-center mr-3'></i>";
+               // divlo += "<i class='mdi mdi-format-list-bulleted-type icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Input_number") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-counter icon-md align-self-center mr-3'></i>";
+               // divlo += "<i class='mdi mdi-counter icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Currency") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-currency-usd icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-currency-usd icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Single_choice") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-radiobox-marked icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-radiobox-marked icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
             } else if (descripciontp == "Input_text") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-textbox icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-textbox icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
                 if (categoryID == "0") {
-                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
                 } else {
-                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
                 }
 
             } else if (descripciontp == "Column") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-table-column icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-table-column icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                if (categoryID_retail == "0") {
-                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='0' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
-                } else {
-                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                if (categoryID_retail == "3") {
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='PRODUCT' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
+                } else if (categoryID_retail == "16") {
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='MULTIPLE_CHOICE' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
+                } else if (categoryID_retail == "21") {
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
                 }
 
             } else if (descripciontp == "Date") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-calendar icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-calendar icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
             } else if (descripciontp == "Picture") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-image icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-image icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
             } else if (descripciontp == "Electronic_signature") {
                 var divlo = "<div class='media'>";
-                divlo += "<i class='mdi mdi-fingerprint icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-fingerprint icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
-                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+            } else if (descripciontp == "Yes/No") {
+                var divlo = "<div class='media'>";
+                ///divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+
+
             }
 
 
@@ -205,7 +230,7 @@
             });
 
             var divlo = "<div class='media'>";
-            divlo += "<i class='mdi mdi-cube icon-md align-self-center mr-3'></i>";
+            //divlo += "<i class='mdi mdi-cube icon-md align-self-center mr-3'></i>";
             divlo += "<div class='media-body'>";
 
             products.forEach(function (element, e) {
@@ -255,7 +280,7 @@
                 ID_tipo_recurso = "18";
                 descripciontp = "Input_number";
 
-                divlo += "<i class='mdi mdi-counter icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-counter icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
 
                 products.forEach(function (element, e) {
@@ -270,7 +295,7 @@
                 descripciontp = "Input_text";
 
 
-                divlo += "<i class='mdi mdi-textbox icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-textbox icon-md align-self-center mr-3'></i>";
         divlo += "<div class='media-body'>";
 
         products.forEach(function (element, e) {
@@ -282,7 +307,7 @@
             } else if (idFormato == "3") { //Opcion unica
                 ID_tipo_recurso = "19";
                 descripciontp = "Single_choice";
-                divlo += "<i class='mdi mdi-radiobox-marked icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-radiobox-marked icon-md align-self-center mr-3'></i>";
         divlo += "<div class='media-body'>";
 
         products.forEach(function (element, e) {
@@ -294,7 +319,7 @@
             } else if (idFormato == "4") { //Opcion multiple
                 ID_tipo_recurso = "16";
                 descripciontp = "Multiple_choice";
-                divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
+                //divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
         divlo += "<div class='media-body'>";
 
         products.forEach(function (element, e) {
@@ -306,7 +331,7 @@
             } else if (idFormato == "5") { //label
                 ID_tipo_recurso = "8";
                 descripciontp = "Subtitle";
-                divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
+               // divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
         divlo += "<div class='media-body'>";
 
         products.forEach(function (element, e) {
@@ -315,7 +340,18 @@
 
             $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.Description + "' data-fdescription='" + element.ID + "'><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.Description + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
         });
-    }
+            } else if (idFormato == "6") { //Item_list
+                ID_tipo_recurso = "20";
+                descripciontp = "Item_list";
+                //divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                products.forEach(function (element, e) {
+                    newIdCount = 1 + $(".dd-item").length;
+                    Idkey = newIdCount;
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.Description + "' data-fdescription='" + element.ID + "'><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.Description + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div></li>");
+                });
+            }
 
 
             $('.dd-item a').on('mousedown', function (event) {
@@ -348,7 +384,7 @@
             });
 
             var divlo = "<div class='media'>";
-            divlo += "<i class='mdi mdi-cube-outline icon-md align-self-center mr-3'></i>";
+            //divlo += "<i class='mdi mdi-cube-outline icon-md align-self-center mr-3'></i>";
             divlo += "<div class='media-body'>";
 
             products.forEach(function (element, e) {
@@ -398,7 +434,7 @@
             });
 
             var divlo = "<div class='media'>";
-            divlo += "<i class='mdi mdi-gift icon-md align-self-center mr-3'></i>";
+           // divlo += "<i class='mdi mdi-gift icon-md align-self-center mr-3'></i>";
             divlo += "<div class='media-body'>";
 
             products.forEach(function (element, e) {
@@ -1025,7 +1061,7 @@
 
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li  class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Title" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li  class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Title" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
 
@@ -1034,15 +1070,31 @@
                    // divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Subtitle" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Subtitle" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
-                } else if (ID_tipo_recurso == "11") { //NUEVO
+                } else if (ID_tipo_recurso == "34") {
+                    var divlo = "<div class='media'>";
+                    // divlo += "<i class='mdi mdi-text-shadow icon-md align-self-center mr-3'></i>";
+                    divlo += "<div class='media-body'>";
+
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Table" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
+
+
+                }else if (ID_tipo_recurso == "11") { //NUEVO
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicProducts" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicProducts" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
+
+
+                }else if (ID_tipo_recurso == "33") { //NUEVO
+                    var divlo = "<div class='media'>";
+                    //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                    divlo += "<div class='media-body'>";
+
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicBrandsCompetitors" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "12") {
@@ -1050,7 +1102,7 @@
                     //divlo += "<i class='mdi mdi-account icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Customers" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Customers" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "13") {
@@ -1058,7 +1110,7 @@
                     //divlo += "<i class='mdi mdi-beta icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Brands" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Brands" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "14") {
@@ -1066,15 +1118,15 @@
                     //divlo += "<i class='mdi mdi-package-variant icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Product_line" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Product_line" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "15") {
                     var divlo = "<div class='media'>";
-                    divlo += "<i class='mdi mdi-gamepad-variant icon-md align-self-center mr-3'></i>";
+                    //divlo += "<i class='mdi mdi-gamepad-variant icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Brand_competitors" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Brand_competitors" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "16") {
@@ -1082,15 +1134,25 @@
                     //divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
-                } else if (ID_tipo_recurso == "17") {
+                } else if (ID_tipo_recurso == "32") {
+                    var divlo = "<div class='media'>";
+                    //divlo += "<i class='mdi mdi-checkbox-marked-outline icon-md align-self-center mr-3'></i>";
+                    divlo += "<div class='media-body'>";
+
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Yes/No" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
+
+
+                }
+
+                else if (ID_tipo_recurso == "17") {
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-format-list-bulleted-type icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Select" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Select" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i>X</a></span></div></div>" + esPadre + "</li>";
 
                     
                 } else if (ID_tipo_recurso == "18") {
@@ -1098,7 +1160,7 @@
                     //divlo += "<i class='mdi mdi-counter icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Input_number" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Input_number" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "21") {
@@ -1106,7 +1168,7 @@
                     //divlo += "<i class='mdi mdi-currency-usd icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Input_number" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Input_number" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "19") {
@@ -1114,7 +1176,7 @@
                     //divlo += "<i class='mdi mdi-radiobox-marked icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Single_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Single_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 } else if (ID_tipo_recurso == "6") {
@@ -1123,15 +1185,15 @@
                     divlo += "<div class='media-body'>";
 
                     if (element.fvalue == "0") {
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "1"){ //Flavor
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Flavor" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Flavor" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "2") { //Quality
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Quality" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Quality" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "3") { //Price
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Price" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Price" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "4") { //Packing
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Packing" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + " - " + "Packing" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                     } 
 
                 } else if (ID_tipo_recurso == "24") {
@@ -1139,14 +1201,12 @@
                     //divlo += "<i class='mdi mdi-table-column icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    if (element.fvalue == "0") {
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Input_text" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
-                    } else if (element.fvalue == "16") { //Multiple choice
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    if (element.fvalue == "16") { //Multiple choice
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='MULTIPLE_CHOICE' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "21") { //Currency
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Currency" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
-                    } else if (element.fvalue == "3") { //Currency
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Product" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Currency" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    } else if (element.fvalue == "3") { //PRODUCT
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='PRODUCT' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Product" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
                     } 
 
                 }
@@ -1156,7 +1216,7 @@
                     //divlo += "<i class='mdi mdi-keyboard-caps icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Item_list" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "Item_list" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
                 }else if (ID_tipo_recurso == "5") {
@@ -1164,34 +1224,34 @@
                     //divlo += "<i class='mdi mdi-image icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Picture" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Picture" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                 } else if (ID_tipo_recurso == "4") {
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-cube-outline icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Sample" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Sample" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
                 } else if (ID_tipo_recurso == "22") {
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-calendar icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Date" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Date" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
                 } else if (ID_tipo_recurso == "3") {
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-cube icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Product" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Product" + "</h6><p href='javascript:;'  id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</p></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
                 } else if (ID_tipo_recurso == "9") {
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-fingerprint icon-md align-self-center mr-3'></i>";
                     divlo += "<div class='media-body'>";
 
-                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Electronic_signature" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Electronic_signature" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
                 }
 
                 root.append($li);
@@ -1273,7 +1333,7 @@
                                 IDform: idform
                             }),
                             success: function (result) {
-
+                                console.log(result);
                                 modal.find('#titleform').text('Edit Form Template');
                                 modal.find('#desform').text('Edit form template.');
 

@@ -169,6 +169,9 @@
     <Reference Include="RazorEngine, Version=3.4.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="Recaptcha.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=171a6ec5fa4b1644, processorArchitecture=MSIL">
+      <HintPath>..\packages\RecaptchaNet.2.1.0\lib\net451\Recaptcha.Web.dll</HintPath>
+    </Reference>
     <Reference Include="SharePointPnP.IdentityModel.Extensions, Version=1.2.3.0, Culture=neutral, PublicKeyToken=5e633289e95c321a, processorArchitecture=MSIL">
       <HintPath>..\packages\SharePointPnP.IdentityModel.Extensions.1.2.3\lib\net45\SharePointPnP.IdentityModel.Extensions.dll</HintPath>
     </Reference>
@@ -270,8 +273,8 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Z.EntityFramework.Extensions, Version=3.17.3.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.3.17.3\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.21.2.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.21.2\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -302,13 +305,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\DemosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\FormsMController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Recursos_usuarioController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SalesRepresentativesController.cs" />
     <Compile Include="Controllers\Stock_itemsController.cs" />
     <Compile Include="Controllers\user_form_w9Controller.cs" />
@@ -353,6 +356,12 @@
     <Compile Include="Models\C_ROUTES.cs">
       <DependentUpon>COM_MK.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Datos_Audit_11.cs">
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Datos_Marketing_Activity.cs">
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\dbComercia.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -368,6 +377,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbComercia.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\dbLimena.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbLimena.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbLimena.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbLimena.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbLimena.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbLimena.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Demos.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -380,6 +404,9 @@
     <Compile Include="Models\Empresas.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Estructura_1_1_Comercia.cs">
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Forms.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -387,6 +414,9 @@
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FormsM_details.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FormsM_detailsDemos.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Forms_details.cs">
@@ -397,6 +427,21 @@
     </Compile>
     <Compile Include="Models\historial_conexiones.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interna_CMK.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Interna_CMK.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interna_CMK.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interna_CMK.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Interna_CMK.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Items_displays.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
@@ -424,6 +469,9 @@
     </Compile>
     <Compile Include="Models\Stock_items.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sys_Users.cs">
+      <DependentUpon>dbLimena.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tipo_membresia.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
@@ -466,10 +514,22 @@
       <DependentUpon>rptDemoDailyResume.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\rptDemosPreview.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptDemosPreview.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\rptDemov1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptDemov1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptMarketingActivity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptMarketingActivity.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\rptQuick_visit.cs">
@@ -488,6 +548,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSalesOrder.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptSubMarketingActivity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSubMarketingActivity.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\rptw9form - backup.cs">
@@ -510,6 +576,27 @@
     <Content Include="Content\barcode\file_input.js" />
     <Content Include="Content\barcode\quagga.js" />
     <Content Include="Content\barcode\vendor\jquery-1.9.0.min.js" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\css\reset.css" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\css\style.css" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\cd-icon-arrow.svg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\cd-icon-check.svg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\cd-icon-filter.svg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-1.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-10.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-11.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-12.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-2.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-3.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-4.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-5.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-6.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-7.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-8.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\img\img-9.jpg" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\js\jquery-2.1.1.js" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\js\jquery.mixitup.min.js" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\js\main.js" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\js\modernizr.js" />
     <Content Include="Content\BasikTemplate\assets\css\bootstrap.css" />
     <Content Include="Content\BasikTemplate\assets\css\fixedfooter.css" />
     <Content Include="Content\BasikTemplate\assets\css\loader.css" />
@@ -1067,8 +1154,10 @@
     <Content Include="Content\landingpage\css\magnific-popup.css" />
     <Content Include="Content\landingpage\css\owl.carousel.min.css" />
     <Content Include="Content\landingpage\css\responsive.css" />
+    <Content Include="Content\landingpage\css\slippry.css" />
     <Content Include="Content\landingpage\css\styles.css" />
     <Content Include="Content\landingpage\css\swiper.min.css" />
+    <Content Include="Content\landingpage\images\arrows.svg" />
     <Content Include="Content\landingpage\images\demo\client-logos\client-3.jpg" />
     <Content Include="Content\landingpage\images\demo\client-logos\logo-1.svg" />
     <Content Include="Content\landingpage\images\demo\client-logos\logo-2.svg" />
@@ -1121,13 +1210,114 @@
     <Content Include="Content\landingpage\images\demo\logo.svg" />
     <Content Include="Content\landingpage\images\demo\screens\1.jpg" />
     <Content Include="Content\landingpage\images\demo\screens\2.png" />
+    <Content Include="Content\landingpage\images\main\customers\2CEBBA44.PNG" />
+    <Content Include="Content\landingpage\images\main\customers\Logo-Cremimex.jpg" />
+    <Content Include="Content\landingpage\images\main\customers\logo-ducal.png" />
+    <Content Include="Content\landingpage\images\main\customers\Logo-Goya.jpg" />
+    <Content Include="Content\landingpage\images\main\customers\Logo-Klass.png" />
+    <Content Include="Content\landingpage\images\main\customers\Logo-mahler.jpg" />
+    <Content Include="Content\landingpage\images\main\customers\logo-naturas.png" />
+    <Content Include="Content\landingpage\images\main\Headers\header01.jpg" />
+    <Content Include="Content\landingpage\images\main\Headers\header02.jpg" />
+    <Content Include="Content\landingpage\images\main\Headers\header03.jpg" />
+    <Content Include="Content\landingpage\images\main\Headers\header04.jpg" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 1.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 10.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 2.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 3.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 4.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 5.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 6.png" />
+    <Content Include="Content\landingpage\images\main\icons\1x\Asset 8.png" />
+    <Content Include="Content\landingpage\images\main\logo.png" />
+    <Content Include="Content\landingpage\images\main\LogoPNG-1.png" />
+    <Content Include="Content\landingpage\images\main\LogoPNG-1blanco.png" />
+    <Content Include="Content\landingpage\images\main\map.png" />
+    <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Competitividad.png" />
+    <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Cuidamosdenuestragente.png" />
+    <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Disciplina.png" />
+    <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Innovacion.png" />
+    <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Motivacion.png" />
+    <Content Include="Content\landingpage\images\sy-loader.gif" />
     <Content Include="Content\landingpage\js\custom.js" />
+    <Content Include="Content\landingpage\js\slippry.min.js" />
     <Content Include="Content\landingpage\js\vendors\bootstrap.bundle.min.js" />
     <Content Include="Content\landingpage\js\vendors\jquery.easing.min.js" />
     <Content Include="Content\landingpage\js\vendors\jquery.magnific-popup.min.js" />
     <Content Include="Content\landingpage\js\vendors\jquery.min.js" />
     <Content Include="Content\landingpage\js\vendors\owl.carousel.min.js" />
     <Content Include="Content\landingpage\js\vendors\swiper.min.js" />
+    <Content Include="Content\landingpage_notinuse\css\bootstrap.min.css" />
+    <Content Include="Content\landingpage_notinuse\css\fontawesome-all.min.css" />
+    <Content Include="Content\landingpage_notinuse\css\ionicons.min.css" />
+    <Content Include="Content\landingpage_notinuse\css\magnific-popup.css" />
+    <Content Include="Content\landingpage_notinuse\css\owl.carousel.min.css" />
+    <Content Include="Content\landingpage_notinuse\css\responsive.css" />
+    <Content Include="Content\landingpage_notinuse\css\styles.css" />
+    <Content Include="Content\landingpage_notinuse\css\swiper.min.css" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\client-3.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\logo-1.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\logo-2.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\logo-3.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\logo-4.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\client-logos\logo-5.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\featured-images\feature-image-3.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\featured-images\feature-image-4.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\hero-1-2.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\aliado.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\Comerciafb.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\2CEBBA44.PNG" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\Logo-Cremimex.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\logo-ducal.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\Logo-Goya.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\Logo-Klass.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\Logo-mahler.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\customers\logo-naturas.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520%2520Estudios%2520de%2520Mercado.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520Campaña.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520Del%2520pueblo.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520DEMOS.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520Ducal.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520ESTUDIOS%2520DE%2520MERCADO.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520LA%2520MORENITA.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520Merchandising.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\FB%2520merchandising.psd.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\lamorenita.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKD%2520Institucional.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKD%2520Marca.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKD%2520MARCAS.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKD%2520Servicio%2520.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKED%2520IN%2520Institucional%2520.psd.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKED%2520IN%2520Servicio.psd.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKND%2520MATERIAL%2520POP.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LINKND%2520QUOTE.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LNKD%2520Malher.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LNKND%2520CRECER.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LNKND%2520EL%2520MEJOR%2520ESPACIO.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LNKND%2520HAZ%2520UN%2520CLIENTE.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LNKND%2520Materiales%2520POP.png.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\logo.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\LogoPNG-1.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\Malher.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\marca.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\slide1.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\slide2.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\slide3.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\landing\slide4.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\logo.svg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\nuestrosretos.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\nuestrosvalores.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\screens\1.jpg" />
+    <Content Include="Content\landingpage_notinuse\images\demo\screens\2.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\teamwork.png" />
+    <Content Include="Content\landingpage_notinuse\images\demo\usamap.png" />
+    <Content Include="Content\landingpage_notinuse\js\custom.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\bootstrap.bundle.min.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\jquery.easing.min.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\jquery.magnific-popup.min.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\jquery.min.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\owl.carousel.min.js" />
+    <Content Include="Content\landingpage_notinuse\js\vendors\swiper.min.js" />
     <Content Include="Content\newstyle2\css\jquery.treegrid.css" />
     <Content Include="Content\newstyle2\css\owl.carousel.css" />
     <Content Include="Content\newstyle2\css\owl.theme.css" />
@@ -3643,6 +3833,50 @@
     <Content Include="Content\BasikTemplate\libs\summernote\dist\font\summernote.ttf" />
     <Content Include="Content\BasikTemplate\libs\summernote\dist\font\summernote.woff" />
     <Content Include="Content\BasikTemplate\libs\summernote\dist\summernote-0.8.8-dist.zip" />
+    <EntityDeploy Include="Models\Interna_CMK.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Interna_CMK.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\dbLimena.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbLimena.edmx</DependentUpon>
+      <LastGenOutput>dbLimena.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\dbLimena.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbLimena.edmx</DependentUpon>
+      <LastGenOutput>dbLimena.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Interna_CMK.edmx.diagram">
+      <DependentUpon>Interna_CMK.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\dbLimena.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbLimena.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\dbLimena.edmx.diagram">
+      <DependentUpon>dbLimena.edmx</DependentUpon>
+    </Content>
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\js\mixitup-LICENSE.md" />
+    <Content Include="Content\BasikTemplate\assets\content-filter-master\scss\style.scss" />
+    <Content Include="Content\landingpage\css\Gotham-Black.woff" />
+    <Content Include="Content\landingpage\css\Gotham-Bold.woff" />
+    <Content Include="Content\landingpage\css\Gotham-BookItalic.woff" />
+    <Content Include="Content\landingpage\css\Gotham-Light.woff" />
+    <Content Include="Content\landingpage\css\Gotham-Thin.woff" />
+    <Content Include="Content\landingpage\css\Gotham-ThinItalic.woff" />
+    <Content Include="Content\landingpage\css\Gotham-UltraItalic.woff" />
+    <Content Include="Content\landingpage\css\Gotham-XLight.woff" />
+    <Content Include="Content\landingpage\css\Gotham-XLightItalic.woff" />
+    <Content Include="Content\landingpage\css\GothamBold.woff" />
+    <Content Include="Content\landingpage\css\GothamBoldItalic.woff" />
+    <Content Include="Content\landingpage\css\GothamBook.woff" />
+    <Content Include="Content\landingpage\css\GothamBookItalic.woff" />
+    <Content Include="Content\landingpage\css\GothamLight.woff" />
+    <Content Include="Content\landingpage\css\GothamLightItalic.woff" />
+    <Content Include="Content\landingpage\css\GothamMedium.woff" />
+    <Content Include="Content\landingpage\css\GothamMediumItalic.woff" />
+    <Content Include="Content\landingpage\css\GothamMedium_1.woff" />
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
     <Content Include="Models\dbComercia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -3655,6 +3889,17 @@
       <LastGenOutput>dbComercia.cs</LastGenOutput>
     </Content>
     <None Include="offline.appcache" />
+    <Content Include="Models\Interna_CMK.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Interna_CMK.edmx</DependentUpon>
+      <LastGenOutput>Interna_CMK.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Interna_CMK.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Interna_CMK.edmx</DependentUpon>
+      <LastGenOutput>Interna_CMK.cs</LastGenOutput>
+    </Content>
+    <Content Include="RecaptchaNet.Readme.txt" />
     <Content Include="versionamiento.txt" />
     <Content Include="Views\Demos\Form_templatepreview.cshtml" />
     <Content Include="Views\Forms\Create.cshtml" />
@@ -3809,7 +4054,6 @@
     <Content Include="Views\Shared\Basik_Style.cshtml" />
     <Content Include="Views\Shared\Basik_footer.cshtml" />
     <Content Include="Views\Customers\Sales_representatives.cshtml" />
-    <Content Include="Views\Customers\Calendar_customers.cshtml" />
     <Content Include="Views\Customers\Map_customers.cshtml" />
     <Content Include="Views\Customers\Reports_customers.cshtml" />
     <Content Include="Views\Shared\Basik_header.cshtml" />
@@ -3822,8 +4066,27 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Admin\Visit_details.cshtml" />
     <Content Include="Views\FormsM\ActivityonDF.cshtml" />
-    <Content Include="Views\Admin\Reports.cshtml" />
-    <Content Include="Views\Admin\Reports_details.cshtml" />
+    <Content Include="Views\Reports\Reports.cshtml" />
+    <Content Include="Views\Reports\RD_FORM1.cshtml" />
+    <Content Include="Views\Admin\Demos.cshtml" />
+    <Content Include="Views\Reports\RD_FORM3.cshtml" />
+    <Content Include="Views\Reports\RD_AUDITGRL1.cshtml" />
+    <Content Include="Views\Shared\demoScript.cshtml" />
+    <Content Include="Views\Shared\Basik_menuExternal.cshtml" />
+    <Content Include="Views\Shared\Basik_headerExternal.cshtml" />
+    <Content Include="Views\Reports\RD_FORM32.cshtml" />
+    <Content Include="Views\Customers\Calendar.cshtml" />
+    <Content Include="Views\Shared\Routes_calendarCustomersScript.cshtml" />
+    <Content Include="Views\Customers\Gallery.cshtml" />
+    <Content Include="Views\Shared\preview_styleimgactivity.cshtml" />
+    <Content Include="Views\FormsM\ActivityresumeR.cshtml" />
+    <Content Include="Views\FormsM\ActivityresumeC.cshtml" />
+    <Content Include="Views\Emails\emailContact.cshtml" />
+    <Content Include="Views\Shared\ActivityadminScriptsPreview.cshtml" />
+    <Content Include="Views\Admin\Map.cshtml" />
+    <Content Include="Views\Admin\Gallery.cshtml" />
+    <Content Include="Views\Shared\FilterControlAdmin.cshtml" />
+    <Content Include="Views\Shared\FilterControlCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3853,9 +4116,17 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemoDailyResume.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptDemosPreview.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDemosPreview.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptDemov1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemov1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptMarketingActivity.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptMarketingActivity.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptQuick_visit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3868,6 +4139,10 @@
     <EmbeddedResource Include="Reportes\rptSalesOrder.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptSalesOrder.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptSubMarketingActivity.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSubMarketingActivity.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptw9form - backup.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

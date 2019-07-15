@@ -5,7 +5,7 @@
 
 <!-- ############ Footer START-->
 <div id="footer" class="page-footer" style="margin-top:40px;">
-    @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
+    @*@if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
     {
         <div class="app-footer">
             <div class="app-footer__inner">
@@ -19,15 +19,15 @@
                             </a>
 
                         </div>
-                        <div class="dots-separator"></div>
-                        <div class="dropdown">
+                        @*<div class="dots-separator"></div>*@
+                        @*<div class="dropdown">
                             <a href="@Url.Action("Calendar_customers","Customers", new { id=ViewBag.id_customer})" class="dot-btn-wrapper" aria-haspopup="true" aria-expanded="false">
                                 <i class="dot-btn-icon lnr-calendar-full icon-gradient bg-mean-fruit">
                                 </i>
                             </a>
 
-                        </div>
-                        <div class="dots-separator"></div>
+                        </div>*@
+                        @*<div class="dots-separator"></div>
                         <div class="dropdown">
                             <a class="dot-btn-wrapper dd-chart-btn-2" aria-haspopup="true" aria-expanded="false">
                                 <i class="dot-btn-icon lnr-list icon-gradient bg-mean-fruit"></i>
@@ -49,7 +49,7 @@
             </div>
 
         </div>
-    }
+    }*@
 
     <div class="d-flex p-3" id="copyrights">
         <span class="text-sm text-muted flex">&copy; Copyright. Comercia Marketing</span>

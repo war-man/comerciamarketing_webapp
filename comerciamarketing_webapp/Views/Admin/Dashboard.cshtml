@@ -3,243 +3,364 @@
     ViewBag.title = "Comercia Marketing - Admin Dashboard";
 
     var modelcount = Model.Count();
-    if (modelcount == 0) {
+    if (modelcount == 0)
+    {
         modelcount = 1;
     }
 }
 
 
-        <!-- ############ Content START-->
-        <div id="content" class="flex ">
-            <!-- ############ Main START-->
-            <div>
-                <div class="page-hero page-container " id="page-hero">
-                    <div class="padding d-flex">
-                        <div class="page-title">
-                            <h2 class="text-md text-highlight">Home</h2>
-                            <small class="text-muted">
-                                Welcome,
-                                <strong>@ViewBag.username</strong>
-                            </small>
-                        </div>
-                        <div class="flex"></div>
-
-                    </div>
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">Home</h2>
+                    <small class="text-muted">
+                        Welcome,
+                        <strong>@ViewBag.username</strong>
+                    </small>
                 </div>
-                <div class="page-content page-container" id="page-content">
-                    <div class="padding">
-                        <div class="row row-sm sr">
-                            <div class="col-md-12 col-lg-12">
+                <div class="flex"></div>
+
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row row-sm sr">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row row-sm">
+                            <div class="col-md-12 col-lg-8">
                                 <div class="row row-sm">
-                                    <div class="col-md-12 col-lg-8">
-                                        <div class="row row-sm">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="row row-sm">
-                                                            <div class="col-5">
-                                                                <small class="text-muted">Your membership</small>
-                                                                <div class="mt-2 font-weight-500"><span class="text-info">@ViewBag.Membresia</span></div>
-                                                            </div>
-                                                            <div class="col-7">
-                                                                <small class="text-muted">Your company</small>
-                                                                <div class="text-highlight mt-2 font-weight-500">@ViewBag.Company</div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div class="row row-sm">
-                                            <div class="col-md-12 d-flex">
-                                                <div class="card flex">
-                                                    <div class="card-body">
-                                                        <div class="row row-sm">
-                                                            <div class="col-sm-12">
-                                                                <div class="mb-2">
-                                                                    <small class="text-muted">Visits statistics</small>
-                                                                </div>
-                                                                <div class="row row-sm">
-                                                                    <div class="col-4">
-                                                                        <div class="text-highlight text-md">@Model.Count()</div>
-                                                                        <small>Visits</small>
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        <div class="text-md">@Model.Where(a => a.ID_visitstate == 4).Count()</div>
-                                                                        <small>Finished</small>
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        <div class="text-danger text-md">@Model.Where(a => a.ID_visitstate == 3 || a.ID_visitstate == 2).Count()</div>
-                                                                        <small>Remain</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 col-sm-12">
-                                                                <div class="mb-2 mt-2 mt-sm-0">
-                                                                    <small class="text-muted">This week</small>
-                                                                </div>
-                                                                <div>Visits completion</div>
-                                                                <div class="progress no-bg mt-2 align-items-center circle" style="height:6px;">
-                                                                    <div class="progress-bar circle gd-danger" style="width: @Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count())/ Convert.ToDecimal(modelcount)*100),2)%"></div>
-                                                                    <span class="mx-2">@Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count()) / Convert.ToDecimal(modelcount) * 100), 2)%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 col-lg-4 d-flex">
-                                        <div class="card flex">
+                                    <div class="col-12">
+                                        <div class="card">
                                             <div class="card-body">
-                                                <div class="px-4">
-                                                    <div id="jqvmap-usa" style="height: 200px" class="d-flex align-items-center justify-content-center">
-                                                      
+                                                <div class="row row-sm">
+                                                    <div class="col-5">
+                                                        <small class="text-muted">Your membership</small>
+                                                        <div class="mt-2 font-weight-500"><span class="text-info">@ViewBag.Membresia</span></div>
                                                     </div>
-                                                    <div class="text-center mb-3">
-                                                        <small class="text-muted">Your top states(Visits)</small>
-                                                    </div>
-                                                    <div class="row text-center">
-                                                        @foreach (var item in ViewBag.estadisticasEstadosmapa)
-    {
-                                                    <div class="col">
-                                                        <span class="text-primary">@item.State</span>
-                                                        <div class="text-muted text-sm">@item.Count</div>
+                                                    <div class="col-7">
+                                                        <small class="text-muted">Your company</small>
+                                                        <div class="text-highlight mt-2 font-weight-500">@ViewBag.Company</div>
                                                     </div>
 
-}
-
-
-
-                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
+
                                     </div>
 
+                                </div>
+                                <div class="row row-sm">
                                     <div class="col-md-12 d-flex">
                                         <div class="card flex">
                                             <div class="card-body">
                                                 <div class="row row-sm">
                                                     <div class="col-sm-12">
-                                                        <div class="p-3-4">
-                                                            <div class="d-flex">
-                                                                <div>
-                                                                    <div>Visits List</div>
-
-                                                                </div>
-                                                                <span class="flex"></span>
-                                                                <div>
-                                                                    <div class="btn-group-toggle" data-toggle="buttons">
-                                                                        <label class="btn">
-                                                                            <input type="radio" name="options" value="Today">Today
-                                                                        </label>
-                                                                        <label class="btn active">
-                                                                            <input type="radio" name="options" value="Week">Week
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
+                                                        <div class="mb-2">
+                                                            <small class="text-muted">Visits statistics</small>
+                                                        </div>
+                                                        <div class="row row-sm">
+                                                            <div class="col-4">
+                                                                <div class="text-highlight text-md">@Model.Count()</div>
+                                                                <small>Visits</small>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="text-md">@Model.Where(a => a.ID_visitstate == 4).Count()</div>
+                                                                <small>Finished</small>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="text-danger text-md">@Model.Where(a => a.ID_visitstate == 3 || a.ID_visitstate == 2).Count()</div>
+                                                                <small>Remain</small>
                                                             </div>
                                                         </div>
-
-                                                        <div class="row">
-                                                            <div class="table-responsive">
-                                                                <table id="dashboard_visits" class="table table-row v-middle table-striped" data-plugin="dataTable">
-                                                                    <thead>
-                                                                        <tr>
-
-                                                                            <th scope="col">ID </th>
-
-                                                                            <th scope="col">ROUTE</th>
-
-                                                                            <th scope="col">CUSTOMER</th>
-                                                                            <th scope="col">DATE</th>
-
-                                                                            <th scope="col">SALES REPS</th>
-                                                                            <th scope="col">STATUS</th>
-
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach (var itemVisita in Model)
-                                        {
-                                            <tr>
-
-                                                <td scope="row" data-label="ID">
-                                                    @itemVisita.ID_visit
-
-                                                </td>
-
-                                                <td data-label="Route">@itemVisita.city</td>
-
-                                                <td data-label="Store">
-
-
-
-                                                    <a class="text-black" href="@Url.Action("Visit_details", "SalesRepresentatives", new { id = itemVisita.ID_visit })">
-                                                        <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
-                                                        <span>@itemVisita.address , @itemVisita.state</span>
-                                                    </a>
-
-                                                </td>
-                                                <td data-label="Date">@itemVisita.visit_date.ToString("MM/dd/yyyy")</td>
-                                                <td data-label="Rep">
-                                                    @foreach (var user in itemVisita.lstUsers) {
-                                                    <span>@user.Name </span>
-                                                }
-                                                </td>
-
-
-
-                                                <td data-label="Status">
-                                                    @switch (itemVisita.ID_visitstate)
-                    {
-                        case 1: //Canceled
-                                <label class="badge badge-danger">Canceled</label>
-break;
-case 2: //In Progress
-                                <label class="badge badge-success">In progress</label>
-break;
-case 3: //Scheduled
-
-                                <label class="badge badge-warning">Scheduled</label>
-
-break;
-case 4: //Finished
-                                <label class="badge badge-primary">Finished</label>
-break;
-}
-
-                                                </td>
-                                            </tr>
-        }
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
                                                     </div>
-
+                                                    <div class="col-12 col-sm-12">
+                                                        <div class="mb-2 mt-2 mt-sm-0">
+                                                            <small class="text-muted"></small>
+                                                        </div>
+                                                        <div>Visits completion</div>
+                                                        <div class="progress no-bg mt-2 align-items-center circle" style="height:6px;">
+                                                            <div class="progress-bar circle gd-danger" style="width: @Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count())/ Convert.ToDecimal(modelcount)*100),2)%"></div>
+                                                            <span class="mx-2">@Math.Round((Convert.ToDecimal(Model.Where(a => a.ID_visitstate == 4).Count()) / Convert.ToDecimal(modelcount) * 100), 2)%</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4 d-flex">
+                                <div class="card flex">
+                                    <div class="card-body">
+                                        <div class="px-4">
+                                            <div id="jqvmap-usa" style="height: 200px" class="d-flex align-items-center justify-content-center">
 
+                                            </div>
+                                            <div class="text-center mb-3">
+                                                <small class="text-muted">Your top states(Visits)</small>
+                                            </div>
+                                            <div class="row text-center">
+                                                @foreach (var item in ViewBag.estadisticasEstadosmapa)
+                                                {
+                                                    <div class="col">
+                                                        <span class="text-primary">@item.State</span>
+                                                        <div class="text-muted text-sm">@item.Count</div>
+                                                    </div>
+
+                                                }
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
+                            <div class="col-md-12 d-flex">
+                                <div class="card flex">
+                                    <div class="card-body">
+                                        <div class="row row-sm">
+                                            <div class="col-sm-12">
+                                                <div class="p-3-4">
+                                                    <div class="d-flex">
+                                                        <div>
+                                                            <div>Visits List</div>
 
+                                                        </div>
+                                                        <span class="flex"></span>
+                                                        <div>
+                                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                                <label class="btn">
+                                                                    <input type="radio" name="options" value="Today">Today
+                                                                </label>
+                                                                <label class="btn active">
+                                                                    <input type="radio" name="options" value="Week">Week
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="table-responsive">
+                                                        <table id="dashboard_visits" class="table table-row v-middle table-striped" data-plugin="dataTable">
+                                                            <thead>
+                                                                <tr>
+
+                                                                    <th scope="col">ID </th>
+
+                                                                    <th scope="col">ROUTE</th>
+
+                                                                    <th scope="col">STORE</th>
+                                                                    <th scope="col">DATE</th>
+
+                                                                    <th scope="col">MERCHANDISERS</th>
+                                                                    <th scope="col">BRANDS</th>
+                                                                    <th scope="col">STATUS</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var itemVisita in Model)
+                                                                {
+                                                                    <tr>
+
+                                                                        <td scope="row" data-label="ID">
+                                                                            @itemVisita.ID_visit
+
+                                                                        </td>
+
+                                                                        <td data-label="Route">@itemVisita.city</td>
+
+                                                                        <td data-label="Store">
+
+
+
+                                                                            <a class="text-black" href="@Url.Action("Visit_details", "Admin", new { id = itemVisita.ID_visit })">
+                                                                                <i class="mdi mdi-store icon-sm text-info"></i>@itemVisita.store<br />
+                                                                                <span>@itemVisita.address , @itemVisita.state</span>
+                                                                            </a>
+
+                                                                        </td>
+                                                                        <td data-label="Date">@itemVisita.visit_date.ToString("MM/dd/yyyy")</td>
+                                                                        <td data-label="Rep">
+                                                                            @foreach (var user in itemVisita.lstUsers)
+                                                                            {
+                                                                                <span style="font-size:8px;" class="badge badge-success text-uppercase">@user.Name </span>
+                                                                            }
+                                                                        </td>
+                                                                        <td data-label="Rep">
+                                                                            @foreach (var brand in itemVisita.lstBrands)
+                                                                            {
+                                                                                <span style="font-size:8px;" class="badge badge-light text-uppercase">@brand.brand </span>
+                                                                            }
+                                                                        </td>
+
+
+
+                                                                        <td data-label="Status">
+                                                                            @switch (itemVisita.ID_visitstate)
+                                                                            {
+                                                                                case 1: //Canceled
+                                                                                    <label class="badge badge-danger">Canceled</label>
+                                                                                    break;
+                                                                                case 2: //In Progress
+                                                                                    <label class="badge badge-success">In progress</label>
+                                                                                    break;
+                                                                                case 3: //Scheduled
+
+                                                                                    <label class="badge badge-warning">Scheduled</label>
+
+                                                                                    break;
+                                                                                case 4: //Finished
+                                                                                    <label class="badge badge-primary">Finished</label>
+                                                                                    break;
+                                                                            }
+
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-sm-12">
+                                        <div class="card">
+                                            <div class="b-b">
+                                                <div class="nav-active-border b-success top">
+                                                    <ul class="nav" id="myTab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home4" role="tab" aria-controls="home" aria-selected="true">Activities By Brands</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile4" role="tab" aria-controls="profile" aria-selected="false">Activities By Type</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="tab-content p-3">
+                                                <div class="tab-pane fade show active" id="home4" role="tabpanel" aria-labelledby="home-tab">
+
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="p-3-4">
+                                                                <div class="d-flex mb-3">
+                                                                    <div>
+                                                                        @*<div>Activities by Brand</div>
+                                                                        <small class="text-muted">All brands: @ViewBag.brands.Count</small>
+                                                                    </div>
+                                                                    <span class="flex"></span>
+                                                                    <div>
+                                    <div class="btn-group btn-group-toggle" id="btn_l_4" data-toggle="buttons">
+                                        <label class="btn active">
+                                            <input type="radio" name="options"> Week
+                                        </label>
+
+                                    </div>
+                                </div>
+                                                                </div>
+                                                                <div class="p-2" style="height: 504px">
+                                                                    <canvas id="chart-brands"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="profile4" role="tabpanel" aria-labelledby="profile-tab">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="p-3-4">
+                                                                <div class="d-flex mb-3">
+                                                                    <div>
+                                                                        <div>Activities by Type</div>
+                                                                        <small class="text-muted">All Activities: @ViewBag.lstTypes.Count</small>
+                                                                    </div>
+                                                                    <span class="flex"></span>
+
+                                                                </div>
+                                                                <div class="p-2" style="height: 504px">
+                                                                    <canvas id="chart-types"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                            @*<div class="col-md-4">
+                                                                <div class="row row-sm">
+                                                                    <div class="col-md-12 d-flex">
+                                                                        <div class="card flex">
+                                                                            <div class="p-3-4">
+                                                                                <div class="d-flex">
+                                                                                    <div>
+                                                                                        <div>Activities</div>
+                                                                                        <small class="text-muted">By type</small>
+                                                                                    </div>
+                                                                                    <span class="flex"></span>
+                                                                                    <div>
+                                                                                        <a href="#" class="p-1 text-muted">
+
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="list list-row">
+                                                                                foreach (var lsttype in ViewBag.lstTypes)
+                                                        {
+                                                            <div class="list-item " data-id="lsttype.id">
+                                                                <div>
+                                                                    <span class="badge badge-circle text-info"></span>
+                                                                </div>
+                                                                <div class="flex">
+                                                                    <a href="#" class="item-title text-color h-1x">lsttype.name</a>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="item-amount text-sm text-muted">
+                                                                       lsttype.count
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                }
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>*@
 
 
                         </div>
                     </div>
+
+
+
+
                 </div>
             </div>
-            <!-- ############ Main END-->
         </div>
-        <!-- ############ Content END-->
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+
+@Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")

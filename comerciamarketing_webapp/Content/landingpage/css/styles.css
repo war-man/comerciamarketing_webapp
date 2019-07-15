@@ -113,6 +113,150 @@ p {
   padding-bottom: 100px;
 }
 
+@font-face {
+    font-family: 'Gotham Book';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Book'), url('/Content/landingpage/css/GothamBook.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Book Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Book Italic'), url('/Content/landingpage/css/GothamBookItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Light'), url('/Content/landingpage/css/GothamLight.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Light Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Light Italic'), url('/Content/landingpage/css/GothamLightItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Medium'), url('/Content/landingpage/css/GothamMedium.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Medium'), url('/Content/landingpage/css/GothamMedium_1.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Medium'), url('/Content/landingpage/css/GothamMediumItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Bold'), url('/Content/landingpage/css/GothamBold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Bold'), url('/Content/landingpage/css/Gotham-Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Bold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Bold Italic'), url('/Content/landingpage/css/GothamBoldItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Black Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Black Regular'), url('/Content/landingpage/css/Gotham-Black.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Light Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Light Regular'), url('/Content/landingpage/css/Gotham-Light.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Thin Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Thin Regular'), url('/Content/landingpage/css/Gotham-Thin.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham XLight Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham XLight Regular'), url('/Content/landingpage/css/Gotham-XLight.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Book Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Book Italic'), url('/Content/landingpage/css/Gotham-BookItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Thin Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Thin Italic'), url('/Content/landingpage/css/Gotham-ThinItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Ultra Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Ultra Italic'), url('/Content/landingpage/css/Gotham-UltraItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham XLight Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham XLight Italic'), url('/Content/landingpage/css/Gotham-XLightItalic.woff') format('woff');
+}
+
+
 /*
 ==========================
 LAYOUTS
@@ -124,6 +268,8 @@ LAYOUTS
   padding-right: 20px;
   padding-left: 20px;
 }
+
+
 
 .section-spacer {
   padding: 100px 0;
@@ -306,8 +452,28 @@ BUTTONS
 }
 
 .btn-secondary {
-  background: #2F5BE7;
-  color: #fff;
+  background: transparent;
+  color: #E5ED25;
+  border: 2px solid #E5ED25 !important; /* Green */
+   
+}
+
+.btn-comercia {
+  background: transparent;
+  color: #E5ED25;
+  border: 3px solid #E5ED25 !important;
+  height: 30px;
+  text-align: center;
+       line-height: 10px;
+}
+
+.btn-comercia:hover {
+  background: #E5ED25;
+  color: #000;
+  border: 3px solid #E5ED25 !important;
+  height: 30px;
+  text-align: center;
+       line-height: 10px;
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:visited {
@@ -527,8 +693,7 @@ CARDS
 Feature Lists
 */
 .feature-card {
-  -webkit-box-shadow: 0 0 10px rgba(99, 114, 130, 0.1);
-          box-shadow: 0 0 10px rgba(99, 114, 130, 0.1);
+
   margin-bottom: 30px;
   padding: 25px 20px;
   border-radius: 10px;
@@ -551,7 +716,7 @@ Feature Lists
 }
 
 .feature-title {
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
@@ -560,6 +725,19 @@ CONTENT CARDS
 */
 .content-card__body {
   padding: 10px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: gainsboro !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: gainsboro;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: gainsboro;
 }
 
 /*
@@ -671,11 +849,19 @@ NAVIGATION BAR
 .custom-menu .nav-item .nav-link {
   padding: 20px 25px;
   text-transform: capitalize;
-  color: #637282;
+
+    color:white;
+    font-family: Gotham;font-size: 12px;font-weight: 300;
+}
+
+@media screen and (min-width: 0px) and (max-width: 992px)  {
+  .nav-link {
+    color:#000 !important;
+  }
 }
 
 .custom-menu .nav-item .nav-link:hover {
-  color: #1B2733;
+  color: #E5ED25;
 }
 
 .custom-menu__light {
@@ -713,7 +899,7 @@ NAVIGATION BAR
   height: 40px;
   border-radius: 50%;
   display: inline-block;
-  background: none;
+  background: #e5ed25;
   -webkit-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
   position: absolute;
@@ -728,7 +914,7 @@ NAVIGATION BAR
   width: 100%;
   height: 2px;
   border-radius: 50px;
-  background: #2F5BE7;
+  background: #451c60;
   display: block;
   position: absolute;
   left: 0;
@@ -1015,6 +1201,7 @@ PRICING TABLE
   color: #637282;
   padding-right: 15px;
   padding-left: 15px;
+  
 }
 
 .pricing-type-switch .nav-link.active {

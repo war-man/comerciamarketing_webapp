@@ -1,0 +1,194 @@
+﻿@model List<comerciamarketing_webapp.Controllers.AdminController.ImgGallery>
+@{
+    ViewBag.title = "Comercia Marketing - Admin Gallery";
+}
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div>
+        <div class="page-hero page-container " id="page-hero">
+            <div class="padding d-flex">
+                <div class="page-title">
+                    <h2 class="text-md text-highlight">Gallery</h2>
+                    <small class="text-muted">
+                        See all taken images by
+                        <strong>Routes</strong>
+                    </small>
+
+
+                </div>
+                <div class="flex"></div>
+
+            </div>
+            <div class="padding d-flex col-md-6">
+                @using (Html.BeginForm("Gallery", "Admin",
+                  new { customersel = ViewBag.CustomerSelCode, brandsel = ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd = ViewBag.filtrofechaend }, FormMethod.Post))
+                {
+
+            <select class="form-control" id="idroute" name="idroute" onchange="showbutton()">
+                <option value="0"> SELECT A ROUTE...</option>
+
+                @foreach (var item in ViewBag.routeslst)
+                {
+                    if (item.ID_route == ViewBag.routesel)
+                    {
+                <option value="@item.ID_route" selected>(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
+                    }
+                    else {
+                        <option value="@item.ID_route">(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
+                    }
+
+                }
+            </select><br />
+            <button type="submit" id="showimg" style="display:none;" class="btn btn-rounded btn-sm btn-light">Show images</button>
+}
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row row-sm sr">
+                    <div class="col-md-12 col-lg-12">
+                        @*<header class="cd-header">
+                                <h1>Content Filters</h1>
+                            </header>*@
+                        <main class="cd-main-content">
+                            <div class="cd-tab-filter-wrapper">
+                                <div class="cd-tab-filter">
+                                    <ul class="cd-filters">
+                                        <li class="placeholder">
+                                            <a data-type="all" href="#0">All</a> <!-- selected option on mobile -->
+                                        </li>
+                                        <li class="filter"><a class="selected" href="#0" data-type="all">All Brands</a></li>
+                                        @foreach (var brand in ViewBag.brandslst)
+                                        {
+                                            <li class="filter" data-filter=".@Convert.ToString(brand).Replace(" ", "")"><a href="#0" data-type="@brand">@brand</a></li>
+                                        }
+                                    </ul> <!-- cd-filters -->
+                                </div> <!-- cd-tab-filter -->
+                            </div> <!-- cd-tab-filter-wrapper -->
+                            <section class="cd-gallery">
+                                <ul>
+                                    @foreach (var img in Model)
+                                    {
+                                        if (img.Url == null || img.Url == "")
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <li class="mix @img.Brand.Replace(" ", "") @img.Section @img.Rep.Replace(" ", "") @img.Activity.Replace(" ", "").Replace(".", "")  @img.Store.Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")"><img src="@Url.Content(img.Url)" alt="Image @img.idImg"></li>
+                                        }
+
+
+                                    }
+                                    <li class="gap"></li>
+                                    <li class="gap"></li>
+                                    <li class="gap"></li>
+                                </ul>
+                                <div class="cd-fail-message">No results found</div>
+                            </section> <!-- cd-gallery -->
+                            <div class="cd-filter">
+                                <form>
+                                    @*<div class="cd-filter-block">
+            <h4>Search</h4>
+
+            <div class="cd-filter-content">
+                <input type="search" placeholder="...">
+            </div> <!-- cd-filter-content -->
+        </div> <!-- cd-filter-block -->*@
+                                    <div class="cd-filter-block">
+                                        <h4>By Merchandiser</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            @foreach (var rep in ViewBag.replst)
+            {
+                                <li>
+                                    <input class="filter" data-filter=".@Convert.ToString(rep).Replace(" ", "")" type="checkbox" id="checkbox_@Convert.ToString(rep).Replace(" ", "")">
+                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(rep).Replace(" ", "")">@rep</label>
+                                </li>
+}
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->
+
+                                    <div class="cd-filter-block">
+                                        <h4>By activity</h4>
+
+                                        <div class="cd-filter-content">
+                                            <div class="cd-select cd-filters">
+                                                <select class="filter" name="selectThis" id="selectThis">
+                                                    <option value="">Choose an option</option>
+                                                    @foreach (var activity in ViewBag.activitylst)
+                    {
+
+                                <option value=".@Convert.ToString(activity).Replace(" ", "").Replace(".", "")">@activity</option>
+
+}
+                                                </select>
+                                            </div> <!-- cd-select -->
+                                        </div> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->                                    
+                                    <div class="cd-filter-block">
+                                        <h4>By Store</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            @foreach (var store in ViewBag.storelst)
+            {
+                                <li>
+                                    <input class="filter" data-filter=".@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")" type="checkbox" id="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")">
+                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(store).Replace(" ", "")">@store</label>
+                                </li>
+}
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->
+                                    <div class="cd-filter-block">
+                                        <h4>By sections</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            <li>
+                                                <input class="filter" data-filter="" type="radio" name="radioButton" id="radio1" checked>
+                                                <label class="radio-label" for="radio1">All</label>
+                                            </li>
+                                            @foreach (var sectionlst in ViewBag.sectionlst)
+            {
+                                <li>
+                                    <input class="filter" data-filter=".@sectionlst" type="radio" name="radioButton" id="rad_@sectionlst">
+                                    <label class="radio-label" for="rad_@sectionlst">@sectionlst</label>
+                                </li>
+}
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->
+                                    @*<div class="cd-filter-block">
+            <h4>By Activity</h4>
+            <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+
+            </ul> <!-- cd-filter-content -->
+        </div> <!-- cd-filter-block -->*@
+
+                                </form>
+                                <a href="#0" class="cd-close">Close</a>
+                            </div> <!-- cd-filter -->
+                            <a href="#0" class="cd-filter-trigger">Filters</a>
+                        </main> <!-- cd-main-content -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+
+@Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")
+
+<script>
+ 
+        function showbutton() {
+            var route = $("#idroute").val();
+ 
+            if (route != "0") {
+                $("#showimg").show();
+            } else {
+                $("#showimg").hide();
+            }
+        }
+    
+</script>

@@ -1,0 +1,396 @@
+﻿
+@{
+    ViewBag.title = "Comercia Marketing - RD_FORM1";
+}
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <div class="page-hero page-container " id="page-hero">
+        <div class="padding d-flex">
+            <div class="page-title">
+                <h2 class="text-md text-highlight">VISIT 1.1</h2>
+                <small class="text-muted">
+                    Activity type:
+                    <strong> Form</strong>
+                </small>
+            </div>
+            <div class="flex"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-9 d-flex">
+                <div class="flex">
+                    <div class="card-body">
+
+                        <div class="p-3">
+                            <div class="toolbar ">
+                                <div class="btn-group">
+                                    <a href="@Url.Action("Reports","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})" class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Back" id="btn-back">
+                                        <i data-feather="chevron-left" class="text-muted"></i>
+                                    </a>
+
+                                </div>
+                                <label class="ui-check m-0 ">
+                                    <input type="checkbox" class="selectchkAll" id="chk_all" value="0">
+                                    <i></i>
+                                </label>
+                            
+                                <div class="input-group">
+                                    <input id="inputsearch" type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search">
+                                    <span class="input-group-append">
+                                        <span class="btn btn-white no-border btn-sm">
+                                            <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                        </span>
+                                    </span>
+                                </div>
+                              
+                                <div class="btn-group">
+                                    <button disabled class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print .pdf" id="btn-print">
+                                        <i data-feather="printer"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Export to .xlsx or .csv" id="btn-export">
+                                        <i data-feather="save"></i>
+                                    </button>
+                                    <button disabled class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Download Images" id="btn-images">
+                                        <i data-feather="image"></i>
+                                    </button>
+                                </div>
+                                <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
+                                    <i data-feather="menu"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="scroll-y mx-3 mb-0 card">
+
+                            <table id="datatable2" class="table table-theme table-row v-middle">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>STORE</th>
+                                        <th>CITY</th>
+                                        <th>STATE</th>
+                                        <th>BRAND</th>
+                                        <th>MERCHANDISER</th>
+                                        <th>DATE</th>
+                                        <th>PREVIEW</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.lstActivities)
+            {
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <label class="ui-check m-0 ">
+                                                    <input type="checkbox" class="selectchk" id="chk_@item.ID_activity" value="0">
+                                                    <i></i>
+                                                </label>
+                                            </div>
+
+
+                                        </td>
+                                        <td>@item.ID_activity</td>
+                                        <td>
+                                            <div class="flex">
+                                                <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.store</a>
+                                                <div class="item-except text-muted text-sm h-1x">
+                                                    @item.address
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @item.city
+                                        </td>
+                                        <td>
+                                            @item.state
+                                        </td>
+                                        <td>@item.Brand</td>
+                                        <td>@item.usuarioName</td>
+                                        <td>
+                                            <div class="no-wrap">
+                                                <div class="item-date text-muted text-sm d-none d-md-block">@Convert.ToDateTime(item.visitDate).ToShortDateString()</div>
+                                            </div>
+                                        </td>
+                                        <td><a class="btn btn-icons btn-rounded btn-outline-info" href="@Url.Action("ActivityresumeC","FormsM", new { id=item.ID_activity, id_customer=ViewBag.id_customer, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})"><i class="" data-feather="layout"></i></a></td>
+                                    </tr>
+}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="modal-dialog d-flex flex-column w-md bg-body" id="mail-nav">
+
+                    <div class="scrollable hover">
+                        <div class="p-2 px-3">
+                            <span class=" box-shadows btn-rounded gd-danger" id="btn-new-mail">
+                                Hint:
+                            </span>
+                        </div>
+                        <div class="sidenav my-3">
+                            <blockquote class="bg-white bg-primary--lt p-3 r">
+                                <em>Select at least one activity to show information.</em>
+                            </blockquote>
+                            @*<div class="card" id="feed-2">
+                                    <div class="card-header d-flex">
+
+                                        <div class="mx-3">
+                                            <a href="#">Jacqueline Reid</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row row-xs">
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b4.jpg);"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b8.jpg);"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="media media-4x3 r ">
+                                                    <a class="media-content" style="background-image: url(../assets/img/b14.jpg);"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ############ Main START-->
+<!-- ############ Main END-->
+<!-- .modal -->
+<div id="modal-backdrop-dark" class="modal fade" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <div class="modal-title text-md">Preview report</div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="DisplayPDF">
+                    <embed style="width:100%;height:700px; overflow:hidden" id="previewEmbed" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->
+
+
+<script>
+    window.onload = function () {
+
+        table = $('#datatable2').DataTable({
+            searching: true,
+            dom: 'rtip',
+             "bLengthChange": false,
+        });
+
+        // #myInput is a <input type="text"> element
+        $('#inputsearch').on('keyup change', function () {
+            table.search(this.value).draw();
+        });
+
+        $('#chk_all').change(function () {
+            if (this.checked) {
+                table.$("input.selectchk").prop("checked", true);
+            } else {
+                table.$("input.selectchk").prop("checked", false);
+            }
+
+        });
+
+                    //EXPORT
+
+        $("#btn-export").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+           
+                $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Export_RD_FORM3',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+                            $("#loading").hide();
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+
+                        },
+                        error: function (request, status, error) {
+                            $("#loading").hide();
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+                    //Print pdf
+        $("#btn-print").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                            $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Print_RD_FORM3',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (result) {
+
+                            $("#loading").hide();
+                            var link = document.createElement('a');
+
+                            console.log(result);
+
+                            link.href = result;
+                            link.download = "QuickVisit.pdf";
+                            link.click();
+
+                        },
+                        error: function (request) {
+
+                            $("#loading").hide();
+
+
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+        
+            $("#btn-images").click(function () {
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/DownloadZip',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+            });
+
+    };
+</script>

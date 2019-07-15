@@ -341,5 +341,25 @@ namespace comerciamarketing_webapp.Models
         public string U_CustomerCM { get; set; }
         public string U_Category { get; set; }
         public string U_UoM { get; set; }
+        public string VirtAstItm { get; set; }
+        public string SouVirAsst { get; set; }
+        public string InCostRoll { get; set; }
+        public Nullable<decimal> PrdStdCst { get; set; }
+        public string EnAstSeri { get; set; }
+        public string LinkRsc { get; set; }
+        public Nullable<decimal> OnHldPert { get; set; }
+        public Nullable<decimal> onHldLimt { get; set; }
+        public Nullable<int> PriceUnit { get; set; }
+        public string GSTRelevnt { get; set; }
+        public Nullable<int> SACEntry { get; set; }
+        public string GstTaxCtg { get; set; }
+        public Nullable<decimal> AssVal4WTR { get; set; }
+        public Nullable<int> ExcImpQUoM { get; set; }
+        public Nullable<decimal> ExcFixAmnt { get; set; }
+        public Nullable<decimal> ExcRate { get; set; }
+        public string SOIExc { get; set; }
+        public string TNVED { get; set; }
+        public string Imported { get; set; }
+        public string AutoBatch { get; set; }
     }
 }

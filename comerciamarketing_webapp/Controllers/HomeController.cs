@@ -18,6 +18,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Linq;
+using Recaptcha.Web.Mvc;
+using Recaptcha.Web;
 
 namespace comerciamarketing_webapp.Controllers
 {
@@ -25,6 +27,7 @@ namespace comerciamarketing_webapp.Controllers
     public class HomeController : Controller
     {
         private dbComerciaEntities db = new dbComerciaEntities();
+        private dbLimenaEntities dbLimena = new dbLimenaEntities();
         private COM_MKEntities CMKdb = new COM_MKEntities();
 
 
@@ -33,12 +36,44 @@ namespace comerciamarketing_webapp.Controllers
         {
             return new JsonResult { Data = "Success" };
         }
-        public ActionResult Home(string idioma)
+        public ActionResult Home(string idioma, int token=0)
         {
-
+            ViewBag.showmessage = token;
             return View();
         }
+        [HttpPost]
+        public ActionResult SendMessage(string Nombre, string Empresa, string email, string Mensaje)
+        {
 
+            RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+            if (string.IsNullOrEmpty(recaptchaHelper.Response))
+            {
+                ModelState.AddModelError("reCAPTCHA", "Please complete the reCAPTCHA");
+                return RedirectToAction("Home", "Home", new { token = 3 });
+            }
+            else
+            {
+                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                if (recaptchaResult != RecaptchaVerificationResult.Success)
+                {
+                    ModelState.AddModelError("reCAPTCHA", "The reCAPTCHA is incorrect");
+                    return RedirectToAction("Home", "Home", new { token = 4 });
+                }
+            }
+
+
+            //Send the email
+            dynamic semail = new Email("emailContact");
+            semail.To = "customercare@comerciamarketing.com";
+            semail.From = "donotreply@comerciamarketing.com";
+            semail.name = Nombre;
+            semail.email = email;
+            semail.company = Empresa;
+            semail.message = Mensaje;
+            semail.Send();
+
+            return RedirectToAction("Home", "Home", new { token = 1 });
+        }
         protected string WindowStatusText = "";
 
 
@@ -480,59 +515,36 @@ namespace comerciamarketing_webapp.Controllers
             return View();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(bool access = true)
         {
-            //ViewBag.IPLOCAL = "";
-            //Session["ip_user"] = GetExternalIp();
-            //int cliente = 0;
-            //var empresasap = "";
-            //if (Request.Cookies["GLOBALUSERID"] != null) //remember me active
-            //{
-            //    //cookies
-            //    HttpCookie aCookie = Request.Cookies["GLOBALUSERID"];
-            //    if (Session["IDusuario"] != null)
-            //    {
-            //        int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
-            //        Session["activeUser"] = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
-            //        Usuarios activeuser = Session["activeUser"] as Usuarios;
-            //        var obj = activeuser;
 
-            //        if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
-            //        {
-            //            cliente = 1;
-            //            empresasap = obj.Empresas.ID_SAP;
-            //        }
-            //    }
-            //    else {//Como tiene activado remember me, iniciamos sesion automaticamente
-            //        int IDUSER = Convert.ToInt32(Server.HtmlEncode(aCookie.Value));
-            //        Session["activeUser"] = (from c in db.Usuarios where (c.ID_usuario == IDUSER) select c).FirstOrDefault();
-            //        Usuarios activeuser = Session["activeUser"] as Usuarios;
-            //        var obj = activeuser;
+            if (access == false)
+            {
+                ViewBag.warning = "Email or Password wrong.";
+            }
 
-            //        Session["IDusuario"] = obj.ID_usuario.ToString();
-            //        Session["tipousuario"] = obj.ID_tipomembresia.ToString();
-            //        Session["tiporol"] = obj.ID_rol.ToString();
-            //        Session["ultimaconexion"] = "";
-            //        GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(obj.ID_empresa);
+            HttpCookie aCookieCorreo = Request.Cookies["correo"];
+            HttpCookie aCookiePassword = Request.Cookies["pass"];
+            HttpCookie aCookieRememberme = Request.Cookies["rememberme"];
 
-            //        if (obj.ID_tipomembresia == 2 || obj.ID_tipomembresia == 3 || obj.ID_tipomembresia == 4)
-            //        {
-            //            cliente = 1;
-            //            empresasap = obj.Empresas.ID_SAP;
-            //        }
-            //    }
-            //    ////
-            //    if (cliente == 0)
-            //    {
-            //        return RedirectToAction("Main");
-            //    }
-            //    else if (cliente == 1)
-            //    {
-            //        return RedirectToAction("Dashboard", "Customers", new { id = empresasap });
-            //    }
-            //    return RedirectToAction("Main");
+            try
+            {
+                var correo = Server.HtmlEncode(aCookieCorreo.Value).ToString();
+                var pass = Server.HtmlEncode(aCookiePassword.Value).ToString();
+                int remember = Convert.ToInt32(Server.HtmlEncode(aCookieRememberme.Value));
 
-            //}
+                if (remember == 1) { ViewBag.remember = true; } else { ViewBag.remember = false; }
+                ViewBag.correo = correo;
+                ViewBag.pass = pass;
+
+            }
+            catch
+            {
+                ViewBag.remember = false;
+
+            }
+
+
             return View();
         }
 
@@ -1036,35 +1048,7 @@ namespace comerciamarketing_webapp.Controllers
                     }
                 }
 
-                //ESTADISTICA DE RUTAS POR ESTADO
-                int totalRutas = rutas.Count();
 
-                int onhold = (from e in rutas where (e.ID_visitstate == 3) select e).Count();
-                int inprogress = (from e in rutas where (e.ID_visitstate == 2) select e).Count();
-                int canceled = (from e in rutas where (e.ID_visitstate == 1) select e).Count();
-                int finished = (from e in rutas where (e.ID_visitstate == 4) select e).Count();
-
-
-                ViewBag.onhold = onhold;
-                ViewBag.inprogress = inprogress;
-                ViewBag.canceled = canceled;
-                ViewBag.finished = finished;
-
-                if (totalRutas != 0)
-                {
-                    ViewBag.onholdP = ((Convert.ToDecimal(onhold) / totalRutas) * 100);
-                    ViewBag.inprogressP = ((Convert.ToDecimal(inprogress) / totalRutas) * 100);
-                    ViewBag.canceledP = ((Convert.ToDecimal(canceled) / totalRutas) * 100);
-                    ViewBag.finishedP = ((Convert.ToDecimal(finished) / totalRutas) * 100);
-                }
-                else
-                {
-
-                    ViewBag.onholdP = 0;
-                    ViewBag.inprogressP = 0;
-                    ViewBag.canceledP = 0;
-                    ViewBag.finishedP = 0;
-                }
                 //Agregamos los representantes
                 foreach (var itemVisita in rutas)
                 {
@@ -1159,7 +1143,7 @@ namespace comerciamarketing_webapp.Controllers
                 var ruta = (from r in db.RoutesM where (r.ID_route == id) select r).FirstOrDefault();
 
                 ViewBag.routename = ruta.query2;
-
+                ViewBag.date = "(" + ruta.date.ToShortDateString() + " - " + ruta.end_date.ToShortDateString() + ")";
                 ViewBag.visitas = rutas;
 
                 ViewBag.id_route = id;
@@ -1264,18 +1248,88 @@ namespace comerciamarketing_webapp.Controllers
 
 
                     ///PARA RECORDAR DATOS
-                    if (rememberme == true) {
-                    if (Request.Cookies["GLOBALUSERID"] != null)
+                    if (rememberme == true)
                     {
-                        //COMO YA EXISTE NO NECESITAMOS RECREARLA
+                        if (Request.Cookies["correo"] != null)
+                        {
+                            if (Request.Cookies["correo"] != null)
+                            {
+                                var c = new HttpCookie("correo");
+                                c.Expires = DateTime.Now.AddDays(-1);
+                                Response.Cookies.Add(c);
+                            }
+                            if (Request.Cookies["pass"] != null)
+                            {
+                                var c = new HttpCookie("pass");
+                                c.Expires = DateTime.Now.AddDays(-1);
+                                Response.Cookies.Add(c);
+                            }
+                            if (Request.Cookies["rememberme"] != null)
+                            {
+                                var c = new HttpCookie("rememberme");
+                                c.Expires = DateTime.Now.AddDays(-1);
+                                Response.Cookies.Add(c);
+                            }
+
+                            HttpCookie aCookie = new HttpCookie("correo");
+                            aCookie.Value = activeuser.correo.ToString();
+                            aCookie.Expires = DateTime.Now.AddMonths(3);
+
+                            HttpCookie aCookie2 = new HttpCookie("pass");
+                            aCookie2.Value = activeuser.contrasena.ToString();
+                            aCookie2.Expires = DateTime.Now.AddMonths(3);
+
+                            HttpCookie aCookie3 = new HttpCookie("rememberme");
+                            aCookie3.Value = "1";
+                            aCookie3.Expires = DateTime.Now.AddMonths(3);
+
+
+                            Response.Cookies.Add(aCookie);
+                            Response.Cookies.Add(aCookie2);
+                            Response.Cookies.Add(aCookie3);
+                        }
+                        else
+                        {
+                            HttpCookie aCookie = new HttpCookie("correo");
+                            aCookie.Value = activeuser.correo.ToString();
+                            aCookie.Expires = DateTime.Now.AddMonths(3);
+
+                            HttpCookie aCookie2 = new HttpCookie("pass");
+                            aCookie2.Value = activeuser.contrasena.ToString();
+                            aCookie2.Expires = DateTime.Now.AddMonths(3);
+
+                            HttpCookie aCookie3 = new HttpCookie("rememberme");
+                            aCookie3.Value = "1";
+                            aCookie3.Expires = DateTime.Now.AddMonths(3);
+
+
+                            Response.Cookies.Add(aCookie);
+                            Response.Cookies.Add(aCookie2);
+                            Response.Cookies.Add(aCookie3);
+                        }
                     }
-                    else { 
-                        HttpCookie aCookie = new HttpCookie("GLOBALUSERID");
-                        aCookie.Value =  activeuser.ID_usuario.ToString();
-                        aCookie.Expires = DateTime.Now.AddMonths(3);
-                        Response.Cookies.Add(aCookie);
-                    }
-                }
+                    else {
+                        if (Request.Cookies["correo"] != null)
+                        {
+                            var c = new HttpCookie("correo");
+                            c.Expires = DateTime.Now.AddDays(-1);
+                            Response.Cookies.Add(c);
+                        }
+                        if (Request.Cookies["pass"] != null)
+                        {
+                            var c = new HttpCookie("pass");
+                            c.Expires = DateTime.Now.AddDays(-1);
+                            Response.Cookies.Add(c);
+                        }
+                        if (Request.Cookies["rememberme"] != null)
+                        {
+                            var c = new HttpCookie("rememberme");
+                            c.Expires = DateTime.Now.AddDays(-1);
+                            Response.Cookies.Add(c);
+                        }
+
+                    } 
+                
 
                     //Verificamos si el usuario esta activo
                     if (activeuser.activo != false)
@@ -1337,9 +1391,24 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Cerrar_sesion()
         {
             Session.RemoveAll();
-            if (Request.Cookies["GLOBALUSERID"] != null)
+            //Global_variables.active_user.Name = null;
+            //Global_variables.active_Departments = null;
+            //Global_variables.active_Roles = null;
+            if (Request.Cookies["correo"] != null)
             {
-                var c = new HttpCookie("GLOBALUSERID");
+                var c = new HttpCookie("correo");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
+            if (Request.Cookies["pass"] != null)
+            {
+                var c = new HttpCookie("pass");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
+            if (Request.Cookies["rememberme"] != null)
+            {
+                var c = new HttpCookie("rememberme");
                 c.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(c);
             }
@@ -1674,7 +1743,7 @@ namespace comerciamarketing_webapp.Controllers
                                                          select new SelectListItem
                                                          {
                                                              Value = Convert.ToString(s.ID_demo),
-                                                             Text = s.visit_date.ToShortDateString() + " - " + s.store.ToString()
+                                                             Text = s.visit_date + " - " + s.store.ToString()
                                                          };
 
 
@@ -1709,80 +1778,24 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index");
             }
         }
-        public ActionResult GetVisitsCustomer(string id, string customer)
-        {
 
-            int idr = Convert.ToInt32(id);
-            var visitas = new List<VisitsM>();
-            var porcentaje = "";
-            int[] activities = new int[] { };
-            RoutesM rt = (from a in db.RoutesM where (a.ID_route == idr) select a).FirstOrDefault();
-
-            visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
-            var arryavi = visitas.Select(a => a.ID_visit).ToArray();
-
-            activities = (from a in db.ActivitiesM where (arryavi.Contains(a.ID_visit) && a.ID_customer == customer) select a.ID_visit).Distinct().ToArray();
-
-            visitas = (from obj in visitas where (activities.Contains(obj.ID_visit)) select obj).ToList();
-
-            var lst = (from obj in visitas where (obj.ID_route == idr) select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate }).ToArray();
-
-
-            //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
-            decimal totalRutas = visitas.Count();
-
-
-            //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
-            decimal finishedorCanceled = (from e in visitas where (e.ID_visitstate == 4) select e).Count();
-            decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2) select e).Count();
-            totalRutas = visitas.Count();
-
-            ViewBag.finished = finishedorCanceled;
-
-            if (totalRutas != 0)
-            {
-                if (inprogressv != 0 && finishedorCanceled != 0)
-                {
-                    decimal n = (finishedorCanceled / totalRutas) * 100;
-                    decimal m = (inprogressv / totalRutas) * 50;
-                    porcentaje = (n + m).ToString();
-
-                }
-                else if (inprogressv == 0 && finishedorCanceled != 0)
-                {
-
-                    porcentaje = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
-                }
-                else if (inprogressv != 0 && finishedorCanceled == 0)
-                {
-                    porcentaje = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
-                }
-                else
-                {
-                    porcentaje = (Convert.ToDecimal(0)).ToString();
-                }
-
-
-            }
-            else
-            {
-                porcentaje = "0";
-            }
-
-
-
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            string result2 = javaScriptSerializer.Serialize(lst);
-            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3 };
-            return Json(result, JsonRequestBehavior.AllowGet);
-
-        }
         public class brandsinroute {
             public string brand { get; set; }
             public int count { get; set; }
         }
+        public class representativessinroue
+        {
+            public string name { get; set; }
 
+        }
+
+
+        public class usersdifferentcontext
+        {
+            public int id_user { get; set; }
+            public string name { get; set; }
+            public string lastname { get; set; }
+        }
         public ActionResult GetVisits(string id)
         {
 
@@ -1843,15 +1856,175 @@ namespace comerciamarketing_webapp.Controllers
                           join b in db.FormsM_details on a.ID_activity equals b.ID_visit
                           where (arrayvisits.Contains(a.ID_visit) && b.ID_formresourcetype==13 && b.fdescription !="") select new brandsinroute { brand=b.fdescription, count=0}).Distinct().ToList();
 
+            var representatives = (from k in db.VisitsM_representatives
+                                   join b in db.Usuarios on k.ID_usuario equals b.ID_usuario
+                                   where (arrayvisits.Contains(k.ID_visit)) select new representativessinroue { name = b.nombre + " " + b.apellido}).Distinct().ToList();
+            DateTime limite;
+            try
+            {
+
+                    limite = Convert.ToDateTime("15/06/2019");
+
+            }
+            catch
+            {
+                    limite = Convert.ToDateTime("06/15/2019");
+
+
+            }
+
+
+
+            var PumaGoodProduct = visitas.Where(a=>a.ID_visitstate==4).Select(a => new
+            {
+                id_visita = a.ID_visit,
+                store = a.store,
+                TotalCheckin = a.visit_date <= limite ? a.check_in - (a.check_in.AddHours(-2).AddMinutes(-33)) : a.check_out - a.check_in
+            }).ToList();
+
+            var totaltiempo = new TimeSpan(PumaGoodProduct.Sum(e => e.TotalCheckin.Ticks));
 
 
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             string result2 = javaScriptSerializer.Serialize(lst);
             string result3 = javaScriptSerializer.Serialize(brands);
-            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3, result2=result3};
+            string result4 = javaScriptSerializer.Serialize(representatives);
+            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3, result2 = result3, result3 = result4, fechainicio = rt.date, fechafin = rt.end_date, totalTimeRoute = totaltiempo };
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+
+
+        }
+
+        public ActionResult GetVisitsCustomer(string id, string id_customer)
+        {
+
+            int idr = Convert.ToInt32(id);
+            var visitas = new List<VisitsM>();
+            var porcentaje = "";
+            int[] activities = new int[] { };
+            RoutesM rt = (from a in db.RoutesM where (a.ID_route == idr) select a).FirstOrDefault();
+
+            visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
+            var arryavi = visitas.Select(a => a.ID_visit).ToArray();
+
+            activities = (from a in db.ActivitiesM where (arryavi.Contains(a.ID_visit) && a.ID_customer == id_customer) select a.ID_visit).Distinct().ToArray();
+
+            visitas = (from obj in visitas where (activities.Contains(obj.ID_visit)) select obj).ToList();
+            var lst = (from obj in visitas select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate, checkout = obj.check_in, lat = obj.geoLat, lng = obj.geoLong }).OrderByDescending(c => c.visitstate == 4).ThenByDescending(c => c.visitstate == 2).ThenBy(c => c.checkout).ToArray();
+            //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
+            decimal totalRutas = visitas.Count();
+
+
+            //int finishedorCanceled = (from e in visitas where ((e.ID_visitstate == 4 || e.ID_visitstate==1) && e.ID_route == rutait.ID_route) select e).Count();
+            decimal finishedorCanceled = (from e in visitas where (e.ID_visitstate == 4) select e).Count();
+            decimal inprogressv = (from e in visitas where (e.ID_visitstate == 2) select e).Count();
+            totalRutas = visitas.Count();
+
+            ViewBag.finished = finishedorCanceled;
+
+            if (totalRutas != 0)
+            {
+                if (inprogressv != 0 && finishedorCanceled != 0)
+                {
+                    decimal n = (finishedorCanceled / totalRutas) * 100;
+                    decimal m = (inprogressv / totalRutas) * 50;
+                    porcentaje = (n + m).ToString();
+
+                }
+                else if (inprogressv == 0 && finishedorCanceled != 0)
+                {
+
+                    porcentaje = (((Convert.ToDecimal(finishedorCanceled) / totalRutas) * 100)).ToString();
+                }
+                else if (inprogressv != 0 && finishedorCanceled == 0)
+                {
+                    porcentaje = (((Convert.ToDecimal(inprogressv) / totalRutas) * 50)).ToString();
+                }
+                else
+                {
+                    porcentaje = (Convert.ToDecimal(0)).ToString();
+                }
+
+
+            }
+            else
+            {
+                porcentaje = "0";
+            }
+
+            //get brands
+            var arrayvisits = visitas.Select(c => c.ID_visit).ToArray();
+            var brands = (from a in db.ActivitiesM
+                          join b in db.FormsM_details on a.ID_activity equals b.ID_visit
+                          where (arrayvisits.Contains(a.ID_visit) && b.ID_formresourcetype == 13 && b.fdescription != "" && a.ID_customer==id_customer)
+                          select new brandsinroute { brand = b.fdescription, count = 0 }).Distinct().ToList();
+
+            List<representativessinroue> representatives = new List<representativessinroue>();
+            if (id_customer == "S00424")
+            {
+                
+var reps = (from k in db.VisitsM_representatives 
+                                   where (arrayvisits.Contains(k.ID_visit))
+                                   select k.ID_usuario).Distinct().ToArray();
+
+               representatives = (from usu in dbLimena.Sys_Users
+                                      where (reps.Contains(usu.ID_User) && usu.Roles.Contains("Sales Representative")) select new representativessinroue { name= usu.Name + " " + usu.Lastname }).ToList();
+            }
+            else {
+                representatives = (from k in db.VisitsM_representatives
+                                   join b in db.Usuarios on k.ID_usuario equals b.ID_usuario
+                                   where (arrayvisits.Contains(k.ID_visit))
+                                   select new representativessinroue { name = b.nombre + " " + b.apellido }).Distinct().ToList();
+            }
+
+
+            DateTime limite;
+            try
+            {
+                if (id_customer == "S00424")
+                {
+                    limite = Convert.ToDateTime("15/06/2019");
+                }
+                else {
+                    limite = Convert.ToDateTime("13/06/2019");
+                }
+
+            }
+            catch {
+
+                if (id_customer == "S00424")
+                {
+                    limite = Convert.ToDateTime("06/15/2019");
+                }
+                else
+                {
+                    limite = Convert.ToDateTime("06/13/2019");
+                }
+               
+            }
+            
+
+
+            var PumaGoodProduct = visitas.Where(a => a.ID_visitstate == 4).Select( a => new
+            {
+                id_visita = a.ID_visit,
+                store = a.store,
+                TotalCheckin = a.visit_date <= limite ? a.check_in - (a.check_in.AddHours(-2).AddMinutes(-33)) : a.check_out - a.check_in
+            }).ToList();
+
+            var totaltiempo = new TimeSpan(PumaGoodProduct.Sum(e => e.TotalCheckin.Ticks));
+
+
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result2 = javaScriptSerializer.Serialize(lst);
+            string result3 = javaScriptSerializer.Serialize(brands);
+            string result4 = javaScriptSerializer.Serialize(representatives);
+            var result = new { result = result2, porcentaje = porcentaje, sel = rt.query3, result2 = result3, result3 = result4, fechainicio = rt.date, fechafin = rt.end_date, totalTimeRoute = totaltiempo };
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+
         [HttpPost]
         public ActionResult ChangeDates(string route, string nuevafecha)
         {
@@ -2014,7 +2187,7 @@ namespace comerciamarketing_webapp.Controllers
                         //Enviamos correo para notificar
                         dynamic email = new Email("email_confirmation");
                         email.To = usuarios.correo.ToString();
-                        email.From = "customercare@comerciamarketing.com";
+                        email.From = "donotreply@comerciamarketing.com";
                         email.Nombrecliente = usuarios.nombre + " " + usuarios.apellido;
                         email.Correocliente = usuarios.correo;
                         email.Passwordcliente = usuarios.contrasena;
@@ -3482,7 +3655,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25","33","34" };
 
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
 
@@ -4875,10 +5048,96 @@ namespace comerciamarketing_webapp.Controllers
             TempData["advertencia"] = "Something wrong happened, try again.";
             return RedirectToAction("Brandcompetitors", "Home", null);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateVisitRoute(string id_store, string ID_route, DateTime date)
+        {
+            int IDR = Convert.ToInt32(ID_route);
+            var route = db.RoutesM.Find(IDR);
+
+
+            try
+            {
+                if (route != null)
+                {
+                    var storeSAP = (from a in CMKdb.OCRD where (a.CardCode == id_store) select a).FirstOrDefault();
+
+                    VisitsM visita = new VisitsM();
+                    visita.ID_customer = "";
+                    visita.customer = "";
+                    visita.ID_store = id_store;
+                    visita.store = storeSAP.CardName;
+                    visita.address = storeSAP.MailAddres;
+                    visita.city = storeSAP.MailCity;
+                    if (storeSAP.MailZipCod == null)
+                    {
+                        visita.zipcode = "";
+                    }
+                    else { visita.zipcode = storeSAP.MailZipCod; }
+
+                    if (storeSAP.State2 == null)
+                    {
+                        visita.state = "";
+                    }
+                    else { visita.state = storeSAP.State2; }
+                    visita.visit_date = date;
+                    visita.ID_visitstate = 3; //On Hold
+                    visita.comments = "";
+                    visita.check_in = date;
+                    visita.check_out = date;
+                    visita.end_date = date;
+                    visita.extra_hours = 0;
+                    visita.ID_route = IDR;
+                    visita.ID_empresa = GlobalVariables.ID_EMPRESA_USUARIO;
+                    //GEOLOCALIZACION
+                    try
+                    {
+                        string address = storeSAP.CardName.ToString() + ", " + storeSAP.MailAddres.ToString() + ", " + storeSAP.MailCity.ToString() + ", " + storeSAP.MailZipCod.ToString();
+                        string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyC3zDvE8enJJUHLSmhFAdWhPRy_tNSdQ6g&address={0}&sensor=false", Uri.EscapeDataString(address));
+
+                        WebRequest request = WebRequest.Create(requestUri);
+                        WebResponse response = request.GetResponse();
+                        XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+                        XElement result = xdoc.Element("GeocodeResponse").Element("result");
+                        XElement locationElement = result.Element("geometry").Element("location");
+                        XElement lat = locationElement.Element("lat");
+                        XElement lng = locationElement.Element("lng");
+                        //NO SE PORQUE LO TIRA AL REVEZ
+                        visita.geoLat = lng.Value;
+                        visita.geoLong = lat.Value;
+                        //FIN
+
+                    }
+                    catch
+                    {
+                        visita.geoLong = "";
+                        visita.geoLat = "";
+                    }
+
+                    db.VisitsM.Add(visita);
+                    db.SaveChanges();
+
+                    TempData["exito"] = "Visit created successfully.";
+                    return RedirectToAction("Calendar", "Admin", null);
+                }
+                else
+                {
+                    TempData["advertencia"] = "Something wrong happened, try again.";
+                    return RedirectToAction("Calendar", "Admin", null);
+                }
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("Calendar", "Admin", null);
+            }
+
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateVisitRouteR2(string id_store, string ID_route, DateTime date)
         {
             int IDR = Convert.ToInt32(ID_route);
             var route = db.RoutesM.Find(IDR);
@@ -4947,16 +5206,16 @@ namespace comerciamarketing_webapp.Controllers
                     db.SaveChanges();
 
                     TempData["exito"] = "Visit created successfully.";
-                return RedirectToAction("Calendar", "Admin", null);
+                return RedirectToAction("RoutesM_details", "Home", new { id=IDR});
             }
             else {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                    return RedirectToAction("Calendar", "Admin", null);
+                    return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
                 }
             }
             catch {
                 TempData["advertencia"] = "Something wrong happened, try again.";
-                return RedirectToAction("Calendar", "Admin", null);
+                return RedirectToAction("RoutesM_details", "Home", new { id = IDR });
             }
 
            
@@ -5113,5 +5372,67 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteVisitR2(string ID_visitD)
+        {
+            int routeid = 0;
+            try
+            {
+
+                int id = Convert.ToInt32(ID_visitD);
+
+
+                VisitsM visita = db.VisitsM.Find(id);
+                if (visita != null)
+                {
+                    routeid = visita.ID_route;
+                    db.VisitsM.Remove(visita);
+                    db.SaveChanges();
+                }
+
+
+                //Eliminamos las actividades
+                var actividades = (from e in db.ActivitiesM where (e.ID_visit == id) select e).ToList();
+                var actividadesArray = (from f in db.ActivitiesM where (f.ID_visit == id) select f.ID_activity).ToArray();
+
+
+                foreach (var act in actividades)
+                {
+                    ActivitiesM actividad = db.ActivitiesM.Find(act.ID_activity);
+                    if (actividad != null)
+                    {
+                        db.ActivitiesM.Remove(actividad);
+                        db.SaveChanges();
+                    }
+                }
+                //Eliminamos los detalles de formulario
+
+                var detalles = (from h in db.FormsM_details where (actividadesArray.Contains(h.ID_visit)) select h).ToList();
+                //var detallesArray = (from k in db.FormsM_details where (actividadesArray.Contains(k.ID_visit)) select k.ID_details).ToArray();
+                foreach (var det in detalles)
+                {
+                    FormsM_details detalle = db.FormsM_details.Find(det.ID_details);
+                    if (detalle != null)
+                    {
+                        db.FormsM_details.Remove(detalle);
+                        db.SaveChanges();
+                    }
+                }
+
+
+
+                TempData["exito"] = "Visit deleted successfully.";
+                return RedirectToAction("RoutesM_details", "Home", new { id=routeid});
+            }
+            catch
+            {
+                TempData["advertencia"] = "Something wrong happened, try again.";
+                return RedirectToAction("RoutesM_details", "Home", new { id = routeid });
+            }
+
+
+
+        }
+
     }
 }

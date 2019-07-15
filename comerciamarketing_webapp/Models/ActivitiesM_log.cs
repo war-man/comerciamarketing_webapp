@@ -11,8 +11,7 @@ namespace comerciamarketing_webapp.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class ActivitiesM_log
     {
         public int ID_historial { get; set; }
@@ -28,8 +27,6 @@ namespace comerciamarketing_webapp.Models
         public string city { get; set; }
         public string latitude { get; set; }
         public string longitude { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public System.DateTime fecha_conexion { get; set; }
         public string action { get; set; }
         public int ID_usuario { get; set; }

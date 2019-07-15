@@ -589,7 +589,7 @@ namespace comerciamarketing_webapp.Controllers
                 db.SaveChanges();
           
                 //Guardamos log
-                demo_logsave("CHECK OUT - DEMO FINISHED SUCCESSFULLY", id_demo);
+                //demo_logsave("CHECK OUT - DEMO FINISHED SUCCESSFULLY", id_demo);
 
                 //Enviamos el correo al usuario
                 SendDemoResume(Convert.ToInt32(id_demo));
@@ -607,422 +607,422 @@ namespace comerciamarketing_webapp.Controllers
         public void SendDemoResume(int id)
         {
 
-            var demo_header = (from a in dbtoreport.Demos where (a.ID_demo == id) select a).ToList();
+            //var demo_header = (from a in dbtoreport.Demos where (a.ID_demo == id) select a).ToList();
 
-            Demos demoidempresa = new Demos();
-            demoidempresa = dbtoreport.Demos.Find(id);
+            //Demos demoidempresa = new Demos();
+            //demoidempresa = dbtoreport.Demos.Find(id);
 
-            var id_empresa = demoidempresa.ID_Vendor;
+            //var id_empresa = demoidempresa.ID_Vendor;
 
-            if (demo_header.Count > 0)
+            //if (demo_header.Count > 0)
 
-            {
-                var nombretienda = "";
-                foreach (var item in demo_header)
-                {
-                    //nombre de usuario
-                    var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+            //{
+            //    var nombretienda = "";
+            //    foreach (var item in demo_header)
+            //    {
+            //        //nombre de usuario
+            //        var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
 
-                    if (usuario != null)
-                    {
-                        item.ID_Vendor = usuario.CardName;
-                    }
-                    else
-                    {
-                        item.ID_Vendor = "NO CODE FOUND";
-
-                    }
-                    item.end_date = item.end_date.ToLocalTime();
-
-                    //nombre de tienda
-                    var tiendita = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
-
-                    if (tiendita != null) { nombretienda = tiendita.CardName; }
-                    else { nombretienda = "NO CODE FOUND"; }
-
-                }
-
-                //Existen datos
-                //Buscamos los detalles
-
-                var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
-                var result = demo_details
-                        .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
-                        .Select(cl => new Forms_details
-                        {
-                            ID_details = cl.First().ID_details,
-                            ID_formresourcetype = cl.First().ID_formresourcetype,
-                            fsource = cl.First().fsource,
-                            fdescription = cl.First().fdescription,
-                            fvalue = cl.Sum(c => c.fvalue),
-                            ID_form = cl.First().ID_form,
-                            ID_demo = cl.First().ID_demo,
-                            original = cl.First().original,
-                            obj_order = cl.First().obj_order,
-                            obj_group = cl.First().obj_group
-                        }).ToList();
-
-
-                ReportDocument rd = new ReportDocument();
-
-                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
-
-
-                //Obtenemos el nombre de las marcas o brands por cada articulo
-                var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
-
-                var oitm = (from h in COM_MKdb.OITM select h).ToList();
-                var omrc = (from i in COM_MKdb.OMRC select i).ToList();
-                foreach (var itemd in listadeItems)
-                {
-
-                    itemd.fdescription = (from k in oitm join j in omrc on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
-                }
-
-                var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
-
-                var brandstoshow = "";
-                int count = 0;
-                foreach (var items in brands)
-                {
-                    if (count == 0)
-                    {
-                        brandstoshow = items.fdescription.ToString();
-                    }
-                    else
-                    {
-                        brandstoshow += ", " + items.fdescription.ToString();
-                    }
-                    count += 1;
-                }
-                //*******************************
-
-                demo_header[0].vendor = brandstoshow;
-
-
-                rd.SetDataSource(demo_header);
-
-                rd.Subreports[0].SetDataSource(result);
-
-                //Verificamos si existen fotos en el demo (MAX 4 fotos)
-                var fotos = (from c in dbtoreport.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
-
-                int fotosC = fotos.Count();
-
-
-
-
-                if (fotosC == 4)
-                {
-                    if (fotos[0].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg1", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                    }
-                    if (fotos[1].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg2", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                    }
-                    if (fotos[2].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg3", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
-                    }
-                    if (fotos[3].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg4", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
-                    }
-
-
-                }
-                else if (fotosC == 3)
-                {
-                    if (fotos[0].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg1", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                    }
-                    if (fotos[1].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg2", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                    }
-                    if (fotos[2].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg3", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
-                    }
-
-                    rd.SetParameterValue("urlimg4", "");
-
-                }
-                else if (fotosC == 2)
-                {
-                    if (fotos[0].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg1", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                    }
-                    if (fotos[1].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg2", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
-                    }
-
-                    rd.SetParameterValue("urlimg3", "");
-
-                    rd.SetParameterValue("urlimg4", "");
-
-                }
-                else if (fotosC == 1)
-                {
-                    if (fotos[0].fsource == "")
-                    {
-                        rd.SetParameterValue("urlimg1", "");
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
-                    }
+            //        if (usuario != null)
+            //        {
+            //            item.ID_Vendor = usuario.CardName;
+            //        }
+            //        else
+            //        {
+            //            item.ID_Vendor = "NO CODE FOUND";
+
+            //        }
+            //        item.end_date = item.end_date.ToLocalTime();
+
+            //        //nombre de tienda
+            //        var tiendita = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
+
+            //        if (tiendita != null) { nombretienda = tiendita.CardName; }
+            //        else { nombretienda = "NO CODE FOUND"; }
+
+            //    }
+
+            //    //Existen datos
+            //    //Buscamos los detalles
+
+            //    var demo_details = (from b in db.Forms_details where (b.ID_demo == id && (b.ID_formresourcetype == 3 || b.ID_formresourcetype == 4 || b.ID_formresourcetype == 6 || b.ID_formresourcetype == 10)) select b).OrderBy(b => b.ID_formresourcetype).ToList();
+            //    var result = demo_details
+            //            .GroupBy(l => new { ID_formresourcetype = l.ID_formresourcetype, fsource = l.fsource })
+            //            .Select(cl => new Forms_details
+            //            {
+            //                ID_details = cl.First().ID_details,
+            //                ID_formresourcetype = cl.First().ID_formresourcetype,
+            //                fsource = cl.First().fsource,
+            //                fdescription = cl.First().fdescription,
+            //                fvalue = cl.Sum(c => c.fvalue),
+            //                ID_form = cl.First().ID_form,
+            //                ID_demo = cl.First().ID_demo,
+            //                original = cl.First().original,
+            //                obj_order = cl.First().obj_order,
+            //                obj_group = cl.First().obj_group
+            //            }).ToList();
+
+
+            //    ReportDocument rd = new ReportDocument();
+
+            //    rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemo.rpt"));
+
+
+            //    //Obtenemos el nombre de las marcas o brands por cada articulo
+            //    var listadeItems = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 3) select d).ToList();
+
+            //    var oitm = (from h in COM_MKdb.OITM select h).ToList();
+            //    var omrc = (from i in COM_MKdb.OMRC select i).ToList();
+            //    foreach (var itemd in listadeItems)
+            //    {
+
+            //        itemd.fdescription = (from k in oitm join j in omrc on k.FirmCode equals j.FirmCode where (k.ItemCode == itemd.fsource) select j.FirmName).FirstOrDefault();
+            //    }
+
+            //    var brands = listadeItems.GroupBy(test => test.fdescription).Select(grp => grp.First()).ToList();
+
+            //    var brandstoshow = "";
+            //    int count = 0;
+            //    foreach (var items in brands)
+            //    {
+            //        if (count == 0)
+            //        {
+            //            brandstoshow = items.fdescription.ToString();
+            //        }
+            //        else
+            //        {
+            //            brandstoshow += ", " + items.fdescription.ToString();
+            //        }
+            //        count += 1;
+            //    }
+            //    //*******************************
+
+            //    demo_header[0].vendor = brandstoshow;
+
+
+            //    rd.SetDataSource(demo_header);
+
+            //    rd.Subreports[0].SetDataSource(result);
+
+            //    //Verificamos si existen fotos en el demo (MAX 4 fotos)
+            //    var fotos = (from c in dbtoreport.Forms_details where (c.ID_demo == id && c.ID_formresourcetype == 5) select c).ToList();
+
+            //    int fotosC = fotos.Count();
+
+
+
+
+            //    if (fotosC == 4)
+            //    {
+            //        if (fotos[0].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg1", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+            //        }
+            //        if (fotos[1].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg2", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+            //        }
+            //        if (fotos[2].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg3", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+            //        }
+            //        if (fotos[3].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg4", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
+            //        }
+
+
+            //    }
+            //    else if (fotosC == 3)
+            //    {
+            //        if (fotos[0].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg1", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+            //        }
+            //        if (fotos[1].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg2", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+            //        }
+            //        if (fotos[2].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg3", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+            //        }
+
+            //        rd.SetParameterValue("urlimg4", "");
+
+            //    }
+            //    else if (fotosC == 2)
+            //    {
+            //        if (fotos[0].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg1", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+            //        }
+            //        if (fotos[1].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg2", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+            //        }
+
+            //        rd.SetParameterValue("urlimg3", "");
+
+            //        rd.SetParameterValue("urlimg4", "");
+
+            //    }
+            //    else if (fotosC == 1)
+            //    {
+            //        if (fotos[0].fsource == "")
+            //        {
+            //            rd.SetParameterValue("urlimg1", "");
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+            //        }
 
-                    rd.SetParameterValue("urlimg2", "");
+            //        rd.SetParameterValue("urlimg2", "");
 
-                    rd.SetParameterValue("urlimg3", "");
+            //        rd.SetParameterValue("urlimg3", "");
 
-                    rd.SetParameterValue("urlimg4", "");
+            //        rd.SetParameterValue("urlimg4", "");
 
-                }
-                else
-                {
+            //    }
+            //    else
+            //    {
 
-                    rd.SetParameterValue("urlimg1", "");
-                    rd.SetParameterValue("urlimg2", "");
-                    rd.SetParameterValue("urlimg3", "");
-                    rd.SetParameterValue("urlimg4", "");
-                }
+            //        rd.SetParameterValue("urlimg1", "");
+            //        rd.SetParameterValue("urlimg2", "");
+            //        rd.SetParameterValue("urlimg3", "");
+            //        rd.SetParameterValue("urlimg4", "");
+            //    }
 
 
-                //Verificams si existe firma electronica
-                var firma = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
+            //    //Verificams si existe firma electronica
+            //    var firma = (from d in dbtoreport.Forms_details where (d.ID_demo == id && d.ID_formresourcetype == 9) select d).ToList();
 
-                int firmaC = firma.Count();
+            //    int firmaC = firma.Count();
 
 
 
 
-                if (firmaC == 1)
-                {
+            //    if (firmaC == 1)
+            //    {
 
-                    string data = firma[0].fsource;
-                    if (data != "")
-                    {
-                        var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+            //        string data = firma[0].fsource;
+            //        if (data != "")
+            //        {
+            //            var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
 
-                        var binData = Convert.FromBase64String(base64Data);
+            //            var binData = Convert.FromBase64String(base64Data);
 
-                        using (var streamf = new MemoryStream(binData))
-                        {
+            //            using (var streamf = new MemoryStream(binData))
+            //            {
 
-                            Bitmap myImage = new Bitmap(streamf);
+            //                Bitmap myImage = new Bitmap(streamf);
 
-                            // Assumes myImage is the PNG you are converting
-                            using (var b = new Bitmap(myImage.Width, myImage.Height))
-                            {
-                                b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+            //                // Assumes myImage is the PNG you are converting
+            //                using (var b = new Bitmap(myImage.Width, myImage.Height))
+            //                {
+            //                    b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
 
-                                using (var g = Graphics.FromImage(b))
-                                {
-                                    g.Clear(Color.White);
-                                    g.DrawImageUnscaled(myImage, 0, 0);
-                                }
+            //                    using (var g = Graphics.FromImage(b))
+            //                    {
+            //                        g.Clear(Color.White);
+            //                        g.DrawImageUnscaled(myImage, 0, 0);
+            //                    }
 
-                                // Now save b as a JPEG like you normally would
+            //                    // Now save b as a JPEG like you normally would
 
-                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod_" + id + ".jpg");
-                                b.Save(path, ImageFormat.Jpeg);
+            //                    var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdemod_" + id + ".jpg");
+            //                    b.Save(path, ImageFormat.Jpeg);
 
 
-                                rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
-                            }
+            //                    rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+            //                }
 
 
 
-                        }
-                    }
-                    else
-                    {
-                        rd.SetParameterValue("urlimgsign", "");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            rd.SetParameterValue("urlimgsign", "");
 
-                    }
+            //        }
 
-                }
-                else
-                {
-                    rd.SetParameterValue("urlimgsign", "");
-                }
+            //    }
+            //    else
+            //    {
+            //        rd.SetParameterValue("urlimgsign", "");
+            //    }
 
 
-                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+            //    var filePathOriginal = Server.MapPath("/Reportes/pdf");
 
-                Response.Buffer = false;
+            //    Response.Buffer = false;
 
-                Response.ClearContent();
+            //    Response.ClearContent();
 
-                Response.ClearHeaders();
+            //    Response.ClearHeaders();
 
 
-                //PARA VISUALIZAR
-                //Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
+            //    //PARA VISUALIZAR
+            //    //Response.AppendHeader("Content-Disposition", "inline; filename=" + "Demo Resume; ");
 
 
 
-                //Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            //    //Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
 
-                //stream.Seek(0, SeekOrigin.Begin);
+            //    //stream.Seek(0, SeekOrigin.Begin);
 
 
 
-                //return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
+            //    //return File(stream, System.Net.Mime.MediaTypeNames.Application.Pdf);
 
-                //PARA ENVIAR POR CORREO
+            //    //PARA ENVIAR POR CORREO
 
-                //try
+            //    //try
 
-                //{
-                //    //limpiamos el directorio
+            //    //{
+            //    //    //limpiamos el directorio
 
-                //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
+            //    //    System.IO.DirectoryInfo di = new DirectoryInfo(filePathOriginal);
 
-                //    foreach (FileInfo file in di.GetFiles())
+            //    //    foreach (FileInfo file in di.GetFiles())
 
-                //    {
+            //    //    {
 
-                //        file.Delete();
+            //    //        file.Delete();
 
-                //    }
+            //    //    }
 
-                //    foreach (DirectoryInfo dir in di.GetDirectories())
+            //    //    foreach (DirectoryInfo dir in di.GetDirectories())
 
-                //    {
+            //    //    {
 
-                //        dir.Delete(true);
+            //    //        dir.Delete(true);
 
-                //    }
+            //    //    }
 
-                //}
+            //    //}
 
-                //catch (Exception e)
+            //    //catch (Exception e)
 
-                //{
+            //    //{
 
-                //    var mensaje = e.ToString();
+            //    //    var mensaje = e.ToString();
 
-                //}
+            //    //}
 
-                var path2 = "";
-                var filename = "Demo_resume_" + id + ".pdf";
-                path2 = Path.Combine(filePathOriginal, filename);
-                rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
+            //    var path2 = "";
+            //    var filename = "Demo_resume_" + id + ".pdf";
+            //    path2 = Path.Combine(filePathOriginal, filename);
+            //    rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
-                //PdfDocument doc = new PdfDocument();
-                //doc.LoadFromFile(path);
-                ////Contamos numero total de paginas
-                //int indexpages = doc.Pages.Count;
+            //    //PdfDocument doc = new PdfDocument();
+            //    //doc.LoadFromFile(path);
+            //    ////Contamos numero total de paginas
+            //    //int indexpages = doc.Pages.Count;
 
-                //Image img = doc.SaveAsImage(0);
-                //var imagename = "Accounts Receivable Report " + seller.SalesRepresentative + ".jpg";
-                //pathimage = Path.Combine(filePathOriginal, imagename);
-                //img.Save(pathimage);
-                //doc.Close();
+            //    //Image img = doc.SaveAsImage(0);
+            //    //var imagename = "Accounts Receivable Report " + seller.SalesRepresentative + ".jpg";
+            //    //pathimage = Path.Combine(filePathOriginal, imagename);
+            //    //img.Save(pathimage);
+            //    //doc.Close();
 
 
-                //Enviamos correo al usuario
-                int intentos = 1;
+            //    //Enviamos correo al usuario
+            //    int intentos = 1;
 
-                while (intentos < 4) {
-                    try
-                    {
-                        var data = demo_header.FirstOrDefault();
-                        var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
+            //    while (intentos < 4) {
+            //        try
+            //        {
+            //            var data = demo_header.FirstOrDefault();
+            //            var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == data.ID_usuario) select u).FirstOrDefault();
 
 
-                        dynamic email = new Email("DemoResume");
-                        email.To = usuario.E_Mail.ToString();
-                        //email.From = "customercare@comerciamarketing.com";
-                        email.Subject = "DEMO RESUME IN " + nombretienda;
-                        email.Attach(new Attachment(path2));
-                        //email.Body = imagename;
-                        //return new EmailViewResult(email);
+            //            dynamic email = new Email("DemoResume");
+            //            email.To = usuario.E_Mail.ToString();
+            //            //email.From = "customercare@comerciamarketing.com";
+            //            email.Subject = "DEMO RESUME IN " + nombretienda;
+            //            email.Attach(new Attachment(path2));
+            //            //email.Body = imagename;
+            //            //return new EmailViewResult(email);
 
-                        email.Send();
-                        intentos = 5;
-                        demo_logsave("AUTO-DEMO-USER EMAIL SENT SUCCESSFULLY TO: " + usuario.E_Mail.ToString(), id);
-                        intentos = 5;//por si el proceso de arriba falla de guardar el log
-                        TempData["exito"] = "EMAIL SENT SUCCESSFULLY";
-                    }
-                    catch (Exception e)
-                    {
-                        //Console.WriteLine("{0} Exception caught.", e);
-                        string mensaje = e.Message;
-                        //mensaje = mensaje.Substring(0, 490);
+            //            email.Send();
+            //            intentos = 5;
+            //            demo_logsave("AUTO-DEMO-USER EMAIL SENT SUCCESSFULLY TO: " + usuario.E_Mail.ToString(), id);
+            //            intentos = 5;//por si el proceso de arriba falla de guardar el log
+            //            TempData["exito"] = "EMAIL SENT SUCCESSFULLY";
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            //Console.WriteLine("{0} Exception caught.", e);
+            //            string mensaje = e.Message;
+            //            //mensaje = mensaje.Substring(0, 490);
                         
-                        if (intentos == 1)
-                        {
-                          demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " TRYING IT AGAIN", id);
-                            TempData["advertencia"] = "EMAIL ERROR";
-                        }
-                        else if (intentos == 2)
-                        {
-                            demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " SECOND TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
-                        }
-                        else if (intentos == 3) {
-                            demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " LAST TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
-                        }
+            //            if (intentos == 1)
+            //            {
+            //              demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " TRYING IT AGAIN", id);
+            //                TempData["advertencia"] = "EMAIL ERROR";
+            //            }
+            //            else if (intentos == 2)
+            //            {
+            //                demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " SECOND TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
+            //            }
+            //            else if (intentos == 3) {
+            //                demo_logsave("DEMO USER EMAIL ERROR: " + mensaje + " LAST TEST TO SEND EMAIL WAS UNSUCCESSFUL.", id);
+            //            }
 
-                        intentos++;
+            //            intentos++;
 
-                    }
-
-
-                }
+            //        }
 
 
+            //    }
 
 
-            }
-            else
-            {
-                demo_logsave("NO DATA FOUND TO SEND EMAIL TO DEMO USER", id);
-            }
+
+
+            //}
+            //else
+            //{
+            //    demo_logsave("NO DATA FOUND TO SEND EMAIL TO DEMO USER", id);
+            //}
         }
 
         public void SendDemoResumeMC(int id)
@@ -1044,7 +1044,8 @@ namespace comerciamarketing_webapp.Controllers
                 foreach (var item in demo_header)
                 {
                     //nombre de usuario
-                    var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    //original//var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_usuario) select u).FirstOrDefault();
+                    var usuario = (from u in COM_MKdb.OCRD where (u.CardCode == "paraqurnodeerror") select u).FirstOrDefault();
 
                     if (usuario != null)
                     {
@@ -1054,7 +1055,7 @@ namespace comerciamarketing_webapp.Controllers
                         item.ID_Vendor = "NO CODE FOUND";
                        
                     }
-                    item.end_date = item.end_date.ToLocalTime();
+                    //item.end_date = item.end_date.ToLocalTime();
 
                     //nombre de tienda
                     var tiendita = (from u in COM_MKdb.OCRD where (u.CardCode == item.ID_Store) select u).FirstOrDefault();
@@ -1064,7 +1065,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-                    item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
+                    //item.check_in = item.check_in.AddHours(-(Convert.ToDouble(item.extra_hours)));
                 }
 
                 //Existen datos
