@@ -25,24 +25,25 @@
                 @using (Html.BeginForm("Gallery", "Admin",
                   new { customersel = ViewBag.CustomerSelCode, brandsel = ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd = ViewBag.filtrofechaend }, FormMethod.Post))
                 {
+                    <label>Select a Route:</label>
+                    <select class="form-control" id="idroute" name="idroute" onchange="showbutton()">
+                        <option value="0"> SELECT A ROUTE...</option>
 
-            <select class="form-control" id="idroute" name="idroute" onchange="showbutton()">
-                <option value="0"> SELECT A ROUTE...</option>
+                        @foreach (var item in ViewBag.routeslst)
+                        {
+                            if (item.ID_route == ViewBag.routesel)
+                            {
+                                <option value="@item.ID_route" selected>(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
+                            }
+                            else
+                            {
+                                <option value="@item.ID_route">(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
+                            }
 
-                @foreach (var item in ViewBag.routeslst)
-                {
-                    if (item.ID_route == ViewBag.routesel)
-                    {
-                <option value="@item.ID_route" selected>(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
-                    }
-                    else {
-                        <option value="@item.ID_route">(@Convert.ToDateTime(item.date).ToShortDateString() - @Convert.ToDateTime(item.end_date).ToShortDateString()) - @item.query2 </option>
-                    }
-
+                        }
+                    </select><br />
+                    <button type="submit" id="showimg" style="display:none;" class="btn btn-rounded btn-sm btn-info">Show images</button>
                 }
-            </select><br />
-            <button type="submit" id="showimg" style="display:none;" class="btn btn-rounded btn-sm btn-light">Show images</button>
-}
             </div>
         </div>
         <div class="page-content page-container" id="page-content">
@@ -77,7 +78,7 @@
                                         }
                                         else
                                         {
-                                            <li class="mix @img.Brand.Replace(" ", "") @img.Section @img.Rep.Replace(" ", "") @img.Activity.Replace(" ", "").Replace(".", "")  @img.Store.Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")"><img src="@Url.Content(img.Url)" alt="Image @img.idImg"></li>
+                                            <li class="mix @img.Brand.Replace(" ", "") @img.Section @img.Rep.Replace(" ", "") @img.Activity.Replace(" ", "").Replace(".", "")  @Convert.ToString(img.Store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")"><img src="@Url.Content(img.Url)" alt="Image @img.idImg"></li>
                                         }
 
 
@@ -91,22 +92,22 @@
                             <div class="cd-filter">
                                 <form>
                                     @*<div class="cd-filter-block">
-            <h4>Search</h4>
+                                            <h4>Search</h4>
 
-            <div class="cd-filter-content">
-                <input type="search" placeholder="...">
-            </div> <!-- cd-filter-content -->
-        </div> <!-- cd-filter-block -->*@
+                                            <div class="cd-filter-content">
+                                                <input type="search" placeholder="...">
+                                            </div> <!-- cd-filter-content -->
+                                        </div> <!-- cd-filter-block -->*@
                                     <div class="cd-filter-block">
                                         <h4>By Merchandiser</h4>
                                         <ul class="cd-filter-content cd-filters list" style="list-style: none;">
                                             @foreach (var rep in ViewBag.replst)
-            {
-                                <li>
-                                    <input class="filter" data-filter=".@Convert.ToString(rep).Replace(" ", "")" type="checkbox" id="checkbox_@Convert.ToString(rep).Replace(" ", "")">
-                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(rep).Replace(" ", "")">@rep</label>
-                                </li>
-}
+                                            {
+                                                <li>
+                                                    <input class="filter" data-filter=".@Convert.ToString(rep).Replace(" ", "")" type="checkbox" id="checkbox_@Convert.ToString(rep).Replace(" ", "")">
+                                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(rep).Replace(" ", "")">@rep</label>
+                                                </li>
+                                            }
                                         </ul> <!-- cd-filter-content -->
                                     </div> <!-- cd-filter-block -->
 
@@ -118,25 +119,25 @@
                                                 <select class="filter" name="selectThis" id="selectThis">
                                                     <option value="">Choose an option</option>
                                                     @foreach (var activity in ViewBag.activitylst)
-                    {
+                                                    {
 
-                                <option value=".@Convert.ToString(activity).Replace(" ", "").Replace(".", "")">@activity</option>
+                                                        <option value=".@Convert.ToString(activity).Replace(" ", "").Replace(".", "")">@activity</option>
 
-}
+                                                    }
                                                 </select>
                                             </div> <!-- cd-select -->
                                         </div> <!-- cd-filter-content -->
-                                    </div> <!-- cd-filter-block -->                                    
+                                    </div> <!-- cd-filter-block -->
                                     <div class="cd-filter-block">
                                         <h4>By Store</h4>
                                         <ul class="cd-filter-content cd-filters list" style="list-style: none;">
                                             @foreach (var store in ViewBag.storelst)
-            {
-                                <li>
-                                    <input class="filter" data-filter=".@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")" type="checkbox" id="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "")">
-                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(store).Replace(" ", "")">@store</label>
-                                </li>
-}
+                                            {
+                                                <li>
+                                                    <input class="filter" data-filter=".@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")" type="checkbox" id="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")">
+                                                    <label class="checkbox-label" for="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")">@store</label>
+                                                </li>
+                                            }
                                         </ul> <!-- cd-filter-content -->
                                     </div> <!-- cd-filter-block -->
                                     <div class="cd-filter-block">
@@ -147,20 +148,20 @@
                                                 <label class="radio-label" for="radio1">All</label>
                                             </li>
                                             @foreach (var sectionlst in ViewBag.sectionlst)
-            {
-                                <li>
-                                    <input class="filter" data-filter=".@sectionlst" type="radio" name="radioButton" id="rad_@sectionlst">
-                                    <label class="radio-label" for="rad_@sectionlst">@sectionlst</label>
-                                </li>
-}
+                                            {
+                                                <li>
+                                                    <input class="filter" data-filter=".@sectionlst" type="radio" name="radioButton" id="rad_@sectionlst">
+                                                    <label class="radio-label" for="rad_@sectionlst">@sectionlst</label>
+                                                </li>
+                                            }
                                         </ul> <!-- cd-filter-content -->
                                     </div> <!-- cd-filter-block -->
                                     @*<div class="cd-filter-block">
-            <h4>By Activity</h4>
-            <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                            <h4>By Activity</h4>
+                                            <ul class="cd-filter-content cd-filters list" style="list-style: none;">
 
-            </ul> <!-- cd-filter-content -->
-        </div> <!-- cd-filter-block -->*@
+                                            </ul> <!-- cd-filter-content -->
+                                        </div> <!-- cd-filter-block -->*@
 
                                 </form>
                                 <a href="#0" class="cd-close">Close</a>
@@ -176,19 +177,24 @@
     <!-- ############ Main END-->
 </div>
 <!-- ############ Content END-->
-
-@Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")
-
+@if (ViewBag.escliente == 1)
+{
+    @Html.Partial("~/Views/Shared/FilterControlCustomer.cshtml")
+}
+else
+{
+    @Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")
+}
 <script>
- 
-        function showbutton() {
-            var route = $("#idroute").val();
- 
-            if (route != "0") {
-                $("#showimg").show();
-            } else {
-                $("#showimg").hide();
-            }
+
+    function showbutton() {
+        var route = $("#idroute").val();
+
+        if (route != "0") {
+            $("#showimg").show();
+        } else {
+            $("#showimg").hide();
         }
-    
+    }
+
 </script>

@@ -126,4 +126,25 @@ namespace comerciamarketing_webapp.Models
 
     }
 
+    public class VisitsInfo
+    {
+        public int ID_visit { get; set; }
+        public string ID_store { get; set; }
+        public string store { get; set; }
+        public string addresss { get; set; }
+        public DateTime visitDate { get; set; }
+        public string ID_customer { get; set; }
+        public string Customer { get; set; }
+        public int id_usuarioend { get; set; }
+        public string id_usuarioendexternal { get; set; }
+        public string usuario_name { get; set; }
+        public string Comments { get; set; }
+        public string ID_brand { get; set; }
+        public string Brand { get; set; }
+        public string pictureBefore { get; set; }
+        public string pictureAfter { get; set; }
+  
+
+    }
+
 }

@@ -153,7 +153,7 @@ else
                                                                     {
                                                                         if (activity.isfinished == true)
                                                                         {
-                                                                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="btn btn-sm btn-success">Preview</a>
+                                                                            <a href="@Url.Action("ActivityraonresumeR", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
                                                                         }
                                                                         else
                                                                         {

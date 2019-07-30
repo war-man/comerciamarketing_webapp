@@ -273,8 +273,8 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Z.EntityFramework.Extensions, Version=3.21.2.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.3.21.2\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.21.8.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.21.8\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +332,9 @@
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\activitiesVisitsBrands.cs" />
+    <Compile Include="Models\BI_Dim_Products.cs">
+      <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Brand_competitors.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -554,6 +557,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSubMarketingActivity.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptVisitsListImg.cs">
+      <DependentUpon>rptVisitsListImg.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reportes\rptVisitsList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptVisitsList.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\rptw9form - backup.cs">
@@ -4087,6 +4102,8 @@
     <Content Include="Views\Admin\Gallery.cshtml" />
     <Content Include="Views\Shared\FilterControlAdmin.cshtml" />
     <Content Include="Views\Shared\FilterControlCustomer.cshtml" />
+    <Content Include="Views\FormsM\ActivityraonresumeR.cshtml" />
+    <Content Include="Views\Reports\Visits.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4143,6 +4160,14 @@
     <EmbeddedResource Include="Reportes\rptSubMarketingActivity.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptSubMarketingActivity.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptVisitsListImg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVisitsListImg.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptVisitsList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVisitsList.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptw9form - backup.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

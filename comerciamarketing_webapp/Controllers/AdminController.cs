@@ -313,6 +313,20 @@ namespace comerciamarketing_webapp.Controllers
                 //var saturday = sunday.AddMonths(1).AddDays(-1);
                 var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
                 var saturday = sunday.AddDays(6).AddHours(23);
+                //Verificamos si es marca cliente
+                var escliente = false;
+                if (activeuser.ID_tipomembresia == 2 || activeuser.ID_tipomembresia == 3 || activeuser.ID_tipomembresia == 4)
+                {
+                    escliente = true;
+                    ViewBag.escliente = 1;
+                }
+                else
+                {
+                    ViewBag.escliente = 0;
+                }
+
+
+
                 //FILTROS**************
 
                 if (fstartd == null || fstartd == "")
@@ -344,10 +358,10 @@ namespace comerciamarketing_webapp.Controllers
                         var visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute) select f.ID_visit).ToArray();
                         if (customersel == null || customersel == "" || customersel =="0")
                         {
-                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_empresa == activeuser.ID_empresa) select e);
+                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit)) select e);
                         }
                         else {
-                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_empresa == activeuser.ID_empresa && e.ID_customer==customersel) select e);
+                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_customer==customersel) select e);
                         }
                             
                         var actividades = actividadesList.Select(a => a.ID_activity).ToArray();
@@ -416,7 +430,19 @@ namespace comerciamarketing_webapp.Controllers
                         using (var CMKdb = new COM_MKEntities())
                         {
                             //LISTADO DE CLIENTES
-                            var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                            List<OCRD> customers;
+                            
+                            if (escliente == true)
+                            {
+                                customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+
+                            }
+                            else
+                            {
+                                customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
+                            }
+                            
                             ViewBag.customerssel = customers.ToList();
 
                             if (customersel == null || customersel == "" || customersel == "0")

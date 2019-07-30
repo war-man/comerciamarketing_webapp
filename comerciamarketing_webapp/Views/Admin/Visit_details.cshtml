@@ -142,7 +142,7 @@ else
                                                                        {
                                                                            if (ViewBag.estadovisita == 2)
                                                                            {
-                                                                            <a href="@Url.Action("Activityon", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
+                                                                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
                                                                            }
                                                                             
                                                                         }
@@ -153,7 +153,7 @@ else
                                                                     {
                                                                         if (activity.isfinished == true)
                                                                         {
-                                                                            <a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="btn btn-sm btn-success">Preview</a>
+                                                                            <a href="@Url.Action("Activityraonresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
                                                                         }
                                                                         else
                                                                         {

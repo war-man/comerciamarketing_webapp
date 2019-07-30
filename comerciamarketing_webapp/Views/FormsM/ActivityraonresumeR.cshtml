@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                             <div class="col-md-12">
-                                <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
+                                <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()' disabled>
                                     @if (ViewBag.customers.Count == 1)
                                     {
                                         <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                             <div class="col-md-12">
-                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%">
+                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" disabled>
                                     <option value="0">Seleccione una marca</option>
                                 </select>
 
@@ -164,8 +164,9 @@
 
                                     @foreach (var product in ViewBag.productRows)
                                     {
-                                        if (subcatactual != product.fvalueText) {
-                                           
+                                        if (subcatactual != product.fvalueText)
+                                        {
+
                                             <tr style="background-color:#f5f5f6">
                                                 <td colspan="4" style="text-align:center">@product.fvalueText</td>
                                             </tr>
@@ -173,16 +174,16 @@
 
 
                                         }
-                                            <tr>
-                                                <td>@product.fsource | @product.fdescription</td>
+                                        <tr>
+                                            <td>@product.fsource | @product.fdescription</td>
 
-                                                @if (product.children != null)
-                                                {
-                                                    @OrderedList(product.children, objeto.idkey)
-                                                }
-                                            </tr>
+                                            @if (product.children != null)
+                                            {
+                                                @OrderedList(product.children, objeto.idkey)
+                                            }
+                                        </tr>
 
-                                    
+
                                     }
                                 </tbody>
                             </table>
@@ -207,11 +208,11 @@
                         <label class="md-check">
                             @if (objeto.fvalue == 1)
                             {
-                                <input type="checkbox" class="form-check-input" name="radio_@objeto.idkey" id="@objeto.idkey" checked>
+                                <input type="checkbox" class="form-check-input" name="radio_@objeto.idkey" id="@objeto.idkey" checked disabled>
                             }
                             else
                             {
-                                <input type="checkbox" class="form-check-input" name="radio_@objeto.idkey" id="@objeto.idkey">
+                                <input type="checkbox" class="form-check-input" name="radio_@objeto.idkey" id="@objeto.idkey" disabled>
                             }
 
                             <i class="green"></i>
@@ -225,7 +226,7 @@
                 <td>
                     <div class="form-group">
                         <div class="input-icon">
-                            <input type="number" style="width:55px;" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                            <input type="number" style="width:55px;" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" disabled/>
                             <i>$</i>
                         </div>
                     </div>
@@ -296,9 +297,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10 text-right">
-                    <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
-                    <input type="submit" value="Finish activity" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
-                    <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
+
                 </div>
             </div>
 

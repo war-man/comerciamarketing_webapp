@@ -2178,11 +2178,11 @@ namespace comerciamarketing_webapp.Controllers
                 //************
 
                 TempData["exito"] = "Activity created successfully.";
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id= ID_visita});
+                return RedirectToAction("Visit_details", "Admin", new { id= ID_visita});
             }
             catch (Exception ex){
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visita });
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visita });
             }
          
             
@@ -2518,12 +2518,12 @@ namespace comerciamarketing_webapp.Controllers
                 //db.BulkDelete(lista_eliminar);
 
                 TempData["exito"] = "Activity deleted successfully.";
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id=ID_visitA});
+                return RedirectToAction("Visit_details", "Admin", new { id=ID_visitA});
 
             }
             catch (Exception ex){
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitA });
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitA });
             }
 
 
@@ -2570,13 +2570,13 @@ namespace comerciamarketing_webapp.Controllers
 
                
                 TempData["exito"] = "Representative removed successfully.";
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitU });
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitU });
 
             }
             catch (Exception ex)
             {
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Visit_details", "SalesRepresentatives", new { id = ID_visitU });
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitU });
             }
 
 
@@ -3013,17 +3013,25 @@ namespace comerciamarketing_webapp.Controllers
                 int IDvisita = Convert.ToInt32(ID_visit);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == IDU) select c).FirstOrDefault();
                 VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+
+                DateTime check = DateTime.UtcNow;
+                try //Validamos la hora ya que viene del lado del cliente y el formato no esta definido
+                {
+                    check = Convert.ToDateTime(check_in);
+                }
+                catch
+                {
+                    check = DateTime.UtcNow;
+                }
+
+
                 if (visita != null)
                 {
                     //Cambiamos estado de visita global
                     visita.ID_visitstate = 2;
-                    try
-                    {
-                        visita.check_in = Convert.ToDateTime(check_in);
-                    }
-                    catch {
-                        visita.check_in = DateTime.UtcNow;
-                    }
+              
+                        visita.check_in = check;
+              
                     
                     db.Entry(visita).State = EntityState.Modified;
                     db.SaveChanges();
@@ -3046,14 +3054,9 @@ namespace comerciamarketing_webapp.Controllers
                         nuevoLog.longitude = lng;
                         nuevoLog.ID_usuario = IDU;
                         nuevoLog.ID_activity =0;
-                        try
-                        {
-                            nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
-                        }
-                        catch
-                        {
-                            nuevoLog.fecha_conexion  = DateTime.UtcNow;
-                        }
+               
+                            nuevoLog.fecha_conexion = check;
+                      
                  
                         nuevoLog.query1 = ID_visit;
                         nuevoLog.query2 = "";
@@ -3184,77 +3187,88 @@ namespace comerciamarketing_webapp.Controllers
                 int idid = Convert.ToInt32(ID_visit);
                 int IDU = Convert.ToInt32(Session["IDusuario"]);
 
-                //Guardamos los datos de las actividades
-                if (objects != null) {
-
-                    foreach (var actobj in objects)
+                DateTime check = DateTime.UtcNow;
+                try //Validamos la hora ya que viene del lado del cliente y el formato no esta definido
                 {
-                    ActivitiesM actividadObj = new ActivitiesM();//Creamos la actividad
-                    if (actobj.isnew == false)
-                    {
-                        //Evaluamos si es copia
-                        if (actobj.query1 == "copy")
-                        {//Si es copia y no es nuevo quiere decir que se guardo en el servidor pero como no se actualiza la query, tenemos que validar 
-                         //Para hacer un guardado y no un insert
-                         //Buscamos la actividad y la asignamos
-                            actividadObj = (from a in db.ActivitiesM where (a.query1 == actobj.query1) select a).FirstOrDefault();
-
-                            actividadObj.check_out = actobj.check_out;
-                            actividadObj.check_in = actobj.check_in;
-                            actividadObj.isfinished = actobj.isfinished;
-                            actividadObj.ID_usuarioEndString = "";
-                            db.Entry(actividadObj).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            //NO es copia, por lo tanto
-                            //Buscamos la actividad y la asignamos
-                            actividadObj = (from a in db.ActivitiesM where (a.ID_activity == actobj.ID_activity) select a).FirstOrDefault();
-
-                            actividadObj.check_out = actobj.check_out;
-                            actividadObj.check_in = actobj.check_in;
-                            actividadObj.isfinished = actobj.isfinished;
-                            actividadObj.ID_usuarioEndString = "";
-                            db.Entry(actividadObj).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-
-
-                    }
-                    else
-                    {
-                        //Como es nuevo, lo creamos completo
-
-                        actividadObj.check_out = actobj.check_out;
-                        actividadObj.check_in = actobj.check_in;
-                        actividadObj.isfinished = actobj.isfinished;
-                        actividadObj.query1 = actobj.query1;
-
-                        actividadObj.ID_visit = actobj.ID_visit;
-                        actividadObj.ID_form = actobj.ID_form;
-                        actividadObj.ID_customer = actobj.ID_customer;
-                        actividadObj.Customer = actobj.Customer;
-                        actividadObj.comments = actobj.comments;
-
-                        actividadObj.ID_empresa = actobj.ID_empresa;
-
-                        actividadObj.description = actobj.description;
-                        actividadObj.ID_usuarioCreate = actobj.ID_usuarioCreate;
-                        actividadObj.ID_usuarioEnd = actobj.ID_usuarioEnd;
-                        actividadObj.date = actobj.date;
-                        actividadObj.ID_activitytype = actobj.ID_activitytype;
-                        actividadObj.ID_usuarioEndString = "";
-
-                        db.ActivitiesM.Add(actividadObj);
-                        db.SaveChanges();
-
-
-                    }
-
+                    check = Convert.ToDateTime(check_in);
+                }
+                catch
+                {
+                    check = DateTime.UtcNow;
                 }
 
-                }
+
+                ////Guardamos los datos de las actividades
+                //if (objects != null) {
+
+                //    foreach (var actobj in objects)
+                //{
+                //    ActivitiesM actividadObj = new ActivitiesM();//Creamos la actividad
+                //    if (actobj.isnew == false)
+                //    {
+                //        //Evaluamos si es copia
+                //        if (actobj.query1 == "copy")
+                //        {//Si es copia y no es nuevo quiere decir que se guardo en el servidor pero como no se actualiza la query, tenemos que validar 
+                //         //Para hacer un guardado y no un insert
+                //         //Buscamos la actividad y la asignamos
+                //            actividadObj = (from a in db.ActivitiesM where (a.query1 == actobj.query1) select a).FirstOrDefault();
+
+                //            actividadObj.check_out = actobj.check_out;
+                //            actividadObj.check_in = actobj.check_in;
+                //            actividadObj.isfinished = actobj.isfinished;
+                //            actividadObj.ID_usuarioEndString = "";
+                //            db.Entry(actividadObj).State = EntityState.Modified;
+                //            db.SaveChanges();
+                //        }
+                //        else
+                //        {
+                //            //NO es copia, por lo tanto
+                //            //Buscamos la actividad y la asignamos
+                //            actividadObj = (from a in db.ActivitiesM where (a.ID_activity == actobj.ID_activity) select a).FirstOrDefault();
+
+                //            actividadObj.check_out = actobj.check_out;
+                //            actividadObj.check_in = actobj.check_in;
+                //            actividadObj.isfinished = actobj.isfinished;
+                //            actividadObj.ID_usuarioEndString = "";
+                //            db.Entry(actividadObj).State = EntityState.Modified;
+                //            db.SaveChanges();
+                //        }
+
+
+                //    }
+                //    else
+                //    {
+                //        //Como es nuevo, lo creamos completo
+
+                //        actividadObj.check_out = actobj.check_out;
+                //        actividadObj.check_in = actobj.check_in;
+                //        actividadObj.isfinished = actobj.isfinished;
+                //        actividadObj.query1 = actobj.query1;
+
+                //        actividadObj.ID_visit = actobj.ID_visit;
+                //        actividadObj.ID_form = actobj.ID_form;
+                //        actividadObj.ID_customer = actobj.ID_customer;
+                //        actividadObj.Customer = actobj.Customer;
+                //        actividadObj.comments = actobj.comments;
+
+                //        actividadObj.ID_empresa = actobj.ID_empresa;
+
+                //        actividadObj.description = actobj.description;
+                //        actividadObj.ID_usuarioCreate = actobj.ID_usuarioCreate;
+                //        actividadObj.ID_usuarioEnd = actobj.ID_usuarioEnd;
+                //        actividadObj.date = actobj.date;
+                //        actividadObj.ID_activitytype = actobj.ID_activitytype;
+                //        actividadObj.ID_usuarioEndString = "";
+
+                //        db.ActivitiesM.Add(actividadObj);
+                //        db.SaveChanges();
+
+
+                //    }
+
+                //}
+
+                //}
 
 
 
@@ -3277,7 +3291,7 @@ namespace comerciamarketing_webapp.Controllers
                     if (visita != null)
                     {
                         visita.ID_visitstate = 4; //FINALIZADO
-                        visita.check_out = Convert.ToDateTime(check_in);
+                        visita.check_out =check;
                         db.Entry(visita).State = EntityState.Modified;
                         db.SaveChanges();
 
@@ -3290,7 +3304,7 @@ namespace comerciamarketing_webapp.Controllers
                             nuevoLog.longitude = lng;
                             nuevoLog.ID_usuario = IDU;
                             nuevoLog.ID_activity = 0;
-                            nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                            nuevoLog.fecha_conexion = check;
                             nuevoLog.query1 = ID_visit;
                             nuevoLog.query2 = "";
                             nuevoLog.action = "CHECK OUT  - " + visita.store;
@@ -3359,10 +3373,20 @@ namespace comerciamarketing_webapp.Controllers
             {
                 int IDU = Convert.ToInt32(Session["IDusuario"]);
                 VisitsM visita = db.VisitsM.Find(Convert.ToInt32(ID_visit));
+                DateTime check = DateTime.UtcNow;
+                try //Validamos la hora ya que viene del lado del cliente y el formato no esta definido
+                {
+                    check = Convert.ToDateTime(check_in);
+                }
+                catch {
+                    check = DateTime.UtcNow;
+                }
+
+
                 if (visita != null)
                 {
                     visita.ID_visitstate = 1; //CANCELADO
-                    visita.check_in = Convert.ToDateTime(check_in);
+                    visita.check_in = check;
                     db.Entry(visita).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -3375,7 +3399,7 @@ namespace comerciamarketing_webapp.Controllers
                         nuevoLog.longitude = lng;
                         nuevoLog.ID_usuario = IDU;
                         nuevoLog.ID_activity = 0;
-                        nuevoLog.fecha_conexion = Convert.ToDateTime(check_in);
+                        nuevoLog.fecha_conexion =check;
                         nuevoLog.query1 = ID_visit;
                         nuevoLog.query2 = "";
                         nuevoLog.action = "CHECK IN  - " + visita.store;

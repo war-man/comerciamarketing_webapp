@@ -1346,10 +1346,23 @@ namespace comerciamarketing_webapp.Controllers
 
                     List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
 
-                    ///
+                ///
+                var showbuttondynamic = (from item in db.FormsM_details
+                                         where (item.ID_formM == id && item.ID_formresourcetype == 11)
+                                         select item).Count();
 
-                    //Deserealizamos  los datos
-                    JavaScriptSerializer js = new JavaScriptSerializer();
+                if (showbuttondynamic > 0)
+                {
+
+                    ViewBag.mostrarboton = 1; //Lo mostramos
+                }
+                else
+                {
+                    ViewBag.mostrarboton = 0; //Lo ocultamos
+                }
+
+                //Deserealizamos  los datos
+                JavaScriptSerializer js = new JavaScriptSerializer();
                     MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
 
                     ViewBag.idvisitareal = 0;
@@ -2899,12 +2912,25 @@ namespace comerciamarketing_webapp.Controllers
             try
             {
                 List<FormsM_detailsDemos> detailsForm = Session["detailsForm"] as List<FormsM_detailsDemos>;
+                int act = Convert.ToInt32(id);
                 if (detailsForm != null)
                 {
-                    int IDU = Convert.ToInt32(Session["IDusuario"]);
+
+                }
+                else
+                {
+                    using (var dbs = new dbComerciaEntities())
+                    {
+
+                        detailsForm = dbs.FormsM_detailsDemos.Where(a => a.ID_visit == act).ToList();
+                    }
+
+                }
+
+                //int IDU = Convert.ToInt32(Session["IDusuario"]);
                     if (id != null)
                     {
-                        int act = Convert.ToInt32(id);
+                     
                         //Guardamos el detalle del formlario
                         foreach (var item in objects)
                         {
@@ -3075,7 +3101,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         return Json(new { Result = "Success" });
                     }
-                }
+                //}
                 return Json(new { Result = "Warning" });
             }
             catch (Exception ex)
@@ -3090,12 +3116,25 @@ namespace comerciamarketing_webapp.Controllers
             try
             {
                 List<FormsM_details> detailsForm = Session["detailsForm"] as List<FormsM_details>;
+                int act = Convert.ToInt32(id);
                 if (detailsForm != null)
                 {
-                    int IDU = Convert.ToInt32(Session["IDusuario"]);
+
+                }
+                else {
+                    using (var dbs = new dbComerciaEntities())
+                    {
+                    
+                        detailsForm = dbs.FormsM_details.Where(a => a.ID_visit == act).ToList();
+                    }
+                
+                }
+
+                
+                    //int IDU = Convert.ToInt32(Session["IDusuario"]);
                     if (id != null)
                     {
-                        int act = Convert.ToInt32(id);
+                       
                         //Guardamos el detalle del formlario
                         foreach (var item in objects)
                         {
@@ -3261,7 +3300,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         return Json(new { Result = "Success" });
                     }
-                }
+                //}
                 return Json(new { Result = "Warning" });
             }
             catch (Exception ex)
@@ -3275,7 +3314,21 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult UploadFiles(string id,string idvisita, string orientation)
         {
             List<FormsM_details> detailsForm = Session["detailsForm"] as List<FormsM_details>;
+            //buscamos el id del detalle
+            int idf = Convert.ToInt32(id);
+            if (detailsForm != null)
+            {
 
+            }
+            else
+            {
+                using (var dbs = new dbComerciaEntities())
+                {
+
+                    detailsForm = dbs.FormsM_details.Where(a => a.ID_visit == idf).ToList();
+                }
+
+            }
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
             {
@@ -3337,8 +3390,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
 
                         }
-                        //buscamos el id del detalle
-                        int idf = Convert.ToInt32(id);
+                       
                         FormsM_details detail = new FormsM_details();
                         try
                         {
@@ -3405,7 +3457,7 @@ namespace comerciamarketing_webapp.Controllers
                             
              
 
-                            var path = Path.Combine(Server.MapPath("~/Content/images/activities"), id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg");
+                            var path = Path.Combine(Server.MapPath("~/SharedContent/images/activities"), id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg");
 
 
                             var tam = file.ContentLength;
@@ -3439,7 +3491,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         //Luego guardamos la url en la db
                         //Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));  //se movio hacia arriba
-                        detail.fsource = "~/Content/images/activities/" + id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg";
+                        detail.fsource = "~/SharedContent/images/activities/" + id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg";
 
                         db.Entry(detail).State = EntityState.Modified;
                         db.SaveChanges();
@@ -3477,7 +3529,20 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult UploadFilesDemo(string id, string idvisita, string orientation)
         {
             List<FormsM_detailsDemos> detailsForm = Session["detailsForm"] as List<FormsM_detailsDemos>;
+            int idf = Convert.ToInt32(id);
+            if (detailsForm != null)
+            {
 
+            }
+            else
+            {
+                using (var dbs = new dbComerciaEntities())
+                {
+
+                    detailsForm = dbs.FormsM_detailsDemos.Where(a => a.ID_visit == idf).ToList();
+                }
+
+            }
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
             {
@@ -3540,7 +3605,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         }
                         //buscamos el id del detalle
-                        int idf = Convert.ToInt32(id);
+                       
                         FormsM_detailsDemos detail = new FormsM_detailsDemos();
                         try
                         {
@@ -3610,7 +3675,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
 
-                            var path = Path.Combine(Server.MapPath("~/Content/images/activities"), id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg");
+                            var path = Path.Combine(Server.MapPath("~/SharedContent/images/activities"), id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg");
 
 
                             var tam = file.ContentLength;
@@ -3644,7 +3709,7 @@ namespace comerciamarketing_webapp.Controllers
 
                         //Luego guardamos la url en la db
                         //Forms_details detail = db.Forms_details.Find(Convert.ToInt32(id));  //se movio hacia arriba
-                        detail.fsource = "~/Content/images/activities/" + id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg";
+                        detail.fsource = "~/SharedContent/images/activities/" + id + "_activity_" + detail.ID_visit + "_" + time.Minute + time.Second + ".jpg";
 
                         db.Entry(detail).State = EntityState.Modified;
                         db.SaveChanges();
@@ -5096,29 +5161,31 @@ namespace comerciamarketing_webapp.Controllers
                         ViewBag.customers = customers.ToList();
                     }
 
-                    //Cargamos las marcas
-                    //List<brands> brandlist = COM_MKdb.view_CMKEditorB
-                    //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
-                    //    .Distinct()
-                    //    .OrderByDescending(i => i.FirmName)
-                    //    .ToList();
+                //Cargamos las marcas
+                //List<brands> brandlist = COM_MKdb.view_CMKEditorB
+                //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
+                //    .Distinct()
+                //    .OrderByDescending(i => i.FirmName)
+                //    .ToList();
 
-                    //ViewBag.brands = brandlist;
+                //ViewBag.brands = brandlist;
 
-                    //Cargamos las lineas de procuctos
-                    //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
-                    //.Where(i => i.Id_subcategory != null)
-                    //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
-                    //.Distinct()
-                    //.OrderByDescending(i => i.SubCategory)
-                    //.ToList();
+                //Cargamos las lineas de procuctos
+                //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
+                //.Where(i => i.Id_subcategory != null)
+                //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
+                //.Distinct()
+                //.OrderByDescending(i => i.SubCategory)
+                //.ToList();
 
-                    //ViewBag.productline = productlinelist;
+                //ViewBag.productline = productlinelist;
 
-                    //NUEVO
-                    //ID VISIT SE UTILIZA COMO RELACION
-                    List<MyObj_tablapadre> listapadresActivities = (from item in db.FormsM_details
-                                                                    where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false)
+                //NUEVO
+                var FormsMDet = (from a in db.FormsM_details where (a.ID_visit == activity.ID_activity && a.original == false) select a).ToList();
+
+                //ID VISIT SE UTILIZA COMO RELACION
+                List<MyObj_tablapadre> listapadresActivities = (from item in FormsMDet
+                                                                where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
                                                                     select
                                                                        new MyObj_tablapadre
                                                                        {
@@ -5156,8 +5223,8 @@ namespace comerciamarketing_webapp.Controllers
                     //}
 
 
-                    List<tablahijospadre> listahijasActivities = (from item in db.FormsM_details
-                                                                  where (item.ID_visit == activity.ID_activity && item.original == false)
+                    List<tablahijospadre> listahijasActivities = (from item in FormsMDet
+                                                                  where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype !=3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
                                                                   select new tablahijospadre
                                                                   {
                                                                       ID_details = item.ID_details,
@@ -5183,19 +5250,114 @@ namespace comerciamarketing_webapp.Controllers
 
                     List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
 
-                    ///
+                ///
+                //PRODUCTOS FILAS
 
-                    //Deserealizamos  los datos
-                    JavaScriptSerializer js = new JavaScriptSerializer();
+                List<MyObj_tablapadre> listapadresActivitiesProducts = (from item in FormsMDet
+                                                                        where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype == 3 || item.ID_formresourcetype == 16 || item.ID_formresourcetype == 21))
+                                                                select
+                                                                   new MyObj_tablapadre
+                                                                   {
+                                                                       ID_details = item.ID_details,
+                                                                       id_resource = item.ID_formresourcetype,
+                                                                       fsource = item.fsource,
+                                                                       fdescription = item.fdescription,
+                                                                       fvalue = item.fvalue,
+                                                                       fvalueDecimal = item.fvalueDecimal,
+                                                                       fvalueText = item.fvalueText,
+                                                                       ID_formM = item.ID_formM,
+                                                                       ID_visit = item.ID_visit,
+                                                                       original = item.original,
+                                                                       obj_order = item.obj_order,
+                                                                       obj_group = item.obj_group,
+                                                                       idkey = item.idkey,
+                                                                       parent = item.parent,
+                                                                       query1 = item.query1,
+                                                                       query2 = item.query2,
+                                                                       ID_empresa = item.ID_empresa
+                                                                   }
+                      ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivitiesProducts = (from item in FormsMDet
+                                                                      where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                              select new tablahijospadre
+                                                              {
+                                                                  ID_details = item.ID_details,
+                                                                  id_resource = item.ID_formresourcetype,
+                                                                  fsource = item.fsource,
+                                                                  fdescription = item.fdescription,
+                                                                  fvalue = item.fvalue,
+                                                                  fvalueDecimal = item.fvalueDecimal,
+                                                                  fvalueText = item.fvalueText,
+                                                                  ID_formM = item.ID_formM,
+                                                                  ID_visit = item.ID_visit,
+                                                                  original = item.original,
+                                                                  obj_order = item.obj_order,
+                                                                  obj_group = item.obj_group,
+                                                                  idkey = item.idkey,
+                                                                  parent = item.parent,
+                                                                  query1 = item.query1,
+                                                                  query2 = item.query2,
+                                                                  ID_empresa = item.ID_empresa
+
+                                                              }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivitiesProducts = ObtenerCategoriarJerarquiaByID(listapadresActivitiesProducts, listahijasActivitiesProducts);
+
+                ViewBag.productRows = categoriasListActivitiesProducts;
+
+                var showbuttondynamic = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 11)
+                                         select item).Count();
+
+                if (showbuttondynamic > 0)
+                {
+                    ViewBag.dinamicos = 1;
+                    var existproducts = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 3)
+                                         select item).Count();
+                    if (existproducts > 0)
+                    {
+                        ViewBag.mostrarboton = 0; //Lo ocultamos
+                    }
+                    else
+                    {
+                        ViewBag.mostrarboton = 1; //Lo mostramos
+                    }
+
+                }
+                else
+                {
+                    ViewBag.mostrarboton = 0;
+                    ViewBag.dinamicos = 0;
+                }
+
+                //Deserealizamos  los datos
+                JavaScriptSerializer js = new JavaScriptSerializer();
                     MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
 
                     ViewBag.idvisitareal = activity.ID_visit;
                     ViewBag.idvisita = activity.ID_activity;
 
-                    ViewBag.details = categoriasListActivities;
+                    ViewBag.details = categoriasListActivities.OrderBy(c => c.obj_order).ToList();
 
 
-                    Session["detailsForm"] = (from f in db.FormsM_details where (f.ID_visit == id) select f).ToList();
+                    Session["detailsForm"] = (from f in FormsMDet where (f.ID_visit == id) select f).ToList();
 
                     VisitsM visitsM = db.VisitsM.Where(a => a.ID_visit == activity.ID_visit).FirstOrDefault();
                     ViewBag.storename = visitsM.store;
@@ -5209,184 +5371,812 @@ namespace comerciamarketing_webapp.Controllers
                 //return View(FormsM_details.ToList());
 
         }
-        public ActionResult Activityraonresume(int? id, string modulo, string ID_Customer, string brand)
+        public ActionResult Activityraonresume(int? id)
         {
-            if (Session["IDusuario"] != null)
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { access = false });
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+            }
+            int ID = Convert.ToInt32(Session["IDusuario"]);
+            var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
+            ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
 
-                if (activity == null)
+            var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
+
+            if (activity == null)
+            {
+                return RedirectToAction("Main", "Home");
+            }
+            else
+            {
+
+                FormsM formsM = db.FormsM.Find(activity.ID_form);
+
+                //LISTADO DE CLIENTES
+                //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
+
+                if (activity.Customer != "")
                 {
-                    return RedirectToAction("Main", "Home");
+                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode == activity.ID_customer) select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.customers = customers.ToList();
+                }
+                else
+                {
+                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.customers = customers.ToList();
+                }
+
+                //Cargamos las marcas
+                //List<brands> brandlist = COM_MKdb.view_CMKEditorB
+                //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
+                //    .Distinct()
+                //    .OrderByDescending(i => i.FirmName)
+                //    .ToList();
+
+                //ViewBag.brands = brandlist;
+
+                //Cargamos las lineas de procuctos
+                //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
+                //.Where(i => i.Id_subcategory != null)
+                //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
+                //.Distinct()
+                //.OrderByDescending(i => i.SubCategory)
+                //.ToList();
+
+                //ViewBag.productline = productlinelist;
+
+                //NUEVO
+                var FormsMDet = (from a in db.FormsM_details where (a.ID_visit == activity.ID_activity && a.original == false) select a).ToList();
+
+                //ID VISIT SE UTILIZA COMO RELACION
+                List<MyObj_tablapadre> listapadresActivities = (from item in FormsMDet
+                                                                where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                                select
+                                                                   new MyObj_tablapadre
+                                                                   {
+                                                                       ID_details = item.ID_details,
+                                                                       id_resource = item.ID_formresourcetype,
+                                                                       fsource = item.fsource,
+                                                                       fdescription = item.fdescription,
+                                                                       fvalue = item.fvalue,
+                                                                       fvalueDecimal = item.fvalueDecimal,
+                                                                       fvalueText = item.fvalueText,
+                                                                       ID_formM = item.ID_formM,
+                                                                       ID_visit = item.ID_visit,
+                                                                       original = item.original,
+                                                                       obj_order = item.obj_order,
+                                                                       obj_group = item.obj_group,
+                                                                       idkey = item.idkey,
+                                                                       parent = item.parent,
+                                                                       query1 = item.query1,
+                                                                       query2 = item.query2,
+                                                                       ID_empresa = item.ID_empresa
+                                                                   }
+                                          ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivities = (from item in FormsMDet
+                                                              where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                              select new tablahijospadre
+                                                              {
+                                                                  ID_details = item.ID_details,
+                                                                  id_resource = item.ID_formresourcetype,
+                                                                  fsource = item.fsource,
+                                                                  fdescription = item.fdescription,
+                                                                  fvalue = item.fvalue,
+                                                                  fvalueDecimal = item.fvalueDecimal,
+                                                                  fvalueText = item.fvalueText,
+                                                                  ID_formM = item.ID_formM,
+                                                                  ID_visit = item.ID_visit,
+                                                                  original = item.original,
+                                                                  obj_order = item.obj_order,
+                                                                  obj_group = item.obj_group,
+                                                                  idkey = item.idkey,
+                                                                  parent = item.parent,
+                                                                  query1 = item.query1,
+                                                                  query2 = item.query2,
+                                                                  ID_empresa = item.ID_empresa
+
+                                                              }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
+
+                ///
+                //PRODUCTOS FILAS
+
+                List<MyObj_tablapadre> listapadresActivitiesProducts = (from item in FormsMDet
+                                                                        where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype == 3 || item.ID_formresourcetype == 16 || item.ID_formresourcetype == 21))
+                                                                        select
+                                                                           new MyObj_tablapadre
+                                                                           {
+                                                                               ID_details = item.ID_details,
+                                                                               id_resource = item.ID_formresourcetype,
+                                                                               fsource = item.fsource,
+                                                                               fdescription = item.fdescription,
+                                                                               fvalue = item.fvalue,
+                                                                               fvalueDecimal = item.fvalueDecimal,
+                                                                               fvalueText = item.fvalueText,
+                                                                               ID_formM = item.ID_formM,
+                                                                               ID_visit = item.ID_visit,
+                                                                               original = item.original,
+                                                                               obj_order = item.obj_order,
+                                                                               obj_group = item.obj_group,
+                                                                               idkey = item.idkey,
+                                                                               parent = item.parent,
+                                                                               query1 = item.query1,
+                                                                               query2 = item.query2,
+                                                                               ID_empresa = item.ID_empresa
+                                                                           }
+                      ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivitiesProducts = (from item in FormsMDet
+                                                                      where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                                      select new tablahijospadre
+                                                                      {
+                                                                          ID_details = item.ID_details,
+                                                                          id_resource = item.ID_formresourcetype,
+                                                                          fsource = item.fsource,
+                                                                          fdescription = item.fdescription,
+                                                                          fvalue = item.fvalue,
+                                                                          fvalueDecimal = item.fvalueDecimal,
+                                                                          fvalueText = item.fvalueText,
+                                                                          ID_formM = item.ID_formM,
+                                                                          ID_visit = item.ID_visit,
+                                                                          original = item.original,
+                                                                          obj_order = item.obj_order,
+                                                                          obj_group = item.obj_group,
+                                                                          idkey = item.idkey,
+                                                                          parent = item.parent,
+                                                                          query1 = item.query1,
+                                                                          query2 = item.query2,
+                                                                          ID_empresa = item.ID_empresa
+
+                                                                      }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivitiesProducts = ObtenerCategoriarJerarquiaByID(listapadresActivitiesProducts, listahijasActivitiesProducts);
+
+                ViewBag.productRows = categoriasListActivitiesProducts;
+
+                var showbuttondynamic = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 11)
+                                         select item).Count();
+
+                if (showbuttondynamic > 0)
+                {
+                    ViewBag.dinamicos = 1;
+                    var existproducts = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 3)
+                                         select item).Count();
+                    if (existproducts > 0)
+                    {
+                        ViewBag.mostrarboton = 0; //Lo ocultamos
+                    }
+                    else
+                    {
+                        ViewBag.mostrarboton = 1; //Lo mostramos
+                    }
+
+                }
+                else
+                {
+                    ViewBag.mostrarboton = 0;
+                    ViewBag.dinamicos = 0;
+                }
+
+                //Deserealizamos  los datos
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
+
+                ViewBag.idvisitareal = activity.ID_visit;
+                ViewBag.idvisita = activity.ID_activity;
+
+                ViewBag.details = categoriasListActivities;
+
+
+                Session["detailsForm"] = (from f in FormsMDet where (f.ID_visit == id) select f).ToList();
+
+                VisitsM visitsM = db.VisitsM.Where(a => a.ID_visit == activity.ID_visit).FirstOrDefault();
+                ViewBag.storename = visitsM.store;
+                ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
+
+                return View();
+            }
+
+            //var FormsM_details = db.FormsM_details.Where(c => c.ID_formM == id && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order);
+
+            //return View(FormsM_details.ToList());
+
+        }
+
+        public ActionResult ActivityraonresumeR(int? id)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+            int ID = Convert.ToInt32(Session["IDusuario"]);
+            var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+
+            ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+
+            var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
+
+            if (activity == null)
+            {
+                return RedirectToAction("Main", "Home");
+            }
+            else
+            {
+
+                FormsM formsM = db.FormsM.Find(activity.ID_form);
+
+                //LISTADO DE CLIENTES
+                //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
+
+                if (activity.Customer != "")
+                {
+                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode == activity.ID_customer) select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.customers = customers.ToList();
+                }
+                else
+                {
+                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.customers = customers.ToList();
+                }
+
+                //Cargamos las marcas
+                //List<brands> brandlist = COM_MKdb.view_CMKEditorB
+                //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
+                //    .Distinct()
+                //    .OrderByDescending(i => i.FirmName)
+                //    .ToList();
+
+                //ViewBag.brands = brandlist;
+
+                //Cargamos las lineas de procuctos
+                //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
+                //.Where(i => i.Id_subcategory != null)
+                //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
+                //.Distinct()
+                //.OrderByDescending(i => i.SubCategory)
+                //.ToList();
+
+                //ViewBag.productline = productlinelist;
+
+                //NUEVO
+                var FormsMDet = (from a in db.FormsM_details where (a.ID_visit == activity.ID_activity && a.original == false) select a).ToList();
+
+                //ID VISIT SE UTILIZA COMO RELACION
+                List<MyObj_tablapadre> listapadresActivities = (from item in FormsMDet
+                                                                where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                                select
+                                                                   new MyObj_tablapadre
+                                                                   {
+                                                                       ID_details = item.ID_details,
+                                                                       id_resource = item.ID_formresourcetype,
+                                                                       fsource = item.fsource,
+                                                                       fdescription = item.fdescription,
+                                                                       fvalue = item.fvalue,
+                                                                       fvalueDecimal = item.fvalueDecimal,
+                                                                       fvalueText = item.fvalueText,
+                                                                       ID_formM = item.ID_formM,
+                                                                       ID_visit = item.ID_visit,
+                                                                       original = item.original,
+                                                                       obj_order = item.obj_order,
+                                                                       obj_group = item.obj_group,
+                                                                       idkey = item.idkey,
+                                                                       parent = item.parent,
+                                                                       query1 = item.query1,
+                                                                       query2 = item.query2,
+                                                                       ID_empresa = item.ID_empresa
+                                                                   }
+                                          ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivities = (from item in FormsMDet
+                                                              where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                              select new tablahijospadre
+                                                              {
+                                                                  ID_details = item.ID_details,
+                                                                  id_resource = item.ID_formresourcetype,
+                                                                  fsource = item.fsource,
+                                                                  fdescription = item.fdescription,
+                                                                  fvalue = item.fvalue,
+                                                                  fvalueDecimal = item.fvalueDecimal,
+                                                                  fvalueText = item.fvalueText,
+                                                                  ID_formM = item.ID_formM,
+                                                                  ID_visit = item.ID_visit,
+                                                                  original = item.original,
+                                                                  obj_order = item.obj_order,
+                                                                  obj_group = item.obj_group,
+                                                                  idkey = item.idkey,
+                                                                  parent = item.parent,
+                                                                  query1 = item.query1,
+                                                                  query2 = item.query2,
+                                                                  ID_empresa = item.ID_empresa
+
+                                                              }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
+
+                ///
+                //PRODUCTOS FILAS
+
+                List<MyObj_tablapadre> listapadresActivitiesProducts = (from item in FormsMDet
+                                                                        where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype == 3 || item.ID_formresourcetype == 16 || item.ID_formresourcetype == 21))
+                                                                        select
+                                                                           new MyObj_tablapadre
+                                                                           {
+                                                                               ID_details = item.ID_details,
+                                                                               id_resource = item.ID_formresourcetype,
+                                                                               fsource = item.fsource,
+                                                                               fdescription = item.fdescription,
+                                                                               fvalue = item.fvalue,
+                                                                               fvalueDecimal = item.fvalueDecimal,
+                                                                               fvalueText = item.fvalueText,
+                                                                               ID_formM = item.ID_formM,
+                                                                               ID_visit = item.ID_visit,
+                                                                               original = item.original,
+                                                                               obj_order = item.obj_order,
+                                                                               obj_group = item.obj_group,
+                                                                               idkey = item.idkey,
+                                                                               parent = item.parent,
+                                                                               query1 = item.query1,
+                                                                               query2 = item.query2,
+                                                                               ID_empresa = item.ID_empresa
+                                                                           }
+                      ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivitiesProducts = (from item in FormsMDet
+                                                                      where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                                      select new tablahijospadre
+                                                                      {
+                                                                          ID_details = item.ID_details,
+                                                                          id_resource = item.ID_formresourcetype,
+                                                                          fsource = item.fsource,
+                                                                          fdescription = item.fdescription,
+                                                                          fvalue = item.fvalue,
+                                                                          fvalueDecimal = item.fvalueDecimal,
+                                                                          fvalueText = item.fvalueText,
+                                                                          ID_formM = item.ID_formM,
+                                                                          ID_visit = item.ID_visit,
+                                                                          original = item.original,
+                                                                          obj_order = item.obj_order,
+                                                                          obj_group = item.obj_group,
+                                                                          idkey = item.idkey,
+                                                                          parent = item.parent,
+                                                                          query1 = item.query1,
+                                                                          query2 = item.query2,
+                                                                          ID_empresa = item.ID_empresa
+
+                                                                      }).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivitiesProducts = ObtenerCategoriarJerarquiaByID(listapadresActivitiesProducts, listahijasActivitiesProducts);
+
+                ViewBag.productRows = categoriasListActivitiesProducts;
+
+                var showbuttondynamic = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 11)
+                                         select item).Count();
+
+                if (showbuttondynamic > 0)
+                {
+                    ViewBag.dinamicos = 1;
+                    var existproducts = (from item in FormsMDet
+                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 3)
+                                         select item).Count();
+                    if (existproducts > 0)
+                    {
+                        ViewBag.mostrarboton = 0; //Lo ocultamos
+                    }
+                    else
+                    {
+                        ViewBag.mostrarboton = 1; //Lo mostramos
+                    }
+
+                }
+                else
+                {
+                    ViewBag.mostrarboton = 0;
+                    ViewBag.dinamicos = 0;
+                }
+
+                //Deserealizamos  los datos
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
+
+                ViewBag.idvisitareal = activity.ID_visit;
+                ViewBag.idvisita = activity.ID_activity;
+
+                ViewBag.details = categoriasListActivities;
+
+
+                Session["detailsForm"] = (from f in FormsMDet where (f.ID_visit == id) select f).ToList();
+
+                VisitsM visitsM = db.VisitsM.Where(a => a.ID_visit == activity.ID_visit).FirstOrDefault();
+                ViewBag.storename = visitsM.store;
+                ViewBag.address = visitsM.address + ", " + visitsM.state + ", " + visitsM.city + ", " + visitsM.zipcode;
+
+                return View();
+            }
+
+            //var FormsM_details = db.FormsM_details.Where(c => c.ID_formM == id && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order);
+
+            //return View(FormsM_details.ToList());
+
+        }
+
+        public ActionResult GetDynamicProductsAudit(string activityID, string ID_customer, string ID_brand)
+        {
+            try
+            {
+                int idact = Convert.ToInt32(activityID);
+                List<BI_Dim_Products> lstproduct = new List<BI_Dim_Products>();
+                string vendoriD = ID_customer;
+                int brand = Convert.ToInt32(ID_brand);
+
+                //int sub = Convert.ToInt32(ID_subcategory);
+
+                using (COM_MKEntities dbmk = new COM_MKEntities())
+                {
+                    lstproduct = (dbmk.BI_Dim_Products.Where(x => x.Id_Brand == brand)).OrderBy(c => c.Id_Brand).ThenBy(c=>c.Id_SubCategory).ToList<BI_Dim_Products>();
+                }
+
+                if (lstproduct.Count > 0)
+                {
+
+
+                    ActivitiesM act = (from actd in db.ActivitiesM where (actd.ID_activity == idact) select actd).FirstOrDefault();
+                    var countItems = (from a in db.FormsM_details where (a.ID_visit == idact) select a).Count();
+
+                    var nuevacuenta = countItems + 2;
+                    var activeSub = "";
+                    var countp = 0;
+                    var totalpro = lstproduct.Count();
+
+                    var subcatid = 0;
+                    var subcatname = "";
+
+                    List<FormsM_details> detailstoinsert = new List<FormsM_details>();
+                    foreach (var item in lstproduct)
+                    {
+                        try
+                        {
+                            if (countp == 0)
+                            {
+                                FormsM_details detalle_subcatnuevo = new FormsM_details(); //Cabecera de Marca o Subcategoria(depende para que se programe)
+
+
+                                detalle_subcatnuevo.ID_formresourcetype = 95;
+                                detalle_subcatnuevo.fsource = "";
+                                detalle_subcatnuevo.fdescription = "";
+                                detalle_subcatnuevo.fvalue = 0;
+                                detalle_subcatnuevo.fvalueDecimal = 0;
+                                detalle_subcatnuevo.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo.ID_visit = idact;
+                                detalle_subcatnuevo.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo.idkey = nuevacuenta;
+                                detalle_subcatnuevo.query1 = "";
+                                detalle_subcatnuevo.query2 = "";
+                                detalle_subcatnuevo.parent = 0;
+                                detalle_subcatnuevo.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo);
+
+                                nuevacuenta++;
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+
+                            if (activeSub == item.SubCatName)
+                            {
+
+                            }
+                            else
+                            {
+                                //inicial
+                                FormsM_details detalle_subcatnuevo2 = new FormsM_details(); //Producto
+
+
+                                detalle_subcatnuevo2.ID_formresourcetype = 95; //Este ID no existe en tabla de recursos, pero se define como las cabeceras de las subcategorias
+                                detalle_subcatnuevo2.fsource = "";
+                                detalle_subcatnuevo2.fdescription = "";
+                                detalle_subcatnuevo2.fvalue = 0;
+                                detalle_subcatnuevo2.fvalueDecimal = 0;
+                                detalle_subcatnuevo2.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo2.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo2.ID_visit = idact;
+                                detalle_subcatnuevo2.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo2.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo2.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo2.idkey = nuevacuenta;
+                                detalle_subcatnuevo2.query1 = "";
+                                detalle_subcatnuevo2.query2 = "";
+                                detalle_subcatnuevo2.parent = 0;
+                                detalle_subcatnuevo2.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo2);
+
+                                nuevacuenta++;
+
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+                            countp++;
+
+                            FormsM_details detalle_nuevo = new FormsM_details(); //Producto
+
+
+                            detalle_nuevo.ID_formresourcetype = 3;
+                            detalle_nuevo.fsource = item.ItemCode;
+                            detalle_nuevo.fdescription = item.ItemName;
+                            detalle_nuevo.fvalue = 0;
+                            detalle_nuevo.fvalueDecimal = 0;
+                            detalle_nuevo.fvalueText = item.SubCatName;
+                            detalle_nuevo.ID_formM = act.ID_form;
+
+                            detalle_nuevo.ID_visit = idact;
+                            detalle_nuevo.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                            //Colocamos ID generado por editor
+                            detalle_nuevo.idkey = nuevacuenta;
+                            detalle_nuevo.query1 = "";
+                            detalle_nuevo.query2 = "";
+                            detalle_nuevo.parent = 0;
+                            detalle_nuevo.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo);
+                            //dbcmk.SaveChanges();
+
+
+                            var padrec = nuevacuenta;
+                            nuevacuenta++;
+
+                            FormsM_details detalle_nuevo2 = new FormsM_details(); //Disponibilidad
+
+
+                            detalle_nuevo2.ID_formresourcetype = 16;
+                            detalle_nuevo2.fsource = "";
+                            detalle_nuevo2.fdescription = "Disponible";
+                            detalle_nuevo2.fvalue = 0;
+                            detalle_nuevo2.fvalueDecimal = 0;
+                            detalle_nuevo2.fvalueText = "";
+                            detalle_nuevo2.ID_formM = act.ID_form;
+
+                            detalle_nuevo2.ID_visit = idact;
+                            detalle_nuevo2.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo2.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo2.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo2.idkey = nuevacuenta;
+                            detalle_nuevo2.query1 = "";
+                            detalle_nuevo2.query2 = "";
+                            detalle_nuevo2.parent = padrec;
+                            detalle_nuevo2.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo2);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+
+                            FormsM_details detalle_nuevo5 = new FormsM_details(); //Promocionado
+
+
+                            detalle_nuevo5.ID_formresourcetype = 16;
+                            detalle_nuevo5.fsource = "";
+                            detalle_nuevo5.fdescription = "Promocionado";
+                            detalle_nuevo5.fvalue = 0;
+                            detalle_nuevo5.fvalueDecimal = 0;
+                            detalle_nuevo5.fvalueText = "";
+                            detalle_nuevo5.ID_formM = act.ID_form;
+
+                            detalle_nuevo5.ID_visit = idact;
+                            detalle_nuevo5.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo5.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo5.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo5.idkey = nuevacuenta;
+                            detalle_nuevo5.query1 = "";
+                            detalle_nuevo5.query2 = "";
+                            detalle_nuevo5.parent = padrec;
+                            detalle_nuevo5.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo5);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+
+                            FormsM_details detalle_nuevo3 = new FormsM_details(); //Precio
+
+
+                            detalle_nuevo3.ID_formresourcetype = 21;
+                            detalle_nuevo3.fsource = "";
+                            detalle_nuevo3.fdescription = "Precio";
+                            detalle_nuevo3.fvalue = 0;
+                            detalle_nuevo3.fvalueDecimal = 0; //PRECIO
+                            detalle_nuevo3.fvalueText = "";
+                            detalle_nuevo3.ID_formM = act.ID_form;
+
+                            detalle_nuevo3.ID_visit = idact;
+                            detalle_nuevo3.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo3.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo3.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo3.idkey = nuevacuenta;
+                            detalle_nuevo3.query1 = "";
+                            detalle_nuevo3.query2 = "";
+                            detalle_nuevo3.parent = padrec;
+                            detalle_nuevo3.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo3);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+                            if (countp == totalpro)
+                            {
+                            }
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message;
+
+                        }
+
+                    }
+                    //Insertamos los datos usando insercion masiva
+                    db.BulkInsert(detailstoinsert);
+
+                    //Si existieran datos al final del formulario hacemos este calculo(esto para respetar el orden de ingreso
+                    //FormsM_details lastitem = (from a in dbcmk.FormsM_details where (a.ID_visit == idact && a.idkey == (countItems - 2)) select a).FirstOrDefault();
+
+                    //lastitem.obj_order = nuevacuenta + 200;
+                    //lastitem.idkey = nuevacuenta + 200;
+                    //dbcmk.Entry(lastitem).State = EntityState.Modified;
+                    ////dbcmk.SaveChanges();
+                    //nuevacuenta++;
+                    //FormsM_details lastitem2 = (from a in dbcmk.FormsM_details where (a.ID_visit == idact && a.idkey == (countItems - 1)) select a).FirstOrDefault();
+
+                    //lastitem2.obj_order = nuevacuenta + 200;
+                    //lastitem2.idkey = nuevacuenta + 200;
+                    //dbcmk.Entry(lastitem2).State = EntityState.Modified;
+                    ////dbcmk.SaveChanges();
+                    //nuevacuenta++;
+                    //FormsM_details lastitem3 = (from a in dbcmk.FormsM_details where (a.ID_visit == idact && a.idkey == countItems) select a).FirstOrDefault();
+
+                    //lastitem3.obj_order = nuevacuenta + 200;
+                    //lastitem3.idkey = nuevacuenta + 200;
+                    //dbcmk.Entry(lastitem3).State = EntityState.Modified;
+                    //dbcmk.SaveChanges();
+
+                    string result = "Success";
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
 
-                    FormsM formsM = db.FormsM.Find(activity.ID_form);
-
-                    //LISTADO DE CLIENTES
-                    //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
-
-                    if (activity.Customer != "")
-                    {
-                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode == activity.ID_customer) select b).OrderBy(b => b.CardName).ToList();
-                        ViewBag.customers = customers.ToList();
-                    }
-                    else
-                    {
-                        var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
-                        ViewBag.customers = customers.ToList();
-                    }
-
-                    //Cargamos las marcas
-                    //List<brands> brandlist = COM_MKdb.view_CMKEditorB
-                    //    .Select(i => new brands{ Customer= i.U_CustomerCM, FirmCode= i.FirmCode.ToString(), FirmName= i.FirmName })
-                    //    .Distinct()
-                    //    .OrderByDescending(i => i.FirmName)
-                    //    .ToList();
-
-                    //ViewBag.brands = brandlist;
-
-                    //Cargamos las lineas de procuctos
-                    //List<productline> productlinelist = COM_MKdb.view_CMKEditorB
-                    //.Where(i => i.Id_subcategory != null)
-                    //.Select(i => new productline{  Brand =i.FirmCode.ToString(), Id_subcategory= i.Id_subcategory, SubCategory= i.SubCategory })
-                    //.Distinct()
-                    //.OrderByDescending(i => i.SubCategory)
-                    //.ToList();
-
-                    //ViewBag.productline = productlinelist;
-
-                    //NUEVO
-                    var detailsf = (from item in db.FormsM_details where (item.ID_visit == activity.ID_activity && item.original == false) select item).ToList();
-                    //ID VISIT SE UTILIZA COMO RELACION
-                    List < MyObj_tablapadre > listapadresActivities = (from item in detailsf
-                                                                       where (item.parent == 0)
-                                                                       select
-                                                                          new MyObj_tablapadre
-                                                                          {
-                                                                              ID_details = item.ID_details,
-                                                                              id_resource = item.ID_formresourcetype,
-                                                                              fsource = item.fsource,
-                                                                              fdescription = item.fdescription,
-                                                                              fvalue = item.fvalue,
-                                                                              fvalueDecimal = item.fvalueDecimal,
-                                                                              fvalueText = item.fvalueText,
-                                                                              ID_formM = item.ID_formM,
-                                                                              ID_visit = item.ID_visit,
-                                                                              original = item.original,
-                                                                              obj_order = item.obj_order,
-                                                                              obj_group = item.obj_group,
-                                                                              idkey = item.idkey,
-                                                                              parent = item.parent,
-                                                                              query1 = item.query1,
-                                                                              query2 = item.query2,
-                                                                              ID_empresa = item.ID_empresa
-                                                                          }
-                                          ).ToList();
-
-
-                    //foreach (var t in listapadresActivities) {
-                    //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
-                    //    if (s > 0)
-                    //    {
-
-                    //    }
-                    //    else {
-                    //        listapadresActivities.Remove(t);
-                    //    }
-
-                    //}
-
-
-                    List<tablahijospadre> listahijasActivities = (from item in detailsf where(item.parent !=0 && (item.fvalue != 0 || item.fvalueDecimal != 0))
-                                                                  select new tablahijospadre
-                                                                  
-                                                                  {
-                                                                      ID_details = item.ID_details,
-                                                                      id_resource = item.ID_formresourcetype,
-                                                                      fsource = item.fsource,
-                                                                      fdescription = item.fdescription,
-                                                                      fvalue = item.fvalue,
-                                                                      fvalueDecimal = item.fvalueDecimal,
-                                                                      fvalueText = item.fvalueText,
-                                                                      ID_formM = item.ID_formM,
-                                                                      ID_visit = item.ID_visit,
-                                                                      original = item.original,
-                                                                      obj_order = item.obj_order,
-                                                                      obj_group = item.obj_group,
-                                                                      idkey = item.idkey,
-                                                                      parent = item.parent,
-                                                                      query1 = item.query1,
-                                                                      query2 = item.query2,
-                                                                      ID_empresa = item.ID_empresa
-
-                                                                  }).ToList();
-
-
-                    List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
-
-                    ///
-
-                    //Deserealizamos  los datos
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    MyObj[] details = js.Deserialize<MyObj[]>(formsM.query2);
-
-                    ViewBag.idvisitareal = activity.ID_visit;
-                    ViewBag.idvisita = activity.ID_activity;
-
-
-
-                    ViewBag.branddef = brand;
-
-
-
-
-                    //Route
-
-                    ViewBag.customerID = ID_Customer;
-
-
-
-
-
-
-                    if (modulo != null && modulo != "")
-                    {
-                        ViewBag.modulo = "customers";
-                    }
-                    else
-                    {
-                        ViewBag.modulo = "normal";
-                    }
-
-
-                    ViewBag.details =( from c in categoriasListActivities where (c.children.Count > 0) select c).ToList();
-
-
-                    Session["detailsForm"] = detailsf;
-
-
-
-                    return View();
+                    string result = "Nodata";
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }
-
-                //var FormsM_details = db.FormsM_details.Where(c => c.ID_formM == id && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order);
-
-                //return View(FormsM_details.ToList());
-
-
             }
-            else
+            catch
             {
-                return RedirectToAction("Index", "Home");
+                string result = "Error";
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
+
+
+
         }
+
     }
 
 

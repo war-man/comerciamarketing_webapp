@@ -35,7 +35,12 @@
                     </li>
 
 
-
+                    <li>
+                        <a href="@Url.Action("Gallery", "Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-info"><i data-feather='image'></i></span>
+                            <span class="nav-text">Gallery</span>
+                        </a>
+                    </li>
 
                     <li>
                         <a href="@Url.Action("Map_customers","Customers", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
@@ -44,12 +49,12 @@
                         </a>
                     </li>
                     <li>
-            <a href="@Url.Action("Calendar","Customers", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
-                <span class="nav-icon text-danger"><i data-feather='truck'></i></span>
-                <span class="nav-text">Routes</span>
+                        <a href="@Url.Action("Calendar","Customers", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='truck'></i></span>
+                            <span class="nav-text">Routes</span>
 
-            </a>
-        </li>
+                        </a>
+                    </li>
 
                     @*<li>
             <a href="Url.Action("Sales_representatives","Customers", new { id=ViewBag.id_customer, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
@@ -62,12 +67,18 @@
                     </li>
                     <li>
                         <a href="@Url.Action("Reports","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
-                            <span class="nav-icon text-danger"><i data-feather='activity'></i></span>
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
                             <span class="nav-text">Activities</span>
 
                         </a>
                     </li>
+                    <li>
+                        <a href="@Url.Action("Visits","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Visits</span>
 
+                        </a>
+                    </li>
                 </ul>
 
             </div>
@@ -160,8 +171,15 @@
                     </li>
                     <li>
                         <a href="@Url.Action("Reports","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
-                            <span class="nav-icon text-danger"><i data-feather='activity'></i></span>
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
                             <span class="nav-text">Activities</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Visits","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Visits</span>
 
                         </a>
                     </li>

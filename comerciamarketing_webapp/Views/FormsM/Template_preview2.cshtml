@@ -18,427 +18,426 @@
 
             }
             <!--PARA PRODUCTOS DINAMICOS-->
-            if (objeto.id_resource == 11)
-            {
+    if (objeto.id_resource == 11)
+    {
+        if (ViewBag.mostrarboton == 1)
+        {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10">@objeto.fdescription</p>
+                                <div class="col-md-12">
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10">@objeto.fdescription</p>
-                            <div class="col-md-12">
-                                @if (ViewBag.mostrarboton == 1)
-                                {
-                                    <input type="button" onClick="cargarproductosAudit()" value="@objeto.fsource" style="width:100%;" class="btn btn-primary" id="@objeto.idkey" hidden />
-                                }
-                                else
-                                {
                                     <input type="button" onClick="cargarproductosAudit()" value="@objeto.fsource" style="width:100%;" class="btn btn-primary" id="@objeto.idkey" />
-                                }
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-
-            <!--PARA CUSTOMERS -->
-            if (objeto.id_resource == 12)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-                            <div class="col-md-12">
-                                <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
-                                    @if (ViewBag.customers.Count == 1)
-                                    {
-                                        <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="0">Seleccione un cliente</option>
-                                        foreach (var itemCustomer in ViewBag.customers)
-                                        {
-                                            if (objeto.fvalueText == itemCustomer.CardCode)
-                                            {
-                                                <option value="@itemCustomer.CardCode" selected>@itemCustomer.CardCode - @itemCustomer.CardName</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@itemCustomer.CardCode">@itemCustomer.CardCode - @itemCustomer.CardName</option>
-                                            }
-
-
-                                        }
-                                    }
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-            <!--PARA BRANDS-->
-            if (objeto.id_resource == 13)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-                            <div class="col-md-12">
-                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
-                                    <option value="0">Seleccione una marca</option>
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-            <!--PARA SUBTITULOS -->
-            if (objeto.id_resource == 8)
-            {
-                if (objeto.children.Count > 0)
-                {
-                    if (objeto.children[0].id_resource == 19)
-                    {
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <p class="control-label">@objeto.fsource</p>
-                                    <!--VERIFICAMOS SI TIENE HIJOS-->
-                                    <div class="parentdiv flexRadio">
-                                        @OrderedList(objeto.children, objeto.idkey)
-                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+        }
+    }
+
+                <!--PARA CUSTOMERS -->
+                if (objeto.id_resource == 12)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                                <div class="col-md-12">
+                                    <select id="customer_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getBrands()'>
+                                        @if (ViewBag.customers.Count == 1)
+                                        {
+                                            <option value="@ViewBag.customers[0].CardCode" selected>@ViewBag.customers[0].CardCode - @ViewBag.customers[0].CardName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0">Seleccione un cliente</option>
+                                            foreach (var itemCustomer in ViewBag.customers)
+                                            {
+                                                if (objeto.fvalueText == itemCustomer.CardCode)
+                                                {
+                                                    <option value="@itemCustomer.CardCode" selected>@itemCustomer.CardCode - @itemCustomer.CardName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemCustomer.CardCode">@itemCustomer.CardCode - @itemCustomer.CardName</option>
+                                                }
+
+
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                <!--PARA BRANDS-->
+                if (objeto.id_resource == 13)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                                <div class="col-md-12">
+                                    <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
+                                        <option value="0">Seleccione una marca</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                <!--PARA SUBTITULOS -->
+                if (objeto.id_resource == 8)
+                {
+                    if (objeto.children.Count > 0)
+                    {
+                        if (objeto.children[0].id_resource == 19)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <p class="control-label">@objeto.fsource</p>
+                                        <!--VERIFICAMOS SI TIENE HIJOS-->
+                                        <div class="parentdiv flexRadio">
+                                            @OrderedList(objeto.children, objeto.idkey)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <p class="control-label">@objeto.fsource</p>
+                                        <!--VERIFICAMOS SI TIENE HIJOS-->
+                                        <div class="parentdiv">
+                                            @OrderedList(objeto.children, objeto.idkey)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
                     else
                     {
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <p class="control-label">@objeto.fsource</p>
-                                    <!--VERIFICAMOS SI TIENE HIJOS-->
-                                    <div class="parentdiv">
-                                        @OrderedList(objeto.children, objeto.idkey)
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-12 grid-margin">
+                                <hr />
+                                <h6 style="text-align:center;">@objeto.fsource</h6>
+                                <hr />
                             </div>
                         </div>
                     }
+
+
                 }
-                else
+                <!--PARA TABLA-->
+                if (objeto.id_resource == 34)
                 {
-                    <div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <hr />
-                            <h6 style="text-align:center;">@objeto.fsource</h6>
-                            <hr />
+                    if (ViewBag.mostrarboton == 0)
+                    {
+                        <div class="card" id="tableaudit" style="display:none">
+                            <div class="card-body">
+
+                                <table id="test" class="table table-striped">
+                                    <thead style="font-size:9px;">
+
+                                        @if (objeto.children != null)
+                                        {
+                                            <tr>
+                                                @OrderedList(objeto.children, objeto.idkey)
+                                            </tr>
+
+                                        }
+                                    </thead>
+                                    <tbody style="font-size:10px;">
+                                        @*<tr>
+                                                <td>BEV00005 | PRODUCTO DE PRUEBA</td>
+                                                <td>
+                                                    <div class="mb-3">
+
+                                                        <label class="md-check">
+                                                            <input type="checkbox" class="form-check-input" name="radiotest" id="sss">
+                                                            <i class="green"></i>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="mb-3">
+
+                                                        <label class="md-check">
+                                                            <input type="checkbox" class="form-check-input" name="radiotest" id="sss2">
+                                                            <i class="green"></i>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" onClick="selectTest(this.id);" id="testdfdf" class="form-control form-control-sm" value="" />
+                                                </td>
+                                            </tr>*@
+                                    </tbody>
+                                </table>
+
+
+                            </div>
                         </div>
-                    </div>
+
+                    }
+
                 }
-
-
+                <!--PARA COLUMNAS-->
+                if (objeto.id_resource == 24)
+                {
+                    <th>@objeto.fdescription</th>
+                }
             }
-            <!--PARA TABLA-->
-            if (objeto.id_resource == 34)
-            {
-                <div class="card">
-                    <div class="card-body">
+        }
+        @*@helper OrderedListHeadertable(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
+                {
+                    foreach (var objeto in parentList)
+                    {
+                        <!--PARA SUBTITULOS -->
+                        if (objeto.id_resource == 24)
+                        {
 
-                        <table id="test" class="table table-striped">
-                            <thead style="font-size:9px;">
+                            <div class="th">@objeto.fdescription</div>
 
+                        }
+                    }
+            }
+            @helper OrderedListRetail(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
+                {
+                    foreach (var objeto in parentList)
+                    {
+                        <!--PARA PRODUCTOS -->
+                        if (objeto.id_resource == 3)
+                        {
+
+                            <div class="tr">
+
+                                <div class="td accordion-xs-toggle"><small>@objeto.fdescription</small><div class="icondiv"></div></div>
                                 @if (objeto.children != null)
                                 {
-                                    <tr>
-                                        @OrderedList(objeto.children, objeto.idkey)
-                                    </tr>
+                                    <div class="accordion-xs-collapse">
 
+                                        <div class="inner">
+
+                                            @OrderedListRetail(objeto.children, objeto.idkey)
+                                        </div>
+                                    </div>
                                 }
-                            </thead>
-                            <tbody style="font-size:10px;">
-                                <tr>
-                                    <td>BEV00005 | PRODUCTO DE PRUEBA</td>
-                                    <td>
-                                        <div class="mb-3">
 
-                                            <label class="md-check">
-                                                <input type="checkbox" class="form-check-input" name="radiotest" id="sss">
-                                                <i class="green"></i>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="mb-3">
-
-                                            <label class="md-check">
-                                                <input type="checkbox" class="form-check-input" name="radiotest" id="sss2">
-                                                <i class="green"></i>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" onClick="selectTest(this.id);" id="testdfdf" class="form-control form-control-sm" value="" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-
-                    </div>
-                </div>
-
-            }
-            <!--PARA COLUMNAS-->
-            if (objeto.id_resource == 24)
-            {
-                <th>@objeto.fdescription</th>
-            }
-        }
-}
-@*@helper OrderedListHeadertable(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
-    {
-        foreach (var objeto in parentList)
-        {
-            <!--PARA SUBTITULOS -->
-            if (objeto.id_resource == 24)
-            {
-
-                <div class="th">@objeto.fdescription</div>
-
-            }
-        }
-}
-@helper OrderedListRetail(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
-    {
-        foreach (var objeto in parentList)
-        {
-            <!--PARA PRODUCTOS -->
-            if (objeto.id_resource == 3)
-            {
-
-                <div class="tr">
-
-                    <div class="td accordion-xs-toggle"><small>@objeto.fdescription</small><div class="icondiv"></div></div>
-                    @if (objeto.children != null)
-                    {
-                        <div class="accordion-xs-collapse">
-
-                            <div class="inner">
-
-                                @OrderedListRetail(objeto.children, objeto.idkey)
                             </div>
-                        </div>
-                    }
-
-                </div>
-            }
+                        }
 
 
-            <!--CHECK SELECCION MULTIPLE -->
-            if (objeto.id_resource == 16)
-            {
-                if (objeto.parent != 0)
-                {
-                    <div class="td">
-                        <div class="mb-3">
-
-                            <label class="md-check">
-                                @if (objeto.fvalue == 0)
-                                {
-                                    <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
-                                    <i class="green"></i>
-                                    @objeto.fdescription
-
-                                }
-                                else
-                                {
-                                    <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
-                                    <i class="green"></i>
-                                    @objeto.fdescription
-
-                                }
-                            </label>
-                        </div>
-                    </div>
-                }
-
-
-            }
-
-
-
-            <!--PARA INPUT NUMBER -->
-            if (objeto.id_resource == 18)
-            {
-                if (objeto.parent != 0)
-                {
-                    <div class="td">
-                        <div class="form-group">
-                            @if (objeto.fvalueDecimal > 0)
+                        <!--CHECK SELECCION MULTIPLE -->
+                        if (objeto.id_resource == 16)
+                        {
+                            if (objeto.parent != 0)
                             {
-                                <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
-                            }
-                            else
-                            {
-                                <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="" />
-                            }
-                            @objeto.fdescription
+                                <div class="td">
+                                    <div class="mb-3">
 
-                        </div>
-                    </div>
-                }
+                                        <label class="md-check">
+                                            @if (objeto.fvalue == 0)
+                                            {
+                                                <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
+                                                <i class="green"></i>
+                                                @objeto.fdescription
 
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" class="form-check-input" name="@("radio_" + objeto.parent)" id="@objeto.idkey" checked>
+                                                <i class="green"></i>
+                                                @objeto.fdescription
 
-            }
-
-
-            <!--PARA INPUT NUMBER (CURRENCY)-->
-            if (objeto.id_resource == 21)
-            {
-                if (objeto.parent != 0)
-                {
-                    <div class="td">
-                        <div class="form-group">
-                            <label>@objeto.fdescription</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">$</span>
+                                            }
+                                        </label>
+                                    </div>
                                 </div>
-                                @if (objeto.fvalueDecimal > 0)
-                                {
-                                    <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
-                                }
-                                else
-                                {
-                                    <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="" />
-                                }
+                            }
+
+
+                        }
 
 
 
-                            </div>
+                        <!--PARA INPUT NUMBER -->
+                        if (objeto.id_resource == 18)
+                        {
+                            if (objeto.parent != 0)
+                            {
+                                <div class="td">
+                                    <div class="form-group">
+                                        @if (objeto.fvalueDecimal > 0)
+                                        {
+                                            <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                                        }
+                                        else
+                                        {
+                                            <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control form-control-sm" value="" />
+                                        }
+                                        @objeto.fdescription
+
+                                    </div>
+                                </div>
+                            }
+
+
+                        }
+
+
+                        <!--PARA INPUT NUMBER (CURRENCY)-->
+                        if (objeto.id_resource == 21)
+                        {
+                            if (objeto.parent != 0)
+                            {
+                                <div class="td">
+                                    <div class="form-group">
+                                        <label>@objeto.fdescription</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            @if (objeto.fvalueDecimal > 0)
+                                            {
+                                                <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                            }
+                                            else
+                                            {
+                                                <input type="number" onClick="selectTest(this.id);" id="@objeto.idkey" class="form-control" value="" />
+                                            }
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                        <!--PARA INPUT TEXT -->
+                        if (objeto.id_resource == 6)
+                        {
+                            if (objeto.parent != 0)
+                            {
+                                <div class="td">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input type="text" id="@objeto.idkey" class="form-control" />
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    }
+            }*@
+
+        <!-- page-body-wrapper ends -->
+        <!-- ############ Content START-->
+        <div id="content" class="flex ">
+            <!-- ############ Main START-->
+            <div>
+                <div class="page-hero page-container " id="page-hero">
+                    <div class="padding d-flex">
+                        <div class="page-title">
+                            <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
+                        </div>
+                        <div class="flex"></div>
+                        <div>
+
                         </div>
                     </div>
-                }
-
-            }
-            <!--PARA INPUT TEXT -->
-            if (objeto.id_resource == 6)
-            {
-                if (objeto.parent != 0)
-                {
-                    <div class="td">
-                        <div class="form-group">
-
-                            <div class="col-md-12">
-                                <input type="text" id="@objeto.idkey" class="form-control" />
-
-
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            }
-
-        }
-}*@
-
-<!-- page-body-wrapper ends -->
-<!-- ############ Content START-->
-<div id="content" class="flex ">
-    <!-- ############ Main START-->
-    <div>
-        <div class="page-hero page-container " id="page-hero">
-            <div class="padding d-flex">
-                <div class="page-title">
-                    <a href="@Url.Action("FormsM", "Home")" class="btn btn-info">Back</a>
                 </div>
-                <div class="flex"></div>
-                <div>
+                <div class="page-content page-container" id="page-content">
+                    <div class="padding sr">
+                        <div class="card">
+                            <div class="card-header bg-img p-0 no-border" data-stellar-background-ratio="0.1" data-plugin="stellar">
+                                <div class="bg-light r-2x no-r-b">
+                                    <div class="d-md-flex">
+                                        <div class="p-4">
+                                            <div class="d-flex">
+                                                <a href="#">
+                                                    <span class="avatar w-64">
+                                                        <img src="~/Content/newstyle2/images/samples/online-store.png" alt=".">
+                                                        <i class="on"></i>
+                                                    </span>
+                                                </a>
+                                                <div class="mx-3">
+                                                    <h5 class="mt-2">@ViewBag.storename</h5>
+                                                    <div class="text-fade text-sm">
+                                                        <span class="m-r">@ViewBag.address</span>
 
-                </div>
-            </div>
-        </div>
-        <div class="page-content page-container" id="page-content">
-            <div class="padding sr">
-                <div class="card">
-                    <div class="card-header bg-img p-0 no-border" data-stellar-background-ratio="0.1" data-plugin="stellar">
-                        <div class="bg-light r-2x no-r-b">
-                            <div class="d-md-flex">
-                                <div class="p-4">
-                                    <div class="d-flex">
-                                        <a href="#">
-                                            <span class="avatar w-64">
-                                                <img src="~/Content/newstyle2/images/samples/online-store.png" alt=".">
-                                                <i class="on"></i>
-                                            </span>
-                                        </a>
-                                        <div class="mx-3">
-                                            <h5 class="mt-2">@ViewBag.storename</h5>
-                                            <div class="text-fade text-sm">
-                                                <span class="m-r">@ViewBag.address</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="flex"></span>
+                                        <div class="align-items-center d-flex p-4">
+                                            <div class="toolbar">
 
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                                <span class="flex"></span>
-                                <div class="align-items-center d-flex p-4">
-                                    <div class="toolbar">
+                            </div>
+
+                        </div>
+
+                        <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
+
+
+                        @OrderedList(ViewBag.details)
+
+                        @*<div class="row">
+                                <div class="col-md-12 grid-margin">
+                                    <div class="card">
+
+
+                                        <div class="divtable accordion-xs">
+                                            <div class="tr headings">
+                                                @OrderedListHeadertable(ViewBag.details)
+                                            </div>
+                                            @OrderedListRetail(ViewBag.details)
+                                        </div>
+
 
                                     </div>
-                                </div>
+                                </div><br />
+
+                            </div>*@
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10 text-right">
+
+                                <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
                             </div>
                         </div>
+
+
+
+
                     </div>
 
                 </div>
-
-                <input type="text" id="idvisita" hidden value="@ViewBag.idvisita" />
-
-
-                @OrderedList(ViewBag.details)
-
-                @*<div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card">
-
-
-                            <div class="divtable accordion-xs">
-                                <div class="tr headings">
-                                    @OrderedListHeadertable(ViewBag.details)
-                                </div>
-                                @OrderedListRetail(ViewBag.details)
-                            </div>
-
-
-                        </div>
-                    </div><br />
-
-                </div>*@
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10 text-right">
-
-                        <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
-                    </div>
-                </div>
-
-
-
 
             </div>
 
         </div>
-
-    </div>
-
-</div>
-<!-- ############ Content END-->
+        <!-- ############ Content END-->

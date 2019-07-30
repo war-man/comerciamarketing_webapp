@@ -1,0 +1,183 @@
+﻿@model List<comerciamarketing_webapp.Models.VisitsInfo>
+@{
+    ViewBag.title = "Comercia Marketing - Visits Report";
+}
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <!-- ############ Main START-->
+    <div class="d-flex flex">
+        <div class="fade aside aside-sm" id="content-aside">
+            <div class="modal-dialog d-flex flex-column w-md bg-body" id="mail-nav">
+                <div class="navbar">
+                    <span class="text-md">Visits List</span>
+                </div>
+                <div class="scrollable hover">
+                    <div class="sidenav my-3">
+                        <nav class="nav-active-text-primary" data-nav>
+
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="aside-deck hide" id="mail-deck">
+            <div class="card card-origin alert p-0 m-0 b-a hide">
+                <div class="card-header d-flex align-items-center bg-body">
+                    <div class="flex h-1x mx-1 mail-to">New search</div>
+                    <div class="ml-auto no-wrap">
+                        <a class="p-1">
+                            <span>
+                                <i data-feather="arrow-right" width="12" height="12"></i>
+                            </span>
+                        </a>
+
+                        <a class="p-1 text-muted" data-dismiss="alert">
+                            <i data-feather="x" width="12" height="12"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-2">
+                            <input type="text" class="form-control" placeholder="Recipients">
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="note-editor-inline">
+                            <textarea class="form-control summernote">
+                                        </textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex" id="content-body">
+            <div class="d-flex flex-column flex" id="mail-list">
+
+                <div class="p-3">
+                    <div class="toolbar ">
+                        <div class="btn-group">
+                            <label class="ui-check m-0 ">
+                                <input type="checkbox" class="selectchkAll" id="chk_all" value="0">
+                                <i></i>
+                            </label>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print Summary" id="btn-print">
+                                <i data-feather="printer" class="text-muted"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="input-group">
+                            <input id="inputsearch" type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search">
+                            <span class="input-group-append">
+                                <span class="btn btn-white no-border btn-sm">
+                                    <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                </span>
+                            </span>
+                        </div>
+                        @if (ViewBag.escliente == 1)
+    {
+
+    }
+    else
+    {
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print Summary with Images" id="btn-printImg">
+                            <i data-feather="printer" class="text-muted"></i>
+                        </button>
+
+                    </div>
+}
+
+
+                        <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
+                            <i data-feather="menu"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="scroll-y mx-3 mb-0 card">
+                    <table id="datatable2" class="table table-theme table-row v-middle">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>STORE</th>
+
+                                <th>BRAND</th>
+                                <th>MERCHANDISER</th>
+                                <th>VISIT DATE</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label class="ui-check m-0 ">
+                                                <input type="checkbox" class="selectchk" id="chk_@item.ID_visit" value="0">
+                                                <i></i>
+                                            </label>
+                                        </div>
+
+
+                                    </td>
+                                    <td>@item.ID_visit</td>
+                                    <td>
+                                        <div class="flex">
+                                            <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.store</a>
+                                            <div class="item-except text-muted text-sm h-1x">
+                                                @item.addresss
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @item.Brand
+                                    </td>
+                                    <td>
+                                        @item.usuario_name
+                                    </td>
+                                    <td>
+                                        <div class="no-wrap">
+                                            <div class="item-date text-muted text-sm d-none d-md-block">@Convert.ToDateTime(item.visitDate).ToShortDateString()</div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="no-result hide">
+                        <div class="p-4 text-center">
+                            No Results
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ############ Main END-->
+</div>
+<!-- ############ Content END-->
+
+
+
+
+@if (ViewBag.escliente == 1)
+{
+    @Html.Partial("~/Views/Shared/FilterControlCustomer.cshtml")
+}
+else
+{
+    @Html.Partial("~/Views/Shared/FilterControlAdmin.cshtml")
+}
+

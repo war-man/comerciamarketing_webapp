@@ -785,6 +785,31 @@
           <Property Name="UserSign" Type="smallint" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'COM_MK.dbo.BI_Dim_Products' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BI_Dim_Products">
+          <Key>
+            <PropertyRef Name="ItemCode" />
+            <PropertyRef Name="BrandName" />
+            <PropertyRef Name="GroupName" />
+            <PropertyRef Name="SubCatName" />
+          </Key>
+          <Property Name="ItemCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Id_Brand" Type="smallint" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Id_Group" Type="smallint" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="20" />
+          <Property Name="Id_SubCategory" Type="nvarchar" MaxLength="30" />
+          <Property Name="SubCatName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Customer" Type="nvarchar" MaxLength="15" />
+          <Property Name="CodeBars" Type="nvarchar" MaxLength="254" />
+          <Property Name="Id_Vendor" Type="nvarchar" MaxLength="15" />
+          <Property Name="VendorName" Type="nvarchar" MaxLength="100" />
+          <Property Name="BuyUnitMsr" Type="nvarchar" MaxLength="100" />
+          <Property Name="NumInBuy" Type="numeric" Precision="19" Scale="6" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_CMKEditorB">
           <Key>
@@ -805,6 +830,25 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <EntitySet Name="OCRD" EntityType="Self.OCRD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OITM" EntityType="Self.OITM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OMRC" EntityType="Self.OMRC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BI_Dim_Products" EntityType="Self.BI_Dim_Products" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BI_Dim_Products].[ItemCode] AS [ItemCode], 
+    [BI_Dim_Products].[ItemName] AS [ItemName], 
+    [BI_Dim_Products].[Id_Brand] AS [Id_Brand], 
+    [BI_Dim_Products].[BrandName] AS [BrandName], 
+    [BI_Dim_Products].[Id_Group] AS [Id_Group], 
+    [BI_Dim_Products].[GroupName] AS [GroupName], 
+    [BI_Dim_Products].[Category] AS [Category], 
+    [BI_Dim_Products].[Id_SubCategory] AS [Id_SubCategory], 
+    [BI_Dim_Products].[SubCatName] AS [SubCatName], 
+    [BI_Dim_Products].[Id_Customer] AS [Id_Customer], 
+    [BI_Dim_Products].[CodeBars] AS [CodeBars], 
+    [BI_Dim_Products].[Id_Vendor] AS [Id_Vendor], 
+    [BI_Dim_Products].[VendorName] AS [VendorName], 
+    [BI_Dim_Products].[BuyUnitMsr] AS [BuyUnitMsr], 
+    [BI_Dim_Products].[NumInBuy] AS [NumInBuy]
+    FROM [dbo].[BI_Dim_Products] AS [BI_Dim_Products]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_CMKEditorB" EntityType="Self.view_CMKEditorB" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_CMKEditorB].[ItemCode] AS [ItemCode], 
@@ -829,6 +873,7 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <EntitySet Name="OMRC" EntityType="COM_MKModel.OMRC" />
           <EntitySet Name="view_CMKEditorB" EntityType="COM_MKModel.view_CMKEditorB" />
           <EntitySet Name="C_ROUTE" EntityType="COM_MKModel.C_ROUTE" />
+          <EntitySet Name="BI_Dim_Products" EntityType="COM_MKModel.BI_Dim_Products" />
         </EntityContainer>
         <EntityType Name="C_ROUTES">
           <Key>
@@ -1621,6 +1666,29 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
           <Property Name="U_Frequency" Type="Int16" />
           <Property Name="U_CardCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="U_Route" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BI_Dim_Products">
+          <Key>
+            <PropertyRef Name="ItemCode" />
+            <PropertyRef Name="BrandName" />
+            <PropertyRef Name="GroupName" />
+            <PropertyRef Name="SubCatName" />
+          </Key>
+          <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Id_Brand" Type="Int16" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Id_Group" Type="Int16" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Id_SubCategory" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="SubCatName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Id_Customer" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="CodeBars" Type="String" MaxLength="254" FixedLength="false" Unicode="true" />
+          <Property Name="Id_Vendor" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="VendorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BuyUnitMsr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NumInBuy" Type="Decimal" Precision="19" Scale="6" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2423,6 +2491,27 @@ warning 6002: The table/view 'COM_MK.dbo.view_CMKEditorB' does not have a primar
                 <ScalarProperty Name="U_Frequency" ColumnName="U_Frequency" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BI_Dim_Products">
+            <EntityTypeMapping TypeName="COM_MKModel.BI_Dim_Products">
+              <MappingFragment StoreEntitySet="BI_Dim_Products">
+                <ScalarProperty Name="NumInBuy" ColumnName="NumInBuy" />
+                <ScalarProperty Name="BuyUnitMsr" ColumnName="BuyUnitMsr" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="Id_Vendor" ColumnName="Id_Vendor" />
+                <ScalarProperty Name="CodeBars" ColumnName="CodeBars" />
+                <ScalarProperty Name="Id_Customer" ColumnName="Id_Customer" />
+                <ScalarProperty Name="SubCatName" ColumnName="SubCatName" />
+                <ScalarProperty Name="Id_SubCategory" ColumnName="Id_SubCategory" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="Id_Group" ColumnName="Id_Group" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="Id_Brand" ColumnName="Id_Brand" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

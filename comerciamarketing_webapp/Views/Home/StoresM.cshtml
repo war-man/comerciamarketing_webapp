@@ -20,53 +20,108 @@
                     <a href="https://limenainc.sharepoint.com/sites/comercia/Lists/Customer%20Data/AllItems.aspx" target="_blank" class="btn btn-sm box-shadows btn-rounded gd-primary">ADD STORE<i class="" data-feather="plus-circle"></i></a>
 
                 </div>
-         
+
             </div>
         </div>
+
+       
+
+
+
         <div class="page-content page-container" id="page-content">
             <div class="padding">
-                <div class="row row-sm sr">
-                    <div class="col-md-12 col-lg-12">
-                        <div class="row row-sm">
-                            <table id="datatable2" class="table table-theme table-row v-middle">
-                                <thead>
-                                    <tr>
-                                        <th><span class="text-muted">ID</span></th>
-
-                                        <th><span class="text-muted">NAME</span></th>
-           
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in ViewBag.stores)
-    {
-                                <tr class="" data-id="@item.CardCode">
-                                    <td style="min-width:30px;text-align:center">
-                                        <small class="text-muted"> @item.CardCode</small>
-                                    </td>
-
-                                    <td class="flex">
-                                        <a href="#" class="item-title text-color "> @item.CardName</a>
-                                        <div class="item-except text-muted text-sm h-1x">
-                                            <i class="" data-feather="map"></i> @item.MailAddres, @item.MailCity, @item.State2, @item.MailZipCod
-                                        </div>
-                                    </td>
-
-                                </tr>
-}
-                                </tbody>
-                            </table>
-
-
-
-
-                        </div>
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <ul class="nav nav-pills" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" aria-selected="false">Report</a>
+                            </li>
+                        </ul>
                     </div>
+                    <div class="tab-content mb-4">
+                        <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row row-sm sr">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="row row-sm">
+                                        <table id="datatable2" class="table table-theme table-row v-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th><span class="text-muted">ID</span></th>
+
+                                                    <th><span class="text-muted">NAME</span></th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.stores)
+                                    {
+                                        <tr class="" data-id="@item.CardCode">
+                                            <td style="min-width:30px;text-align:center">
+                                                <small class="text-muted"> @item.CardCode</small>
+                                            </td>
+
+                                            <td class="flex">
+                                                <a href="#" class="item-title text-color "> @item.CardName</a>
+                                                <div class="item-except text-muted text-sm h-1x">
+                                                    <i class="" data-feather="map"></i> @item.MailAddres, @item.MailCity, @item.State2, @item.MailZipCod
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                        }
+                                            </tbody>
+                                        </table>
 
 
 
 
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-shadow mb-4">
+                                        <div class="card-header border-0">
+                                            <div class="custom-title-wrap bar-info">
+
+                                                <div class=" widget-action-link">
+                                                    <div class="dropdown">
+                                                        <a href="#" class="btn btn-transparent text-secondary dropdown-hover p-0" data-toggle="dropdown">
+                                                            <i class=" vl_ellipsis-fill-h"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right vl-dropdown">
+                                                            <a class="dropdown-item" href="#"> Settings</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div id="iframePowerBI" style="height:750px; position:relative">
+                                                        <iframe style="border:none; width:100%; height:700px; z-index:1" src="https://app.powerbi.com/view?r=eyJrIjoiNDkyYjQ3NzctYzkwNy00MjZjLTgyOTYtZWVjMzA3M2Y2MDRiIiwidCI6IjYxNGUyM2ZjLTRiZmQtNGEwZS05OGFkLTk5MzM4N2RhNDZhZCIsImMiOjN9%22" frameborder="0" allowfullscreen="false"></iframe>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

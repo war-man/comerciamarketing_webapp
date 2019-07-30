@@ -3,29 +3,87 @@
     Layout = null;
 }
 
+<script type="text/javascript">
+    window.onload = function () {
+        if (document.getElementById("brands_list")) {
+            getBrands();
+        }
+
+
+    };
+
+
+    function getBrands() {
+        var customerId = $("#customer_list").val();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+
+
+        $.ajax
+            ({
+                url: '/FormsM/Getbrands',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    customerID: customerId,
+                    idvisit: idvisita
+                }),
+                success: function (result) {
+
+                    $("#brands_list").html("");
+                    $("#brands_list").append($('<option></option>').val(0).html("Seleccione una marca"))
+                    $.each($.parseJSON(result), function (i, brands) {
+                        if (brands.isselected) {//si esta seleccionado
+                            $("#brands_list").append
+                                ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
+                            $("#brands_list").attr('disabled', 'disabled');
+
+                        } else {
+                            $("#brands_list").append
+                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+                        }
+
+
+                    }
+
+                    )
+             
+
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
+
+
+
+    }
+
+</script>
 
 
 <!--SCRIPT FORM_TEMPLATE SAVE-->
-<script>
+        <script>
 
 
 
-    (function ($) {
-        showSuccessToast = function () {
-            'use strict';
-            resetToastPosition();
-            $.toast({
-                heading: 'Success',
-                text: 'Data saved.',
-                showHideTransition: 'slide',
-                icon: 'success',
-                loaderBg: '#f96868',
-                position: 'top-right'
-            })
-        };
+            (function ($) {
+                showSuccessToast = function () {
+                    'use strict';
+                    resetToastPosition();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Data saved.',
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        loaderBg: '#f96868',
+                        position: 'top-right'
+                    })
+                };
 
-        showWarning2Toast = function () {
-            'use strict';
+            showWarning2Toast = function () {
+                'use strict';
             resetToastPosition();
             $.toast({
                 heading: 'Warning',
@@ -38,7 +96,7 @@
         };
 
         resetToastPosition = function () {
-            $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
+                $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
             $(".jq-toast-wrap").css({
                 "top": "",
                 "left": "",
@@ -50,181 +108,181 @@
 
 
     $(function () {
-        $("#save_activity").click(function () {
+                $("#save_activity").click(function () {
 
-            //initGeolocation();
+                    //initGeolocation();
 
-            var idvisita = "";
-            idvisita = document.getElementById('idvisita').value;
-
-
-            //GUARDAMOS OBJETOS
-
-            var objects = [];
-
-            //$.each($('input.form-control[type = "text"]'), function () {
-
-            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-            //    objects.push({
-            //        id: $(this).attr('id'),
-            //        value: $(this).val(),
-            //        text: ""
-            //    });
+                    var idvisita = "";
+                    idvisita = document.getElementById('idvisita').value;
 
 
-            //});
+                    //GUARDAMOS OBJETOS
 
-            $.each($('input.form-control[type = "number"]'), function () {
+                    var objects = [];
 
+                    //$.each($('input.form-control[type = "text"]'), function () {
 
-                //objects.push({
-                //    id: $(this).attr('id'),
-                //    value: $(this).val(),
-                //    text: ""
-                //});
+                    //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-                if ($(this).val() != "" || $(this).val() != null) {
-                    if ($(this).val() > 0) {
-                        //Agregamos la propiedad
-
-                        $(this).closest('.tr').addClass('border-success');
-                        $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
-
-                    } else {
-                        //Quitamos la propiedad
-
-                        $(this).closest('.tr').removeClass('border-success');
-                        $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
-                    }
-                }
-
-            });
-
-            //$.each($('input.form-check-input[type = "radio"]'), function () {
+                    //    objects.push({
+                    //        id: $(this).attr('id'),
+                    //        value: $(this).val(),
+                    //        text: ""
+                    //    });
 
 
-            //    objects.push({
-            //        id: $(this).attr('id'),
-            //        value: $(this).prop('checked'),
-            //        text: ""
-            //    });
+                    //});
+
+                    $.each($('input.form-control[type = "number"]'), function () {
 
 
-            //});
-            //$.each($('input.form-check-input[type = "checkbox"]'), function () {
+                        //objects.push({
+                        //    id: $(this).attr('id'),
+                        //    value: $(this).val(),
+                        //    text: ""
+                        //});
 
+                        if ($(this).val() != "" || $(this).val() != null) {
+                            if ($(this).val() > 0) {
+                                //Agregamos la propiedad
 
-            //    objects.push({
-            //        id: $(this).attr('id'),
-            //        value: $(this).prop('checked'),
-            //        text: ""
-            //    });
+                                $(this).closest('.tr').addClass('border-success');
+                                $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
 
+                            } else {
+                                //Quitamos la propiedad
 
-            //});
-
-            $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-                objects.push({
-                    id: $(this).attr('id'),
-                    value: $(this).attr('data-changeflag'),
-                    text: ""
-                });
-
-            });
-
-
-
-            //$.each($('textarea.form-control'), function () {
-
-            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-            //    objects.push({
-            //        id: $(this).attr('id'),
-            //        value: $(this).val(),
-            //        text: ""
-            //    });
-
-
-            //});
-
-            //$.each($('select'), function () {
-
-            //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-            //    var str = $(this).find('option:selected').text();
-            //    str = str.substring(str.indexOf("-") + 1);
-
-            //    var final = "";
-            //    objects.push({
-            //        id: $(this).attr('name'),
-            //        value: $(this).val(),
-            //        text: str.trim()
-            //    });
-
-
-            //});
-
-            //var canvas = document.getElementById("sig-canvas");
-            $.each($('canvas'), function () {
-                var canvas = document.getElementById($(this).attr("id"));
-                var dataUrl = canvas.toDataURL();
-                //alert(dataUrl);
-
-                objects.push({
-                    id: $(this).attr("data-id"),
-                    value: dataUrl,
-                    text: ""
-                });
-            });
-
-
-            //$.each(objects, function (propName, propVal) {
-            //    console.log(propName, propVal);
-            //});
-
-            var now = new Date();
-            $.ajax({
-                url: '/FormsM/Save_activity',
-                type: 'POST',
-                data: { 'id': idvisita, 'objects': objects, 'lat': '', 'lng': '', 'check_in': now.toLocaleString("en-US", { hour12: true }) },
-                cache: false,
-                global: false,
-                success: function (result) {
-
-                    if (result.Result == "Success") {
-
-                        $("#loading").hide();
-                        var x = document.getElementById("finish_activity");
-                        if (x.style.display === "none") {
-                            x.style.display = "inline-block";
-                        } else {
-                            //x.style.display = "none";
+                                $(this).closest('.tr').removeClass('border-success');
+                                $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+                            }
                         }
 
+                    });
 
-                        showSuccessToast();
-                        // window.location.reload(true);
-                        //window.location.reload(true);
-                    } else {
-                        $("#loading").hide();
-                        showWarning2Toast();
-                    }
+                    //$.each($('input.form-check-input[type = "radio"]'), function () {
 
 
-                },
-                error: function (request) {
-                    $("#loading").hide();
-                    showWarning2Toast();
+                    //    objects.push({
+                    //        id: $(this).attr('id'),
+                    //        value: $(this).prop('checked'),
+                    //        text: ""
+                    //    });
+
+
+                    //});
+                    //$.each($('input.form-check-input[type = "checkbox"]'), function () {
+
+
+                    //    objects.push({
+                    //        id: $(this).attr('id'),
+                    //        value: $(this).prop('checked'),
+                    //        text: ""
+                    //    });
+
+
+                    //});
+
+                    $.each($('input.dropifyIMG[type = "file"]'), function () {
+
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).attr('data-changeflag'),
+                            text: ""
+                        });
+
+                    });
+
+
+
+                    //$.each($('textarea.form-control'), function () {
+
+                    //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                    //    objects.push({
+                    //        id: $(this).attr('id'),
+                    //        value: $(this).val(),
+                    //        text: ""
+                    //    });
+
+
+                    //});
+
+                    //$.each($('select'), function () {
+
+                    //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                    //    var str = $(this).find('option:selected').text();
+                    //    str = str.substring(str.indexOf("-") + 1);
+
+                    //    var final = "";
+                    //    objects.push({
+                    //        id: $(this).attr('name'),
+                    //        value: $(this).val(),
+                    //        text: str.trim()
+                    //    });
+
+
+                    //});
+
+                    //var canvas = document.getElementById("sig-canvas");
+                    $.each($('canvas'), function () {
+                        var canvas = document.getElementById($(this).attr("id"));
+                        var dataUrl = canvas.toDataURL();
+                        //alert(dataUrl);
+
+                        objects.push({
+                            id: $(this).attr("data-id"),
+                            value: dataUrl,
+                            text: ""
+                        });
+                    });
+
+
+                    //$.each(objects, function (propName, propVal) {
+                    //    console.log(propName, propVal);
+                    //});
+
+                    var now = new Date();
+                    $.ajax({
+                        url: '/FormsM/Save_activity',
+                        type: 'POST',
+                        data: { 'id': idvisita, 'objects': objects, 'lat': '', 'lng': '', 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+                        cache: false,
+                        global: false,
+                        success: function (result) {
+
+                            if (result.Result == "Success") {
+
+                                $("#loading").hide();
+                                var x = document.getElementById("finish_activity");
+                                if (x.style.display === "none") {
+                                    x.style.display = "inline-block";
+                                } else {
+                                    //x.style.display = "none";
+                                }
+
+
+                                showSuccessToast();
+                                // window.location.reload(true);
+                                //window.location.reload(true);
+                            } else {
+                                $("#loading").hide();
+                                showWarning2Toast();
+                            }
+
+
+                        },
+                        error: function (request) {
+                            $("#loading").hide();
+                            showWarning2Toast();
+
+                        }
+                    });
 
                 }
+                );
             });
-
-        }
-        );
-    });
     var options = {
-        enableHighAccuracy: true,
+                enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
     };
@@ -246,119 +304,119 @@
 
         //$.each($('input.form-control[type = "text"]'), function () {
 
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        $.each($('input.form-control[type = "number"]'), function () {
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).val(),
+                //        text: ""
+                //    });
 
 
-            //objects.push({
-            //    id: $(this).attr('id'),
-            //    value: $(this).val(),
-            //    text: ""
-            //});
+                //});
 
-            if ($(this).val() != "" || $(this).val() != null) {
-                if ($(this).val() > 0) {
-                    //Agregamos la propiedad
-
-                    $(this).closest('.tr').addClass('border-success');
-                    $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
-
-                } else {
-                    //Quitamos la propiedad
-
-                    $(this).closest('.tr').removeClass('border-success');
-                    $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
-                }
-            }
-
-        });
-
-        //$.each($('input.form-check-input[type = "radio"]'), function () {
+                $.each($('input.form-control[type = "number"]'), function () {
 
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
+                    //objects.push({
+                    //    id: $(this).attr('id'),
+                    //    value: $(this).val(),
+                    //    text: ""
+                    //});
+
+                    if ($(this).val() != "" || $(this).val() != null) {
+                        if ($(this).val() > 0) {
+                            //Agregamos la propiedad
+
+                            $(this).closest('.tr').addClass('border-success');
+                            $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
+
+                        } else {
+                            //Quitamos la propiedad
+
+                            $(this).closest('.tr').removeClass('border-success');
+                            $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+                        }
+                    }
+
+                });
+
+                //$.each($('input.form-check-input[type = "radio"]'), function () {
 
 
-        //});
-        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).prop('checked'),
+                //        text: ""
+                //    });
 
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
+                //});
+                //$.each($('input.form-check-input[type = "checkbox"]'), function () {
 
 
-        //});
-
-        $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).attr('data-changeflag'),
-                text: ""
-            });
-
-        });
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).prop('checked'),
+                //        text: ""
+                //    });
 
 
+                //});
 
-        //$.each($('textarea.form-control'), function () {
+                $.each($('input.dropifyIMG[type = "file"]'), function () {
 
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                    objects.push({
+                        id: $(this).attr('id'),
+                        value: $(this).attr('data-changeflag'),
+                        text: ""
+                    });
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        //$.each($('select'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-        //    var str = $(this).find('option:selected').text();
-        //    str = str.substring(str.indexOf("-") + 1);
-
-        //    var final = "";
-        //    objects.push({
-        //        id: $(this).attr('name'),
-        //        value: $(this).val(),
-        //        text: str.trim()
-        //    });
+                });
 
 
-        //});
 
-        //var canvas = document.getElementById("sig-canvas");
-        $.each($('canvas'), function () {
-            var canvas = document.getElementById($(this).attr("id"));
-            var dataUrl = canvas.toDataURL();
-            //alert(dataUrl);
+                //$.each($('textarea.form-control'), function () {
 
-            objects.push({
-                id: $(this).attr("data-id"),
-                value: dataUrl,
-                text: ""
-            });
-        });
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).val(),
+                //        text: ""
+                //    });
+
+
+                //});
+
+                //$.each($('select'), function () {
+
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                //    var str = $(this).find('option:selected').text();
+                //    str = str.substring(str.indexOf("-") + 1);
+
+                //    var final = "";
+                //    objects.push({
+                //        id: $(this).attr('name'),
+                //        value: $(this).val(),
+                //        text: str.trim()
+                //    });
+
+
+                //});
+
+                //var canvas = document.getElementById("sig-canvas");
+                $.each($('canvas'), function () {
+                    var canvas = document.getElementById($(this).attr("id"));
+                    var dataUrl = canvas.toDataURL();
+                    //alert(dataUrl);
+
+                    objects.push({
+                        id: $(this).attr("data-id"),
+                        value: dataUrl,
+                        text: ""
+                    });
+                });
 
 
         //$.each(objects, function (propName, propVal) {
@@ -367,37 +425,37 @@
 
         var now = new Date();
         $.ajax({
-            url: '/FormsM/Save_activity',
+                url: '/FormsM/Save_activity',
             type: 'POST',
-            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+            data: {'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", {hour12: true }) },
             cache: false,
             global: false,
             success: function (result) {
 
                 if (result.Result == "Success") {
 
-                    $("#loading").hide();
-                    var x = document.getElementById("finish_activity");
+                $("#loading").hide();
+            var x = document.getElementById("finish_activity");
                     if (x.style.display === "none") {
-                        x.style.display = "inline-block";
-                    } else {
-                        //x.style.display = "none";
-                    }
+                x.style.display = "inline-block";
+            } else {
+                //x.style.display = "none";
+            }
 
 
-                    showSuccessToast();
+            showSuccessToast();
                     // window.location.reload(true);
                     //window.location.reload(true);
                 } else {
-                    $("#loading").hide();
-                    showWarning2Toast();
+                $("#loading").hide();
+            showWarning2Toast();
                 }
 
 
             },
             error: function (request) {
                 $("#loading").hide();
-                showWarning2Toast();
+            showWarning2Toast();
 
             }
         });
@@ -408,8 +466,8 @@
     };
 
     function error(err) {
-        console.warn('ERROR(' + err.code + '): ' + err.message);
-        $("#loading").show();
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            $("#loading").show();
         var idvisita = "";
         idvisita = document.getElementById('idvisita').value;
 
@@ -420,153 +478,153 @@
 
         //$.each($('input.form-control[type = "text"]'), function () {
 
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
-
-
-        //});
-
-        $.each($('input.form-control[type = "number"]'), function () {
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).val(),
+                //        text: ""
+                //    });
 
 
-            //objects.push({
-            //    id: $(this).attr('id'),
-            //    value: $(this).val(),
-            //    text: ""
-            //});
+                //});
 
-            if ($(this).val() != "" || $(this).val() != null) {
-                if ($(this).val() > 0) {
-                    //Agregamos la propiedad
-
-                    $(this).closest('.tr').addClass('border-success');
-                    $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
-
-                } else {
-                    //Quitamos la propiedad
-
-                    $(this).closest('.tr').removeClass('border-success');
-
-                    $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
-                }
-            }
-
-        });
-
-        //$.each($('input.form-check-input[type = "radio"]'), function () {
+                $.each($('input.form-control[type = "number"]'), function () {
 
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
+                    //objects.push({
+                    //    id: $(this).attr('id'),
+                    //    value: $(this).val(),
+                    //    text: ""
+                    //});
+
+                    if ($(this).val() != "" || $(this).val() != null) {
+                        if ($(this).val() > 0) {
+                            //Agregamos la propiedad
+
+                            $(this).closest('.tr').addClass('border-success');
+                            $(this).closest('.tr').find('.icondiv').addClass('mdi icon-sm text-success mdi-check-all');
+
+                        } else {
+                            //Quitamos la propiedad
+
+                            $(this).closest('.tr').removeClass('border-success');
+
+                            $(this).closest('.tr').find('.icondiv').removeClass('mdi icon-sm text-success mdi-check-all');
+                        }
+                    }
+
+                });
+
+                //$.each($('input.form-check-input[type = "radio"]'), function () {
 
 
-        //});
-        //$.each($('input.form-check-input[type = "checkbox"]'), function () {
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).prop('checked'),
+                //        text: ""
+                //    });
 
 
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).prop('checked'),
-        //        text: ""
-        //    });
+                //});
+                //$.each($('input.form-check-input[type = "checkbox"]'), function () {
 
 
-        //});
-        //$.each($('textarea.form-control'), function () {
-
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-
-        //    objects.push({
-        //        id: $(this).attr('id'),
-        //        value: $(this).val(),
-        //        text: ""
-        //    });
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).prop('checked'),
+                //        text: ""
+                //    });
 
 
-        //});
+                //});
+                //$.each($('textarea.form-control'), function () {
 
-        //$.each($('select'), function () {
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
 
-        //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
-        //    var str = $(this).find('option:selected').text();
-        //    str = str.substring(str.indexOf("-") + 1);
-
-        //    var final = "";
-        //    objects.push({
-        //        id: $(this).attr('name'),
-        //        value: $(this).val(),
-        //        text: str.trim()
-        //    });
+                //    objects.push({
+                //        id: $(this).attr('id'),
+                //        value: $(this).val(),
+                //        text: ""
+                //    });
 
 
-        //});
+                //});
 
-        //var canvas = document.getElementById("sig-canvas");
-        $.each($('canvas'), function () {
-            var canvas = document.getElementById($(this).attr("id"));
-            var dataUrl = canvas.toDataURL();
-            //alert(dataUrl);
+                //$.each($('select'), function () {
 
-            objects.push({
-                id: $(this).attr("data-id"),
-                value: dataUrl,
-                text: ""
+                //    //alert("ID:" + $(this).attr('id') + "value: " + $(this).val());
+                //    var str = $(this).find('option:selected').text();
+                //    str = str.substring(str.indexOf("-") + 1);
+
+                //    var final = "";
+                //    objects.push({
+                //        id: $(this).attr('name'),
+                //        value: $(this).val(),
+                //        text: str.trim()
+                //    });
+
+
+                //});
+
+                //var canvas = document.getElementById("sig-canvas");
+                $.each($('canvas'), function () {
+                    var canvas = document.getElementById($(this).attr("id"));
+                    var dataUrl = canvas.toDataURL();
+                    //alert(dataUrl);
+
+                    objects.push({
+                        id: $(this).attr("data-id"),
+                        value: dataUrl,
+                        text: ""
+                    });
+                });
+
+            $.each($('input.dropifyIMG[type = "file"]'), function () {
+
+                objects.push({
+                    id: $(this).attr('id'),
+                    value: $(this).attr('data-changeflag'),
+                    text: ""
+                });
+
             });
-        });
-
-        $.each($('input.dropifyIMG[type = "file"]'), function () {
-
-            objects.push({
-                id: $(this).attr('id'),
-                value: $(this).attr('data-changeflag'),
-                text: ""
-            });
-
-        });
         //$.each(objects, function (propName, propVal) {
         //    console.log(propName, propVal);
         //});
 
         var now = new Date();
         $.ajax({
-            url: '/FormsM/Save_activity',
+                url: '/FormsM/Save_activity',
             type: 'POST',
-            data: { 'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", { hour12: true }) },
+            data: {'id': idvisita, 'objects': objects, 'lat': lat, 'lng': lng, 'check_in': now.toLocaleString("en-US", {hour12: true }) },
             cache: false,
             global: false,
             success: function (result) {
 
                 if (result.Result == "Success") {
-                    $("#loading").hide();
+                $("#loading").hide();
 
 
-                    var x = document.getElementById("finish_activity");
+            var x = document.getElementById("finish_activity");
                     if (x.style.display === "none") {
-                        x.style.display = "inline-block";
-                    } else {
-                        x.style.display = "none";
-                    }
+                x.style.display = "inline-block";
+            } else {
+                x.style.display = "none";
+            }
                     // window.location.reload(true);
                     showSuccessToast();
                     //window.location.reload(true);
                 } else {
-                    $("#loading").hide();
-                    showWarning2Toast();
+                $("#loading").hide();
+            showWarning2Toast();
                 }
 
 
             },
             error: function (request) {
                 $("#loading").hide();
-                showWarning2Toast();
+            showWarning2Toast();
 
             }
         });
@@ -574,10 +632,10 @@
 
     function initGeolocation() {
         if (navigator && navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-            console.log('Geolocation is not supported');
-        }
+                navigator.geolocation.getCurrentPosition(success, error, options);
+            } else {
+                console.log('Geolocation is not supported');
+            }
     }
 </script>
 
@@ -1233,4 +1291,75 @@
             }
         });
     });
+</script>
+<script>
+    function cargarproductosAudit(idbtn){
+        var btn = "#" + idbtn;
+
+        var customerId = $("#customer_list").val();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        var brandId = $("#brands_list").val();
+        //var catId = $("#cat_list").val();
+        //var subcatId = $("#subcat_list").val();
+
+        //var selMulti2 = $.map($("#subcat_list option:selected"), function (el, i) {
+        //    return $(el).val();
+        //});
+        //var subcatId = selMulti2.join(",");
+
+        if (brandId == 0 || brandId == null) {
+            //toastr.warning("Please, select a valid Brand", "Info");
+
+            //Alerta de que no se han guardado los campos obligatorios
+            $.toast({
+                heading: 'Warning',
+                text: 'Please select a valid Brand',
+                loader: false,        // Change it to false to disable loader
+                showHideTransition: 'slide',
+                icon: 'warning',
+                loaderBg: '#ff9900',
+                hideAfter: 5000,
+                position: 'top-right'
+            });
+
+        } else {
+            document.getElementById("loading").style.display = "block";
+            $('' + btn + '').attr('disabled', 'disabled');
+            $('' + btn + '').val('CARGANDO PRODUCTOS, POR FAVOR ESPERE...');
+
+            
+
+            $.ajax({
+                url: '/FormsM/GetDynamicProductsAudit',
+                type: 'POST',
+                data: { 'activityID': idvisita, 'ID_customer': customerId, 'ID_brand': brandId },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    //if (result == "Success") {
+                    window.location.reload(true);
+                    //} else {
+                    //    toastr.warning("No data to load", "Info");
+                    //}
+                    //document.getElementById("loader").style.display = "none";
+
+
+
+
+                },
+                error: function (request) {
+                    document.getElementById("loading").style.display = "none";
+                    alert("Error: Server data fail");
+
+
+                }
+            });
+        }
+
+
+
+
+    }
 </script>

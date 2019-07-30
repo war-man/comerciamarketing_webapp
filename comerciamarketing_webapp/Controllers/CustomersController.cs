@@ -1872,11 +1872,11 @@ namespace comerciamarketing_webapp.Controllers
                 System.IO.File.Delete(filePath);
             }
         }
-
         public ActionResult Print_QuickVisit(string id, List<MyObj_formtemplate> objects)
         {
             List<int> list = new List<int>();
-            foreach (var item in objects) {
+            foreach (var item in objects)
+            {
                 var idact = item.id.Substring(4);
                 list.Add(idact.ToInt32());
             }
@@ -1889,7 +1889,7 @@ namespace comerciamarketing_webapp.Controllers
                 form_details = (from c in db.FormsM_details where (list.Contains(c.ID_visit)) select c);
                 activity_header = (from a in db.ActivitiesM
                                    join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                            
+
                                    where (list.Contains(a.ID_activity))
                                    select new QuickVisit_report
                                    {
@@ -1898,7 +1898,7 @@ namespace comerciamarketing_webapp.Controllers
                                        ID_form = a.ID_form,
                                        formName = a.description,
                                        ID_store = b.ID_store,
-                                       store = b.store + ", " + b.address + ", " + b.city + ", " + b.state + ", " +b.zipcode ,
+                                       store = b.store + ", " + b.address + ", " + b.city + ", " + b.state + ", " + b.zipcode,
                                        visitDate = b.visit_date,
                                        ID_customer = a.ID_customer,
                                        Customer = a.Customer,
@@ -1913,19 +1913,20 @@ namespace comerciamarketing_webapp.Controllers
                                        count = 0,
                                        urlimg1 = "",
                                        urlimg2 = "",
-                                       urlsign=""
-                
+                                       urlsign = ""
+
                                    }).ToList();
 
-                
 
 
 
-                if (activity_header.Count > 0)               
+
+                if (activity_header.Count > 0)
                 {
-                    foreach (var item in activity_header) {
+                    foreach (var item in activity_header)
+                    {
                         //Verificamos si existen fotos en el demo (MAX 2 fotos QUICK VISIT)
-                        var fotos = (from c in form_details where (c.ID_formresourcetype == 5 && c.ID_visit==item.ID_activity) select c).ToList();
+                        var fotos = (from c in form_details where (c.ID_formresourcetype == 5 && c.ID_visit == item.ID_activity) select c).ToList();
 
                         int fotosC = fotos.Count();
 
@@ -1934,19 +1935,19 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             if (fotos[0].fsource == "")
                             {
-                              
+
                             }
                             else
                             {
-                              item.urlimg1=  Path.GetFullPath(Server.MapPath(fotos[0].fsource));
+                                item.urlimg1 = Path.GetFullPath(Server.MapPath(fotos[0].fsource));
                             }
                             if (fotos[1].fsource == "")
                             {
-                               
+
                             }
                             else
                             {
-                               item.urlimg2=  Path.GetFullPath(Server.MapPath(fotos[1].fsource));
+                                item.urlimg2 = Path.GetFullPath(Server.MapPath(fotos[1].fsource));
                             }
 
                         }
@@ -1954,21 +1955,21 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             if (fotos[0].fsource == "")
                             {
-                             
+
                             }
                             else
                             {
                                 item.urlimg1 = Path.GetFullPath(Server.MapPath(fotos[0].fsource));
                             }
 
-               
+
                         }
-        
+
                     }
                 }
 
-                
-}
+
+            }
 
 
             if (activity_header.Count > 0)
@@ -2054,7 +2055,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 //PARA VISUALIZAR
                 Response.AppendHeader("Content-Disposition", "inline; filename=Quick Visit.pdf;");
-       
+
 
 
                 Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
@@ -2106,6 +2107,150 @@ namespace comerciamarketing_webapp.Controllers
                 //rd.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path2);
 
                 //var urlcontent = Url.Content("~/Reportes/pdf/" + filename + "");
+                //Nueva descarga
+                TempData["Output"] = stream;
+
+                //return Json(urlcontent);
+                return Json("Success", JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+
+                return Json("Error", JsonRequestBehavior.AllowGet);
+
+            }
+        }
+        public ActionResult Print_VisitReport(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int> list = new List<int>();
+            foreach (var item in objects) {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            List<VisitsInfo> detailsForm = Session["VisitsInfo"] as List<VisitsInfo>;
+
+            if (detailsForm.Count > 0)
+
+            {
+        
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptVisitsList.rpt"));
+
+                rd.SetDataSource(detailsForm);
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=Visit Report.pdf;");
+       
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                
+                //Nueva descarga
+                TempData["Output"] = stream;
+
+                //return Json(urlcontent);
+                return Json("Success", JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+
+                return Json("Error", JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public ActionResult Print_VisitReportImg(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int> list = new List<int>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            List<VisitsInfo> detailsForm = Session["VisitsInfo"] as List<VisitsInfo>;
+
+            if (detailsForm.Count > 0)
+
+            {
+
+
+
+                detailsForm = detailsForm.Where(c=> list.Contains(c.ID_visit)).OrderBy(c => c.visitDate).ToList();
+
+                using (var db = new dbComerciaEntities())
+                {
+
+                    foreach (var visit in detailsForm)
+                    {
+                        var activity = (from a in db.ActivitiesM
+                                        join b in db.FormsM_details on a.ID_activity equals b.ID_visit
+                                        where (a.ID_visit == visit.ID_visit && (b.ID_formM == 1 || b.ID_formM == 3 || b.ID_formM == 42) && b.ID_formresourcetype == 13 && b.fvalueText == visit.ID_brand)
+                                        select b.ID_visit).FirstOrDefault();
+
+                        var activitydetails = (from d in db.FormsM_details where (d.ID_visit == activity) select d).ToList();
+
+                        if (activitydetails.Count > 0)
+                        {
+                            var pic1 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault();
+                            var pic2 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault();
+
+                            try
+                            {
+                                visit.pictureBefore = Path.GetFullPath(Server.MapPath(pic1));
+                                visit.pictureAfter = Path.GetFullPath(Server.MapPath(pic2));
+                            }
+                            catch {
+                                visit.pictureBefore = "";
+                                visit.pictureAfter = "";
+                            }
+                          
+                        }
+
+                    }
+
+                }
+
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptVisitsListImg.rpt"));
+
+                rd.SetDataSource(detailsForm);
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=Visit Report.pdf;");
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+
                 //Nueva descarga
                 TempData["Output"] = stream;
 

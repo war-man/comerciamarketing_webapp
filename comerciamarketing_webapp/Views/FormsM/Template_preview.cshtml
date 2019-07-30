@@ -205,8 +205,8 @@
             {
                 if (objeto.parent != 0)
                 {
-                    <div class="mb-3">
-                        <label class="md-check">
+                    
+                        <label class="md-check" style="padding-right: 15px;width: 125px;">
                             @if (objeto.fvalue == 0)
                             {
                                 <input type="checkbox" class="form-check-input chk" name="@("radio_" + objeto.parent)" id="@objeto.idkey">
@@ -218,11 +218,11 @@
                             <i class="green"></i>
                             @objeto.fsource
                         </label>
-                    </div>
+                    
 
                     if (objeto.children.Count > 0)
                     {
-                        <div class="col-md-12 parentdiv">
+                        <div class="col-12 parentdiv">
                             @if (objeto.fvalue == 0)
                             {
                                 <div class="@("childdivradio_" + objeto.parent)" id="@("radiodiv_" + objeto.idkey)" style="display:none;">
@@ -428,7 +428,7 @@
                 {
 
                     <div class="form-group">
-                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                        <p class="control-label col-md-10"> @objeto.fsource </p>
                         <div class="col-md-12">
                             <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
 
