@@ -72,7 +72,7 @@
 
 
     function getBrands() {
-   
+
         var customerId = $("#customersel").val();
 
         if (customerId == "0") {
@@ -92,12 +92,19 @@
 
                         $("#brandsel").html("");
                         $("#brandsel").append($('<option></option>').val(0).html("ALL BRANDS"))
-                        $.each($.parseJSON(result), function (i, brands) {
 
-                            $("#brandsel").append
-                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+                        try {
 
-                        })
+                            $.each($.parseJSON(result), function (i, brands) {
+
+                                $("#brandsel").append
+                                    ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+
+                            })
+                        } catch{
+                          
+                        }
+
 
                          //Verificamos si habia uno previo seleccionado
             $("#brandsel").val(@ViewBag.BrandSelCode).change();

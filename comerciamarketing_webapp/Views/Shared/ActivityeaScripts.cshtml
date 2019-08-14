@@ -37,62 +37,62 @@
             }
         });
 
-        if (document.getElementById("brands_list")) {
-            getBrands();
-        } else {
+        //if (document.getElementById("brands_list")) {
+        //    getBrands();
+        //} else {
 
-        }
+        //}
 
 
     };
 
 
-    function getBrands() {
-        var customerId = $("#customer_list").val();
-        var idvisita = "";
-        idvisita = document.getElementById('idvisita').value;
+    //function getBrands() {
+    //    var customerId = $("#customer_list").val();
+    //    var idvisita = "";
+    //    idvisita = document.getElementById('idvisita').value;
 
 
-        $.ajax
-            ({
-                url: '/FormsM/Getbrands',
-                type: 'POST',
-                datatype: 'application/json',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    customerID: customerId,
-                    idvisit: idvisita
-                }),
-                success: function (result) {
+    //    //$.ajax
+    //    //    ({
+    //    //        url: '/FormsM/Getbrands',
+    //    //        type: 'POST',
+    //    //        datatype: 'application/json',
+    //    //        contentType: 'application/json',
+    //    //        data: JSON.stringify({
+    //    //            customerID: customerId,
+    //    //            idvisit: idvisita
+    //    //        }),
+    //    //        success: function (result) {
 
-                    $("#brands_list").html("");
-                    $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
-                    $.each($.parseJSON(result), function (i, brands) {
-                        if (brands.isselected) {//si esta seleccionado
-                            $("#brands_list").append
-                                ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
-
-
-                        } else {
-                            $("#brands_list").append
-                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
-                        }
+    //    //            $("#brands_list").html("");
+    //    //            $("#brands_list").append($('<option></option>').val(0).html("Select a Brand"))
+    //    //            $.each($.parseJSON(result), function (i, brands) {
+    //    //                if (brands.isselected) {//si esta seleccionado
+    //    //                    $("#brands_list").append
+    //    //                        ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
 
 
-                    }
-
-                    )
-                    getProductsline();
-
-                },
-                error: function () {
-                    alert("Whooaaa! Something went wrong..")
-                },
-            });
+    //    //                } else {
+    //    //                    $("#brands_list").append
+    //    //                        ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+    //    //                }
 
 
+    //    //            }
 
-    }
+    //    //            )
+    //    //            getProductsline();
+
+    //    //        },
+    //    //        error: function () {
+    //    //            alert("Whooaaa! Something went wrong..")
+    //    //        },
+    //    //    });
+
+
+
+    //}
 
 
     function getProductsline() {

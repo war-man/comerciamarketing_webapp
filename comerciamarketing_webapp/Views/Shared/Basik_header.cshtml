@@ -15,8 +15,9 @@
         <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
             <form class="input-group m-2 my-lg-0 ">
                 <div class="input-group-prepend">
-                    @if (ViewBag.title == "Comercia Marketing - Admin Demos" || ViewBag.title == "Comercia Marketing - Admin Dashboard" || ViewBag.title == "Comercia Marketing - Representative_stats" || ViewBag.title == "Comercia Marketing - Admin Map" || ViewBag.title == "Comercia Marketing - Admin Gallery" || ViewBag.title == "Comercia Marketing - Reports" || ViewBag.title == "Comercia Marketing - Visits Report")
-                    {
+                    @if (ViewBag.title == "Comercia Marketing - Admin Demos" || ViewBag.title == "Comercia Marketing - Admin Dashboard" || ViewBag.title == "Comercia Marketing - Representative_stats" || ViewBag.title == "Comercia Marketing - Admin Map" || ViewBag.title == "Comercia Marketing - Admin Gallery" || ViewBag.title == "Comercia Marketing - Reports" || ViewBag.title == "Comercia Marketing - Visits Report"
+         || ViewBag.title == "Comercia Marketing - Customers Map" || ViewBag.title == "Comercia Marketing - Customers Dashboard")
+    {
 
                 <span class="mx-2">
 
@@ -29,24 +30,20 @@
                         <i data-feather="search"></i>
                     </a>
                 </span>
-                    }
-                    else if (ViewBag.title == "Comercia Marketing - Customers Map" || ViewBag.title == "Comercia Marketing - Customers Dashboard")
-                    {
+}
+                    else if (ViewBag.title == "Comercia Marketing - Calendar Admin Routes" || ViewBag.title == "Comercia Marketing - Calendar Customers Routes")
+    {
 
                 <span class="mx-2">
 
-                    <span class="text-xs text-muted">
-                        From @ViewBag.filtrofechastart to @ViewBag.filtrofechaend
-                    </span>
-                    @*<span class="text-xs text-muted">| All Brands </span>
-                    <span class="text-xs text-muted">| All Stores </span>
-                    <span class="text-xs text-muted">| All Strategic Partners </span>*@
+
+                    <span class="text-xs text-muted">Customer: @ViewBag.CustomersLabel </span>
+                    <span class="text-xs text-muted">| Brand: @ViewBag.BrandLabel </span>
                     <a class="btn" data-toggle="modal" data-target="#modal-right_filter">
                         <i data-feather="search"></i>
                     </a>
                 </span>
 }
-
 
 else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
 {
@@ -56,8 +53,8 @@ else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
                         From @ViewBag.filtrofechastart to @ViewBag.filtrofechaend
                     </span>
                     @*<span class="text-xs text-muted">| All Brands </span>
-                    <span class="text-xs text-muted">| All Stores </span>
-                    <span class="text-xs text-muted">| All Strategic Partners </span>*@
+        <span class="text-xs text-muted">| All Stores </span>
+        <span class="text-xs text-muted">| All Strategic Partners </span>*@
                     <a class="btn" data-toggle="modal" data-target="#modal-right_filter">
                         <i data-feather="search"></i>
                     </a>

@@ -1762,12 +1762,12 @@ namespace comerciamarketing_webapp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor, string ID_rep, DateTime time)
+        public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor,string ID_brand, string ID_rep, DateTime time, string products_listSel)
         {
             try
             {
                 int IDForm = Convert.ToInt32(ID_form);
- 
+
 
                 int esDemoUser = 0;//Variable para identificar si el usuario seleccionado es demo o es un reps
                 esDemoUser = 1;
@@ -1780,12 +1780,27 @@ namespace comerciamarketing_webapp.Controllers
                 nuevaActividad.vendor = "";
                 nuevaActividad.ID_Store = "";
                 nuevaActividad.store = "";
+                nuevaActividad.ID_brands = ID_brand;
+                nuevaActividad.Brands = "";
+
+                Int16 idbrand = 0;
+
+                if (ID_brand != "" && ID_brand != null)
+                {
+                    idbrand = Convert.ToInt16(ID_brand);
+                }
+
                 var vendor = (from c in CMKdb.OCRD where (c.CardCode == ID_Vendor) select c).FirstOrDefault();
                 if (vendor != null)
                 {
                     nuevaActividad.vendor = vendor.CardName;
                 }
-
+        
+                var brand = (from c in CMKdb.view_CMKEditorB where (c.FirmCode == idbrand) select c).FirstOrDefault();
+                if (brand != null)
+                {
+                    nuevaActividad.Brands = brand.FirmName;
+                }
 
 
 
@@ -1794,11 +1809,10 @@ namespace comerciamarketing_webapp.Controllers
                 if (storeSAP != null)
                 {
                     nuevaActividad.ID_Store = ID_customer;
-                    nuevaActividad.store=storeSAP.CardName;
+                    nuevaActividad.store = storeSAP.CardName;
                     nuevaActividad.address = storeSAP.MailAddres;
                     nuevaActividad.city = storeSAP.MailCity;
-                    nuevaActividad.ID_brands = "";
-                    nuevaActividad.Brands = "";
+          
 
                     if (storeSAP.MailZipCod == null)
                     {
@@ -1868,6 +1882,57 @@ namespace comerciamarketing_webapp.Controllers
                     new SqlParameter("@IDVisit", nuevaActividad.ID_demo),
                     new SqlParameter("@IDForm", IDForm));
 
+                var countItems = (from a in db.FormsM_detailsDemos where (a.ID_visit == nuevaActividad.ID_demo) select a).Count();
+                var nuevacuenta = countItems + 2;
+                List<string> TagIds = products_listSel.Split(',').ToList();
+                //AGREGAMOS LOS PRODUCTOS
+                foreach (var item in TagIds)
+                {
+                    try
+                    {
+                      
+                            var productinfo = (CMKdb.OITM.Where(x => x.ItemCode == item)).FirstOrDefault();
+                        
+
+                        FormsM_detailsDemos detalle_nuevo = new FormsM_detailsDemos();
+
+
+                        detalle_nuevo.ID_formresourcetype = 3;
+                        detalle_nuevo.fsource = productinfo.ItemCode;
+                        detalle_nuevo.fdescription = productinfo.ItemName;
+                        detalle_nuevo.fvalue = 0;
+                        detalle_nuevo.fvalueDecimal = 0;
+                        detalle_nuevo.fvalueText = "";
+                        detalle_nuevo.ID_formM = Convert.ToInt32(ID_form);
+
+                        detalle_nuevo.ID_visit = nuevaActividad.ID_demo;
+                        detalle_nuevo.original = false;
+                        //Colocamos numero de orden
+                        detalle_nuevo.obj_order = nuevacuenta;
+                        //Colocamos grupo si tiene
+                        detalle_nuevo.obj_group = 0;
+                        //Colocamos ID generado por editor
+                        detalle_nuevo.idkey = nuevacuenta;
+                        detalle_nuevo.query1 = "";
+                        detalle_nuevo.query2 = "";
+                        detalle_nuevo.parent = 0;
+                        detalle_nuevo.ID_empresa = 2;
+
+
+
+                        db.FormsM_detailsDemos.Add(detalle_nuevo);
+                        db.SaveChanges();
+                        nuevacuenta++;
+                    }
+                    catch (Exception ex)
+                    {
+                        var error = ex.Message;
+
+                    }
+
+                }
+
+
                 //enviamoS correo SI ES UN USUARIO DEMO
                 if (esDemoUser == 1)
                 {
@@ -1914,7 +1979,7 @@ namespace comerciamarketing_webapp.Controllers
                     //*******************************
                     try
                     {
-                      
+
                         //Enviamos correo para notificar
                         dynamic email = new Email("newdemo_alert");
                         email.To = usuario.E_Mail.ToString();
@@ -2501,7 +2566,8 @@ namespace comerciamarketing_webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteActivity(int ID_activityD, int ID_visitA)
         {
-            try {
+            try
+            {
 
                 ActivitiesM activity = db.ActivitiesM.Find(ID_activityD);
                 db.ActivitiesM.Remove(activity);
@@ -2518,12 +2584,40 @@ namespace comerciamarketing_webapp.Controllers
                 //db.BulkDelete(lista_eliminar);
 
                 TempData["exito"] = "Activity deleted successfully.";
-                return RedirectToAction("Visit_details", "Admin", new { id=ID_visitA});
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitA });
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitA });
+            }
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDemo(int ID_activityD)
+        {
+            try {
+
+                //Eliminamos detalle
+                var sql = @"usp_DeleteFormDetailDemo @IDVisit";
+                db.Database.ExecuteSqlCommand(sql, new SqlParameter("@IDVisit", ID_activityD));
+
+
+                Demos activity = db.Demos.Find(ID_activityD);
+                db.Demos.Remove(activity);
+                db.SaveChanges();
+
+                TempData["exito"] = "Activity deleted successfully.";
+                return RedirectToAction("Demos", "Admin", null);
 
             }
             catch (Exception ex){
                 TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
-                return RedirectToAction("Visit_details", "Admin", new { id = ID_visitA });
+                return RedirectToAction("Demos", "Admin",null);
             }
 
 

@@ -3,15 +3,102 @@
     Layout = null;
 }
 
-    <script>
+<script>
+ 
+
+    $("#products_list").change(function () {
+   
+        $("#products_listSel").val($(this).val());
+    });
+
+
+    function getBrands() {
+        var customerId = $("#ID_vendor").val();
+
+
+        $.ajax
+            ({
+                url: '/FormsM/Getbrands',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    customerID: customerId,
+                    idvisit: 0
+                }),
+                success: function (result) {
+
+                    $("#ID_brand").html("");
+                    $("#ID_brand").append($('<option></option>').val(0).html("Select a Brand"))
+                    $.each($.parseJSON(result), function (i, brands) {
+                        if (brands.isselected) {//si esta seleccionado
+                            $("#ID_brand").append
+                                ($('<option selected></option>').val(brands.FirmCode).html(brands.FirmName));
+
+
+                        } else {
+                            $("#ID_brand").append
+                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+                        }
+
+
+                    }
+
+                    )
+                   
+
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
 
 
 
-    </script>
+    }
 
+
+    function getProducts() {
+        var vendorId = $("#ID_vendor").val();
+        var brandid = $("#ID_brand").val();
+
+        console.log(vendorId);
+        console.log(brandid);
+
+        $.ajax
+            ({
+                url: '/FormsM/GetproductsByBrand',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    vendorID: vendorId,
+                    brandID: brandid
+                }),
+                success: function (result) {
+
+                    $("#products_list").html("");
+                    $.each($.parseJSON(result), function (i, product) {
+                        $("#products_list").append
+                            ($('<option></option>').val(product.ItemCode).html(product.ItemName))
+
+                    }
+                    )
+                    $('#products_list').select2();
+                },
+                error: function () {
+                    alert("Whooaaa! Something went wrong..")
+                },
+            });
+    }
+</script>
     <script>
         window.onload = function () {
-            
+            $('#products_list').select2();
+
+
+
+
 
             var today = new Date();
             var dd = today.getDate();
@@ -35,9 +122,9 @@
                 'use strict';
                 $('#deleteModal').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget);// Button that triggered the modal
-
+                   
                     var IDAct = button.data("id");// Extract info from data-* attributes
-                    var DesAct = button.data("description");
+                    
 
 
                     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -45,7 +132,7 @@
                     var modal = $(this);
                     //modal.find('.modal-title').text('Edit data: ' + recipient)
                     modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
-                    $("#descriptionD").text(DesAct);
+                    
 
                 })
             })(jQuery);

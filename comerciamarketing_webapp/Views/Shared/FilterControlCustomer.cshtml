@@ -32,11 +32,11 @@
                             {
                                 if (item.CardCode == ViewBag.CustomerSelCode)
                                 {
-                                    <option value="@item.CardCode" selected>@item.CardCode - @item.CardName</option>
+                                    <option value="@item.U_CardCodeDLI" selected>@item.U_CardCodeDLI - @item.CardName</option>
                                 }
                                 else
                                 {
-                                    <option value="@item.CardCode">@item.CardCode - @item.CardName</option>
+                                    <option value="@item.U_CardCodeDLI">@item.U_CardCodeDLI - @item.CardName</option>
                                 }
 
                             }
@@ -91,12 +91,19 @@
 
                         $("#brandsel").html("");
                         $("#brandsel").append($('<option></option>').val(0).html("ALL BRANDS"))
-                        $.each($.parseJSON(result), function (i, brands) {
 
-                            $("#brandsel").append
-                                ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+                        try {
 
-                        })
+                            $.each($.parseJSON(result), function (i, brands) {
+
+                                $("#brandsel").append
+                                    ($('<option></option>').val(brands.FirmCode).html(brands.FirmName));
+
+                            })
+                        } catch{
+                          
+                        }
+
 
                          //Verificamos si habia uno previo seleccionado
             $("#brandsel").val(@ViewBag.BrandSelCode).change();

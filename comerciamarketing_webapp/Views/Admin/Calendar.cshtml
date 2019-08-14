@@ -288,7 +288,7 @@
                         <div class="form-group">
                             <select class="form-control" name="id_store" id="id_store" style="width:100%">
                                 <option value="">Select a store</option>
-                                @foreach (var itemStores in ViewBag.customers)
+                                @foreach (var itemStores in ViewBag.storeslst)
                                 {
                                     <option value="@itemStores.CardCode">@itemStores.CardCode - @itemStores.CardName</option>
                                 }

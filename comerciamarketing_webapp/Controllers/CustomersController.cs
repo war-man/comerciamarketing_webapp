@@ -140,7 +140,7 @@ namespace comerciamarketing_webapp.Controllers
                 //
                 ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
                 ViewBag.Membresia = activeuser.Tipo_membresia.descripcion;
-                ViewBag.id_customer = id;
+                ViewBag.id_customer = customersel;
                 ViewBag.Company = activeuser.Empresas.nombre;
                 ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
                 ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
@@ -344,7 +344,7 @@ namespace comerciamarketing_webapp.Controllers
                         //if (escliente == true)
                         //{
 
-                        customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+                        customers = (from b in CMKdb.OCRD where ((b.CardCode == customersel || b.U_CardCodeDLI == customersel) && b.Series==61) select b).ToList();
 
 
                         ViewBag.customerssel = customers.ToList();
@@ -357,8 +357,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -870,7 +880,7 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         var visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute) select f.ID_visit).ToArray();
 
-                        var actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_empresa==activeuser.ID_empresa) select e);
+                        var actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit)) select e);
                         var actividades =  actividadesList.Select(a=> a.ID_activity).ToArray();
 
                         //var detalles = (from b in db.FormsM_details where (actividades.Contains(b.ID_visit) && b.ID_formresourcetype == 5) select b).ToList();
@@ -951,6 +961,7 @@ namespace comerciamarketing_webapp.Controllers
                 //FIN HEADER
                 ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
                 ViewBag.id_customer = customersel;
+                ViewBag.id_brand = brandsel;
 
 
                 var visitas = new List<VisitsM>();
@@ -966,7 +977,9 @@ namespace comerciamarketing_webapp.Controllers
                 var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
                 var saturday = sunday.AddDays(6).AddHours(23);
                 //FILTROS**************
-
+                //Enviamos fecha por defecto
+                fstartd = "";
+                fendd = "";
                 if (fstartd == null || fstartd == "")
                 {
                     filtrostartdate = sunday;
@@ -984,13 +997,62 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59);
                 }
+
+                List<VisitsInfoCalendar> lstVisitas;
                 //FIN FILTROS*******************
                 using (var db = new dbComerciaEntities())
                 {
-                    var lstvisits = (from a in db.ActivitiesM
-                                         join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                         where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true))
-                                         select b.ID_route).Distinct().ToArray();
+     
+
+
+                    if (customersel == null || customersel == "" || customersel == "0")
+                    {
+                        lstVisitas = (from a in db.ActivitiesM
+                                      join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                      where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = b.ID_store,
+                                          idroute=b.ID_route,
+                                          visitDate = b.visit_date,
+                                          ID_customer = a.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                      }).ToList();
+
+                    }
+                    else
+                    {
+                        lstVisitas = (from a in db.ActivitiesM
+                                      join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                      where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true)
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = b.ID_store,
+                                          idroute = b.ID_route,
+                                          visitDate = b.visit_date,
+                                          ID_customer = a.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                      }).ToList();
+                        if (brandsel == null || brandsel == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            var brandstring = brandsel.ToString();
+                            lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                        }
+
+                    }
+
+                    var lstvisits = lstVisitas.Select(b=>b.idroute).Distinct().ToArray();
+
+
+
 
                     rutas = (from a in db.RoutesM
                              where (lstvisits.Contains(a.ID_route))
@@ -1134,7 +1196,7 @@ namespace comerciamarketing_webapp.Controllers
                         //if (escliente == true)
                         //{
 
-                        customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+                        customers = (from b in CMKdb.OCRD where ((b.CardCode == customersel || b.U_CardCodeDLI == customersel) && b.Series == 61) select b).ToList();
 
 
                         ViewBag.customerssel = customers.ToList();
@@ -1147,8 +1209,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -1160,8 +1232,8 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else
                         {
-                            //ViewBag.BrandLabel = brandcmk.FirmName;
-                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandLabel = brandcmk.FirmName;
+                            //ViewBag.BrandLabel = "All Brands";
                             ViewBag.BrandSelCode = brandcmk.FirmCode;
                         }
 
@@ -1304,50 +1376,79 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.id_customer = customersel;
 
                 ArrayList myArrList = new ArrayList();
+                List<VisitsInfoCalendar> lstVisitas;
                 using (var db = new dbComerciaEntities())
                 {
-                    if (id == "" || id == null)
-                    {
-                        var visitsarr = (from a in db.ActivitiesM where ((a.date >= filtrostartdate && a.date <= filtroenddate)) select a.ID_visit).Distinct().ToArray();
-                        // Convertimos la lista a array
-                        var rutas = db.VisitsM.Where(c => visitsarr.Contains(c.ID_visit)).OrderBy(d => d.visit_date).ToList();
 
-                        myArrList.AddRange((from p in rutas
-                                            select new
-                                            {
-                                                id = p.ID_visit,
-                                                representatives = p.city,
-                                                store = p.store,
-                                                address = p.address,
-                                                GeoLong = p.geoLong,
-                                                GeoLat = p.geoLat,
-                                                demo_state = p.ID_visitstate,
-                                                customer = p.customer,
-                                                date = p.visit_date.ToLongDateString(),
-                                                comment = p.comments
-                                            }).ToList());
+                    if (customersel == null || customersel == "" || customersel == "0")
+                    {
+                        lstVisitas = (from a in db.ActivitiesM
+                                      join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                      where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = b.ID_store,
+                                          idroute = b.ID_route,
+                                          visitDate = b.visit_date,
+                                          ID_customer = a.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                      }).ToList();
+
                     }
                     else
                     {
-                        var visitsarr = (from a in db.ActivitiesM where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished==true) select a.ID_visit).Distinct().ToArray();
-                        // Convertimos la lista a array
-                        var rutas = db.VisitsM.Where(c => visitsarr.Contains(c.ID_visit)).OrderBy(d => d.visit_date).ToList();
+                        lstVisitas = (from a in db.ActivitiesM
+                                      join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                      where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true)
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = b.ID_store,
+                                          idroute = b.ID_route,
+                                          visitDate = b.visit_date,
+                                          ID_customer = a.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                      }).ToList();
+                        if (brandsel == null || brandsel == 0)
+                        {
 
-                        myArrList.AddRange((from p in rutas
-                                            select new
-                                            {
-                                                id = p.ID_visit,
-                                                representatives = p.city,
-                                                store = p.store,
-                                                address = p.address,
-                                                GeoLong = p.geoLong,
-                                                GeoLat = p.geoLat,
-                                                demo_state = p.ID_visitstate,
-                                                customer = p.customer,
-                                                date = p.visit_date.ToLongDateString(),
-                                                comment = p.comments
-                                            }).ToList());
+                        }
+                        else
+                        {
+                            var brandstring = brandsel.ToString();
+                            lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                        }
+
                     }
+
+                    var lstvisits = lstVisitas.Select(b => b.ID_visit).Distinct().ToArray();
+
+                    var rutas = db.VisitsM.Where(c => lstvisits.Contains(c.ID_visit)).OrderBy(d => d.visit_date).ToList();
+
+                    myArrList.AddRange((from p in rutas
+                                        select new
+                                        {
+                                            id = p.ID_visit,
+                                            representatives = p.city,
+                                            store = p.store,
+                                            address = p.address,
+                                            GeoLong = p.geoLong,
+                                            GeoLat = p.geoLat,
+                                            demo_state = p.ID_visitstate,
+                                            customer = p.customer,
+                                            date = p.visit_date.ToLongDateString(),
+                                            comment = p.comments
+                                        }).ToList());
+
+
+
+
+
+
+
 
                 }
                 ViewBag.routes_map = JsonConvert.SerializeObject(myArrList);
@@ -1362,7 +1463,7 @@ namespace comerciamarketing_webapp.Controllers
                         //if (escliente == true)
                         //{
 
-                        customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+                        customers = (from b in CMKdb.OCRD where ((b.CardCode == customersel || b.U_CardCodeDLI == customersel) && b.Series == 61) select b).ToList();
 
 
                         ViewBag.customerssel = customers.ToList();
@@ -1375,8 +1476,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -1388,8 +1499,8 @@ namespace comerciamarketing_webapp.Controllers
                         }
                         else
                         {
-                            //ViewBag.BrandLabel = brandcmk.FirmName;
-                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandLabel = brandcmk.FirmName;
+                            
                             ViewBag.BrandSelCode = brandcmk.FirmCode;
                         }
 
@@ -2134,7 +2245,7 @@ namespace comerciamarketing_webapp.Controllers
             if (detailsForm.Count > 0)
 
             {
-        
+                detailsForm = detailsForm.Where(c => list.Contains(c.ID_visit)).OrderBy(c => c.visitDate).ToList();
 
                 ReportDocument rd = new ReportDocument();
 

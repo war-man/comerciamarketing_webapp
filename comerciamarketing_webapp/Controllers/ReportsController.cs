@@ -210,7 +210,7 @@ namespace comerciamarketing_webapp.Controllers
                         List<OCRD> customers;
                         if (escliente == true)
                         {
-                            customers = (from b in CMKdb.OCRD where (b.CardCode==customersel) select b).ToList();
+                            customers = (from b in CMKdb.OCRD where (b.U_CardCodeDLI==customersel) select b).ToList();
               
                         }
                         else {
@@ -227,8 +227,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -475,7 +485,7 @@ namespace comerciamarketing_webapp.Controllers
                             List<OCRD> customers;
                             if (escliente == true)
                             {
-                                customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+                                customers = (from b in CMKdb.OCRD where ((b.CardCode == customersel || b.U_CardCodeDLI == customersel)) select b).ToList();
 
                             }
                             else
@@ -492,10 +502,20 @@ namespace comerciamarketing_webapp.Controllers
                             }
                             else
                             {
-                                var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
                                 ViewBag.CustomersLabel = nameC.CardName;
                                 ViewBag.CustomerSelCode = nameC.CardCode;
                             }
+                        }
 
                             var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
 
@@ -695,8 +715,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -870,7 +900,7 @@ namespace comerciamarketing_webapp.Controllers
                         List<OCRD> customers;
                         if (escliente == true)
                         {
-                            customers = (from b in CMKdb.OCRD where (b.CardCode == customersel) select b).ToList();
+                            customers = (from b in CMKdb.OCRD where ((b.CardCode == customersel || b.U_CardCodeDLI == customersel)) select b).ToList();
 
                         }
                         else
@@ -888,8 +918,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -1080,8 +1120,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
@@ -1282,8 +1332,18 @@ namespace comerciamarketing_webapp.Controllers
                         else
                         {
                             var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
-                            ViewBag.CustomersLabel = nameC.CardName;
-                            ViewBag.CustomerSelCode = nameC.CardCode;
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
                         }
 
                         var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();

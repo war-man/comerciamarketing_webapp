@@ -146,5 +146,16 @@ namespace comerciamarketing_webapp.Models
   
 
     }
+    public class VisitsInfoCalendar
+    {
+        public int ID_visit { get; set; }
+        public string ID_store { get; set; }
+        public DateTime visitDate { get; set; }
+        public string ID_customer { get; set; }
+        public string ID_brand { get; set; }
+        public int idroute { get; set; }
+
+
+    }
 
 }

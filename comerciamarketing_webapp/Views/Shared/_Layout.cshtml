@@ -1680,13 +1680,137 @@
 <!--New includes-->
 @if (ViewBag.Title == "Comercia Marketing - Calendar Customers Routes")
 {
+<script>
+
+    $(document).ready(function () {
+        $("#customersel").select2();
+        getBrands();
+    });
+</script>
     @Html.Partial("~/Views/Shared/Routes_calendarCustomersScript.cshtml")
+
+    <script>
+
+            $(function () {
+
+                $('#click_filter').click(function () {
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+            var url = '@Url.Action("Calendar", "Customers", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+            var newurl = url;
+            newurl = newurl.replace('FINISH', ed);
+            newurl = newurl.replace(/&amp;/g, "&");
+            window.location.href = newurl;
+
+        });
+    });
+
+
+
+
+
+    </script>
+
 }
 @if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
 {
+<script>
+
+    $(document).ready(function () {
+        $("#customersel").select2();
+        getBrands();
+    });
+</script>
+
     @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
 
+    <script>
 
+            $(function () {
+
+                $('#click_filter').click(function () {
+
+            var st = new Date($('#reportrange').data('daterangepicker').startDate);
+            var ed = new Date($('#reportrange').data('daterangepicker').endDate);
+
+            var today = st;
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            st = mm + '/' + dd + '/' + yyyy;
+
+            var today2 = ed;
+            var dd2 = today2.getDate();
+            var mm2 = today2.getMonth() + 1; //January is 0!
+
+            var yyyy2 = today2.getFullYear();
+            if (dd2 < 10) {
+                dd2 = '0' + dd2;
+            }
+            if (mm2 < 10) {
+                mm2 = '0' + mm2;
+            }
+            ed = mm2 + '/' + dd2 + '/' + yyyy2;
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+            var url = '@Url.Action("Calendar", "Admin", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
+            url = url.replace('START', st);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+            var newurl = url;
+            newurl = newurl.replace('FINISH', ed);
+            newurl = newurl.replace(/&amp;/g, "&");
+            window.location.href = newurl;
+
+        });
+    });
+
+
+
+
+
+    </script>
     <script>
         $(document).ready(function () {
             setupEvents();
@@ -2883,7 +3007,7 @@
 
     </script>
     <script>
-     
+
 
             var table = $('#datatable2').DataTable({
                 searching: true,
@@ -2905,7 +3029,7 @@
                 }
 
             });
-        
+
                             //Print pdf
         $("#btn-print").click(function () {
             $("#loading").show();
@@ -2925,7 +3049,9 @@
 
                 });
 
-                if (objects.length > 0) {
+            if (objects.length > 0) {
+
+                console.log(objects)
                     $.ajax({
                         url: '/Customers/Print_VisitReport',
                         type: 'POST',
@@ -3549,7 +3675,6 @@
     $(function () {
         $('#click_filter').click(function () {
 
-
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
@@ -3579,23 +3704,16 @@
             }
             ed = mm2 + '/' + dd2 + '/' + yyyy2;
 
-            //var idstore = document.getElementById('filterstore').value;
-
-
-        var url = '@Url.Action("Map_customers", "Customers", new {id= ViewBag.id_customer, fstartd = "START", fendd = "FINISH" })';
-        //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
-
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+            var url = '@Url.Action("Map_customers", "Customers", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
             url = url.replace('START', st);
-            //url = url.replace('STORE', idstore);
-        var newurl = url;
-
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
+            var newurl = url;
             newurl = newurl.replace('FINISH', ed);
-        newurl = newurl.replace(/&amp;/g, "&");
-        //alert(newurl);
-        window.location.href = newurl;
-
-
-
+            newurl = newurl.replace(/&amp;/g, "&");
+            window.location.href = newurl;
 
         });
     });
@@ -3933,11 +4051,18 @@
             //var idstore = document.getElementById('filterstore').value;
 
 
-        var url = '@Url.Action("Dashboard", "Customers", new { fstartd = "START", fendd = "FINISH" })';
+
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
+
+
+
+        var url = '@Url.Action("Dashboard", "Customers", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
         //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
 
             url = url.replace('START', st);
-            //url = url.replace('STORE', idstore);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
         var newurl = url;
 
             newurl = newurl.replace('FINISH', ed);

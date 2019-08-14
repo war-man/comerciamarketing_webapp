@@ -935,7 +935,26 @@ namespace comerciamarketing_webapp.Controllers
             string result = javaScriptSerializer.Serialize(lstproduct);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetproductsByBrand(string vendorID, string brandID)
+        {
+            List<OITM> lstproduct = new List<OITM>();
+            string vendoriD = vendorID;
+            Int16 idBrand = Convert.ToInt16(brandID);
+            using (COM_MKEntities dbmk = new COM_MKEntities())
+            {
+                lstproduct = (dbmk.OITM.Where(x => x.U_CustomerCM == vendoriD && x.FirmCode==idBrand)).OrderBy(x => x.ItemName).ToList<OITM>();
+            }
 
+            foreach (var item in lstproduct)
+            {
+
+                item.ItemName = item.ItemName.Replace("\'", "");
+            }
+
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string result = javaScriptSerializer.Serialize(lstproduct);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Getsamples(string vendorID)
         {
             List<OITM> lstproduct = new List<OITM>();
@@ -1012,15 +1031,20 @@ namespace comerciamarketing_webapp.Controllers
                             .OrderByDescending(i => i.FirmName)
                             .ToList();
 
-                    var itemselectbrand = (from br in db.FormsM_details where (br.ID_formresourcetype == 13 && br.ID_visit == IDV) select br).FirstOrDefault();
-                    foreach (var item in lstbrands)
+                    try
                     {
-                        if (item.FirmCode.ToString() == itemselectbrand.fvalueText)
+                        var itemselectbrand = (from br in db.FormsM_details where (br.ID_formresourcetype == 13 && br.ID_visit == IDV) select br).FirstOrDefault();
+                        foreach (var item in lstbrands)
                         {
-                            item.isselected = true;
-                        }
+                            if (item.FirmCode.ToString() == itemselectbrand.fvalueText)
+                            {
+                                item.isselected = true;
+                            }
 
+                        }
                     }
+                    catch { }
+
 
                     //}
                     JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
@@ -1474,7 +1498,7 @@ namespace comerciamarketing_webapp.Controllers
 
                 if (activity.Customer != "")
                 {
-                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardCode == activity.ID_customer) select b).OrderBy(b => b.CardName).ToList();
+                    var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && (b.CardCode == activity.ID_customer || b.U_CardCodeDLI==activity.ID_customer)) select b).OrderBy(b => b.CardName).ToList();
                     ViewBag.customers = customers.ToList();
                 }
                 else
@@ -1952,6 +1976,35 @@ namespace comerciamarketing_webapp.Controllers
                         var customers = (from b in COM_MKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
                         ViewBag.customers = customers.ToList();
                     }
+
+                    Int16 idbrand = 0;
+
+                    if (activity.ID_brands != "" && activity.ID_brands !=null) {
+                        idbrand = Convert.ToInt16(activity.ID_brands);
+                    }
+                    
+                    if (activity.Brands != "")
+                    {
+               
+                        List<brands> brands = COM_MKdb.view_CMKEditorB
+                                               .Where(c => c.FirmCode == idbrand)
+                                               .Select(i => new brands { Customer = "", FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName })
+                                               .Distinct()
+                                               .OrderByDescending(i => i.FirmName)
+                                               .ToList();
+                        ViewBag.brands = brands;
+                    }
+                    else
+                    {
+                        List<brands> brands = COM_MKdb.view_CMKEditorB
+                                                         .Where(c=>c.U_CustomerCM==activity.ID_Vendor)
+                                                         .Select(i => new brands { Customer = "", FirmCode = i.FirmCode.ToString(), FirmName = i.FirmName })
+                                                         .Distinct()
+                                                         .OrderByDescending(i => i.FirmName)
+                                                         .ToList();
+                        ViewBag.brands = brands;
+                    }
+
 
                     //Cargamos las marcas
                     //List<brands> brandlist = COM_MKdb.view_CMKEditorB

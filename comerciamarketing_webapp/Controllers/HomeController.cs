@@ -1896,7 +1896,7 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
-        public ActionResult GetVisitsCustomer(string id, string id_customer)
+        public ActionResult GetVisitsCustomer(string id, string id_customer, string id_brand)
         {
 
             int idr = Convert.ToInt32(id);
@@ -3655,7 +3655,7 @@ var reps = (from k in db.VisitsM_representatives
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25","33","34" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25","33","34","35" };
 
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
 

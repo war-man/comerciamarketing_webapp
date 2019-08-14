@@ -1,6 +1,6 @@
 ﻿@{
 
-    ViewBag.Title = "Comercia Marketing - Activityea";
+    ViewBag.Title = "Comercia Marketing - Template previewadminS";
 }
 @helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
@@ -525,30 +525,7 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                             <div class="col-md-12">
                                 <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
-            
-                                                                        
-                                    @if (ViewBag.brands.Count == 1)
-                                    {
-                                        <option value="@ViewBag.brands[0].FirmCode" selected>@ViewBag.brands[0].FirmName</option>
-                                    }
-                                    else
-                                    {
-                                                           
-                                        <option value="0">Seleccione una marca</option>
-                                        foreach (var itemBrand in ViewBag.brands)
-                                        {
-                                            if (objeto.fvalueText == itemBrand.FirmCode.ToString())
-                                            {
-                                                <option value="@itemBrand.FirmCode" selected>@itemBrand.FirmName</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@itemBrand.FirmCode">@itemBrand.FirmName</option>
-                                            }
-
-
-                                        }
-                                    }
+                                    <option value="0">Seleccione una marca</option>
                                 </select>
 
                             </div>
@@ -699,6 +676,7 @@
 
         }
 }
+
 <!-- page-body-wrapper ends -->
 <!-- ############ Content START-->
 <div id="content" class="flex ">
@@ -707,7 +685,7 @@
         <div class="page-hero page-container " id="page-hero">
             <div class="padding d-flex">
                 <div class="page-title">
-
+                    <a href="@Url.Action("FormsM", "Home", null)" class="btn btn-info">Back</a>
                 </div>
                 <div class="flex"></div>
                 <div>
@@ -764,8 +742,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10 text-right">
-                        <input type="submit" value="Save" class="btn btn-success" id="save_activity" style="height:90px; width:130px" />
-                        <input type="submit" value="Finish activity" class="btn btn-danger" id="finish_activity" style="display:none; height:90px; width:130px" />
+
                         <!--<a href="Url.Action("Index", "Demos")" class="btn btn-default">Back</a>-->
                     </div>
                 </div>
@@ -777,17 +754,3 @@
 
 </div>
 <!-- ############ Content END-->
-<!-- Modal -->
-<div class="modal fade" data-keyboard="false" tabindex="-1" data-backdrop="static" id="modal_demoform" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="col-md-offset-4 col-md-12 text-center">
-                    <button id="checkin" type="button" class="btn btn-success" data-dismiss="modal" style="height:130px; width:220px"> Check in <i class="fa fa-clock-o"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--END MODAL-->
