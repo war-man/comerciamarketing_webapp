@@ -912,6 +912,285 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
+        public ActionResult GetDynamicProductsforMI(string activityID, string ID_customer, string ID_brand)
+        {
+            try
+            {
+                int idact = Convert.ToInt32(activityID);
+                List<BI_Dim_Products> lstproduct = new List<BI_Dim_Products>();
+                string vendoriD = ID_customer;
+                int brand = Convert.ToInt32(ID_brand);
+
+                //int sub = Convert.ToInt32(ID_subcategory);
+
+                using (COM_MKEntities dbmk = new COM_MKEntities())
+                {
+                    lstproduct = (dbmk.BI_Dim_Products.Where(x => x.Id_Brand == brand)).OrderBy(c => c.Id_Brand).ThenBy(c => c.Id_SubCategory).ToList<BI_Dim_Products>();
+                }
+
+                if (lstproduct.Count > 0)
+                {
+
+
+                    ActivitiesM act = (from actd in db.ActivitiesM where (actd.ID_activity == idact) select actd).FirstOrDefault();
+                    var countItems = (from a in db.FormsM_details where (a.ID_visit == idact) select a).Count();
+
+                    var nuevacuenta = countItems + 2;
+                    var activeSub = "";
+                    var countp = 0;
+                    var totalpro = lstproduct.Count();
+
+                    var subcatid = 0;
+                    var subcatname = "";
+
+                    List<FormsM_details> detailstoinsert = new List<FormsM_details>();
+                    foreach (var item in lstproduct)
+                    {
+                        try
+                        {
+                            if (countp == 0)
+                            {
+                                FormsM_details detalle_subcatnuevo = new FormsM_details(); //Cabecera de Marca o Subcategoria(depende para que se programe)
+
+
+                                detalle_subcatnuevo.ID_formresourcetype = 95;
+                                detalle_subcatnuevo.fsource = "";
+                                detalle_subcatnuevo.fdescription = "";
+                                detalle_subcatnuevo.fvalue = 0;
+                                detalle_subcatnuevo.fvalueDecimal = 0;
+                                detalle_subcatnuevo.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo.ID_visit = idact;
+                                detalle_subcatnuevo.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo.idkey = nuevacuenta;
+                                detalle_subcatnuevo.query1 = "";
+                                detalle_subcatnuevo.query2 = "";
+                                detalle_subcatnuevo.parent = 0;
+                                detalle_subcatnuevo.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo);
+
+                                nuevacuenta++;
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+
+                            if (activeSub == item.SubCatName)
+                            {
+
+                            }
+                            else
+                            {
+                                //inicial
+                                FormsM_details detalle_subcatnuevo2 = new FormsM_details(); //Producto
+
+
+                                detalle_subcatnuevo2.ID_formresourcetype = 95; //Este ID no existe en tabla de recursos, pero se define como las cabeceras de las subcategorias
+                                detalle_subcatnuevo2.fsource = "";
+                                detalle_subcatnuevo2.fdescription = "";
+                                detalle_subcatnuevo2.fvalue = 0;
+                                detalle_subcatnuevo2.fvalueDecimal = 0;
+                                detalle_subcatnuevo2.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo2.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo2.ID_visit = idact;
+                                detalle_subcatnuevo2.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo2.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo2.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo2.idkey = nuevacuenta;
+                                detalle_subcatnuevo2.query1 = "";
+                                detalle_subcatnuevo2.query2 = "";
+                                detalle_subcatnuevo2.parent = 0;
+                                detalle_subcatnuevo2.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo2);
+
+                                nuevacuenta++;
+
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+                            countp++;
+
+                            FormsM_details detalle_nuevo = new FormsM_details(); //Producto
+
+
+                            detalle_nuevo.ID_formresourcetype = 3;
+                            detalle_nuevo.fsource = item.ItemCode;
+                            detalle_nuevo.fdescription = item.ItemName;
+                            detalle_nuevo.fvalue = 0;
+                            detalle_nuevo.fvalueDecimal = 0;
+                            detalle_nuevo.fvalueText = item.SubCatName;
+                            detalle_nuevo.ID_formM = act.ID_form;
+
+                            detalle_nuevo.ID_visit = idact;
+                            detalle_nuevo.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                            //Colocamos ID generado por editor
+                            detalle_nuevo.idkey = nuevacuenta;
+                            detalle_nuevo.query1 = "";
+                            detalle_nuevo.query2 = "";
+                            detalle_nuevo.parent = 0;
+                            detalle_nuevo.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo);
+                            //dbcmk.SaveChanges();
+
+
+                            var padrec = nuevacuenta;
+                            nuevacuenta++;
+
+                            FormsM_details detalle_nuevo2 = new FormsM_details(); //Precio
+
+
+                            detalle_nuevo2.ID_formresourcetype = 21;
+                            detalle_nuevo2.fsource = "row";
+                            detalle_nuevo2.fdescription = "Precio";
+                            detalle_nuevo2.fvalue = 0;
+                            detalle_nuevo2.fvalueDecimal = 0;
+                            detalle_nuevo2.fvalueText = "";
+                            detalle_nuevo2.ID_formM = act.ID_form;
+
+                            detalle_nuevo2.ID_visit = idact;
+                            detalle_nuevo2.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo2.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo2.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo2.idkey = nuevacuenta;
+                            detalle_nuevo2.query1 = "";
+                            detalle_nuevo2.query2 = "";
+                            detalle_nuevo2.parent = padrec;
+                            detalle_nuevo2.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo2);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+
+                            FormsM_details detalle_nuevo5 = new FormsM_details(); //Frentes
+
+
+                            detalle_nuevo5.ID_formresourcetype = 18;
+                            detalle_nuevo5.fsource = "row";
+                            detalle_nuevo5.fdescription = "Frentes";
+                            detalle_nuevo5.fvalue = 0;
+                            detalle_nuevo5.fvalueDecimal = 0;
+                            detalle_nuevo5.fvalueText = "";
+                            detalle_nuevo5.ID_formM = act.ID_form;
+
+                            detalle_nuevo5.ID_visit = idact;
+                            detalle_nuevo5.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo5.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo5.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo5.idkey = nuevacuenta;
+                            detalle_nuevo5.query1 = "";
+                            detalle_nuevo5.query2 = "";
+                            detalle_nuevo5.parent = padrec;
+                            detalle_nuevo5.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo5);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+
+                            FormsM_details detalle_nuevo3 = new FormsM_details(); //Inventario
+
+
+                            detalle_nuevo3.ID_formresourcetype = 18;
+                            detalle_nuevo3.fsource = "row";
+                            detalle_nuevo3.fdescription = "Inventario";
+                            detalle_nuevo3.fvalue = 0;
+                            detalle_nuevo3.fvalueDecimal = 0;
+                            detalle_nuevo3.fvalueText = "";
+                            detalle_nuevo3.ID_formM = act.ID_form;
+
+                            detalle_nuevo3.ID_visit = idact;
+                            detalle_nuevo3.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo3.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo3.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo3.idkey = nuevacuenta;
+                            detalle_nuevo3.query1 = "";
+                            detalle_nuevo3.query2 = "";
+                            detalle_nuevo3.parent = padrec;
+                            detalle_nuevo3.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo3);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+                            if (countp == totalpro)
+                            {
+                            }
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message;
+
+                        }
+
+                    }
+                    //Insertamos los datos usando insercion masiva
+                    db.BulkInsert(detailstoinsert);
+
+                    string result = "Success";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+
+                    string result = "Nodata";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                string result = "Error";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
         //GET PRODUCTS, SAMPLES, GIFT, DISPLAYS, FORM DATA, GET BRANDS, GET PRODUCT LINE, GET ENEMYS
 
         public ActionResult Getproducts(string vendorID)
@@ -5136,8 +5415,78 @@ namespace comerciamarketing_webapp.Controllers
 
                     List<MyObj_tablapadre> categoriasListActivities = ObtenerCategoriarJerarquiaByID(listapadresActivities, listahijasActivities);
 
-                    ///
-                    var showbuttondynamic = (from item in FormsMDet
+                ///
+                //PRODUCTOS FILAS
+
+                List<MyObj_tablapadre> listapadresActivitiesProducts = (from item in FormsMDet
+                                                                        where (item.parent == 0 && item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype == 3 || item.ID_formresourcetype == 16 || item.ID_formresourcetype == 21))
+                                                                        select
+                                                                           new MyObj_tablapadre
+                                                                           {
+                                                                               ID_details = item.ID_details,
+                                                                               id_resource = item.ID_formresourcetype,
+                                                                               fsource = item.fsource,
+                                                                               fdescription = item.fdescription,
+                                                                               fvalue = item.fvalue,
+                                                                               fvalueDecimal = item.fvalueDecimal,
+                                                                               fvalueText = item.fvalueText,
+                                                                               ID_formM = item.ID_formM,
+                                                                               ID_visit = item.ID_visit,
+                                                                               original = item.original,
+                                                                               obj_order = item.obj_order,
+                                                                               obj_group = item.obj_group,
+                                                                               idkey = item.idkey,
+                                                                               parent = item.parent,
+                                                                               query1 = item.query1,
+                                                                               query2 = item.query2,
+                                                                               ID_empresa = item.ID_empresa
+                                                                           }
+                      ).ToList();
+
+
+                //foreach (var t in listapadresActivities) {
+                //    var s = (from e in db.FormsM_details where (e.parent == t.idkey) select e).Count();
+                //    if (s > 0)
+                //    {
+
+                //    }
+                //    else {
+                //        listapadresActivities.Remove(t);
+                //    }
+
+                //}
+
+
+                List<tablahijospadre> listahijasActivitiesProducts = (from item in FormsMDet
+                                                                      where (item.ID_visit == activity.ID_activity && item.original == false && (item.ID_formresourcetype != 3 || item.ID_formresourcetype != 16 || item.ID_formresourcetype != 21))
+                                                                      select new tablahijospadre
+                                                                      {
+                                                                          ID_details = item.ID_details,
+                                                                          id_resource = item.ID_formresourcetype,
+                                                                          fsource = item.fsource,
+                                                                          fdescription = item.fdescription,
+                                                                          fvalue = item.fvalue,
+                                                                          fvalueDecimal = item.fvalueDecimal,
+                                                                          fvalueText = item.fvalueText,
+                                                                          ID_formM = item.ID_formM,
+                                                                          ID_visit = item.ID_visit,
+                                                                          original = item.original,
+                                                                          obj_order = item.obj_order,
+                                                                          obj_group = item.obj_group,
+                                                                          idkey = item.idkey,
+                                                                          parent = item.parent,
+                                                                          query1 = item.query1,
+                                                                          query2 = item.query2,
+                                                                          ID_empresa = item.ID_empresa
+
+                                                                      }).OrderBy(c=>c.obj_order).ToList();
+
+
+                List<MyObj_tablapadre> categoriasListActivitiesProducts = ObtenerCategoriarJerarquiaByID(listapadresActivitiesProducts, listahijasActivitiesProducts);
+
+                ViewBag.productRows = categoriasListActivitiesProducts;
+
+                var showbuttondynamic = (from item in FormsMDet
                                              where (item.ID_formresourcetype == 3)
                                              select item).Count();
 
@@ -5375,7 +5724,7 @@ namespace comerciamarketing_webapp.Controllers
                 ViewBag.productRows = categoriasListActivitiesProducts;
 
                 var showbuttondynamic = (from item in FormsMDet
-                                         where (item.ID_visit == activity.ID_activity && item.ID_formresourcetype == 11)
+                                         where (item.ID_visit == activity.ID_activity && (item.ID_formresourcetype == 11 || item.ID_formresourcetype==37))
                                          select item).Count();
 
                 if (showbuttondynamic > 0)
@@ -6209,6 +6558,309 @@ namespace comerciamarketing_webapp.Controllers
                     //lastitem3.idkey = nuevacuenta + 200;
                     //dbcmk.Entry(lastitem3).State = EntityState.Modified;
                     //dbcmk.SaveChanges();
+
+                    string result = "Success";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+
+                    string result = "Nodata";
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                string result = "Error";
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
+
+        public ActionResult GetDynamicProductsbyCustomer(string activityID, string ID_customer)
+        {
+            try
+            {
+                int idact = Convert.ToInt32(activityID);
+                List<BI_Dim_Products> lstproduct = new List<BI_Dim_Products>();
+                string vendoriD = ID_customer;
+ 
+
+                //int sub = Convert.ToInt32(ID_subcategory);
+
+                using (COM_MKEntities dbmk = new COM_MKEntities())
+                {
+                    lstproduct = (dbmk.BI_Dim_Products.Where(x => x.Id_Customer == vendoriD)).OrderBy(c => c.BrandName).ThenBy(c => c.SubCatName).ThenBy(c=>c.ItemName).ToList<BI_Dim_Products>();
+                }
+
+                if (lstproduct.Count > 0)
+                {
+
+
+                    ActivitiesM act = (from actd in db.ActivitiesM where (actd.ID_activity == idact) select actd).FirstOrDefault();
+                    var countItems = (from a in db.FormsM_details where (a.ID_visit == idact) select a).Count();
+
+                    var nuevacuenta = countItems + 2;
+                    var activeSub = "";
+                    var activeBrand = "";
+                    var countp = 0;
+                    var totalpro = lstproduct.Count();
+
+                    var subcatid = 0;
+                    var brandselid = 0;
+                    var subcatname = "";
+                    var brandselname = "";
+
+                    List<FormsM_details> detailstoinsert = new List<FormsM_details>();
+                    foreach (var item in lstproduct)
+                    {
+                        try
+                        {
+                            if (countp == 0)
+                            {
+                                FormsM_details detalle_brandnuevo = new FormsM_details(); //Cabecera de Marca o Subcategoria(depende para que se programe)
+                                //En este caso para marca
+
+                                detalle_brandnuevo.ID_formresourcetype = 95;
+                                detalle_brandnuevo.fsource = "";
+                                detalle_brandnuevo.fdescription = "";
+                                detalle_brandnuevo.fvalue = 0;
+                                detalle_brandnuevo.fvalueDecimal = 0;
+                                detalle_brandnuevo.fvalueText = item.BrandName;
+                                detalle_brandnuevo.ID_formM = act.ID_form;
+
+                                detalle_brandnuevo.ID_visit = idact;
+                                detalle_brandnuevo.original = false;
+                                //Colocamos numero de orden
+                                detalle_brandnuevo.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_brandnuevo.obj_group = Convert.ToInt32(item.Id_Brand); //Codigo de marca
+                                //Colocamos ID generado por editor
+                                detalle_brandnuevo.idkey = nuevacuenta;
+                                detalle_brandnuevo.query1 = "";
+                                detalle_brandnuevo.query2 = "";
+                                detalle_brandnuevo.parent = 0;
+                                detalle_brandnuevo.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_brandnuevo);
+
+                                nuevacuenta++;
+
+                                brandselid = Convert.ToInt32(item.Id_Brand);
+                                brandselname = item.BrandName;
+                                activeBrand = item.BrandName;
+
+
+                                FormsM_details detalle_subcatnuevo = new FormsM_details(); //Cabecera de Marca o Subcategoria(depende para que se programe)
+                                //En este caso para marca
+
+                                detalle_subcatnuevo.ID_formresourcetype = 95;
+                                detalle_subcatnuevo.fsource = "";
+                                detalle_subcatnuevo.fdescription = "";
+                                detalle_subcatnuevo.fvalue = 0;
+                                detalle_subcatnuevo.fvalueDecimal = 0;
+                                detalle_subcatnuevo.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo.ID_visit = idact;
+                                detalle_subcatnuevo.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo.idkey = nuevacuenta;
+                                detalle_subcatnuevo.query1 = "";
+                                detalle_subcatnuevo.query2 = "";
+                                detalle_subcatnuevo.parent = 0;
+                                detalle_subcatnuevo.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo);
+
+                                nuevacuenta++;
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+
+                            //verificamos si la marca se repite
+                            if (activeBrand == item.BrandName)
+                            {
+
+                            }
+                            else
+                            {
+                                //inicial
+                                FormsM_details detalle_brandnuevo2 = new FormsM_details(); 
+
+
+                                detalle_brandnuevo2.ID_formresourcetype = 95; //Este ID no existe en tabla de recursos, pero se define como las cabeceras de las marcas
+                                detalle_brandnuevo2.fsource = "";
+                                detalle_brandnuevo2.fdescription = "";
+                                detalle_brandnuevo2.fvalue = 0;
+                                detalle_brandnuevo2.fvalueDecimal = 0;
+                                detalle_brandnuevo2.fvalueText = item.BrandName;
+                                detalle_brandnuevo2.ID_formM = act.ID_form;
+
+                                detalle_brandnuevo2.ID_visit = idact;
+                                detalle_brandnuevo2.original = false;
+                                //Colocamos numero de orden
+                                detalle_brandnuevo2.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_brandnuevo2.obj_group = Convert.ToInt32(item.Id_Brand);
+                                //Colocamos ID generado por editor
+                                detalle_brandnuevo2.idkey = nuevacuenta;
+                                detalle_brandnuevo2.query1 = "";
+                                detalle_brandnuevo2.query2 = "";
+                                detalle_brandnuevo2.parent = 0;
+                                detalle_brandnuevo2.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_brandnuevo2);
+
+                                nuevacuenta++;
+
+
+                                brandselid = Convert.ToInt32(item.Id_Brand);
+                                brandselname = item.BrandName;
+                                activeBrand = item.BrandName;
+
+                            }
+
+                            //Verificamos si la subcategoria se repite
+                            if (activeSub == item.SubCatName)
+                            {
+
+                            }
+                            else
+                            {
+                                //inicial
+                                FormsM_details detalle_subcatnuevo2 = new FormsM_details(); 
+
+
+                                detalle_subcatnuevo2.ID_formresourcetype = 95; //Este ID no existe en tabla de recursos, pero se define como las cabeceras de las subcategorias
+                                detalle_subcatnuevo2.fsource = "";
+                                detalle_subcatnuevo2.fdescription = "";
+                                detalle_subcatnuevo2.fvalue = 0;
+                                detalle_subcatnuevo2.fvalueDecimal = 0;
+                                detalle_subcatnuevo2.fvalueText = item.SubCatName;
+                                detalle_subcatnuevo2.ID_formM = act.ID_form;
+
+                                detalle_subcatnuevo2.ID_visit = idact;
+                                detalle_subcatnuevo2.original = false;
+                                //Colocamos numero de orden
+                                detalle_subcatnuevo2.obj_order = nuevacuenta;
+                                //Colocamos grupo si tiene
+                                detalle_subcatnuevo2.obj_group = Convert.ToInt32(item.Id_SubCategory);
+                                //Colocamos ID generado por editor
+                                detalle_subcatnuevo2.idkey = nuevacuenta;
+                                detalle_subcatnuevo2.query1 = "";
+                                detalle_subcatnuevo2.query2 = "";
+                                detalle_subcatnuevo2.parent = 0;
+                                detalle_subcatnuevo2.ID_empresa = 2;
+
+
+
+                                detailstoinsert.Add(detalle_subcatnuevo2);
+
+                                nuevacuenta++;
+
+
+                                subcatid = Convert.ToInt32(item.Id_SubCategory);
+                                subcatname = item.SubCatName;
+                                activeSub = item.SubCatName;
+
+                            }
+                            countp++;
+
+                            FormsM_details detalle_nuevo = new FormsM_details(); //Producto
+
+
+                            detalle_nuevo.ID_formresourcetype = 3;
+                            detalle_nuevo.fsource = item.ItemCode;
+                            detalle_nuevo.fdescription = item.ItemName;
+                            detalle_nuevo.fvalue = 0;
+                            detalle_nuevo.fvalueDecimal = 0;
+                            detalle_nuevo.fvalueText = item.BrandName;
+                            detalle_nuevo.ID_formM = act.ID_form;
+
+                            detalle_nuevo.ID_visit = idact;
+                            detalle_nuevo.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo.obj_group = Convert.ToInt32(item.Id_Brand);
+                            //Colocamos ID generado por editor
+                            detalle_nuevo.idkey = nuevacuenta;
+                            detalle_nuevo.query1 = item.SubCatName;
+                            detalle_nuevo.query2 = "";
+                            detalle_nuevo.parent = 0;
+                            detalle_nuevo.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo);
+                            //dbcmk.SaveChanges();
+
+
+                            var padrec = nuevacuenta;
+                            nuevacuenta++;
+
+                            FormsM_details detalle_nuevo3 = new FormsM_details(); //Inventario
+
+
+                            detalle_nuevo3.ID_formresourcetype = 21;
+                            detalle_nuevo3.fsource = "";
+                            detalle_nuevo3.fdescription = "Cantidad";
+                            detalle_nuevo3.fvalue = 0;
+                            detalle_nuevo3.fvalueDecimal = 0; //Cantidad
+                            detalle_nuevo3.fvalueText = item.ItemCode;
+                            detalle_nuevo3.ID_formM = act.ID_form;
+
+                            detalle_nuevo3.ID_visit = idact;
+                            detalle_nuevo3.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo3.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo3.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo3.idkey = nuevacuenta;
+                            detalle_nuevo3.query1 = "";
+                            detalle_nuevo3.query2 = "";
+                            detalle_nuevo3.parent = padrec;
+                            detalle_nuevo3.ID_empresa = 2;
+
+
+
+                            detailstoinsert.Add(detalle_nuevo3);
+                            //dbcmk.SaveChanges();
+                            nuevacuenta++;
+
+                            if (countp == totalpro)
+                            {
+                            }
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message;
+
+                        }
+
+                    }
+                    //Insertamos los datos usando insercion masiva
+                    db.BulkInsert(detailstoinsert);
+
 
                     string result = "Success";
                     return Json(result, JsonRequestBehavior.AllowGet);

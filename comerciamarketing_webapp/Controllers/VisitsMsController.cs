@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using comerciamarketing_webapp.Models;
 using CrystalDecisions.CrystalReports.Engine;
 using Ionic.Zip;
+using Newtonsoft.Json;
 using Postal;
 
 namespace comerciamarketing_webapp.Controllers
@@ -1877,50 +1878,155 @@ namespace comerciamarketing_webapp.Controllers
                 //Guardamos el detalle
                 //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).AsNoTracking().ToList();
 
-                var sql = @"usp_CreateFormDetailDemo @IDVisit, @IDForm";
-                db.Database.ExecuteSqlCommand(sql,
+
+                if (IDForm == 41) //Si es nuevo diseno DEMO
+                {
+                    var sql = @"usp_CreateFormDetailDemoHeader @IDVisit, @IDForm";
+                    db.Database.ExecuteSqlCommand(sql,
                     new SqlParameter("@IDVisit", nuevaActividad.ID_demo),
                     new SqlParameter("@IDForm", IDForm));
 
-                var countItems = (from a in db.FormsM_detailsDemos where (a.ID_visit == nuevaActividad.ID_demo) select a).Count();
-                var nuevacuenta = countItems + 2;
-                List<string> TagIds = products_listSel.Split(',').ToList();
-                //AGREGAMOS LOS PRODUCTOS
-                foreach (var item in TagIds)
-                {
-                    try
+
+                    var countItems = 7;
+                    var nuevacuenta = countItems + 2;
+                    List<string> TagIds = products_listSel.Split(',').ToList();
+
+                    //Recuperamos lista de items
+                    //Tomamos el detalle saltando los primeros 6 registros y tomando los ultimos 39 (la firma es el 40)
+                   var listadetalle = (from a in db.FormsM_details where (a.ID_formM == 41 && a.original == true) select new demosDetails
+                   {
+                       ID_details = a.ID_details,
+                       ID_formresourcetype = a.ID_formresourcetype,
+                       fsource = a.fsource,
+                       fdescription = a.fdescription,
+                       fvalue = a.fvalue,
+                       fvalueDecimal = a.fvalueDecimal,
+                       fvalueText = a.fvalueText,
+                       ID_formM = a.ID_formM,
+                       ID_visit = a.ID_visit,
+                       original = a.original,
+                       obj_order = a.obj_order,
+                       obj_group = a.obj_group,
+                       idkey = a.idkey,
+                       parent = a.parent,
+                       query1 = a.query1,
+                       query2 = a.query2,
+                       ID_empresa = a.ID_empresa
+                   }).OrderBy(c=>c.idkey).Skip(6).Take(39).ToList();
+
+                    //AGREGAMOS LOS PRODUCTOS
+                    List<FormsM_detailsDemos> listaIngreso = new List<FormsM_detailsDemos>();
+
+                    foreach (var item in TagIds)
                     {
-                      
+                        try
+                        {
+
                             var productinfo = (CMKdb.OITM.Where(x => x.ItemCode == item)).FirstOrDefault();
+
+                            
+
+                            FormsM_detailsDemos detalle_nuevo = new FormsM_detailsDemos();
+
+
+                            detalle_nuevo.ID_formresourcetype = 3;
+                            detalle_nuevo.fsource = productinfo.ItemCode;
+                            detalle_nuevo.fdescription = productinfo.ItemName;
+                            detalle_nuevo.fvalue = 0;
+                            detalle_nuevo.fvalueDecimal = 0;
+                            detalle_nuevo.fvalueText = "";
+                            detalle_nuevo.ID_formM = Convert.ToInt32(ID_form);
+
+                            detalle_nuevo.ID_visit = nuevaActividad.ID_demo;
+                            detalle_nuevo.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo.idkey = nuevacuenta;
+                            detalle_nuevo.query1 = "";
+                            detalle_nuevo.query2 = "";
+                            detalle_nuevo.parent = 0;
+                            detalle_nuevo.ID_empresa = 2;
+
+                            listaIngreso.Add(detalle_nuevo);
+
+                            //nuevacuenta++;
+
+                            foreach (var det in listadetalle) {
+                                FormsM_detailsDemos detalle_producto = new FormsM_detailsDemos();
+
+                                detalle_producto = JsonConvert.DeserializeObject<FormsM_detailsDemos>(JsonConvert.SerializeObject(det));
+
+
+                                detalle_producto.fvalueText = productinfo.ItemCode;
+                                detalle_producto.obj_order = det.obj_order + nuevacuenta;
+                                detalle_producto.idkey = det.idkey + nuevacuenta;
+                                detalle_producto.original = false;
+                                detalle_producto.ID_visit = nuevaActividad.ID_demo;
+                                if (det.parent > 0) {
+                                    if (det.ID_formresourcetype == 8 || det.ID_formresourcetype == 18 || det.ID_formresourcetype == 6 || det.ID_formresourcetype == 5)
+                                    {
+                                        detalle_producto.parent = nuevacuenta;
+                                    }
+                                    else {
+                                        detalle_producto.parent = detalle_producto.parent + nuevacuenta;
+                                    }
+                                    
+                                }
+                                listaIngreso.Add(detalle_producto);
+                            }
+
+                            nuevacuenta += 100;
+
+                           // db.SaveChanges();
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message;
+
+                        }
+
                         
 
-                        FormsM_detailsDemos detalle_nuevo = new FormsM_detailsDemos();
+                    }
+                    db.BulkInsert(listaIngreso);
+
+                    //AGREGAMOS FOOTER
+
+                    try
+                    {
+
+                        FormsM_detailsDemos detalle_nuevoFooter = new FormsM_detailsDemos();
 
 
-                        detalle_nuevo.ID_formresourcetype = 3;
-                        detalle_nuevo.fsource = productinfo.ItemCode;
-                        detalle_nuevo.fdescription = productinfo.ItemName;
-                        detalle_nuevo.fvalue = 0;
-                        detalle_nuevo.fvalueDecimal = 0;
-                        detalle_nuevo.fvalueText = "";
-                        detalle_nuevo.ID_formM = Convert.ToInt32(ID_form);
+                        detalle_nuevoFooter.ID_formresourcetype = 9;
+                        detalle_nuevoFooter.fsource = "";
+                        detalle_nuevoFooter.fdescription = "FIRMA";
+                        detalle_nuevoFooter.fvalue = 0;
+                        detalle_nuevoFooter.fvalueDecimal = 0;
+                        detalle_nuevoFooter.fvalueText = "";
+                        detalle_nuevoFooter.ID_formM = Convert.ToInt32(ID_form);
 
-                        detalle_nuevo.ID_visit = nuevaActividad.ID_demo;
-                        detalle_nuevo.original = false;
+                        detalle_nuevoFooter.ID_visit = nuevaActividad.ID_demo;
+                        detalle_nuevoFooter.original = false;
                         //Colocamos numero de orden
-                        detalle_nuevo.obj_order = nuevacuenta;
+                        detalle_nuevoFooter.obj_order = nuevacuenta +2;
                         //Colocamos grupo si tiene
-                        detalle_nuevo.obj_group = 0;
+                        detalle_nuevoFooter.obj_group = 0;
                         //Colocamos ID generado por editor
-                        detalle_nuevo.idkey = nuevacuenta;
-                        detalle_nuevo.query1 = "";
-                        detalle_nuevo.query2 = "";
-                        detalle_nuevo.parent = 0;
-                        detalle_nuevo.ID_empresa = 2;
+                        detalle_nuevoFooter.idkey = nuevacuenta + 2;
+                        detalle_nuevoFooter.query1 = "";
+                        detalle_nuevoFooter.query2 = "";
+                        detalle_nuevoFooter.parent = 0;
+                        detalle_nuevoFooter.ID_empresa = 2;
 
 
 
-                        db.FormsM_detailsDemos.Add(detalle_nuevo);
+                        db.FormsM_detailsDemos.Add(detalle_nuevoFooter);
                         db.SaveChanges();
                         nuevacuenta++;
                     }
@@ -1930,7 +2036,68 @@ namespace comerciamarketing_webapp.Controllers
 
                     }
 
+                
+            }
+                else {
+                    var sql = @"usp_CreateFormDetailDemo @IDVisit, @IDForm";
+                    db.Database.ExecuteSqlCommand(sql,
+                        new SqlParameter("@IDVisit", nuevaActividad.ID_demo),
+                        new SqlParameter("@IDForm", IDForm));
+
+                    var countItems = (from a in db.FormsM_detailsDemos where (a.ID_visit == nuevaActividad.ID_demo) select a).Count();
+                    var nuevacuenta = countItems + 2;
+                    List<string> TagIds = products_listSel.Split(',').ToList();
+                    //AGREGAMOS LOS PRODUCTOS
+                    foreach (var item in TagIds)
+                    {
+                        try
+                        {
+
+                            var productinfo = (CMKdb.OITM.Where(x => x.ItemCode == item)).FirstOrDefault();
+
+
+                            FormsM_detailsDemos detalle_nuevo = new FormsM_detailsDemos();
+
+
+                            detalle_nuevo.ID_formresourcetype = 3;
+                            detalle_nuevo.fsource = productinfo.ItemCode;
+                            detalle_nuevo.fdescription = productinfo.ItemName;
+                            detalle_nuevo.fvalue = 0;
+                            detalle_nuevo.fvalueDecimal = 0;
+                            detalle_nuevo.fvalueText = "";
+                            detalle_nuevo.ID_formM = Convert.ToInt32(ID_form);
+
+                            detalle_nuevo.ID_visit = nuevaActividad.ID_demo;
+                            detalle_nuevo.original = false;
+                            //Colocamos numero de orden
+                            detalle_nuevo.obj_order = nuevacuenta;
+                            //Colocamos grupo si tiene
+                            detalle_nuevo.obj_group = 0;
+                            //Colocamos ID generado por editor
+                            detalle_nuevo.idkey = nuevacuenta;
+                            detalle_nuevo.query1 = "";
+                            detalle_nuevo.query2 = "";
+                            detalle_nuevo.parent = 0;
+                            detalle_nuevo.ID_empresa = 2;
+
+
+
+                            db.FormsM_detailsDemos.Add(detalle_nuevo);
+                            db.SaveChanges();
+                            nuevacuenta++;
+                        }
+                        catch (Exception ex)
+                        {
+                            var error = ex.Message;
+
+                        }
+
+                    }
                 }
+
+
+              
+
 
 
                 //enviamoS correo SI ES UN USUARIO DEMO

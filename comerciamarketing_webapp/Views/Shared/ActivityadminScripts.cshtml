@@ -1656,3 +1656,37 @@
     }
 
 </script>
+<script type="text/javascript">
+    function cargarproductosModeloInfo() {
+        $("#loading").show();
+        var customerId = $("#customer_list").val();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+        var brandId = $("#brands_list").val();
+
+        $.ajax({
+            url: '/FormsM/GetDynamicProductsforMI',
+            type: 'POST',
+            data: { 'activityID': idvisita, 'ID_customer': customerId, 'ID_brand': brandId },
+            cache: false,
+            global: false,
+            success: function (result) {
+
+
+                //$("#loading").hide();
+                window.location.reload(true);
+
+
+
+            },
+            error: function (request) {
+                $("#loading").hide();
+                alert("Error: Server data fail");
+
+
+            }
+        });
+
+    }
+
+</script>

@@ -57,9 +57,50 @@
             color: #fff;
         }
     </style>
-    @if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
+    @if (ViewBag.Title == "Comercia Marketing - Template previewadmin")
+    {
+    <style>
+            .input-icon {
+                position: relative;
+            }
+
+                .input-icon > i {
+                    position: absolute;
+                    display: block;
+                    transform: translate(0, -50%);
+                    top: 50%;
+                    pointer-events: none;
+                    width: 15px;
+                    text-align: center;
+                    font-style: normal;
+                    font-size: 0.825rem;
+                }
+
+                .input-icon > input {
+                    padding-left: 15px;
+                    padding-right: 0;
+                }
+
+            .input-icon-right > i {
+                right: 0;
+            }
+
+            .input-icon-right > input {
+                padding-left: 0;
+                padding-right: 25px;
+                text-align: right;
+            }
+    </style>
+    }
+        @if (ViewBag.Title == "Comercia Marketing - Template preview2" || ViewBag.Title == "Comercia Marketing - Template preview2on")
     {
         <style>
+
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
 
             #rightss {
                 height: 500px;
@@ -124,6 +165,7 @@
                 padding-right: 25px;
                 text-align: right;
             }
+
 
             /*DATATABLES
             table {
@@ -1659,6 +1701,13 @@
 
 @if (ViewBag.Title == "Comercia Marketing - Admin Demos")
 {
+    <script>
+
+        $(document).ready(function () {
+            $("#customersel").select2();
+            getBrands();
+        });
+    </script>
     @Html.Partial("~/Views/Shared/demoScript.cshtml")
 }
 
@@ -1680,13 +1729,13 @@
 <!--New includes-->
 @if (ViewBag.Title == "Comercia Marketing - Calendar Customers Routes")
 {
-<script>
+    <script>
 
-    $(document).ready(function () {
-        $("#customersel").select2();
-        getBrands();
-    });
-</script>
+        $(document).ready(function () {
+            $("#customersel").select2();
+            getBrands();
+        });
+    </script>
     @Html.Partial("~/Views/Shared/Routes_calendarCustomersScript.cshtml")
 
     <script>
@@ -1747,13 +1796,13 @@
 }
 @if (ViewBag.Title == "Comercia Marketing - Calendar Admin Routes")
 {
-<script>
+    <script>
 
-    $(document).ready(function () {
-        $("#customersel").select2();
-        getBrands();
-    });
-</script>
+        $(document).ready(function () {
+            $("#customersel").select2();
+            getBrands();
+        });
+    </script>
 
     @Html.Partial("~/Views/Shared/Routes_calendarScript.cshtml")
 
@@ -4153,6 +4202,7 @@
         $('#click_filter').click(function () {
 
 
+
             var st = new Date($('#reportrange').data('daterangepicker').startDate);
             var ed = new Date($('#reportrange').data('daterangepicker').endDate);
 
@@ -4182,14 +4232,17 @@
             }
             ed = mm2 + '/' + dd2 + '/' + yyyy2;
 
-            //var idstore = document.getElementById('filterstore').value;
+            var customer = document.getElementById('customersel').value;
+            var brand = document.getElementById('brandsel').value;
 
 
-        var url = '@Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH" })';
+
+        var url = '@Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", customersel="CUSTSEL", brandsel="BRANDSEL" })';
         //var url = 'Url.Action("Demos", "Admin", new { fstartd = "START", fendd = "FINISH", store = "STORE" })';
 
             url = url.replace('START', st);
-            //url = url.replace('STORE', idstore);
+            url = url.replace('CUSTSEL', customer);
+            url = url.replace('BRANDSEL', brand);
         var newurl = url;
 
             newurl = newurl.replace('FINISH', ed);

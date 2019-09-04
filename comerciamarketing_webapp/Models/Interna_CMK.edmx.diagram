@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="Interna_CMKModel.Datos_Audit_11" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="Interna_CMKModel.Datos_Marketing_Activity" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="Interna_CMKModel.Estructura_1_1_Comercia" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Interna_CMKModel.Datos_Audit_2" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Interna_CMKModel.Visita_2_0" Width="1.5" PointX="7.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

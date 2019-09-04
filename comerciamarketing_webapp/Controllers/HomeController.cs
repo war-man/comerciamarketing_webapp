@@ -1896,7 +1896,7 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
-        public ActionResult GetVisitsCustomer(string id, string id_customer, string id_brand)
+        public ActionResult GetVisitsCustomer(string id, string id_customer, int? id_brand)
         {
 
             int idr = Convert.ToInt32(id);
@@ -1905,13 +1905,71 @@ namespace comerciamarketing_webapp.Controllers
             int[] activities = new int[] { };
             RoutesM rt = (from a in db.RoutesM where (a.ID_route == idr) select a).FirstOrDefault();
 
-            visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
-            var arryavi = visitas.Select(a => a.ID_visit).ToArray();
 
-            activities = (from a in db.ActivitiesM where (arryavi.Contains(a.ID_visit) && a.ID_customer == id_customer) select a.ID_visit).Distinct().ToArray();
+            //Nueva forma para tomar datos
+            List<VisitsInfoCalendar> lstVisitas;
+            //FIN FILTROS*******************
+ 
 
-            visitas = (from obj in visitas where (activities.Contains(obj.ID_visit)) select obj).ToList();
-            var lst = (from obj in visitas select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode), visitstate = obj.ID_visitstate, checkout = obj.check_in, lat = obj.geoLat, lng = obj.geoLong }).OrderByDescending(c => c.visitstate == 4).ThenByDescending(c => c.visitstate == 2).ThenBy(c => c.checkout).ToArray();
+                visitas = (from obj in db.VisitsM where (obj.ID_route == idr) select obj).ToList();
+
+                if (id_customer == null || id_customer == "" || id_customer == "0")
+                {
+                    lstVisitas = (from a in db.VisitsM
+                                  join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                  from p in ps.DefaultIfEmpty()
+                                  where (a.ID_route == idr)
+                                  //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                  select new VisitsInfoCalendar
+                                  {
+                                      ID_visit = a.ID_visit,
+                                      ID_store = a.ID_store,
+                                      idroute = a.ID_route,
+                                      visitDate = a.visit_date,
+                                      ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                      ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                      Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                  }).ToList();
+
+                }
+                else
+                {
+                    lstVisitas = (from a in db.VisitsM
+                                  join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                  from p in ps.DefaultIfEmpty()
+                                  where (p.ID_customer == id_customer && a.ID_route == idr)
+                                  //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                  select new VisitsInfoCalendar
+                                  {
+                                      ID_visit = a.ID_visit,
+                                      ID_store = a.ID_store,
+                                      idroute = a.ID_route,
+                                      visitDate = a.visit_date,
+                                      ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                      ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                      Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                  }).ToList();
+                    if (id_brand == null || id_brand == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        var brandstring = id_brand.ToString();
+                        lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                    }
+
+                }
+
+            
+                
+            var arryavi = lstVisitas.Select(a => a.ID_visit).ToArray();
+
+            //activities = (from a in db.ActivitiesM where (arryavi.Contains(a.ID_visit)) select a.ID_visit).Distinct().ToArray();
+
+            visitas = (from obj in visitas where (arryavi.Contains(obj.ID_visit)) select obj).ToList();
+            var lst = (from obj in visitas select new { id = obj.ID_visit, store = obj.ID_store + " - " + obj.store, idstore = obj.ID_store, address = (obj.address + ", " + obj.city + ", " + obj.zipcode),
+                visitstate = obj.ID_visitstate, checkout = obj.check_in, lat = obj.geoLat, lng = obj.geoLong }).OrderByDescending(c => c.visitstate == 4).ThenByDescending(c => c.visitstate == 2).ThenBy(c => c.checkout).ToArray();
             //ESTADISTICA DE RUTAS POR ESTADO DE VISITAS
             decimal totalRutas = visitas.Count();
 
@@ -1955,12 +2013,19 @@ namespace comerciamarketing_webapp.Controllers
 
             //get brands
             var arrayvisits = visitas.Select(c => c.ID_visit).ToArray();
-            var brands = (from a in db.ActivitiesM
-                          join b in db.FormsM_details on a.ID_activity equals b.ID_visit
-                          where (arrayvisits.Contains(a.ID_visit) && b.ID_formresourcetype == 13 && b.fdescription != "" && a.ID_customer==id_customer)
-                          select new brandsinroute { brand = b.fdescription, count = 0 }).Distinct().ToList();
+
+            var brands = (from p in lstVisitas
+                              group p by p.ID_brand into g
+                              select new brandsinroute
+                              {
+                                  brand = g.Select(e => e.Brand).FirstOrDefault(),
+                                  count = 0
+                              }).ToList();
+  
 
             List<representativessinroue> representatives = new List<representativessinroue>();
+
+            brands = brands.Distinct().ToList();
             if (id_customer == "S00424")
             {
                 
@@ -3655,12 +3720,12 @@ var reps = (from k in db.VisitsM_representatives
                 ViewBag.ID_activity = new SelectList(db.ActivitiesM_types, "ID_activity", "description");
                 //Seleccionamos los tipos de recursos a utilizar en el caso de Merchandising
 
-                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25","33","34","35" };
+                List<string> uids = new List<string>() { "1", "3", "5", "6", "8", "9", "11","12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23", "24","25","33","34","35","36","37" };
 
                 ViewBag.ID_formresourcetype = new SelectList(db.form_resource_type.Where(c => uids.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
 
                 //PARA RECURSOS DE RETAIL AUDIT O COLUMN
-                List<string> uidsColumn = new List<string>() { "16","21","3" };
+                List<string> uidsColumn = new List<string>() { "16","21","3","18" };
 
                 ViewBag.ID_formresourcetypeRetail = new SelectList(db.form_resource_type.Where(c => uidsColumn.Contains(c.ID_formresourcetype.ToString())).OrderBy(c => c.fdescription), "ID_formresourcetype", "fdescription");
 

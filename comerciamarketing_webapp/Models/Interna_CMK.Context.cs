@@ -28,5 +28,7 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<Datos_Audit_11> Datos_Audit_11 { get; set; }
         public virtual DbSet<Datos_Marketing_Activity> Datos_Marketing_Activity { get; set; }
         public virtual DbSet<Estructura_1_1_Comercia> Estructura_1_1_Comercia { get; set; }
+        public virtual DbSet<Datos_Audit_2> Datos_Audit_2 { get; set; }
+        public virtual DbSet<Visita_2_0> Visita_2_0 { get; set; }
     }
 }

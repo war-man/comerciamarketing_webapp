@@ -153,9 +153,29 @@ namespace comerciamarketing_webapp.Models
         public DateTime visitDate { get; set; }
         public string ID_customer { get; set; }
         public string ID_brand { get; set; }
+        public string Brand { get; set; }
         public int idroute { get; set; }
 
 
     }
 
+    public class demosDetails {
+        public int ID_details { get; set; }
+        public int ID_formresourcetype { get; set; }
+        public string fsource { get; set; }
+        public string fdescription { get; set; }
+        public int fvalue { get; set; }
+        public decimal fvalueDecimal { get; set; }
+        public string fvalueText { get; set; }
+        public int ID_formM { get; set; }
+        public int ID_visit { get; set; }
+        public bool original { get; set; }
+        public int obj_order { get; set; }
+        public int obj_group { get; set; }
+        public int idkey { get; set; }
+        public int parent { get; set; }
+        public string query1 { get; set; }
+        public string query2 { get; set; }
+        public int ID_empresa { get; set; }
+    }
 }

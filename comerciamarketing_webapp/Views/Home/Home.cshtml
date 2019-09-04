@@ -63,10 +63,35 @@
     </head>
     <body class="x-hidden">
 
+        <!-- Load Facebook SDK for JavaScript -->
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function () {
+                FB.init({
+                    xfbml: true,
+                    version: 'v3.3'
+                });
+            };
+
+
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+
+
+        <div class="fb-customerchat"
+             attribution=setup_tool
+             page_id="749323255217283">
+        </div>
         <!--
-        =========================
-        PRELOADER
-        ========================= -->
+    =========================
+    PRELOADER
+    ========================= -->
         <div id="loading">
             <div class="ripple ripple1"></div>
             <div class="ripple ripple2"></div>
@@ -116,9 +141,9 @@
 
         </nav>
         <!--
-        =========================
-        HERO SECTION
-        ========================= -->
+    =========================
+    HERO SECTION
+    ========================= -->
         <header id="hero" class="hero" style="background-image: url('/Content/landingpage/images/main/Headers/header01.jpg');background-repeat: no-repeat;
   background-size:cover;">
             <div class="container" style="padding-top:190px;">
@@ -161,9 +186,9 @@
 
 
         <!--
-            =========================
-            APP SCREENS SLIDER
-            ========================= -->
+    =========================
+    APP SCREENS SLIDER
+    ========================= -->
         <div id="overview"></div>
         <ul id="demo1">
             <li><a href="#slide1"><img src="~/Content/landingpage/images/main/slides/COMERCIA_LandingPage_Imagen_Competitividad.png"></a></li>
@@ -175,12 +200,12 @@
 
 
         <!--
-        =========================
-        FEATURES OVERVIEW
-        ========================= -->
+    =========================
+    FEATURES OVERVIEW
+    ========================= -->
         <section class="section-spacer equipoprofesional" style="background-image: url('/Content/landingpage/images/main/Headers/header03.jpg');background-repeat: no-repeat;
   background-size:cover;background-position:center">
-         
+
             <div class="container" style="padding-top: 40px;">
                 <div class="row flex-column-reverse flex-sm-row align-items-center">
                     <div class="col-sm-6">
@@ -210,7 +235,7 @@
                                 <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
                                 <span class="spanfirst" style="font-family: Gotham;font-weight:bold; font-size: 16px;color:#652D90">COLOCACIÓN DE PRODUCTOS EN BASE A VISIBILIDAD ESTRATEGICA</span>
                             </div>
-                    
+
                         </li>
                         <li style="padding-bottom: 8px;">
                             <img class="ulfirstimgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
@@ -245,7 +270,7 @@
                                 </li>
                                 <li style="padding-bottom: 8px;">
                                     <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
-                                    <span  class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">REPORTES DE MERCADEO Y EXPORTACIÓN DE INFORMACIÓN</span>
+                                    <span class="secondspan" style="font-family: Gotham; font-size: 16px;color:#fff;">REPORTES DE MERCADEO Y EXPORTACIÓN DE INFORMACIÓN</span>
                                 </li>
                                 <li style="padding-bottom: 8px;">
                                     <img class="ulisecondmgdot" src="~/Content/landingpage/images/main/icons/1x/Asset 8.png" />
@@ -253,9 +278,9 @@
                                 </li>
                             </ul>
                             <!--<a href="#" class="btn btn-link btn-link--secondary">
-                              Contact u
-                              <i class="icon ion-ios-arrow-round-forward"></i>
-                            </a>-->
+                          Contact u
+                          <i class="icon ion-ios-arrow-round-forward"></i>
+                        </a>-->
                         </div>
                     </div>
                 </div>
@@ -263,13 +288,13 @@
         </section>
 
         <!--
-        =========================
-        pricing TABLE
-        ========================= -->
+    =========================
+    pricing TABLE
+    ========================= -->
         <!--
-        =========================
-        CLIENTS LOGO
-        ========================= -->
+    =========================
+    CLIENTS LOGO
+    ========================= -->
         <section id="services" class="section-spacer pricing-section bg-very__gray">
             <div class="container">
                 <header class="section-header text-center">
@@ -287,12 +312,12 @@
                                 <h4 class="feature-title servtit" style="font-family: Gotham; color:#652D90">MERCADEO GENERAL</h4>
 
                                 <!--<a href="#" class="btn btn-link btn-link--secondary">Learn more
-                                  <i class="icon ion-ios-arrow-forward"></i>
-                                </a>-->
+                              <i class="icon ion-ios-arrow-forward"></i>
+                            </a>-->
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-12 divservicios" >
+                    <div class="col-md-4 col-12 divservicios">
                         <div class="feature-card">
                             <div class="u-icon u-icon__circle u-icon__lg bg-dimped__purple">
                                 <img class="serviimg" src="~/Content/landingpage/images/main/icons/1x/Asset%202.png">
@@ -349,9 +374,9 @@
         </section>
 
         <!--
-        =========================
-        testimonialS WITH SLIDER
-        ========================= -->
+    =========================
+    testimonialS WITH SLIDER
+    ========================= -->
         <section id="clients" class="section-spacer pb-0 section--clients">
             <div class="container">
 
@@ -383,15 +408,15 @@
             </div>
         </section><br><br>
         <!--
-        =========================
-        FAQs
-        =========================
+    =========================
+    FAQs
+    =========================
 
-        </section>-->
+    </section>-->
         <!--
-        =========================
-        CALL TO ACTION MODULE
-        ========================= -->
+    =========================
+    CALL TO ACTION MODULE
+    ========================= -->
         <section id="contactus" class="section-spacer" style="background-image: url('/Content/landingpage/images/main/icons/1x/Asset%2010.png')">
             <div class="container">
 
@@ -405,55 +430,55 @@
                         <div class="form-block-2 w-form">
                             @using (Html.BeginForm("SendMessage", "Home", FormMethod.Post,
 new { enctype = "multipart/form-data", @class = "form-2" }))
-    {
-                        <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Nombre" data-name="Nombre" placeholder="Tu nombre" id="Nombre" required="">
-                        <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Empresa" data-name="Empresa" placeholder="Tu empresa" id="Empresa" required="">
-                        <input type="email" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="email" data-name="Email" placeholder="Tu correo electrónico" id="email" required="">
-                        <textarea id="Mensaje" name="Mensaje" data-name="Mensaje" placeholder="Escribe tu mensaje aquí" required="" class="form-control"></textarea>
-                                <div class="input-group">
-                            
-                            @Html.Recaptcha(theme: Recaptcha.Web.RecaptchaTheme.Clean)
-                            <button type="submit" class="btn btn-comercia" style="font-family: Gotham; font-size:14px;padding-bottom:55px;line-height: 45px;">Contáctanos</button>
-                        </div>
-            
+                        {
+                            <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Nombre" data-name="Nombre" placeholder="Tu nombre" id="Nombre" required="">
+                            <input type="text" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="Empresa" data-name="Empresa" placeholder="Tu empresa" id="Empresa" required="">
+                            <input type="email" class="form-control" style="margin-bottom: 15px;font-size: 14px;font-family: Gotham" maxlength="256" name="email" data-name="Email" placeholder="Tu correo electrónico" id="email" required="">
+                            <textarea id="Mensaje" name="Mensaje" data-name="Mensaje" placeholder="Escribe tu mensaje aquí" required="" class="form-control"></textarea>
+                            <div class="input-group">
 
-                        }
+                                @Html.Recaptcha(theme: Recaptcha.Web.RecaptchaTheme.Clean)
+                                <button type="submit" class="btn btn-comercia" style="font-family: Gotham; font-size:14px;padding-bottom:55px;line-height: 45px;">Contáctanos</button>
+                            </div>
 
 
-                        @if (ViewBag.showmessage == 1)
-{
-                        <div class="w-form-done" style="display:inline-block !important;color:white;">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-}
-else if (ViewBag.showmessage == 3)
-{
+                    }
+
+
+                            @if (ViewBag.showmessage == 1)
+                        {
+                            <div class="w-form-done" style="display:inline-block !important;color:white;">
+                                <div>Thank you! Your submission has been received!</div>
+                            </div>
+                    }
+                    else if (ViewBag.showmessage == 3)
+                    {
                         <div class="w-form-fail" style="display:inline-block !important;color:white;">
                             <div>Please complete the reCAPTCHA.</div>
                         </div>
-}
-else if (ViewBag.showmessage == 4)
-{
-                        <div class="w-form-fail" style="display:inline-block !important;color:white;">
-                            <div>The reCAPTCHA is incorrect.</div>
-                        </div>
-}
-else if (ViewBag.showmessage == 0)
-{
+                }
+                else if (ViewBag.showmessage == 4)
+                {
+                    <div class="w-form-fail" style="display:inline-block !important;color:white;">
+                        <div>The reCAPTCHA is incorrect.</div>
+                    </div>
+            }
+            else if (ViewBag.showmessage == 0)
+            {
 
-}
+            }
 
 
 
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
         </section>
         <!--
-        =========================
-        FOOTER
-        ========================= -->
+    =========================
+    FOOTER
+    ========================= -->
         <footer class="section-spacer footer-section">
             <div class="container">
                 <div class="row flex-column-reverse flex-sm-row flex-lg-row">
@@ -557,4 +582,5 @@ else if (ViewBag.showmessage == 0)
             });
         </script>
     </body>
+
 </html>

@@ -664,7 +664,7 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
-        public ActionResult GetEvents(DateTime startf, DateTime endf, string id)
+        public ActionResult GetEvents(DateTime startf, DateTime endf, string id, int? id_brand)
         {
             try
             {
@@ -674,13 +674,69 @@ namespace comerciamarketing_webapp.Controllers
                 using (var db = new dbComerciaEntities())
                 {
 
-                    var lstvisits = (from a in db.ActivitiesM
-                                     join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                     where (a.ID_customer == id && (a.date >= startf && a.date <= endf))
-                                     select b.ID_route).Distinct().ToArray();
+                    //Nueva forma para tomar datos
+                    List<VisitsInfoCalendar> lstVisitas;
+                    //FIN FILTROS*******************
+
+                    if (id == null || id == "" || id == "0")
+                    {
+                        lstVisitas = (from a in db.VisitsM
+                                      join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                      from p in ps.DefaultIfEmpty()
+                                      where ((a.visit_date >= startf && a.end_date <= endf))
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = a.ID_store,
+                                          idroute = a.ID_route,
+                                          visitDate = a.visit_date,
+                                          ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                          Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                      }).ToList();
+
+                    }
+                    else
+                    {
+                        lstVisitas = (from a in db.VisitsM
+                                      join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                      from p in ps.DefaultIfEmpty()
+                                      where (p.ID_customer == id &&  (a.visit_date >= startf && a.end_date <= endf))
+                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                      select new VisitsInfoCalendar
+                                      {
+                                          ID_visit = a.ID_visit,
+                                          ID_store = a.ID_store,
+                                          idroute = a.ID_route,
+                                          visitDate = a.visit_date,
+                                          ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                          Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                      }).ToList();
+                        if (id_brand == null || id_brand == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            var brandstring = id_brand.ToString();
+                            lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                        }
+
+                    }
+
+
+
+                    var arryavi = lstVisitas.Select(a => a.idroute).ToArray();
+
+                    //var lstvisits = (from a in db.ActivitiesM
+                    //                 join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                    //                 where (a.ID_customer == id && (a.date >= startf && a.date <= endf))
+                    //                 select b.ID_route).Distinct().ToArray();
 
                     rutas = (from a in db.RoutesM
-                             where (lstvisits.Contains(a.ID_route))
+                             where (arryavi.Contains(a.ID_route))
                              select new CustomRoutes
                              {
 
@@ -1018,7 +1074,8 @@ namespace comerciamarketing_webapp.Controllers
                                           idroute=b.ID_route,
                                           visitDate = b.visit_date,
                                           ID_customer = a.ID_customer,
-                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                          Brand = ""
                                       }).ToList();
 
                     }
@@ -1035,7 +1092,8 @@ namespace comerciamarketing_webapp.Controllers
                                           idroute = b.ID_route,
                                           visitDate = b.visit_date,
                                           ID_customer = a.ID_customer,
-                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                          Brand = ""
                                       }).ToList();
                         if (brandsel == null || brandsel == 0)
                         {
@@ -1391,6 +1449,7 @@ namespace comerciamarketing_webapp.Controllers
                                           ID_visit = a.ID_visit,
                                           ID_store = b.ID_store,
                                           idroute = b.ID_route,
+                                          Brand="",
                                           visitDate = b.visit_date,
                                           ID_customer = a.ID_customer,
                                           ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
@@ -1410,7 +1469,8 @@ namespace comerciamarketing_webapp.Controllers
                                           idroute = b.ID_route,
                                           visitDate = b.visit_date,
                                           ID_customer = a.ID_customer,
-                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault()
+                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                          Brand = ""
                                       }).ToList();
                         if (brandsel == null || brandsel == 0)
                         {
@@ -1862,6 +1922,40 @@ namespace comerciamarketing_webapp.Controllers
             //ds.Tables.Add(dtEmpOrder);
             return ds;
         }
+        public DataSet getDataSetExportToExcel_RD_FORM42(string id, List<int?> lstact)
+        {
+            List<Visita_2_0> activity_header = new List<Visita_2_0>();
+
+            //using (var dbs = new dbComerciaEntities())
+            //{
+
+            //}
+
+            using (var db = new Interna_CMKEntities())
+            {
+
+                activity_header = (from a in db.Visita_2_0
+                                   where (lstact.Contains(a.Id_Visit))
+                                   select a) //Utilizar esto, lo quite por prueba
+
+                                   // select a).Take(1000) //para pruebas
+                                   .ToList();
+
+
+
+
+            }
+
+            DataSet ds = new DataSet();
+            DataTable dtEmp = new DataTable("ActivitiesData");
+            dtEmp = ToDataTable(activity_header);
+            //DataTable dtEmpOrder = new DataTable("ActivitiesDetails");  
+            //dtEmpOrder = ToDataTable(form_details);
+
+            ds.Tables.Add(dtEmp);
+            //ds.Tables.Add(dtEmpOrder);
+            return ds;
+        }
 
         public DataSet getDataSetExportToExcel_RD_FORM32(string id, List<int?> lstact)
         {
@@ -1930,6 +2024,38 @@ namespace comerciamarketing_webapp.Controllers
             //ds.Tables.Add(dtEmpOrder);
             return ds;
         }
+
+        public DataSet getDataSetExportToExcel_RD_AUDITGRL2(string id, List<int?> lstact)
+        {
+            List<Datos_Audit_2> activity_header = new List<Datos_Audit_2>();
+
+            //using (var dbs = new dbComerciaEntities())
+            //{
+
+            //}
+
+            using (var db = new Interna_CMKEntities())
+            {
+
+                activity_header = (from a in db.Datos_Audit_2
+                                   where (lstact.Contains(a.Id_Visit))
+                                   select a) //Utilizar esto, lo quite por prueba
+
+                                   //select a).Take(1000) // pruebas
+                                   .ToList();
+            }
+
+            DataSet ds = new DataSet();
+            DataTable dtEmp = new DataTable("ActivitiesData");
+            dtEmp = ToDataTable(activity_header);
+            //DataTable dtEmpOrder = new DataTable("ActivitiesDetails");  
+            //dtEmpOrder = ToDataTable(form_details);
+
+            ds.Tables.Add(dtEmp);
+            //ds.Tables.Add(dtEmpOrder);
+            return ds;
+        }
+
         public ActionResult Export_QuickVisit(string id, List<MyObj_formtemplate> objects)
         {
             List<int> list = new List<int>();
@@ -2658,6 +2784,35 @@ namespace comerciamarketing_webapp.Controllers
             return Json(filename, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Export_RD_FORM42(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            //UTILIZANDO LIBRERIA 
+            DataSet ds = getDataSetExportToExcel_RD_FORM42(id, list);
+            var filename = "VISITA_2.0" + "" + ".xlsx";
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(ds);
+                wb.Worksheet(1).Name = "ActivitiesData";
+                //wb.Worksheet(2).Name = "ActivitiesDetails";
+                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                wb.Style.Font.Bold = true;
+
+                var filePathOriginal = Server.MapPath("/Reportes/excel");
+                var path2 = "";
+                path2 = Path.Combine(filePathOriginal, filename);
+                wb.SaveAs(path2);
+            }
+            return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult Export_RD_FORM32(string id, List<MyObj_formtemplate> objects)
         {
             List<int?> list = new List<int?>();
@@ -2698,6 +2853,33 @@ namespace comerciamarketing_webapp.Controllers
             //UTILIZANDO LIBRERIA 
             DataSet ds = getDataSetExportToExcel_RD_AUDITGRL1(id, list);
             var filename = "AUDIT_REPORT" + "" + ".xlsx";
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(ds);
+                wb.Worksheet(1).Name = "ActivitiesData";
+                //wb.Worksheet(2).Name = "ActivitiesDetails";
+                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                wb.Style.Font.Bold = true;
+
+                var filePathOriginal = Server.MapPath("/Reportes/excel");
+                var path2 = "";
+                path2 = Path.Combine(filePathOriginal, filename);
+                wb.SaveAs(path2);
+            }
+            return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Export_RD_AUDITGRL2(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            //UTILIZANDO LIBRERIA 
+            DataSet ds = getDataSetExportToExcel_RD_AUDITGRL2(id, list);
+            var filename = "AUDIT_REPORT2" + "" + ".xlsx";
             using (XLWorkbook wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(ds);

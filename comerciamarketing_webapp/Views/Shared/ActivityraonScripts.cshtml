@@ -1363,3 +1363,74 @@
 
     }
 </script>
+<script>
+    function cargarproductosbyCustomer(idbtn) {
+        var btn = "#" + idbtn;
+
+        var customerId = $("#customer_list").val();
+        var idvisita = "";
+        idvisita = document.getElementById('idvisita').value;
+    
+        //var catId = $("#cat_list").val();
+        //var subcatId = $("#subcat_list").val();
+
+        //var selMulti2 = $.map($("#subcat_list option:selected"), function (el, i) {
+        //    return $(el).val();
+        //});
+        //var subcatId = selMulti2.join(",");
+
+        if (customerId == 0 || customerId == null) {
+            //toastr.warning("Please, select a valid Brand", "Info");
+
+            //Alerta de que no se han guardado los campos obligatorios
+            $.toast({
+                heading: 'Warning',
+                text: 'Please select a valid Customer',
+                loader: false,        // Change it to false to disable loader
+                showHideTransition: 'slide',
+                icon: 'warning',
+                loaderBg: '#ff9900',
+                hideAfter: 5000,
+                position: 'top-right'
+            });
+
+        } else {
+            document.getElementById("loading").style.display = "block";
+            $('' + btn + '').attr('disabled', 'disabled');
+            $('' + btn + '').val('CARGANDO PRODUCTOS, POR FAVOR ESPERE...');
+
+
+
+            $.ajax({
+                url: '/FormsM/GetDynamicProductsbyCustomer',
+                type: 'POST',
+                data: { 'activityID': idvisita, 'ID_customer': customerId },
+                cache: false,
+                global: false,
+                success: function (result) {
+
+                    //if (result == "Success") {
+                    window.location.reload(true);
+                    //} else {
+                    //    toastr.warning("No data to load", "Info");
+                    //}
+                    //document.getElementById("loader").style.display = "none";
+
+
+
+
+                },
+                error: function (request) {
+                    document.getElementById("loading").style.display = "none";
+                    alert("Error: Server data fail");
+
+
+                }
+            });
+        }
+
+
+
+
+    }
+</script>

@@ -4,7 +4,7 @@
 }
 @helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
-        foreach (var objeto in parentList.Where(c => c.id_resource != 3))
+        foreach (var objeto in parentList)
         {
 
 
@@ -83,36 +83,66 @@
                             <hr />
                         </div>
                     </div>
-
-                    if (objeto.fsource == "PRODUCTOS")
-                    {
-                        <!--PARA PRODUCTOS -->
-                        foreach (var producto in parentList.Where(c => c.id_resource == 3))
-                        {
-                            if (producto.id_resource == 3)
-                            {
-
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <p class="control-label col-md-10">@producto.fdescription (*)</p>
-                                            <div class="col-md-12">
-                                                <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@producto.fvalue" class="form-control" id="@producto.idkey" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            }
-                        }
-
-                    }
                 }
 
 
             }
 
+            <!--PARA TAB PRODUCTOS -->
+            if (objeto.id_resource == 35)
+            {
+               
+                    <div class="card">
+                        <div class="b-b">
+                            <div class="nav-active-border b-primary bottom">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <!--PARA PRODUCTOS ETIQUETAS-->
+                            @foreach (var producto in parentList.Where(c => c.id_resource == 3))
+                            {
+                                if (producto.id_resource == 3)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="@producto.idkey-tab" data-toggle="tab" href="#@producto.idkey" role="tab" aria-controls="@producto.idkey" aria-selected="true">@producto.fsource</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content p-3">
+                            <br />
+                          @foreach (var producto in parentList.Where(c => c.id_resource == 3))
+                            {
+                             
+                            <div class="tab-pane fade" id="@producto.idkey" role="tabpanel" aria-labelledby="@producto.idkey-tab">
+                                <div class="form-group">
+                                    <h6 style="text-align:center;">@producto.fdescription</h6>
+                                    <div class="col-md-12">
+                                        <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@producto.fvalue" class="form-control" id="@producto.idkey" />
+                                    </div>
+                                </div>
 
+                                @if (producto.children.Count > 0)
+                                {
+                                            <!--VERIFICAMOS SI TIENE HIJOS-->
+                                            <div class="parentdiv">
+                                                @OrderedList(producto.children, producto.idkey)
+                                            </div>
+                  
+                                
+                                }
+                            </div>
+
+
+                            }
+                        </div>
+                    </div>
+            
+
+
+
+
+            }
 
 
 
@@ -347,8 +377,7 @@
             <!--PARA INPUT TEXT -->
             if (objeto.id_resource == 6)
             {
-                <div class="card">
-                    <div class="card-body">
+         
                         <div class="form-group">
                             @if (objeto.fvalue == 0)
                             {
@@ -378,8 +407,7 @@
                                 <textarea id="@objeto.idkey" class="form-control" onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>@objeto.fsource</textarea>
                             </div>
                         </div>
-                    </div>
-                </div>
+       
 
             }
             <!--PARA DATE -->
@@ -525,15 +553,15 @@
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                             <div class="col-md-12">
                                 <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
-            
-                                                                        
+
+
                                     @if (ViewBag.brands.Count == 1)
                                     {
                                         <option value="@ViewBag.brands[0].FirmCode" selected>@ViewBag.brands[0].FirmName</option>
                                     }
                                     else
                                     {
-                                                           
+
                                         <option value="0">Seleccione una marca</option>
                                         foreach (var itemBrand in ViewBag.brands)
                                         {

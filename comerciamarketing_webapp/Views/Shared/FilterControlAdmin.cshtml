@@ -31,7 +31,7 @@
                             <option value="0">ALL CUSTOMERS</option>
                             @foreach (var item in ViewBag.customerssel)
                             {
-                                if (item.CardCode == ViewBag.CustomerSelCode)
+                                if (item.U_CardCodeDLI == ViewBag.CustomerSelCode)
                                 {
                                     <option value="@item.U_CardCodeDLI" selected>@item.CardCode - @item.CardName</option>
                                 }

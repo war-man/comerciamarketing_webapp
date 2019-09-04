@@ -25,6 +25,28 @@
           <Property Name="Promocionado" Type="varchar" MaxLength="5" />
           <Property Name="Precio" Type="float" />
         </EntityType>
+        <EntityType Name="Datos_Audit_2">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="Id_Store" Type="varchar" MaxLength="20" />
+          <Property Name="Store" Type="varchar" MaxLength="200" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="10" />
+          <Property Name="State" Type="varchar" MaxLength="10" />
+          <Property Name="Visit_Date" Type="datetime" />
+          <Property Name="Id_Visit" Type="int" />
+          <Property Name="Cliente" Type="varchar" MaxLength="100" />
+          <Property Name="Marca" Type="varchar" MaxLength="15" />
+          <Property Name="SubCategoria" Type="varchar" MaxLength="200" />
+          <Property Name="Producto" Type="varchar" MaxLength="20" />
+          <Property Name="ProductoDescripcion" Type="varchar" MaxLength="200" />
+          <Property Name="Disponible" Type="int" />
+          <Property Name="Promocionado" Type="int" />
+          <Property Name="Precio" Type="float" />
+          <Property Name="ID_detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="Datos_Marketing_Activity">
           <Key>
             <PropertyRef Name="ID_detail" />
@@ -155,10 +177,90 @@
           <Property Name="Firma" Type="text" />
           <Property Name="ID_detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="Visita_2_0">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="Id_Store" Type="varchar" MaxLength="100" />
+          <Property Name="Store" Type="varchar" MaxLength="500" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="City" Type="varchar" MaxLength="500" />
+          <Property Name="Zipcode" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="500" />
+          <Property Name="VisitDate" Type="datetime" />
+          <Property Name="Id_Visit" Type="int" />
+          <Property Name="Cliente" Type="varchar(max)" />
+          <Property Name="Marca" Type="varchar(max)" />
+          <Property Name="LineaProducto" Type="varchar(max)" />
+          <Property Name="MarcaCompetidorPrincipal" Type="varchar(max)" />
+          <Property Name="CarasTiendaTotal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CarasTiendaNuestraLinea" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CajasVentaCategMensual" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ProdExhibAlcancePublico" Type="varchar" MaxLength="2" />
+          <Property Name="ProductosOrganizados_Categoria" Type="varchar" MaxLength="2" />
+          <Property Name="ProductosOrganizados_Marca" Type="varchar" MaxLength="2" />
+          <Property Name="ProductosOrganizados_Sabor" Type="varchar" MaxLength="2" />
+          <Property Name="ProductosOrganizados_Otro" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Limpia" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Ordenada" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Iluminada" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Oscura" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Suecia" Type="varchar" MaxLength="2" />
+          <Property Name="AreaProducto_Otro" Type="varchar" MaxLength="2" />
+          <Property Name="PrecioProducto_Visible" Type="varchar" MaxLength="2" />
+          <Property Name="PrecioProducto_Correcto" Type="varchar" MaxLength="2" />
+          <Property Name="PrecioProducto_NoVisible" Type="varchar" MaxLength="2" />
+          <Property Name="PrecioProducto_Incorrecto" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneMaterialPromocionalMarca" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneMaterialPromocionalProducto" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Cuantos" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_EndCap" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Gondola" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_SideSeller" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_IslandTables" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Stickers" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Preciadores" Type="varchar" MaxLength="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Otro" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_EndCap" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_Gondola" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_SideSeller" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_IslandTables" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_Stickers" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_Preciadores" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_Otro" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Excelente" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Aceptable" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Buena" Type="varchar" MaxLength="2" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Escasa" Type="varchar" MaxLength="2" />
+          <Property Name="AccesibProducto_MuyFacil" Type="varchar" MaxLength="2" />
+          <Property Name="AccesibProducto_Facil" Type="varchar" MaxLength="2" />
+          <Property Name="AccesibProducto_Dificil" Type="varchar" MaxLength="2" />
+          <Property Name="TieneProductoPrincipCompet" Type="varchar" MaxLength="2" />
+          <Property Name="TieneProductoCompiteProducto" Type="varchar" MaxLength="2" />
+          <Property Name="ProductoCompiteJuntoFisicamente" Type="varchar" MaxLength="2" />
+          <Property Name="UbicacionProductoCompetencia_Arriba" Type="varchar" MaxLength="2" />
+          <Property Name="UbicacionProductoCompetencia_Abajo" Type="varchar" MaxLength="2" />
+          <Property Name="UbicacionProductoCompetencia_Derecha" Type="varchar" MaxLength="2" />
+          <Property Name="UbicacionProductoCompetencia_Izquierda" Type="varchar" MaxLength="2" />
+          <Property Name="ProductoCompetHerramDisplay" Type="varchar" MaxLength="2" />
+          <Property Name="CompetenciaActivPromocionales" Type="varchar" MaxLength="2" />
+          <Property Name="VisitaClienteComproProducto" Type="varchar" MaxLength="2" />
+          <Property Name="ExistePosibColocarPromo" Type="varchar" MaxLength="2" />
+          <Property Name="TipoPromoPermiteColocar_Display" Type="varchar" MaxLength="2" />
+          <Property Name="TipoPromoPermiteColocar_Degustacion" Type="varchar" MaxLength="2" />
+          <Property Name="TipoPromoPermiteColocar_Regalia" Type="varchar" MaxLength="2" />
+          <Property Name="TipoPromoPermiteColocar_Otra" Type="varchar" MaxLength="2" />
+          <Property Name="ProgramoSegundaVisita" Type="varchar" MaxLength="2" />
+          <Property Name="ID_detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="Interna_CMKModelStoreContainer">
           <EntitySet Name="Datos_Audit_11" EntityType="Self.Datos_Audit_11" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Datos_Audit_2" EntityType="Self.Datos_Audit_2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Datos_Marketing_Activity" EntityType="Self.Datos_Marketing_Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estructura_1_1_Comercia" EntityType="Self.Estructura_1_1_Comercia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visita_2_0" EntityType="Self.Visita_2_0" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -168,6 +270,8 @@
           <EntitySet Name="Datos_Audit_11" EntityType="Interna_CMKModel.Datos_Audit_11" />
           <EntitySet Name="Datos_Marketing_Activity" EntityType="Interna_CMKModel.Datos_Marketing_Activity" />
           <EntitySet Name="Estructura_1_1_Comercia" EntityType="Interna_CMKModel.Estructura_1_1_Comercia" />
+          <EntitySet Name="Datos_Audit_2" EntityType="Interna_CMKModel.Datos_Audit_2" />
+          <EntitySet Name="Visita_2_0" EntityType="Interna_CMKModel.Visita_2_0" />
         </EntityContainer>
         <EntityType Name="Datos_Audit_11">
           <Key>
@@ -317,6 +421,106 @@
           <Property Name="ComoCerroNegociacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CondicionFinalTienda" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Firma" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Datos_Audit_2">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="Id_Store" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Store" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Visit_Date" Type="DateTime" Precision="3" />
+          <Property Name="Id_Visit" Type="Int32" />
+          <Property Name="Cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Marca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SubCategoria" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Producto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ProductoDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Disponible" Type="Int32" />
+          <Property Name="Promocionado" Type="Int32" />
+          <Property Name="Precio" Type="Double" />
+          <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Visita_2_0">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="Id_Store" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Store" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Zipcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VisitDate" Type="DateTime" Precision="3" />
+          <Property Name="Id_Visit" Type="Int32" />
+          <Property Name="Cliente" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Marca" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LineaProducto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MarcaCompetidorPrincipal" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CarasTiendaTotal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CarasTiendaNuestraLinea" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CajasVentaCategMensual" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ProdExhibAlcancePublico" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductosOrganizados_Categoria" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductosOrganizados_Marca" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductosOrganizados_Sabor" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductosOrganizados_Otro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Limpia" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Ordenada" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Iluminada" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Oscura" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Suecia" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AreaProducto_Otro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PrecioProducto_Visible" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PrecioProducto_Correcto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PrecioProducto_NoVisible" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PrecioProducto_Incorrecto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneMaterialPromocionalMarca" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneMaterialPromocionalProducto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Cuantos" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_EndCap" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Gondola" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_SideSeller" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_IslandTables" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Stickers" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Preciadores" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TiendaTieneEspacioMaterialPromocional_Otro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_EndCap" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_Gondola" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_SideSeller" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_IslandTables" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_Stickers" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_Preciadores" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_Otro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Excelente" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Aceptable" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Buena" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="HerramientasDisplayTienda_PresenciaDisplay_Escasa" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AccesibProducto_MuyFacil" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AccesibProducto_Facil" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="AccesibProducto_Dificil" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TieneProductoPrincipCompet" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TieneProductoCompiteProducto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductoCompiteJuntoFisicamente" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="UbicacionProductoCompetencia_Arriba" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="UbicacionProductoCompetencia_Abajo" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="UbicacionProductoCompetencia_Derecha" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="UbicacionProductoCompetencia_Izquierda" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProductoCompetHerramDisplay" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CompetenciaActivPromocionales" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="VisitaClienteComproProducto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ExistePosibColocarPromo" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TipoPromoPermiteColocar_Display" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TipoPromoPermiteColocar_Degustacion" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TipoPromoPermiteColocar_Regalia" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="TipoPromoPermiteColocar_Otra" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ProgramoSegundaVisita" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
       </Schema>
@@ -475,6 +679,108 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="store" ColumnName="store" />
                 <ScalarProperty Name="ID_store" ColumnName="ID_store" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Datos_Audit_2">
+            <EntityTypeMapping TypeName="Interna_CMKModel.Datos_Audit_2">
+              <MappingFragment StoreEntitySet="Datos_Audit_2">
+                <ScalarProperty Name="ID_detail" ColumnName="ID_detail" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Promocionado" ColumnName="Promocionado" />
+                <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="ProductoDescripcion" ColumnName="ProductoDescripcion" />
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="SubCategoria" ColumnName="SubCategoria" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Id_Visit" ColumnName="Id_Visit" />
+                <ScalarProperty Name="Visit_Date" ColumnName="Visit_Date" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Store" ColumnName="Store" />
+                <ScalarProperty Name="Id_Store" ColumnName="Id_Store" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visita_2_0">
+            <EntityTypeMapping TypeName="Interna_CMKModel.Visita_2_0">
+              <MappingFragment StoreEntitySet="Visita_2_0">
+                <ScalarProperty Name="ID_detail" ColumnName="ID_detail" />
+                <ScalarProperty Name="ProgramoSegundaVisita" ColumnName="ProgramoSegundaVisita" />
+                <ScalarProperty Name="TipoPromoPermiteColocar_Otra" ColumnName="TipoPromoPermiteColocar_Otra" />
+                <ScalarProperty Name="TipoPromoPermiteColocar_Regalia" ColumnName="TipoPromoPermiteColocar_Regalia" />
+                <ScalarProperty Name="TipoPromoPermiteColocar_Degustacion" ColumnName="TipoPromoPermiteColocar_Degustacion" />
+                <ScalarProperty Name="TipoPromoPermiteColocar_Display" ColumnName="TipoPromoPermiteColocar_Display" />
+                <ScalarProperty Name="ExistePosibColocarPromo" ColumnName="ExistePosibColocarPromo" />
+                <ScalarProperty Name="VisitaClienteComproProducto" ColumnName="VisitaClienteComproProducto" />
+                <ScalarProperty Name="CompetenciaActivPromocionales" ColumnName="CompetenciaActivPromocionales" />
+                <ScalarProperty Name="ProductoCompetHerramDisplay" ColumnName="ProductoCompetHerramDisplay" />
+                <ScalarProperty Name="UbicacionProductoCompetencia_Izquierda" ColumnName="UbicacionProductoCompetencia_Izquierda" />
+                <ScalarProperty Name="UbicacionProductoCompetencia_Derecha" ColumnName="UbicacionProductoCompetencia_Derecha" />
+                <ScalarProperty Name="UbicacionProductoCompetencia_Abajo" ColumnName="UbicacionProductoCompetencia_Abajo" />
+                <ScalarProperty Name="UbicacionProductoCompetencia_Arriba" ColumnName="UbicacionProductoCompetencia_Arriba" />
+                <ScalarProperty Name="ProductoCompiteJuntoFisicamente" ColumnName="ProductoCompiteJuntoFisicamente" />
+                <ScalarProperty Name="TieneProductoCompiteProducto" ColumnName="TieneProductoCompiteProducto" />
+                <ScalarProperty Name="TieneProductoPrincipCompet" ColumnName="TieneProductoPrincipCompet" />
+                <ScalarProperty Name="AccesibProducto_Dificil" ColumnName="AccesibProducto_Dificil" />
+                <ScalarProperty Name="AccesibProducto_Facil" ColumnName="AccesibProducto_Facil" />
+                <ScalarProperty Name="AccesibProducto_MuyFacil" ColumnName="AccesibProducto_MuyFacil" />
+                <ScalarProperty Name="HerramientasDisplayTienda_PresenciaDisplay_Escasa" ColumnName="HerramientasDisplayTienda_PresenciaDisplay_Escasa" />
+                <ScalarProperty Name="HerramientasDisplayTienda_PresenciaDisplay_Buena" ColumnName="HerramientasDisplayTienda_PresenciaDisplay_Buena" />
+                <ScalarProperty Name="HerramientasDisplayTienda_PresenciaDisplay_Aceptable" ColumnName="HerramientasDisplayTienda_PresenciaDisplay_Aceptable" />
+                <ScalarProperty Name="HerramientasDisplayTienda_PresenciaDisplay_Excelente" ColumnName="HerramientasDisplayTienda_PresenciaDisplay_Excelente" />
+                <ScalarProperty Name="HerramientasDisplayTienda_Otro" ColumnName="HerramientasDisplayTienda_Otro" />
+                <ScalarProperty Name="HerramientasDisplayTienda_Preciadores" ColumnName="HerramientasDisplayTienda_Preciadores" />
+                <ScalarProperty Name="HerramientasDisplayTienda_Stickers" ColumnName="HerramientasDisplayTienda_Stickers" />
+                <ScalarProperty Name="HerramientasDisplayTienda_IslandTables" ColumnName="HerramientasDisplayTienda_IslandTables" />
+                <ScalarProperty Name="HerramientasDisplayTienda_SideSeller" ColumnName="HerramientasDisplayTienda_SideSeller" />
+                <ScalarProperty Name="HerramientasDisplayTienda_Gondola" ColumnName="HerramientasDisplayTienda_Gondola" />
+                <ScalarProperty Name="HerramientasDisplayTienda_EndCap" ColumnName="HerramientasDisplayTienda_EndCap" />
+                <ScalarProperty Name="HerramientasDisplayTienda" ColumnName="HerramientasDisplayTienda" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_Otro" ColumnName="TiendaTieneEspacioMaterialPromocional_Otro" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_Preciadores" ColumnName="TiendaTieneEspacioMaterialPromocional_Preciadores" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_Stickers" ColumnName="TiendaTieneEspacioMaterialPromocional_Stickers" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_IslandTables" ColumnName="TiendaTieneEspacioMaterialPromocional_IslandTables" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_SideSeller" ColumnName="TiendaTieneEspacioMaterialPromocional_SideSeller" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_Gondola" ColumnName="TiendaTieneEspacioMaterialPromocional_Gondola" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_EndCap" ColumnName="TiendaTieneEspacioMaterialPromocional_EndCap" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional_Cuantos" ColumnName="TiendaTieneEspacioMaterialPromocional_Cuantos" />
+                <ScalarProperty Name="TiendaTieneEspacioMaterialPromocional" ColumnName="TiendaTieneEspacioMaterialPromocional" />
+                <ScalarProperty Name="TiendaTieneMaterialPromocionalProducto" ColumnName="TiendaTieneMaterialPromocionalProducto" />
+                <ScalarProperty Name="TiendaTieneMaterialPromocionalMarca" ColumnName="TiendaTieneMaterialPromocionalMarca" />
+                <ScalarProperty Name="PrecioProducto_Incorrecto" ColumnName="PrecioProducto_Incorrecto" />
+                <ScalarProperty Name="PrecioProducto_NoVisible" ColumnName="PrecioProducto_NoVisible" />
+                <ScalarProperty Name="PrecioProducto_Correcto" ColumnName="PrecioProducto_Correcto" />
+                <ScalarProperty Name="PrecioProducto_Visible" ColumnName="PrecioProducto_Visible" />
+                <ScalarProperty Name="AreaProducto_Otro" ColumnName="AreaProducto_Otro" />
+                <ScalarProperty Name="AreaProducto_Suecia" ColumnName="AreaProducto_Suecia" />
+                <ScalarProperty Name="AreaProducto_Oscura" ColumnName="AreaProducto_Oscura" />
+                <ScalarProperty Name="AreaProducto_Iluminada" ColumnName="AreaProducto_Iluminada" />
+                <ScalarProperty Name="AreaProducto_Ordenada" ColumnName="AreaProducto_Ordenada" />
+                <ScalarProperty Name="AreaProducto_Limpia" ColumnName="AreaProducto_Limpia" />
+                <ScalarProperty Name="ProductosOrganizados_Otro" ColumnName="ProductosOrganizados_Otro" />
+                <ScalarProperty Name="ProductosOrganizados_Sabor" ColumnName="ProductosOrganizados_Sabor" />
+                <ScalarProperty Name="ProductosOrganizados_Marca" ColumnName="ProductosOrganizados_Marca" />
+                <ScalarProperty Name="ProductosOrganizados_Categoria" ColumnName="ProductosOrganizados_Categoria" />
+                <ScalarProperty Name="ProdExhibAlcancePublico" ColumnName="ProdExhibAlcancePublico" />
+                <ScalarProperty Name="CajasVentaCategMensual" ColumnName="CajasVentaCategMensual" />
+                <ScalarProperty Name="CarasTiendaNuestraLinea" ColumnName="CarasTiendaNuestraLinea" />
+                <ScalarProperty Name="CarasTiendaTotal" ColumnName="CarasTiendaTotal" />
+                <ScalarProperty Name="MarcaCompetidorPrincipal" ColumnName="MarcaCompetidorPrincipal" />
+                <ScalarProperty Name="LineaProducto" ColumnName="LineaProducto" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Id_Visit" ColumnName="Id_Visit" />
+                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Store" ColumnName="Store" />
+                <ScalarProperty Name="Id_Store" ColumnName="Id_Store" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

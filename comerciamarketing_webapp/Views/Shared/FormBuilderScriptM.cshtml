@@ -61,7 +61,24 @@
                 $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
 
 
-            } else if (descripciontp == "DynamicBrandsCompetitors") { //NUEVO
+            } else if (descripciontp == "DynamicProductsTableForm") { //NUEVO
+                var divlo = "<div class='media'>";
+                //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+
+
+            } else if (descripciontp == "DinamycProductsByCustomer") { //NUEVO
+                var divlo = "<div class='media'>";
+                //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                divlo += "<div class='media-body'>";
+
+                $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + label + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + descripciontp + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div></li>");
+
+
+            }
+            else if (descripciontp == "DynamicBrandsCompetitors") { //NUEVO
                 var divlo = "<div class='media'>";
                 //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
                 divlo += "<div class='media-body'>";
@@ -170,6 +187,8 @@
                 } else if (categoryID_retail == "16") {
                     $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='MULTIPLE_CHOICE' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
                 } else if (categoryID_retail == "21") {
+                    $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
+                } else if (categoryID_retail == "18") {
                     $("ol#main_list").append("<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + categoryID_retail + "' data-fdescription='" + label + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + descripciontp + " - " + categoryText_retail + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + label + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'>X</a></span></div></div></li>");
                 }
 
@@ -1101,6 +1120,22 @@
                     $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicProducts" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
 
 
+                } else if (ID_tipo_recurso == "36") { //NUEVO
+                    var divlo = "<div class='media'>";
+                    //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                    divlo += "<div class='media-body'>";
+
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicProducts" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
+
+
+                } else if (ID_tipo_recurso == "37") { //NUEVO
+                    var divlo = "<div class='media'>";
+                    //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
+                    divlo += "<div class='media-body'>";
+
+                    $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fvalue='' data-fsource='" + element.fsource + "' data-fdescription=''><div class='dd-handle'>" + divlo + "<h6 class='mb-1'>" + "DynamicProductsByCustomer" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fsource + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'>X</i></a></span></div></div>" + esPadre + "</li>";
+
+
                 }else if (ID_tipo_recurso == "33") { //NUEVO
                     var divlo = "<div class='media'>";
                     //divlo += "<i class='mdi mdi-source-branch icon-md align-self-center mr-3'></i>";
@@ -1214,12 +1249,14 @@
                     divlo += "<div class='media-body'>";
 
                     if (element.fvalue == "16") { //Multiple choice
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='MULTIPLE_CHOICE' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='MULTIPLE_CHOICE' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Multiple_choice" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class=''>X</i></a></span></div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "21") { //Currency
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Currency" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Currency" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class=''></i></a></span>X</div></div>" + esPadre + "</li>";
                     } else if (element.fvalue == "3") { //PRODUCT
-                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='PRODUCT' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Product" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class='mdi mdi-close'></i></a></span></div></div>" + esPadre + "</li>";
-                    } 
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='PRODUCT' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Product" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class=''></i></a></span>X</div></div>" + esPadre + "</li>";
+                    } else if (element.fvalue == "18") { //Currency
+                        $li = "<li class='dd-item' data-idkey='" + Idkey + "' data-id_resource='" + ID_tipo_recurso + "' data-fsource='CURRENCY' data-fvalue='" + element.fvalue + "' data-fdescription='" + element.fdescription + "'><div class='dd-handle'> " + divlo + "<h6 class='mb-1'>" + "Column" + " - " + "Currency" + "</h6><a onClick='prepareEdit(this)' id='" + "item" + Idkey + "' class='mb-0 text-dark'>" + element.fdescription + "</a></div><span class='pull-right'><a id='delete' class='button-delete btn-icons btn-inverse-danger text-white loco'><i class=''></i></a></span>X</div></div>" + esPadre + "</li>";
+                    }
 
                 }
 

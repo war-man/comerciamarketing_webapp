@@ -4,6 +4,7 @@
 }
 @helper OrderedList(IList<comerciamarketing_webapp.Controllers.FormsMController.MyObj_tablapadre> parentList, int parent = 0)
     {
+        var subcatactual = "";
         foreach (var objeto in parentList)
         {
 
@@ -32,6 +33,30 @@
                                 else
                                 {
                                     <input type="button" onClick="cargarproductospormarca()" value="Load products" class="btn btn-primary form-control" id="@objeto.idkey" />
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!--PARA PRODUCTOS DINAMICOS TABLA MODELO DE INFORMACION-->
+            if (objeto.id_resource == 36)
+            {
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <p class="control-label col-md-10">@objeto.fdescription</p>
+                            <div class="col-md-12">
+                                @if (ViewBag.mostrarboton == 1)
+                                {
+                                    <input type="button" onClick="cargarproductosModeloInfo()" value="Load products" class="btn btn-primary form-control" id="@objeto.idkey" hidden />
+                                }
+                                else
+                                {
+                                    <input type="button" onClick="cargarproductosModeloInfo()" value="Load products" class="btn btn-primary form-control" id="@objeto.idkey" />
                                 }
 
                             </div>
@@ -93,17 +118,24 @@
             <!--PARA PRODUCTOS -->
             if (objeto.id_resource == 3)
             {
+                if (objeto.fvalueText != "")
+                {
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10">@objeto.fdescription (*)</p>
-                            <div class="col-md-12">
-                                <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <p class="control-label col-md-10">@objeto.fdescription (*)</p>
+                                <div class="col-md-12">
+                                    <input type="number" onClick="this.select();" min="0" inputmode="numeric" pattern="[0-9]*" value="@objeto.fvalue" class="form-control" id="@objeto.idkey" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+
 
             }
 
@@ -276,25 +308,25 @@
                     <p class="control-label col-md-10">@objeto.fdescription</p>
                     <div class="col-md-12">
                         @if (objeto.fsource != "")
-    {
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                    <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)"  style="height:6px;display:none;">
-                        <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
-                        <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
-                    </div>
-                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
-}
-else
-{
-                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                    <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)" style="height:6px;display:none;">
-                        <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
-                        <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
-                    </div>
-                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
-                    <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
-}
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                            <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)" style="height:6px;display:none;">
+                                <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
+                                <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
+                            </div>
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
+                        else
+                        {
+                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                            <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)" style="height:6px;display:none;">
+                                <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
+                                <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
+                            </div>
+                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                        }
                     </div>
 
 
@@ -306,25 +338,25 @@ else
                             <p class="control-label col-md-10">@objeto.fdescription</p>
                             <div class="col-md-12">
                                 @if (objeto.fsource != "")
-    {
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
-                            <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)"  style="height:6px;display:none;">
-                                <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
-                                <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
-                            </div>
-                            <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
-                            <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
-}
-else
-{
-                            <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
-                            <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)"  style="height:6px;display:none;">
-                                <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
-                                <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
-                            </div>
-                            <img id="@("img_" + objeto.idkey)" src="#" alt="your image" hidden />
-                            <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image" hidden />
-}
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-default-file="@Url.Content(objeto.fsource)" data-max-file-size-preview="15M">
+                                    <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)" style="height:6px;display:none;">
+                                        <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
+                                        <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
+                                    </div>
+                                    <img id="@("img_" + objeto.idkey)" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" alt="your image" hidden />
+                                }
+                                else
+                                {
+                                    <input type="file" data-changeflag="0" class="dropifyIMG" id="@objeto.idkey" data-max-file-size-preview="15M">
+                                    <div class="progress no-bg mt-2 align-items-center circle" id="@("maindivprogress_" + objeto.idkey)" style="height:6px;display:none;">
+                                        <div id="@("divprogress_" + objeto.idkey)" class="progress-bar circle gd-danger" style="width: 0%"></div>
+                                        <span id="@("imgprogress_" + objeto.idkey)" class="mx-2">0%</span>
+                                    </div>
+                                    <img id="@("img_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                    <img id="@("resultimg_" + objeto.idkey)" src="#" alt="your image" hidden />
+                                }
                             </div>
                         </div>
                     </div>
@@ -424,17 +456,81 @@ else
             <!--PARA INPUT NUMBER -->
             if (objeto.id_resource == 18)
             {
+
                 if (objeto.parent != 0)
                 {
 
-                    <div class="form-group">
-                        <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-                        <div class="col-md-12">
-                            <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                    if (objeto.fsource.Contains("row"))
+                    {
+                        <td>
+                            <div class="form-group">
+                            
+                                    <input type="number" style="width:40px;" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalue" />
 
+                            </div>
+
+                        </td>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                            <div class="col-md-12">
+                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+
+                            </div>
                         </div>
-                    </div>
+                    }
 
+
+                }
+                else
+                {
+                    if (objeto.fsource.Contains("row"))
+                    {
+                        <td>
+                            <div class="form-group">
+                                
+                                    <input type="number" style="width:40px;" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalue" />
+
+                            </div>
+
+                        </td>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <p class="control-label col-md-10"> @objeto.fsource (*)</p>
+                                    <div class="col-md-12">
+                                        <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+
+
+
+            }
+            <!--PARA INPUT NUMBER (CURRENCY)-->
+            if (objeto.id_resource == 21)
+            {
+                if (objeto.fsource == "row")
+                {
+                    <td>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <input type="number" style="width:55px;" id="@objeto.idkey" class="form-control form-control-sm" value="@objeto.fvalueDecimal" />
+                                <i>$</i>
+                            </div>
+                        </div>
+
+                    </td>
                 }
                 else
                 {
@@ -443,7 +539,7 @@ else
                             <div class="form-group">
                                 <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                                 <div class="col-md-12">
-                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control" value="@objeto.fvalueDecimal" />
+                                    <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
 
                                 </div>
                             </div>
@@ -451,22 +547,6 @@ else
                     </div>
                 }
 
-
-            }
-            <!--PARA INPUT NUMBER (CURRENCY)-->
-            if (objeto.id_resource == 21)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <p class="control-label col-md-10"> @objeto.fsource (*)</p>
-                            <div class="col-md-12">
-                                <input type="number" id="@objeto.idkey" name="@objeto.idkey" class="form-control currency" value="@objeto.fvalueDecimal" />
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             }
             <!--PARA CUSTOMERS -->
@@ -665,6 +745,65 @@ else
 
             }
 
+            <!--PARA TABLA-->
+            if (objeto.id_resource == 34)
+            {
+                if (ViewBag.mostrarboton == 1)
+                {
+                    <div class="card" id="tableaudit">
+                        <div class="card-body">
+
+                            <table id="test" class="table">
+                                <thead style="font-size:9px;">
+
+                                    @if (objeto.children != null)
+                                    {
+                                        <tr>
+                                            @OrderedList(objeto.children, objeto.idkey)
+                                        </tr>
+
+                                    }
+                                </thead>
+                                <tbody style="font-size:10px;">
+
+                                    @foreach (var product in ViewBag.productRows)
+                                    {
+                                        if (subcatactual != product.fvalueText)
+                                        {
+
+                                            <tr style="background-color:#f5f5f6">
+                                                <td colspan="4" style="text-align:center">@product.fvalueText</td>
+                                            </tr>
+                                            subcatactual = @product.fvalueText;
+
+
+                                        }
+                                        <tr>
+                                            <td>@product.fsource | @product.fdescription</td>
+
+                                            @if (product.children != null)
+                                            {
+                                                @OrderedList(product.children, objeto.idkey)
+                                            }
+                                        </tr>
+
+
+                                    }
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                }
+
+            }
+            <!--PARA COLUMNAS-->
+            if (objeto.id_resource == 24)
+            {
+                <th>@objeto.fdescription</th>
+            }
         }
 }
 

@@ -148,10 +148,22 @@
                                         <a href="@Url.Action("RD_FORM3", "Reports", new { report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})"><span class="w-40 avatar gd-default" data-toggle-class="loading"><i data-feather="file"></i></span></a>
 
                                     }
+
+                                    else if (item.id == 42)
+                                    {
+                                        <!--VISITA 2.0-->
+                                        <a href="@Url.Action("RD_FORM42", "Reports", new { report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})"><span class="w-40 avatar gd-default" data-toggle-class="loading"><i data-feather="file"></i></span></a>
+
+                                    }
                                     else if (item.id == 15 || item.id == 17 || item.id == 18 || item.id == 19 || item.id == 20 || item.id == 21 || item.id == 23 || item.id == 24 || item.id == 33)
                                     {
                                         <!--AUDIT GENERAL-->
                                         <a href="@Url.Action("RD_AUDITGRL1", "Reports", new {report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })"><span class="w-40 avatar gd-default" data-toggle-class="loading"><i data-feather="file"></i></span></a>
+                                    }
+                                     else if (item.id == 40)
+                                    {
+                                        <!--AUDIT GENERAL 2.0-->
+                                        <a href="@Url.Action("RD_AUDITGRL2", "Reports", new {report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })"><span class="w-40 avatar gd-default" data-toggle-class="loading"><i data-feather="file"></i></span></a>
                                     }
                                     else if (item.id == 32)
                                     {
@@ -175,10 +187,21 @@
                                         <!--VISITA 1.1-->
                                         <a href="@Url.Action("RD_FORM3", "Reports", new { report=item.id,customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })" class="item-title text-color h-1x">@item.name</a>
                                     }
+
+                                    else if (item.id == 42)
+                                    {
+                                        <!--VISITA 2.0-->
+                                        <a href="@Url.Action("RD_FORM42", "Reports", new { report=item.id,customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })" class="item-title text-color h-1x">@item.name</a>
+                                    }
                                     else if (item.id == 15 || item.id == 17 || item.id == 18 || item.id == 19 || item.id == 20 || item.id == 21 || item.id == 23 || item.id == 24 || item.id == 33)
                                     {
                                         <!--AUDIT GENERAL-->
                                         <a href="@Url.Action("RD_AUDITGRL1", "Reports", new {report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })" class="item-title text-color h-1x">@item.name</a>
+                                    }
+                                         else if (item.id == 40)
+                                    {
+                                        <!--AUDIT GENERAL 2.0-->
+                                        <a href="@Url.Action("RD_AUDITGRL2", "Reports", new {report=item.id, customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend })" class="item-title text-color h-1x">@item.name</a>
                                     }
                                     else if (item.id == 32)
                                     {
