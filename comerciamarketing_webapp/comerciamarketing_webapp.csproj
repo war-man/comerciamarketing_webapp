@@ -1169,6 +1169,8 @@
     <Content Include="Content\dist\js\map-icons.min.js" />
     <Content Include="Content\images\loadingpage.jpg" />
     <Content Include="Content\images\promoDucal2018.jpg" />
+    <Content Include="Content\images\spain.png" />
+    <Content Include="Content\images\united-states.png" />
     <Content Include="Content\landingpage\css\bootstrap.min.css" />
     <Content Include="Content\landingpage\css\fontawesome-all.min.css" />
     <Content Include="Content\landingpage\css\ionicons.min.css" />
@@ -1254,6 +1256,11 @@
     <Content Include="Content\landingpage\images\main\LogoPNG-1.png" />
     <Content Include="Content\landingpage\images\main\LogoPNG-1blanco.png" />
     <Content Include="Content\landingpage\images\main\map.png" />
+    <Content Include="Content\landingpage\images\main\slides\Asset10_en.png" />
+    <Content Include="Content\landingpage\images\main\slides\Asset11_en.png" />
+    <Content Include="Content\landingpage\images\main\slides\Asset7_en.png" />
+    <Content Include="Content\landingpage\images\main\slides\Asset8_en.png" />
+    <Content Include="Content\landingpage\images\main\slides\Asset9_en.png" />
     <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Competitividad.png" />
     <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Cuidamosdenuestragente.png" />
     <Content Include="Content\landingpage\images\main\slides\COMERCIA_LandingPage_Imagen_Disciplina.png" />
@@ -4035,7 +4042,7 @@
     <Content Include="Views\VisitsMs\Details.cshtml" />
     <Content Include="Views\FormsM\Template_preview2.cshtml" />
     <Content Include="Views\Shared\ActivityScripts.cshtml" />
-    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\Home\Homes.cshtml" />
     <Content Include="Views\FormsM\Activityra.cshtml" />
     <Content Include="Views\Shared\ActivityraScripts.cshtml" />
     <Content Include="Views\Shared\visitScript.cshtml" />
@@ -4113,6 +4120,7 @@
     <Content Include="Views\FormsM\Template_previewDemos.cshtml" />
     <Content Include="Views\Reports\RD_AUDITGRL2.cshtml" />
     <Content Include="Views\Reports\RD_FORM42.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

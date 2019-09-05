@@ -36,13 +36,53 @@ namespace comerciamarketing_webapp.Controllers
         {
             return new JsonResult { Data = "Success" };
         }
-        public ActionResult Home(string idioma, int token=0)
+        public ActionResult Homes(string idioma, int token=0)
         {
             ViewBag.showmessage = token;
             return View();
         }
         [HttpPost]
         public ActionResult SendMessage(string Nombre, string Empresa, string email, string Mensaje)
+        {
+
+            RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
+            if (string.IsNullOrEmpty(recaptchaHelper.Response))
+            {
+                ModelState.AddModelError("reCAPTCHA", "Please complete the reCAPTCHA");
+                return RedirectToAction("Homes", "Home", new { token = 3 });
+            }
+            else
+            {
+                RecaptchaVerificationResult recaptchaResult = recaptchaHelper.VerifyRecaptchaResponse();
+                if (recaptchaResult != RecaptchaVerificationResult.Success)
+                {
+                    ModelState.AddModelError("reCAPTCHA", "The reCAPTCHA is incorrect");
+                    return RedirectToAction("Homes", "Home", new { token = 4 });
+                }
+            }
+
+
+            //Send the email
+            dynamic semail = new Email("emailContact");
+            semail.To = "customercare@comerciamarketing.com";
+            semail.From = "donotreply@comerciamarketing.com";
+            semail.name = Nombre;
+            semail.email = email;
+            semail.company = Empresa;
+            semail.message = Mensaje;
+            semail.Send();
+
+            return RedirectToAction("Homes", "Home", new { token = 1 });
+        }
+
+        public ActionResult Home(string idioma, int token = 0)
+        {
+            ViewBag.showmessage = token;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SendMessageEn(string Nombre, string Empresa, string email, string Mensaje)
         {
 
             RecaptchaVerificationHelper recaptchaHelper = this.GetRecaptchaVerificationHelper();
