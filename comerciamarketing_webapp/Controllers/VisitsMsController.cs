@@ -1761,6 +1761,100 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateTask(string ID_form, string ID_Vendor, string ID_rep, DateTime time)
+        {
+            try
+            {
+                int IDForm = Convert.ToInt32(ID_form);
+
+                //CREAMOS LA ESTRUCTURA DE LA ACTIVIDAD
+                Tasks nuevaActividad = new Tasks();
+
+                nuevaActividad.ID_formM = Convert.ToInt32(ID_form);
+                nuevaActividad.ID_Store = "";
+                nuevaActividad.store = "";
+                nuevaActividad.ID_brands = "";
+                nuevaActividad.Brands = "";
+                nuevaActividad.ID_Customer = ID_Vendor;
+      
+                var vendor = (from c in CMKdb.OCRD where (c.CardCode == ID_Vendor) select c).FirstOrDefault();
+                if (vendor != null)
+                {
+                    nuevaActividad.Customer = vendor.CardName;
+                }
+
+
+
+                    nuevaActividad.ID_Store = "";
+                    nuevaActividad.store = "";
+                    nuevaActividad.address = "";
+                    nuevaActividad.city = "";
+                    nuevaActividad.zipcode = "";
+
+                nuevaActividad.state = "";
+
+                        nuevaActividad.geoLong = "";
+                        nuevaActividad.geoLat = "";
+
+
+                //FIN
+                int idrepint = Convert.ToInt32(ID_rep);
+                nuevaActividad.ID_taskstatus = 3;
+                nuevaActividad.comments = "";
+                nuevaActividad.check_in = DateTime.Today.Date;
+                nuevaActividad.end_date = DateTime.Today.Date;
+                nuevaActividad.ID_empresa = 2;
+                nuevaActividad.ID_userCreate = 0;
+                nuevaActividad.visit_date = DateTime.Today.Date;
+                nuevaActividad.ID_formM = Convert.ToInt32(ID_form);
+                nuevaActividad.ID_userEnd = idrepint;
+                nuevaActividad.ID_ExternalUser = "";
+                nuevaActividad.extra_hours = 0;
+
+                //1 - Inventario
+                //2 - 
+                nuevaActividad.ID_taskType = 1;
+                nuevaActividad.TaskType = "Inventory";
+                nuevaActividad.Task_description = "Take products stock by Customer";
+
+                var usuario = (from a in db.Usuarios where (a.ID_usuario == idrepint) select a).FirstOrDefault();
+
+                nuevaActividad.UserName = usuario.nombre + " "  + usuario.apellido;
+
+                //guardamos
+                db.Tasks.Add(nuevaActividad);
+                db.SaveChanges();
+
+                //LUEGO ASIGNAMOS LA PLANTILLA DE FORMULARIO A LA ACTIVIDAD
+                //Guardamos el detalle
+                //var detalles_acopiar = (from a in db.FormsM_details where (a.ID_formM == IDForm && a.original == true) select a).AsNoTracking().ToList();
+
+                var sql = @"usp_CreateFormDetailTasks @IDVisit, @IDForm";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@IDVisit", nuevaActividad.ID_task),
+                    new SqlParameter("@IDForm", IDForm));
+
+
+
+                TempData["exito"] = "Task created successfully.";
+                return RedirectToAction("Tasks", "Admin", null);
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Tasks", "Admin", null);
+            }
+
+
+
+
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor,string ID_brand, string ID_rep, DateTime time, string products_listSel)
@@ -2789,6 +2883,36 @@ namespace comerciamarketing_webapp.Controllers
 
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteTask(int id)
+        {
+            try
+            {
+
+                //Eliminamos detalle
+                var sql = @"usp_DeleteFormDetailTasks @IDVisit";
+                db.Database.ExecuteSqlCommand(sql, new SqlParameter("@IDVisit", id));
+
+
+                Tasks activity = db.Tasks.Find(id);
+                db.Tasks.Remove(activity);
+                db.SaveChanges();
+
+                TempData["exito"] = "Task deleted successfully.";
+                return RedirectToAction("Tasks", "Admin", null);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["advertencia"] = "Something wrong happened, try again." + ex.Message;
+                return RedirectToAction("Tasks", "Admin", null);
+            }
+
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CancelActivity(int ID_activityCa, int ID_visitCa, string comment)
@@ -4784,11 +4908,48 @@ namespace comerciamarketing_webapp.Controllers
 
                 int fotosC = fotos.Count();
 
+                string fullAdd = demo_header[0].store + ", " + demo_header[0].address + ", " + demo_header[0].city + ", " + demo_header[0].state + ", " + demo_header[0].zipcode;
+
+                rd.SetParameterValue("addressFull", fullAdd.ToUpper());
+
+                if (fotosC == 4)
+                {
+                    if (fotos[0].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg1", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg1", Path.GetFullPath(Server.MapPath(fotos[0].fsource)));
+                    }
+                    if (fotos[1].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg2", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg2", Path.GetFullPath(Server.MapPath(fotos[1].fsource)));
+                    }
+                    if (fotos[2].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg3", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
+                    }
+                    if (fotos[3].fsource == "")
+                    {
+                        rd.SetParameterValue("urlimg4", "");
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimg4", Path.GetFullPath(Server.MapPath(fotos[3].fsource)));
+                    }
 
 
-
-
-                if (fotosC == 3)
+                }
+                else if (fotosC == 3)
                 {
                     if (fotos[0].fsource == "")
                     {
@@ -4815,7 +4976,8 @@ namespace comerciamarketing_webapp.Controllers
                         rd.SetParameterValue("urlimg3", Path.GetFullPath(Server.MapPath(fotos[2].fsource)));
                     }
 
-               
+                    rd.SetParameterValue("urlimg4", "");
+
 
                 }
                 else if (fotosC == 2)
@@ -4838,7 +5000,7 @@ namespace comerciamarketing_webapp.Controllers
                     }
 
                     rd.SetParameterValue("urlimg3", "");
-
+                    rd.SetParameterValue("urlimg4", "");
 
                 }
                 else if (fotosC == 1)
@@ -4855,8 +5017,8 @@ namespace comerciamarketing_webapp.Controllers
                     rd.SetParameterValue("urlimg2", "");
 
                     rd.SetParameterValue("urlimg3", "");
+                    rd.SetParameterValue("urlimg4", "");
 
-               
 
                 }
                 else
@@ -4865,7 +5027,7 @@ namespace comerciamarketing_webapp.Controllers
                     rd.SetParameterValue("urlimg1", "");
                     rd.SetParameterValue("urlimg2", "");
                     rd.SetParameterValue("urlimg3", "");
-             
+                    rd.SetParameterValue("urlimg4", "");
                 }
 
 

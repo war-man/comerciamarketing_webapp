@@ -1143,7 +1143,159 @@ namespace comerciamarketing_webapp.Controllers
             }
         }
 
-        
+
+        public ActionResult Tasks(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Admin";
+                ViewData["Page"] = "Tasks";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                //FILTROS
+                //Fechas
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
+                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
+                //
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                var tasks = new List<Tasks>();
+                List<Usuarios> usuarios = new List<Usuarios>();
+                int[] visitasarray = new int[] { };
+                using (var db = new dbComerciaEntities())
+                {
+                    if (customersel == null || customersel == "" || customersel == "0")
+                    {
+                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate)) select a).ToList();
+                    }
+                    else
+                    {
+                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Customer == customersel) select a).ToList();
+                        if (brandsel == null || brandsel == 0)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+                    List<FormsM> activeForms = new List<FormsM>();
+                    activeForms = (from at in db.FormsM where (at.ID_empresa == 2 && at.ID_activity==5) select at).ToList();
+                    ViewBag.activeForms = activeForms;
+
+                    usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).ToList();
+
+                }
+
+
+
+                ViewBag.representatives = usuarios;
+                using (var CMKdb = new COM_MKEntities())
+                {
+
+                    List<OCRD> customers = new List<OCRD>();
+                    customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+
+                    ViewBag.customers = customers.ToList();
+
+                    //LISTADO DE TIENDAS
+                    var storesd = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                    ViewBag.stores = storesd.ToList();
+                }
+                try
+                {
+
+                    using (var CMKdb = new COM_MKEntities())
+                    {
+                        //LISTADO DE CLIENTES
+                        var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                        ViewBag.customerssel = customers.ToList();
+
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.CustomerSelCode = "0";
+                        }
+                        else
+                        {
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
+                        }
+
+                        var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+                        else
+                        {
+                            ViewBag.BrandLabel = brandcmk.FirmName;
+                            ViewBag.BrandSelCode = brandcmk.FirmCode;
+                        }
+
+
+                    }
+
+                }
+
+                catch
+                {
+
+                    ViewBag.CustomersLabel = "All Customers";
+                    ViewBag.customerssel = new List<OCRD>();
+                    ViewBag.CustomerSelCode = "0";
+                    ViewBag.BrandLabel = "All Brands";
+                    ViewBag.BrandSelCode = "0";
+                }
+
+
+                return View(tasks);
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+        }
+
 
 
         public class representativesVisit

@@ -160,6 +160,13 @@
 
                         </a>
                     </li>
+                    <li>
+                        <a href="@Url.Action("Tasks","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='list'></i></span>
+                            <span class="nav-text">Tasks</span>
+
+                        </a>
+                    </li>
                     @*<li>
             <a href="@Url.Action("Map_customers","Customers")">
                 <span class="nav-icon text-info"><i data-feather='map'></i></span>

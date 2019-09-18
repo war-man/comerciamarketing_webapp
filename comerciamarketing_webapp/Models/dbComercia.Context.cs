@@ -52,5 +52,6 @@ namespace comerciamarketing_webapp.Models
         public virtual DbSet<promotions_v1> promotions_v1 { get; set; }
         public virtual DbSet<Demos> Demos { get; set; }
         public virtual DbSet<FormsM_detailsDemos> FormsM_detailsDemos { get; set; }
+        public virtual DbSet<Tasks> Tasks { get; set; }
     }
 }

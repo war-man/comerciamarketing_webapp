@@ -26,6 +26,7 @@
           <Property Name="date" Type="datetime" Nullable="false" />
           <Property Name="ID_activitytype" Type="int" Nullable="false" />
           <Property Name="ID_usuarioEndString" Type="varchar" MaxLength="50" />
+          <Property Name="desnormalizado" Type="bit" />
         </EntityType>
         <EntityType Name="ActivitiesM_log">
           <Key>
@@ -306,6 +307,39 @@
           <Property Name="ID_usuario" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="comment" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="ID_task" />
+          </Key>
+          <Property Name="ID_task" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Customer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Customer" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_brands" Type="varchar(max)" Nullable="false" />
+          <Property Name="Brands" Type="varchar(max)" Nullable="false" />
+          <Property Name="ID_Store" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="store" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="address" Type="varchar(max)" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="zipcode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="state" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="visit_date" Type="datetime" Nullable="false" />
+          <Property Name="ID_userCreate" Type="int" Nullable="false" />
+          <Property Name="ID_userEnd" Type="int" Nullable="false" />
+          <Property Name="ID_ExternalUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_taskstatus" Type="int" Nullable="false" />
+          <Property Name="comments" Type="varchar(max)" Nullable="false" />
+          <Property Name="ID_formM" Type="int" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="check_in" Type="datetime" Nullable="false" />
+          <Property Name="geoLong" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="geoLat" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="extra_hours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+          <Property Name="ID_taskType" Type="int" Nullable="false" />
+          <Property Name="TaskType" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Task_description" Type="varchar(max)" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
             <PropertyRef Name="ID_tipomembresia" />
@@ -534,6 +568,7 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoutesM" EntityType="Self.RoutesM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock_items" EntityType="Self.Stock_items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_form_w9" EntityType="Self.user_form_w9" Schema="dbo" store:Type="Tables" />
@@ -712,6 +747,7 @@
             <End Role="Demos" EntitySet="Demos" />
           </AssociationSet>
           <EntitySet Name="FormsM_detailsDemos" EntityType="dbComerciaModel.FormsM_detailsDemos" />
+          <EntitySet Name="Tasks" EntityType="dbComerciaModel.Tasks" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -955,6 +991,7 @@
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ID_activitytype" Type="Int32" Nullable="false" />
           <Property Name="ID_usuarioEndString" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="desnormalizado" Type="Boolean" />
         </EntityType>
         <EntityType Name="FormsM">
           <Key>
@@ -1225,6 +1262,39 @@
           <Property Name="query2" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ID_empresa" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="ID_task" />
+          </Key>
+          <Property Name="ID_task" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Customer" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_brands" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Brands" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Store" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="store" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="zipcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="visit_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_userCreate" Type="Int32" Nullable="false" />
+          <Property Name="ID_userEnd" Type="Int32" Nullable="false" />
+          <Property Name="ID_ExternalUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_taskstatus" Type="Int32" Nullable="false" />
+          <Property Name="comments" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_formM" Type="Int32" Nullable="false" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="check_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="geoLong" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="geoLat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="extra_hours" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+          <Property Name="ID_taskType" Type="Int32" Nullable="false" />
+          <Property Name="TaskType" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Task_description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1423,6 +1493,7 @@
           <EntitySetMapping Name="ActivitiesM">
             <EntityTypeMapping TypeName="dbComerciaModel.ActivitiesM">
               <MappingFragment StoreEntitySet="ActivitiesM">
+                <ScalarProperty Name="desnormalizado" ColumnName="desnormalizado" />
                 <ScalarProperty Name="ID_usuarioEndString" ColumnName="ID_usuarioEndString" />
                 <ScalarProperty Name="ID_activitytype" ColumnName="ID_activitytype" />
                 <ScalarProperty Name="date" ColumnName="date" />
@@ -1652,6 +1723,40 @@
                 <ScalarProperty Name="fsource" ColumnName="fsource" />
                 <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
                 <ScalarProperty Name="ID_details" ColumnName="ID_details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="dbComerciaModel.Tasks">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Task_description" ColumnName="Task_description" />
+                <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+                <ScalarProperty Name="ID_taskType" ColumnName="ID_taskType" />
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
+                <ScalarProperty Name="geoLat" ColumnName="geoLat" />
+                <ScalarProperty Name="geoLong" ColumnName="geoLong" />
+                <ScalarProperty Name="check_in" ColumnName="check_in" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="ID_formM" ColumnName="ID_formM" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ID_taskstatus" ColumnName="ID_taskstatus" />
+                <ScalarProperty Name="ID_ExternalUser" ColumnName="ID_ExternalUser" />
+                <ScalarProperty Name="ID_userEnd" ColumnName="ID_userEnd" />
+                <ScalarProperty Name="ID_userCreate" ColumnName="ID_userCreate" />
+                <ScalarProperty Name="visit_date" ColumnName="visit_date" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="store" ColumnName="store" />
+                <ScalarProperty Name="ID_Store" ColumnName="ID_Store" />
+                <ScalarProperty Name="Brands" ColumnName="Brands" />
+                <ScalarProperty Name="ID_brands" ColumnName="ID_brands" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="ID_Customer" ColumnName="ID_Customer" />
+                <ScalarProperty Name="ID_task" ColumnName="ID_task" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
