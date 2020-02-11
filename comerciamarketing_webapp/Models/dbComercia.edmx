@@ -127,6 +127,7 @@
           <Property Name="extra_hours" Type="decimal" Precision="18" Scale="2" />
           <Property Name="ID_empresa" Type="int" />
           <Property Name="UserName" Type="varchar" MaxLength="500" />
+          <Property Name="desnormalizado" Type="bit" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -208,6 +209,28 @@
           <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_formresourcetype" Type="int" Nullable="false" />
           <Property Name="fsource" Type="varchar(max)" Nullable="false" />
+          <Property Name="fdescription" Type="varchar(max)" />
+          <Property Name="fvalue" Type="int" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="fvalueText" Type="varchar(max)" />
+          <Property Name="ID_formM" Type="int" Nullable="false" />
+          <Property Name="ID_visit" Type="int" Nullable="false" />
+          <Property Name="original" Type="bit" Nullable="false" />
+          <Property Name="obj_order" Type="int" Nullable="false" />
+          <Property Name="obj_group" Type="int" Nullable="false" />
+          <Property Name="idkey" Type="int" Nullable="false" />
+          <Property Name="parent" Type="int" Nullable="false" />
+          <Property Name="query1" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="query2" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormsM_detailsTasks">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_formresourcetype" Type="int" Nullable="false" />
+          <Property Name="fsource" Type="text" Nullable="false" />
           <Property Name="fdescription" Type="varchar(max)" />
           <Property Name="fvalue" Type="int" Nullable="false" />
           <Property Name="fvalueDecimal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -339,6 +362,61 @@
           <Property Name="TaskType" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Task_description" Type="varchar(max)" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="desnormalizado" Type="bit" />
+        </EntityType>
+        <EntityType Name="Tb_Surveys">
+          <Key>
+            <PropertyRef Name="ID_survey" />
+          </Key>
+          <Property Name="ID_survey" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Brand" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Age" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Telephone" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Question1" Type="varchar(max)" />
+          <Property Name="Answer1" Type="varchar(max)" />
+          <Property Name="Question2" Type="varchar(max)" />
+          <Property Name="Answer2" Type="varchar(max)" />
+          <Property Name="Question3" Type="varchar(max)" />
+          <Property Name="Answer3" Type="varchar(max)" />
+          <Property Name="Question4" Type="varchar(max)" />
+          <Property Name="Answer4" Type="varchar(max)" />
+          <Property Name="Question5" Type="varchar(max)" />
+          <Property Name="Answer5" Type="varchar(max)" />
+          <Property Name="Question6" Type="varchar(max)" />
+          <Property Name="Answer6" Type="varchar(max)" />
+          <Property Name="Question7" Type="varchar(max)" />
+          <Property Name="Answer7" Type="varchar(max)" />
+          <Property Name="Question8" Type="varchar(max)" />
+          <Property Name="Answer8" Type="varchar(max)" />
+          <Property Name="Question9" Type="varchar(max)" />
+          <Property Name="Answer9" Type="varchar(max)" />
+          <Property Name="Question10" Type="varchar(max)" />
+          <Property Name="Answer10" Type="varchar(max)" />
+          <Property Name="Question11" Type="varchar(max)" />
+          <Property Name="Answer11" Type="varchar(max)" />
+          <Property Name="Question12" Type="varchar(max)" />
+          <Property Name="Answer12" Type="varchar(max)" />
+          <Property Name="Question13" Type="varchar(max)" />
+          <Property Name="Answer13" Type="varchar(max)" />
+          <Property Name="Question14" Type="varchar(max)" />
+          <Property Name="Answer14" Type="varchar(max)" />
+          <Property Name="Question15" Type="varchar(max)" />
+          <Property Name="Answer15" Type="varchar(max)" />
+          <Property Name="Question16" Type="varchar(max)" />
+          <Property Name="Answer16" Type="varchar(max)" />
+          <Property Name="Question17" Type="varchar(max)" />
+          <Property Name="Answer17" Type="varchar(max)" />
+          <Property Name="Question18" Type="varchar(max)" />
+          <Property Name="Answer18" Type="varchar(max)" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Tipo_membresia">
           <Key>
@@ -561,6 +639,7 @@
           <EntitySet Name="FormsM" EntityType="Self.FormsM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormsM_details" EntityType="Self.FormsM_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormsM_detailsDemos" EntityType="Self.FormsM_detailsDemos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormsM_detailsTasks" EntityType="Self.FormsM_detailsTasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historial_conexiones" EntityType="Self.historial_conexiones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_displays" EntityType="Self.Items_displays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="promotions_v1" EntityType="Self.promotions_v1" Schema="dbo" store:Type="Tables" />
@@ -569,6 +648,7 @@
           <EntitySet Name="RoutesM" EntityType="Self.RoutesM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock_items" EntityType="Self.Stock_items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tb_Surveys" EntityType="Self.Tb_Surveys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_membresia" EntityType="Self.Tipo_membresia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipo_recurso" EntityType="Self.tipo_recurso" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_form_w9" EntityType="Self.user_form_w9" Schema="dbo" store:Type="Tables" />
@@ -748,6 +828,8 @@
           </AssociationSet>
           <EntitySet Name="FormsM_detailsDemos" EntityType="dbComerciaModel.FormsM_detailsDemos" />
           <EntitySet Name="Tasks" EntityType="dbComerciaModel.Tasks" />
+          <EntitySet Name="FormsM_detailsTasks" EntityType="dbComerciaModel.FormsM_detailsTasks" />
+          <EntitySet Name="Tb_Surveys" EntityType="dbComerciaModel.Tb_Surveys" />
         </EntityContainer>
         <Association Name="FK__Recursos___ID_us__5441852A">
           <End Type="dbComerciaModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
@@ -1227,6 +1309,7 @@
           <Property Name="ID_empresa" Type="Int32" />
           <NavigationProperty Name="Demo_state" Relationship="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" FromRole="Demos" ToRole="Demo_state" />
           <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="desnormalizado" Type="Boolean" />
         </EntityType>
         <Association Name="FK__Demos__ID_demost__04E4BC85">
           <End Type="dbComerciaModel.Demo_state" Role="Demo_state" Multiplicity="0..1" />
@@ -1294,6 +1377,83 @@
           <Property Name="TaskType" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Task_description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="desnormalizado" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="FormsM_detailsTasks">
+          <Key>
+            <PropertyRef Name="ID_details" />
+          </Key>
+          <Property Name="ID_details" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_formresourcetype" Type="Int32" Nullable="false" />
+          <Property Name="fsource" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fvalue" Type="Int32" Nullable="false" />
+          <Property Name="fvalueDecimal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="fvalueText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_formM" Type="Int32" Nullable="false" />
+          <Property Name="ID_visit" Type="Int32" Nullable="false" />
+          <Property Name="original" Type="Boolean" Nullable="false" />
+          <Property Name="obj_order" Type="Int32" Nullable="false" />
+          <Property Name="obj_group" Type="Int32" Nullable="false" />
+          <Property Name="idkey" Type="Int32" Nullable="false" />
+          <Property Name="parent" Type="Int32" Nullable="false" />
+          <Property Name="query1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="query2" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_empresa" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tb_Surveys">
+          <Key>
+            <PropertyRef Name="ID_survey" />
+          </Key>
+          <Property Name="ID_survey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Brand" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Question1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer4" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question5" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer5" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question6" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer6" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question7" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer7" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question8" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer8" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question9" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer9" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question10" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer10" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question11" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer11" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question12" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer12" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question13" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer13" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question14" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer14" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question15" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer15" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question16" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer16" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question17" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer17" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question18" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer18" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1675,6 +1835,7 @@
           <EntitySetMapping Name="Demos">
             <EntityTypeMapping TypeName="dbComerciaModel.Demos">
               <MappingFragment StoreEntitySet="Demos">
+                <ScalarProperty Name="desnormalizado" ColumnName="desnormalizado" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
                 <ScalarProperty Name="extra_hours" ColumnName="extra_hours" />
@@ -1729,6 +1890,7 @@
           <EntitySetMapping Name="Tasks">
             <EntityTypeMapping TypeName="dbComerciaModel.Tasks">
               <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="desnormalizado" ColumnName="desnormalizado" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Task_description" ColumnName="Task_description" />
                 <ScalarProperty Name="TaskType" ColumnName="TaskType" />
@@ -1757,6 +1919,84 @@
                 <ScalarProperty Name="Customer" ColumnName="Customer" />
                 <ScalarProperty Name="ID_Customer" ColumnName="ID_Customer" />
                 <ScalarProperty Name="ID_task" ColumnName="ID_task" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormsM_detailsTasks">
+            <EntityTypeMapping TypeName="dbComerciaModel.FormsM_detailsTasks">
+              <MappingFragment StoreEntitySet="FormsM_detailsTasks">
+                <ScalarProperty Name="ID_empresa" ColumnName="ID_empresa" />
+                <ScalarProperty Name="query2" ColumnName="query2" />
+                <ScalarProperty Name="query1" ColumnName="query1" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="idkey" ColumnName="idkey" />
+                <ScalarProperty Name="obj_group" ColumnName="obj_group" />
+                <ScalarProperty Name="obj_order" ColumnName="obj_order" />
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="ID_visit" ColumnName="ID_visit" />
+                <ScalarProperty Name="ID_formM" ColumnName="ID_formM" />
+                <ScalarProperty Name="fvalueText" ColumnName="fvalueText" />
+                <ScalarProperty Name="fvalueDecimal" ColumnName="fvalueDecimal" />
+                <ScalarProperty Name="fvalue" ColumnName="fvalue" />
+                <ScalarProperty Name="fdescription" ColumnName="fdescription" />
+                <ScalarProperty Name="fsource" ColumnName="fsource" />
+                <ScalarProperty Name="ID_formresourcetype" ColumnName="ID_formresourcetype" />
+                <ScalarProperty Name="ID_details" ColumnName="ID_details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tb_Surveys">
+            <EntityTypeMapping TypeName="dbComerciaModel.Tb_Surveys">
+              <MappingFragment StoreEntitySet="Tb_Surveys">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Answer18" ColumnName="Answer18" />
+                <ScalarProperty Name="Question18" ColumnName="Question18" />
+                <ScalarProperty Name="Answer17" ColumnName="Answer17" />
+                <ScalarProperty Name="Question17" ColumnName="Question17" />
+                <ScalarProperty Name="Answer16" ColumnName="Answer16" />
+                <ScalarProperty Name="Question16" ColumnName="Question16" />
+                <ScalarProperty Name="Answer15" ColumnName="Answer15" />
+                <ScalarProperty Name="Question15" ColumnName="Question15" />
+                <ScalarProperty Name="Answer14" ColumnName="Answer14" />
+                <ScalarProperty Name="Question14" ColumnName="Question14" />
+                <ScalarProperty Name="Answer13" ColumnName="Answer13" />
+                <ScalarProperty Name="Question13" ColumnName="Question13" />
+                <ScalarProperty Name="Answer12" ColumnName="Answer12" />
+                <ScalarProperty Name="Question12" ColumnName="Question12" />
+                <ScalarProperty Name="Answer11" ColumnName="Answer11" />
+                <ScalarProperty Name="Question11" ColumnName="Question11" />
+                <ScalarProperty Name="Answer10" ColumnName="Answer10" />
+                <ScalarProperty Name="Question10" ColumnName="Question10" />
+                <ScalarProperty Name="Answer9" ColumnName="Answer9" />
+                <ScalarProperty Name="Question9" ColumnName="Question9" />
+                <ScalarProperty Name="Answer8" ColumnName="Answer8" />
+                <ScalarProperty Name="Question8" ColumnName="Question8" />
+                <ScalarProperty Name="Answer7" ColumnName="Answer7" />
+                <ScalarProperty Name="Question7" ColumnName="Question7" />
+                <ScalarProperty Name="Answer6" ColumnName="Answer6" />
+                <ScalarProperty Name="Question6" ColumnName="Question6" />
+                <ScalarProperty Name="Answer5" ColumnName="Answer5" />
+                <ScalarProperty Name="Question5" ColumnName="Question5" />
+                <ScalarProperty Name="Answer4" ColumnName="Answer4" />
+                <ScalarProperty Name="Question4" ColumnName="Question4" />
+                <ScalarProperty Name="Answer3" ColumnName="Answer3" />
+                <ScalarProperty Name="Question3" ColumnName="Question3" />
+                <ScalarProperty Name="Answer2" ColumnName="Answer2" />
+                <ScalarProperty Name="Question2" ColumnName="Question2" />
+                <ScalarProperty Name="Answer1" ColumnName="Answer1" />
+                <ScalarProperty Name="Question1" ColumnName="Question1" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="ID_survey" ColumnName="ID_survey" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

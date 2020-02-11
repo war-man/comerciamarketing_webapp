@@ -146,6 +146,18 @@ namespace comerciamarketing_webapp.Models
   
 
     }
+    public class imagesInfo
+    {
+        public int ID_image { get; set; }
+        public string Activity { get; set; }
+        public DateTime visitDate { get; set; }
+        public string ID_customer { get; set; }
+        public string Customer { get; set; }
+        public string url { get; set; }
+
+
+
+    }
     public class VisitsInfoCalendar
     {
         public int ID_visit { get; set; }
@@ -177,5 +189,54 @@ namespace comerciamarketing_webapp.Models
         public string query1 { get; set; }
         public string query2 { get; set; }
         public int ID_empresa { get; set; }
+    }
+
+    public  class DatosInventario_10Report
+    {
+        public int ID_detail { get; set; }
+        public int ID_Task { get; set; }
+        public System.DateTime VisitDate { get; set; }
+        public System.DateTime CheckOut { get; set; }
+        public string UserName { get; set; }
+        public string IDCliente { get; set; }
+        public string Cliente { get; set; }
+        public string Producto { get; set; }
+        public string Descripcion { get; set; }
+        public string Marca { get; set; }
+        public string Categoria { get; set; }
+        public decimal Inventario { get; set; }
+    }
+
+    public class DatosDemos_20Report {
+        public int ID_detail { get; set; }
+        public int ID_demo { get; set; }
+        public string Id_Store { get; set; }
+        public string Store { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+        public string State { get; set; }
+        public System.DateTime VisitDate { get; set; }
+        public System.DateTime CheckIn { get; set; }
+        public System.DateTime CheckOut { get; set; }
+        public string UserName { get; set; }
+        public string IDCliente { get; set; }
+        public string Cliente { get; set; }
+        public string Marcas { get; set; }
+        public string Producto { get; set; }
+        public string Descripcion { get; set; }
+        public int Cantidad_entregado { get; set; }
+        public decimal Inventario_inicial { get; set; }
+        public string Unidades_Disponibles { get; set; }
+        public string Presentacion { get; set; }
+        public string Tipo_empaque { get; set; }
+        public string Promocion { get; set; }
+        public string Descuento { get; set; }
+        public string Regalia { get; set; }
+        public string Competencia_directa { get; set; }
+        public string ComentarioSabor { get; set; }
+        public string ComentarioCalidad { get; set; }
+        public string ComentarioPrecio { get; set; }
+        public string ComentarioEmpaque { get; set; }
     }
 }

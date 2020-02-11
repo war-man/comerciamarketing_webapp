@@ -71,6 +71,58 @@
           <Property Name="PrecioSugerido" Type="float" />
           <Property Name="PrecioTienda" Type="float" />
         </EntityType>
+        <EntityType Name="DatosDemos_20">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="ID_detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_demo" Type="int" />
+          <Property Name="Id_Store" Type="varchar" MaxLength="50" />
+          <Property Name="Store" Type="varchar" MaxLength="500" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="City" Type="varchar" MaxLength="250" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="20" />
+          <Property Name="State" Type="varchar" MaxLength="30" />
+          <Property Name="VisitDate" Type="datetime" />
+          <Property Name="CheckIn" Type="datetime" />
+          <Property Name="CheckOut" Type="datetime" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" />
+          <Property Name="IDCliente" Type="varchar" MaxLength="50" />
+          <Property Name="Cliente" Type="varchar" MaxLength="500" />
+          <Property Name="Marcas" Type="varchar(max)" />
+          <Property Name="Producto" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Cantidad_entregado" Type="int" />
+          <Property Name="Inventario_inicial" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Unidades_Disponibles" Type="varchar" MaxLength="100" />
+          <Property Name="Presentacion" Type="varchar" MaxLength="100" />
+          <Property Name="Tipo_empaque" Type="varchar" MaxLength="100" />
+          <Property Name="Promocion" Type="varchar" MaxLength="10" />
+          <Property Name="Descuento" Type="varchar" MaxLength="10" />
+          <Property Name="Regalia" Type="varchar" MaxLength="10" />
+          <Property Name="Competencia_directa" Type="varchar" MaxLength="10" />
+          <Property Name="ComentarioSabor" Type="varchar(max)" />
+          <Property Name="ComentarioCalidad" Type="varchar(max)" />
+          <Property Name="ComentarioPrecio" Type="varchar(max)" />
+          <Property Name="ComentarioEmpaque" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="DatosInventario_10">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="ID_detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Task" Type="int" />
+          <Property Name="VisitDate" Type="datetime" />
+          <Property Name="CheckOut" Type="datetime" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" />
+          <Property Name="IDCliente" Type="varchar" MaxLength="50" />
+          <Property Name="Cliente" Type="varchar" MaxLength="500" />
+          <Property Name="Producto" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Marca" Type="varchar" MaxLength="500" />
+          <Property Name="Categoria" Type="varchar" MaxLength="500" />
+          <Property Name="Inventario" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
         <EntityType Name="Estructura_1_1_Comercia">
           <Key>
             <PropertyRef Name="ID_detail" />
@@ -259,6 +311,8 @@
           <EntitySet Name="Datos_Audit_11" EntityType="Self.Datos_Audit_11" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Datos_Audit_2" EntityType="Self.Datos_Audit_2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Datos_Marketing_Activity" EntityType="Self.Datos_Marketing_Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DatosDemos_20" EntityType="Self.DatosDemos_20" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DatosInventario_10" EntityType="Self.DatosInventario_10" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estructura_1_1_Comercia" EntityType="Self.Estructura_1_1_Comercia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visita_2_0" EntityType="Self.Visita_2_0" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -272,6 +326,8 @@
           <EntitySet Name="Estructura_1_1_Comercia" EntityType="Interna_CMKModel.Estructura_1_1_Comercia" />
           <EntitySet Name="Datos_Audit_2" EntityType="Interna_CMKModel.Datos_Audit_2" />
           <EntitySet Name="Visita_2_0" EntityType="Interna_CMKModel.Visita_2_0" />
+          <EntitySet Name="DatosDemos_20" EntityType="Interna_CMKModel.DatosDemos_20" />
+          <EntitySet Name="DatosInventario_10" EntityType="Interna_CMKModel.DatosInventario_10" />
         </EntityContainer>
         <EntityType Name="Datos_Audit_11">
           <Key>
@@ -522,6 +578,58 @@
           <Property Name="TipoPromoPermiteColocar_Otra" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="ProgramoSegundaVisita" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="DatosDemos_20">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_demo" Type="Int32" />
+          <Property Name="Id_Store" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Store" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VisitDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckIn" Type="DateTime" Precision="3" />
+          <Property Name="CheckOut" Type="DateTime" Precision="3" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IDCliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cliente" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Marcas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cantidad_entregado" Type="Int32" />
+          <Property Name="Inventario_inicial" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Unidades_Disponibles" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_empaque" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Promocion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Descuento" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Regalia" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Competencia_directa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ComentarioSabor" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComentarioCalidad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComentarioPrecio" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComentarioEmpaque" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DatosInventario_10">
+          <Key>
+            <PropertyRef Name="ID_detail" />
+          </Key>
+          <Property Name="ID_detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Task" Type="Int32" />
+          <Property Name="VisitDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckOut" Type="DateTime" Precision="3" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IDCliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cliente" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Marca" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Categoria" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Inventario" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -781,6 +889,60 @@
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Store" ColumnName="Store" />
                 <ScalarProperty Name="Id_Store" ColumnName="Id_Store" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatosDemos_20">
+            <EntityTypeMapping TypeName="Interna_CMKModel.DatosDemos_20">
+              <MappingFragment StoreEntitySet="DatosDemos_20">
+                <ScalarProperty Name="ComentarioEmpaque" ColumnName="ComentarioEmpaque" />
+                <ScalarProperty Name="ComentarioPrecio" ColumnName="ComentarioPrecio" />
+                <ScalarProperty Name="ComentarioCalidad" ColumnName="ComentarioCalidad" />
+                <ScalarProperty Name="ComentarioSabor" ColumnName="ComentarioSabor" />
+                <ScalarProperty Name="Competencia_directa" ColumnName="Competencia_directa" />
+                <ScalarProperty Name="Regalia" ColumnName="Regalia" />
+                <ScalarProperty Name="Descuento" ColumnName="Descuento" />
+                <ScalarProperty Name="Promocion" ColumnName="Promocion" />
+                <ScalarProperty Name="Tipo_empaque" ColumnName="Tipo_empaque" />
+                <ScalarProperty Name="Presentacion" ColumnName="Presentacion" />
+                <ScalarProperty Name="Unidades_Disponibles" ColumnName="Unidades_Disponibles" />
+                <ScalarProperty Name="Inventario_inicial" ColumnName="Inventario_inicial" />
+                <ScalarProperty Name="Cantidad_entregado" ColumnName="Cantidad_entregado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Marcas" ColumnName="Marcas" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="IDCliente" ColumnName="IDCliente" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Store" ColumnName="Store" />
+                <ScalarProperty Name="Id_Store" ColumnName="Id_Store" />
+                <ScalarProperty Name="ID_demo" ColumnName="ID_demo" />
+                <ScalarProperty Name="ID_detail" ColumnName="ID_detail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatosInventario_10">
+            <EntityTypeMapping TypeName="Interna_CMKModel.DatosInventario_10">
+              <MappingFragment StoreEntitySet="DatosInventario_10">
+                <ScalarProperty Name="Inventario" ColumnName="Inventario" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="IDCliente" ColumnName="IDCliente" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
+                <ScalarProperty Name="ID_Task" ColumnName="ID_Task" />
+                <ScalarProperty Name="ID_detail" ColumnName="ID_detail" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

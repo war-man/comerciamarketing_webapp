@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -355,6 +356,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             lstVisitas = (from a in db.ActivitiesM
                                           join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                          
                                           where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
                                           //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                           select new VisitsInfo
@@ -372,8 +374,8 @@ namespace comerciamarketing_webapp.Controllers
                                               Comments = a.comments,
                                               ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
                                               Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                              pictureBefore = "",
-                                              pictureAfter = ""
+                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
+                                              pictureAfter = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault()
                                           }).ToList();
 
                         }
@@ -398,8 +400,8 @@ namespace comerciamarketing_webapp.Controllers
                                               Comments = a.comments,
                                               ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
                                               Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                              pictureBefore = "",
-                                              pictureAfter = ""
+                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit==a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
+                                              pictureAfter = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault()
                                           }).ToList();
                             if (brandsel == null || brandsel == 0)
                             {
@@ -442,12 +444,12 @@ namespace comerciamarketing_webapp.Controllers
                                       Comments = g.Key.Comments,
                                       ID_brand = g.Key.ID_brand,
                                       Brand = g.Key.Brand,
-                                      pictureBefore=g.Key.pictureBefore,
-                                      pictureAfter=g.Key.pictureAfter
+                                      pictureBefore= Path.GetFullPath(Server.MapPath(g.Key.pictureBefore)),
+                                      pictureAfter= Path.GetFullPath(Server.MapPath(g.Key.pictureAfter))
 
                                   }).ToList();
 
-                    Session["VisitsInfo"] = lstVisitas;
+                 
 
                     //var visits = (from j in db.VisitsM where (distinctVisits.Contains(j.ID_visit)) select j).ToList();
 
@@ -476,7 +478,9 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 }
-                    try
+                var result = lstVisitas.GroupBy(x => x.ID_store, (key, g) => g.OrderBy(e => e.visitDate).FirstOrDefault());
+                Session["VisitsInfo"] = result.ToList();
+                try
                     {
 
                         using (var CMKdb = new COM_MKEntities())
@@ -551,7 +555,7 @@ namespace comerciamarketing_webapp.Controllers
                     ViewBag.brands = distinctBrands;
 
 
-                    return View(lstVisitas);
+                    return View(result.ToList());
                 
             }
             else

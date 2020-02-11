@@ -4,11 +4,15 @@
 }
 
 <script>
- 
+
 
     $("#products_list").change(function () {
-   
+
         $("#products_listSel").val($(this).val());
+    });
+    $("#ID_brand").change(function () {
+
+        $("#ID_brandSel").val($(this).val());
     });
 
 
@@ -45,7 +49,7 @@
                     }
 
                     )
-                   
+                    $("#ID_brand").select2();
 
                 },
                 error: function () {
@@ -60,14 +64,15 @@
 
     function getProducts() {
         var vendorId = $("#ID_vendor").val();
-        var brandid = $("#ID_brand").val();
+        var brands = $("#ID_brand").val();
+        var brandid = brands.join();
 
         console.log(vendorId);
         console.log(brandid);
 
         $.ajax
             ({
-                url: '/FormsM/GetproductsByBrand',
+                url: '/FormsM/GetproductsByBrandsDemos',
                 type: 'POST',
                 datatype: 'application/json',
                 contentType: 'application/json',
@@ -92,102 +97,214 @@
             });
     }
 </script>
-    <script>
-        window.onload = function () {
-            $('#products_list').select2();
+<script>
 
 
+    function getCustomers() {
+        var Idrep = $("#ID_rep").val();
+
+        if (Idrep == "0" || Idrep == null) {
+
+        } else {
+
+            $.ajax
+                ({
+                    url: '/VisitsMs/GetCustomer_reps',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        ID_usuario: Idrep
+                    }),
+                    success: function (result) {
+
+                        $("#ID_vendor").html("");
+                        $("#ID_vendor").append($('<option></option>').val(0).html("Select a vendor"))
+                        $.each($.parseJSON(result), function (i, brands) {
+                            if (brands.isselected) {//si esta seleccionado
+                                $("#ID_vendor").append
+                                    ($('<option selected></option>').val(brands.ID).html(brands.Name));
 
 
-
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-
-            var yyyy = today.getFullYear();
-            if (dd < 10) {
-                dd = '0' + dd;
-            }
-            if (mm < 10) {
-                mm = '0' + mm;
-            }
-            var defdate = yyyy + '-' + mm + '-' + dd + "T00:00:00";
-            document.getElementById("time").defaultValue = defdate;
-
-            $("#demotimetitle").show();
-            $("#demotimediv").show();
-
-
-            (function ($) {
-                'use strict';
-                $('#deleteModal').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);// Button that triggered the modal
-                   
-                    var IDAct = button.data("id");// Extract info from data-* attributes
-                    
-
-
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                    var modal = $(this);
-                    //modal.find('.modal-title').text('Edit data: ' + recipient)
-                    modal.find('.modal-body input[name="ID_activityD"]').val(IDAct);
-                    
-
-                })
-            })(jQuery);
-
-        }
-
-        function getCustomers() {
-            var Idrep = $("#ID_rep").val();
-
-            if (Idrep == "0" || Idrep == null) {
-
-            } else {
-
-                $.ajax
-                    ({
-                        url: '/VisitsMs/GetCustomer_reps',
-                        type: 'POST',
-                        datatype: 'application/json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            ID_usuario: Idrep
-                        }),
-                        success: function (result) {
-
-                            $("#ID_vendor").html("");
-                            $("#ID_vendor").append($('<option></option>').val(0).html("Select a vendor"))
-                            $.each($.parseJSON(result), function (i, brands) {
-                                if (brands.isselected) {//si esta seleccionado
-                                    $("#ID_vendor").append
-                                        ($('<option selected></option>').val(brands.ID).html(brands.Name));
-
-
-                                } else {
-                                    $("#ID_vendor").append
-                                        ($('<option></option>').val(brands.ID).html(brands.Name));
-                                }
-
-
+                            } else {
+                                $("#ID_vendor").append
+                                    ($('<option></option>').val(brands.ID).html(brands.Name));
                             }
 
-                            )
-                            $("#loading").hide();
 
-                        },
-                        error: function () {
-                            alert("Whooaaa! Something went wrong..")
-                            $("#loading").hide();
-                        },
-                    });
-            }
+                        }
 
+                        )
+                        $("#loading").hide();
 
+                    },
+                    error: function () {
+                        alert("Whooaaa! Something went wrong..")
+                        $("#loading").hide();
+                    },
+                });
         }
 
 
+    }
 
-    </script>
+
+
+</script>
+
+
+<script>
+    window.onload = function () {
+
+        table = $('#datatable2').DataTable({
+            searching: true,
+            dom: 'rtip',
+             "bLengthChange": false,
+        });
+
+        // #myInput is a <input type="text"> element
+        $('#inputsearch').on('keyup change', function () {
+            table.search(this.value).draw();
+        });
+
+
+        //$('#chk_all').change(function () {
+        //    if (this.checked) {
+        //        //table.$("input.selectchk").prop("checked", true);
+        //        $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", true);
+        //    } else {
+        //        //table.$("input.selectchk").prop("checked", false);
+        //        $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", false);
+        //    }
+
+        //});
+
+        $('.selectchk').change(function () {
+            if (this.checked) {
+                //table.$("input.selectchk").prop("checked", true);
+                $('.selectchk').prop("checked", false);
+                $(this).prop("checked", true);
+            } else {
+                //table.$("input.selectchk").prop("checked", false);
+                $('.selectchk').prop("checked", false);
+            }
+
+        });
+
+                    //EXPORT
+
+        $("#btn-export").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Export_Demos',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+                            $("#loading").hide();
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+
+                        },
+                        error: function (request, status, error) {
+                            $("#loading").hide();
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+                    //Print pdf
+        $("#btn-print").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                            $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Print_Demos',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (result) {
+                            $("#loading").hide();
+                                   if (result == "Success") {
+
+                                       window.open('@Url.Action("ShowPDF", "Customers",new { activityname = "DEMO" })', '_blank');
+        }
+
+                        },
+                        error: function (request) {
+                            $("#loading").hide();
+
+
+
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+
+    };
+</script>
 

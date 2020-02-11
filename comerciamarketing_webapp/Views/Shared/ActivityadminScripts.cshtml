@@ -1003,10 +1003,6 @@
             //$.each($('input[type="file"]'), function () {
             var ID = $(this).attr('id');
 
-            $('#loading').show();
-            setTimeout(function () {
-                $('#loading').hide();
-            }, 3000);
 
             //COPIAMOS LA IMG A UN IMG INPUT
             var url = $(this).val();
@@ -1047,11 +1043,11 @@
             //console.log(fileUpload.files[0]);
             //console.log(fileUpload.files[0].type);
 
-            var quality = parseInt(15);
+            var quality = parseInt(30);
             //*****
             var source_image = document.getElementById('img_' + ID);
             var result_image = document.getElementById('resultimg_' + ID);
-            var file = fileUpload.files[0],
+            var file = fileUpload.files[0];
                 reader = new FileReader();
             reader.onload = function (event) {
                 var i = document.getElementById('img_' + ID);
@@ -1136,11 +1132,24 @@
                                 data: fileData,
                                 success: function (result) {
                                     //$("#modal_demoform_saving").modal('hide');
+                                    
+                                    if (result == "File Uploaded Successfully!") {
+                                     
+                                    } else if (result == "Error occurred.") {
+                                        alert("Error uploading photo. Try again");
+                                        $('#divprogress_' + ID).width(0 + '%');
+                                        $('#imgprogress_' + ID).html(0 + "%");
+                                    }
+
+
                                     $("#loading").hide();
                                 },
                                 error: function (err) {
                                     //$("#modal_demoform_saving").modal('hide');
                                     //alert("An error is reported. Maximum request length exceeded");
+                                    alert("Error uploading photo. Try again");
+                                    $('#divprogress_' + ID).width(0 + '%');
+                                    $('#imgprogress_' + ID).html(0 + "%");
                                     $("#loading").hide();
                                 }
                             });
@@ -1150,7 +1159,7 @@
 
 
                     }
-                }
+               }
             };
 
             reader.readAsDataURL(file);

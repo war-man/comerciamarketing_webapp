@@ -1889,6 +1889,97 @@ namespace comerciamarketing_webapp.Controllers
             return ds;
         }
 
+
+        public DataSet getDataSetExportToExcel_Inventario(string id, List<int?> lstact)
+        {
+            List<DatosInventario_10> activity_header = new List<DatosInventario_10>();
+
+
+            using (var dbcmk_interna = new Interna_CMKEntities())
+            {
+               
+                activity_header = (from a in dbcmk_interna.DatosInventario_10 where(lstact.Contains(a.ID_Task)) select a).ToList();
+                
+            }
+
+            DataSet ds = new DataSet();
+            DataTable dtEmp = new DataTable("Inventario");
+            dtEmp = ToDataTable(activity_header);
+            //DataTable dtEmpOrder = new DataTable("ActivitiesDetails");  
+            //dtEmpOrder = ToDataTable(form_details);
+
+            ds.Tables.Add(dtEmp);
+            //ds.Tables.Add(dtEmpOrder);
+            return ds;
+        }
+
+        public DataSet getDataSetExportToExcel_Demos(string id, List<int?> lstact)
+        {
+            List<DatosDemos_20> activity_header = new List<DatosDemos_20>();
+
+
+            using (var dbcmk_interna = new Interna_CMKEntities())
+            {
+
+                activity_header = (from a in dbcmk_interna.DatosDemos_20 where (lstact.Contains(a.ID_demo)) select a).ToList();
+
+            }
+
+            DataSet ds = new DataSet();
+            DataTable dtEmp = new DataTable("Demos");
+            dtEmp = ToDataTable(activity_header);
+            //DataTable dtEmpOrder = new DataTable("ActivitiesDetails");  
+            //dtEmpOrder = ToDataTable(form_details);
+
+            ds.Tables.Add(dtEmp);
+            //ds.Tables.Add(dtEmpOrder);
+            return ds;
+        }
+        public DataSet getDataSetExportToExcelDELFRUTAL(string id, List<int?> lstact)
+        {
+
+            List<Visita_2_0> activity_header = new List<Visita_2_0>();
+            List<Datos_Audit_2> audit_details = new List<Datos_Audit_2>();
+            List<int?> lstactfinal = new List<int?>();
+            using (var dbcmk = new dbComerciaEntities())
+            {
+                var visits = dbcmk.VisitsM.Where(c => lstact.Contains(c.ID_visit)).Select(c => c.ID_visit).ToArray();
+                lstactfinal = dbcmk.ActivitiesM.Where(d => lstact.Contains(d.ID_visit) && (d.ID_form== 40 || d.ID_form== 42)).Select(d=>d.ID_activity).Cast<int?>().ToList();
+            }
+            using (var db = new Interna_CMKEntities())
+            {
+               
+
+              activity_header = (from a in db.Visita_2_0
+                                   where (lstactfinal.Contains(a.Id_Visit) && a.Marca.Contains("DEL FRUTAL"))
+                                   select a) //Utilizar esto, lo quite por prueba
+
+                                   // select a).Take(1000) //para pruebas
+                                   .ToList();
+
+
+                audit_details = (from a in db.Datos_Audit_2
+                                   where (lstactfinal.Contains(a.Id_Visit) && a.Marca.Contains("DEL FRUTAL"))
+                                   select a) //Utilizar esto, lo quite por prueba
+
+                      //select a).Take(1000) // pruebas
+                      .ToList();
+
+            }
+
+            DataSet ds = new DataSet();
+            DataTable dtEmp = new DataTable("VisitInformation");
+            dtEmp = ToDataTable(activity_header);
+
+            DataTable dtAudit = new DataTable("AuditDetails");
+            dtAudit = ToDataTable(audit_details);
+
+            ds.Tables.Add(dtEmp);
+            ds.Tables.Add(dtAudit);
+            return ds;
+        }
+
+
         public DataSet getDataSetExportToExcel_RD_FORM3(string id, List<int?> lstact)
         {
             List<Estructura_1_1_Comercia> activity_header = new List<Estructura_1_1_Comercia>();
@@ -2083,6 +2174,93 @@ namespace comerciamarketing_webapp.Controllers
             }
             return Json(filename, JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult Export_Inventario(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            //UTILIZANDO LIBRERIA 
+            DataSet ds = getDataSetExportToExcel_Inventario(id, list);
+            var filename = "INVENTARIO" + "" + ".xlsx";
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(ds);
+                wb.Worksheet(1).Name = "Inventario";
+                //wb.Worksheet(2).Name = "ActivitiesDetails";
+                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                wb.Style.Font.Bold = true;
+
+                var filePathOriginal = Server.MapPath("/Reportes/excel");
+                var path2 = "";
+                path2 = Path.Combine(filePathOriginal, filename);
+                wb.SaveAs(path2);
+            }
+            return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Export_Demos(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            //UTILIZANDO LIBRERIA 
+            DataSet ds = getDataSetExportToExcel_Demos(id, list);
+            var filename = "DEMOS" + "" + ".xlsx";
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(ds);
+                wb.Worksheet(1).Name = "Demos";
+                //wb.Worksheet(2).Name = "ActivitiesDetails";
+                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                wb.Style.Font.Bold = true;
+
+                var filePathOriginal = Server.MapPath("/Reportes/excel");
+                var path2 = "";
+                path2 = Path.Combine(filePathOriginal, filename);
+                wb.SaveAs(path2);
+            }
+            return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Export_delFrutalReport(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            //UTILIZANDO LIBRERIA 
+            DataSet ds = getDataSetExportToExcelDELFRUTAL(id, list);
+            var filename = "DEL_FRUTAL_REPORT" + "" + ".xlsx";
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(ds);
+                wb.Worksheet(1).Name = "VisitInformation";
+                wb.Worksheet(2).Name = "AuditDetails";
+                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                wb.Style.Font.Bold = true;
+
+                var filePathOriginal = Server.MapPath("/Reportes/excel");
+                var path2 = "";
+                path2 = Path.Combine(filePathOriginal, filename);
+                wb.SaveAs(path2);
+            }
+            return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         [DeleteFileAttribute] //Action Filter, it will auto delete the file after download, 
                               //I will explain it later
@@ -2109,6 +2287,232 @@ namespace comerciamarketing_webapp.Controllers
                 System.IO.File.Delete(filePath);
             }
         }
+
+
+        public ActionResult Print_Inventario(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+
+            List<DatosInventario_10Report> activity_header = new List<DatosInventario_10Report>();
+            using (var dbcmk_interna = new Interna_CMKEntities())
+            {
+                activity_header = (from a in dbcmk_interna.DatosInventario_10 where(list.Contains(a.ID_Task)) select new DatosInventario_10Report {ID_detail=a.ID_detail, ID_Task=(int)a.ID_Task, IDCliente=a.IDCliente, Cliente=a.Cliente, Categoria=a.Categoria,
+                 CheckOut=(DateTime)a.CheckOut, Descripcion=a.Descripcion, Inventario=(Decimal)a.Inventario, Marca=a.Marca, Producto=a.Producto, UserName=a.UserName, VisitDate=(DateTime)a.VisitDate}).ToList();
+            }
+
+
+            if (activity_header.Count > 0)
+
+            {
+                ReportDocument rd = new ReportDocument();
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptInventario10.rpt"));
+
+                rd.SetDataSource(activity_header);
+
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                Response.Buffer = false;
+
+                Response.ClearContent();
+
+                Response.ClearHeaders();
+
+
+                //PARA VISUALIZAR
+                Response.AppendHeader("Content-Disposition", "inline; filename=Inventario.pdf;");
+
+
+
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                //Nueva descarga
+                TempData["Output"] = stream;
+
+                //return Json(urlcontent);
+                return Json("Success", JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+
+                return Json("Error", JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+        public ActionResult Print_Demos(string id, List<MyObj_formtemplate> objects)
+        {
+            List<int?> list = new List<int?>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            List<imagesInfo> detailsIMGForm = new List<imagesInfo>();
+            List<DatosDemos_20Report> activity_header = new List<DatosDemos_20Report>();
+            using (var dbcmk_interna = new Interna_CMKEntities())
+            {
+                activity_header = (from a in dbcmk_interna.DatosDemos_20
+                                   where (list.Contains(a.ID_demo))
+                                   select new DatosDemos_20Report
+                                   {
+                                       ID_detail = a.ID_detail,
+                                       ID_demo = (int)a.ID_demo,
+                                       Id_Store = a.Id_Store,
+                                       Store = a.Store,
+                                       Address = a.Address + ", " + a.City + ", " + a.State + ", " + a.ZipCode,
+                                       City = a.City,
+                                       ZipCode = a.ZipCode,
+                                       State = a.State,
+                                       VisitDate = (DateTime)a.VisitDate,
+                                       CheckIn = (DateTime)a.CheckIn,
+                                       CheckOut = (DateTime)a.CheckOut,
+                                       UserName = a.UserName,
+                                       IDCliente = a.IDCliente,
+                                       Cliente = a.Cliente,
+                                       Marcas = a.Marcas,
+                                       Producto = a.Producto,
+                                       Descripcion = a.Descripcion,
+                                       Cantidad_entregado = (int)a.Cantidad_entregado,
+                                       Inventario_inicial = (Decimal)a.Inventario_inicial,
+                                       Unidades_Disponibles = a.Unidades_Disponibles,
+                                       Presentacion = a.Presentacion, Tipo_empaque = a.Tipo_empaque, Promocion = a.Promocion, Descuento = a.Descuento, Regalia = a.Regalia, Competencia_directa = a.Competencia_directa,
+                                       ComentarioCalidad = a.ComentarioCalidad, ComentarioEmpaque = a.ComentarioEmpaque, ComentarioPrecio = a.ComentarioPrecio, ComentarioSabor = a.ComentarioSabor
+                                   }).ToList();
+            }
+
+
+
+                if (activity_header.Count > 0)
+
+                {
+
+                var demos = activity_header.Select(c => c.ID_demo).Distinct().ToArray();
+                int firmaC = 0;
+                var urlfirma = "";
+                using (var dbComercia = new dbComerciaEntities())
+                {
+                    detailsIMGForm = (from a in dbComercia.FormsM_detailsDemos where (a.ID_formresourcetype == 5 && a.fsource.Contains("~") && demos.Contains(a.ID_visit)) select new imagesInfo { Activity=a.ID_visit.ToString(), Customer="", ID_customer="", ID_image=a.ID_details, url=a.fsource, visitDate=DateTime.Today }).ToList();
+
+                    //Verificams si existe firma electronica
+                    var firma = (from d in dbComercia.FormsM_detailsDemos where (d.ID_formresourcetype == 9 && demos.Contains(d.ID_visit)) select d).ToList();
+                    firmaC = firma.Count();
+                    urlfirma = firma[0].fsource;
+                }
+
+                foreach (var item in detailsIMGForm)
+                {
+                    item.url = Path.GetFullPath(Server.MapPath(item.url));
+                }
+
+                ReportDocument rd = new ReportDocument();
+
+
+                rd.Load(Path.Combine(Server.MapPath("~/Reportes"), "rptDemos20.rpt"));
+
+                rd.SetDataSource(activity_header);
+                rd.Subreports[0].SetDataSource(detailsIMGForm);
+
+                if (firmaC == 1)
+                {
+
+                    string data = urlfirma;
+                    if (data != "")
+                    {
+                        var base64Data = Regex.Match(data, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+                        var binData = Convert.FromBase64String(base64Data);
+
+                        using (var streamf = new MemoryStream(binData))
+                        {
+
+                            Bitmap myImage = new Bitmap(streamf);
+
+                            // Assumes myImage is the PNG you are converting
+                            using (var b = new Bitmap(myImage.Width, myImage.Height))
+                            {
+                                b.SetResolution(myImage.HorizontalResolution, myImage.VerticalResolution);
+
+                                using (var g = Graphics.FromImage(b))
+                                {
+                                    g.Clear(Color.White);
+                                    g.DrawImageUnscaled(myImage, 0, 0);
+                                }
+
+                                // Now save b as a JPEG like you normally would
+
+                                var path = Path.Combine(Server.MapPath("~/Content/images/ftp_demo"), "signdefirma.jpg");
+                                b.Save(path, ImageFormat.Jpeg);
+
+
+                                rd.SetParameterValue("urlimgsign", Path.GetFullPath(path));
+                            }
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        rd.SetParameterValue("urlimgsign", "");
+
+                    }
+
+                }
+                else
+                {
+                    rd.SetParameterValue("urlimgsign", "");
+                }
+
+
+
+                var filePathOriginal = Server.MapPath("/Reportes/pdf");
+
+                    Response.Buffer = false;
+
+                    Response.ClearContent();
+
+                    Response.ClearHeaders();
+
+
+                    //PARA VISUALIZAR
+                    Response.AppendHeader("Content-Disposition", "inline; filename=Inventario.pdf;");
+
+
+
+                    Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    //Nueva descarga
+                    TempData["Output"] = stream;
+
+                    //return Json(urlcontent);
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+
+                }
+                else
+                {
+
+                    return Json("Error", JsonRequestBehavior.AllowGet);
+
+                }
+        }
+
+
+
         public ActionResult Print_QuickVisit(string id, List<MyObj_formtemplate> objects)
         {
             List<int> list = new List<int>();
@@ -2430,39 +2834,41 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 detailsForm = detailsForm.Where(c=> list.Contains(c.ID_visit)).OrderBy(c => c.visitDate).ToList();
+    
 
-                using (var db = new dbComerciaEntities())
-                {
 
-                    foreach (var visit in detailsForm)
-                    {
-                        var activity = (from a in db.ActivitiesM
-                                        join b in db.FormsM_details on a.ID_activity equals b.ID_visit
-                                        where (a.ID_visit == visit.ID_visit && (b.ID_formM == 1 || b.ID_formM == 3 || b.ID_formM == 42) && b.ID_formresourcetype == 13 && b.fvalueText == visit.ID_brand)
-                                        select b.ID_visit).FirstOrDefault();
+                // using (var db = new dbComerciaEntities())
+                //{
 
-                        var activitydetails = (from d in db.FormsM_details where (d.ID_visit == activity) select d).ToList();
+                //foreach (var visit in detailsForm)
+                //{
+                //    var activity = (from a in db.ActivitiesM
+                //                    join b in db.FormsM_details on a.ID_activity equals b.ID_visit
+                //                    where (a.ID_visit == visit.ID_visit && (b.ID_formM == 1 || b.ID_formM == 3 || b.ID_formM == 42) && b.ID_formresourcetype == 13 && b.fvalueText == visit.ID_brand)
+                //                    select b.ID_visit).FirstOrDefault();
 
-                        if (activitydetails.Count > 0)
-                        {
-                            var pic1 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault();
-                            var pic2 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault();
+                //    var activitydetails = (from d in db.FormsM_details where (d.ID_visit == activity) select d).ToList();
 
-                            try
-                            {
-                                visit.pictureBefore = Path.GetFullPath(Server.MapPath(pic1));
-                                visit.pictureAfter = Path.GetFullPath(Server.MapPath(pic2));
-                            }
-                            catch {
-                                visit.pictureBefore = "";
-                                visit.pictureAfter = "";
-                            }
-                          
-                        }
+                //    if (activitydetails.Count > 0)
+                //    {
+                //        var pic1 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault();
+                //        var pic2 = activitydetails.Where(c => c.ID_formresourcetype == 5 && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault();
 
-                    }
+                //        try
+                //        {
+                //            visit.pictureBefore = Path.GetFullPath(Server.MapPath(pic1));
+                //            visit.pictureAfter = Path.GetFullPath(Server.MapPath(pic2));
+                //        }
+                //        catch {
+                //            visit.pictureBefore = "";
+                //            visit.pictureAfter = "";
+                //        }
 
-                }
+                //    }
+
+                //}
+
+                //}
 
                 ReportDocument rd = new ReportDocument();
 
@@ -2510,6 +2916,19 @@ namespace comerciamarketing_webapp.Controllers
             if (report != null)
             {
                 return File(report, System.Net.Mime.MediaTypeNames.Application.Pdf, activityname +  ".pdf");
+            }
+            else
+            {
+                return new EmptyResult();
+            }
+        }
+        public ActionResult ShowPDF(string activityname)
+        {
+            // retrieve byte array here
+            var report = TempData["Output"] as Stream;
+            if (report != null)
+            {
+                return File(report, System.Net.Mime.MediaTypeNames.Application.Pdf);
             }
             else
             {
@@ -2894,6 +3313,86 @@ namespace comerciamarketing_webapp.Controllers
                 wb.SaveAs(path2);
             }
             return Json(filename, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult ConvertFiles(List<MyObj_formtemplate> objects)
+        {
+            List<int> list = new List<int>();
+            foreach (var item in objects)
+            {
+                var idact = item.id.Substring(4);
+                list.Add(idact.ToInt32());
+            }
+
+            List<imagesInfo> detailsForm = Session["imageslist"] as List<imagesInfo>;
+
+            if (detailsForm.Count > 0)
+            {
+                using (var db = new dbComerciaEntities())
+                {
+
+                    foreach (var image in detailsForm.Where(c=>list.Contains(c.ID_image)))
+                    {
+                        var picture = db.FormsM_details.Where(a => a.ID_details == image.ID_image).FirstOrDefault();
+                        if (picture != null)
+                        {
+                            Image newimage;
+                            //Cambiar tamano no calidad
+                            var bitmapNewImage = Image.FromFile(Server.MapPath(image.url));
+                            newimage = ScaleImage(bitmapNewImage, 768, 1360);
+
+                            bitmapNewImage.Dispose();
+                            //eliminamos vieja imagen
+
+                            if (System.IO.File.Exists(Server.MapPath(image.url)))
+                            {
+                                try
+                                {
+                                    System.IO.File.Delete(Server.MapPath(image.url));
+                                }
+                                catch (System.IO.IOException e)
+                                {
+                                    Console.WriteLine(e.Message);
+
+                                }
+                            }
+                            //guardamos la nueva
+
+                            newimage.Save(Server.MapPath(image.url), ImageFormat.Jpeg);
+
+                        }
+                    }
+
+                }
+
+                return Json("success", JsonRequestBehavior.AllowGet);
+            }
+            else {
+
+
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            
+
+
+        }
+
+        public static Image ScaleImage(Image image, int maxWidth, int maxHeight)
+        {
+            var ratioX = (double)maxWidth / image.Width;
+            var ratioY = (double)maxHeight / image.Height;
+            var ratio = Math.Min(ratioX, ratioY);
+
+            var newWidth = (int)(image.Width * ratio);
+            var newHeight = (int)(image.Height * ratio);
+
+            var newImage = new Bitmap(newWidth, newHeight);
+
+            using (var graphics = Graphics.FromImage(newImage))
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+
+            return newImage;
         }
 
     }

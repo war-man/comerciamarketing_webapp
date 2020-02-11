@@ -45,6 +45,8 @@
         <AssociationConnector Association="dbComerciaModel.FK__Demos__ID_demost__04E4BC85" />
         <EntityTypeShape EntityType="dbComerciaModel.FormsM_detailsDemos" Width="1.5" PointX="11.375" PointY="7.875" />
         <EntityTypeShape EntityType="dbComerciaModel.Tasks" Width="1.5" PointX="16.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.FormsM_detailsTasks" Width="1.5" PointX="17.375" PointY="3.75" />
+        <EntityTypeShape EntityType="dbComerciaModel.Tb_Surveys" Width="1.5" PointX="3.375" PointY="18.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -157,6 +157,63 @@ namespace comerciamarketing_webapp.Controllers
 
         }
 
+
+        public ActionResult Tasks(string fstartd, string fendd)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Tasks";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                //FILTROS
+                //Fechas
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
+                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
+                //
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+                var tasks = new List<Tasks>();
+                List<Usuarios> usuarios = new List<Usuarios>();
+                int[] visitasarray = new int[] { };
+                using (var db = new dbComerciaEntities())
+                {
+                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_empresa == 2 && a.ID_userEnd==activeuser.ID_usuario) select a).ToList();
+
+                }
+
+                return View(tasks);
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+        }
+
+
         public class representativesVisit
         {
             public int ID { get; set; }

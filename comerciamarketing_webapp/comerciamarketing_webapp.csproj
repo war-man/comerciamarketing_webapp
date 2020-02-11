@@ -273,8 +273,8 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Z.EntityFramework.Extensions, Version=3.22.6.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.3.22.6\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.47.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.47\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -314,6 +314,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SalesRepresentativesController.cs" />
     <Compile Include="Controllers\Stock_itemsController.cs" />
+    <Compile Include="Controllers\SurveysController.cs" />
     <Compile Include="Controllers\user_form_w9Controller.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\VisitsMsController.cs" />
@@ -358,6 +359,12 @@
     </Compile>
     <Compile Include="Models\C_ROUTES.cs">
       <DependentUpon>COM_MK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DatosDemos_20.cs">
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DatosInventario_10.cs">
+      <DependentUpon>Interna_CMK.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Datos_Audit_11.cs">
       <DependentUpon>Interna_CMK.tt</DependentUpon>
@@ -425,6 +432,9 @@
     <Compile Include="Models\FormsM_detailsDemos.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FormsM_detailsTasks.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Forms_details.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -482,6 +492,9 @@
     <Compile Include="Models\Tasks.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tb_Surveys.cs">
+      <DependentUpon>dbComercia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tipo_membresia.cs">
       <DependentUpon>dbComercia.tt</DependentUpon>
     </Compile>
@@ -526,6 +539,12 @@
       <DependentUpon>rptDemoDailyResume.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\rptDemos20.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptDemos20.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\rptDemosPreview.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -536,6 +555,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptDemov1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptInventario10.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptInventario10.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\rptMarketingActivity.cs">
@@ -3409,6 +3434,435 @@
     <Content Include="Content\plugins\OwlCarousel2-2.2.1\owl.video.play.png" />
     <Content Include="Content\plugins\themify-icons\fonts\themify.svg" />
     <Content Include="Content\plugins\themify-icons\themify-icons.css" />
+    <Content Include="Content\surveysContent\css\bootstrap.css" />
+    <Content Include="Content\surveysContent\css\bootstrap.min.css" />
+    <Content Include="Content\surveysContent\css\custom.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\all_icons.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\all_icons.min.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\fontello-codes.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\icon_set_1.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\icon_set_2.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\icon_set_3.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\css\icon_set_4.css" />
+    <Content Include="Content\surveysContent\css\icon_fonts\demo_icon_set_1.html" />
+    <Content Include="Content\surveysContent\css\icon_fonts\demo_icon_set_2.html" />
+    <Content Include="Content\surveysContent\css\icon_fonts\demo_icon_set_3.html" />
+    <Content Include="Content\surveysContent\css\icon_fonts\demo_icon_set_4.html" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\ElegantIcons.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\fontello.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Glyphter.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\icon_set_1.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Pe-icon-7-stroke.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\themify.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\agenda.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\alarm-clock.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\alert.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\align-center.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\align-justify.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\align-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\align-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\anchor.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\android.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-double-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-double-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-double-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-double-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\angle-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\announcement.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\apple.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\archive.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-circle-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-circle-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-circle-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-circle-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-top-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-top-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrow.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrows-corner.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrows-horizontal.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\arrows-vertical.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\back-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\back-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bag.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bar-chart-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bar-chart.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\basketball.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bell.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\blackboard.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bolt-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bolt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\book.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bookmark-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\bookmark.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\briefcase.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\brush-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\brush.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\calendar.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\camera.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\car.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\check-box.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\check.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\clip.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\clipboard.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\close.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\cloud-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\cloud-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\cloud.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\comment-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\comment.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\comments-smiley.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\comments.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-backward.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-eject.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-forward.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-pause.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-play.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-record.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-shuffle.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-skip-backward.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-skip-forward.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\control-stop.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\credit-card.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\crown.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\css3.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\cup.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\cut.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\dashboard.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\desktop.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\direction-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\direction.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\download.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\dribbble.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\dropbox-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\dropbox.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\drupal.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\email.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\envelope.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\eraser.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\exchange-vertical.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\export.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\eye.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\face-sad.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\face-smile.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\facebook.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\file.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\files.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\filter.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\flag-alt-2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\flag-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\flag.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\flickr-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\flickr.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\folder.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\fullscreen.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\gallery.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\game.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\gift.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\github.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\google.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-drag.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-open.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-point-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-point-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-point-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-point-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hand-stop.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\harddrive.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\harddrives.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\headphone-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\headphone.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\heart-broken.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\heart.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\help-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\help.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\home.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\html5.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\hummer.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\id-badge.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\image.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\import.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\infinite.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\info-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\info.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ink-pen.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\instagram.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\Italic.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\joomla.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\jsfiddle.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\key.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layers-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layers.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-accordion-list.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-accordion-merged.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-accordion-separated.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column2-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column3-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column3.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column4-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-column4.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-cta-btn-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-cta-btn-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-cta-center.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-cta-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-cta-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid2-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid2-thumb.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid3-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid3.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid4-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-grid4.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-line-solid.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-list-large-image.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-list-post.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-list-thumb-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-list-thumb.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-center-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-center.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-left-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-overlay-alt-2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-overlay-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-overlay.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-right-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-media-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-menu-full.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-menu-separated.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-menu-v.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-menu.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-placeholder.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-sidebar-2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-sidebar-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-sidebar-none.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-sidebar-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-slider-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-slider.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-tab-min.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-tab-v.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-tab-window.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-tab.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-width-default-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-width-default.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout-width-full.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\layout.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\light-bulb.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\line-dashed.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\line-dotted.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\line-double.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\link.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\linkedin.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\linux.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\list-ol.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\list.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\location-arrow.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\location-pin.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\lock.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\loop.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\magnet.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\map-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\map.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\marker-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\marker.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\medall-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\medall.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\menu-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\menu.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\microphone-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\microphone.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\microsoft-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\microsoft.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\minus.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\mobile.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\money.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\more-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\more.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\mouse-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\mouse.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\music-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\music.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\na.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\new-window.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\notepad.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\package.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\paint-bucket.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\paint-roller.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\palette.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\panel.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\paragraph.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pencil-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pencil-alt2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pencil.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pie-chart.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pin-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pin.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pin2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pinterest-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pinterest.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\plug.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\plus.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\power-off.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\printer.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\pulse.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\quote-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\quote-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\receipt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\reddit.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\reload.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\rocket.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\rss-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\rss.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ruler-alt-2.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ruler-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ruler-pencil.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ruler.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\save-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\save.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\search.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\server.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\settings.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\share-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\share.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\sharethis-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\sharethis.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shield.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shift-left-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shift-left.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shift-right-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shift-right.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shine.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shopping-cart-full.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shopping-cart.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\shortcode.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\signal.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\skype.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\slice.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\smallcap.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\soundcloud.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\split-h.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\split-v-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\split-v.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\spray.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\stack-overflow.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\stamp.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\star.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\stats-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\stats-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\support.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\tablet.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\tag.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\target.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\text.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\themify-favicon-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\themify-favicon.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\themify-logo.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\thought.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\thumb-down.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\thumb-up.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\ticket.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\time.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\timer.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\trash.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\trello.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\truck.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\tumblr-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\tumblr.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\twitter-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\twitter.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\underline.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\unlink.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\unlock.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\upload.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\uppercase.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\user.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\vector.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\video-camera.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\video-clapper.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\view-grid.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\view-list-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\view-list.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\vimeo-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\vimeo.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\volume.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\wallet.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\wand.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\wheelchair.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\widget-alt.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\widget.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\widgetized.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\window.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\wordpress.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\world.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\write.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\yahoo.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\youtube.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\zip.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\zoom-in.svg" />
+    <Content Include="Content\surveysContent\css\icon_fonts\SVG_icon_set_4\zoom-out.svg" />
+    <Content Include="Content\surveysContent\css\menu.css" />
+    <Content Include="Content\surveysContent\css\style.css" />
+    <Content Include="Content\surveysContent\css\vendors.css" />
+    <Content Include="Content\surveysContent\css\vendors.unminified.css" />
+    <Content Include="Content\surveysContent\img\Logo-Comercia-Marketing-p-1600.png" />
+    <Content Include="Content\surveysContent\img\milkbeerco.jpg" />
+    <Content Include="Content\surveysContent\img\apple-touch-icon-114x114-precomposed.png" />
+    <Content Include="Content\surveysContent\img\apple-touch-icon-144x144-precomposed.png" />
+    <Content Include="Content\surveysContent\img\apple-touch-icon-57x57-precomposed.png" />
+    <Content Include="Content\surveysContent\img\apple-touch-icon-72x72-precomposed.png" />
+    <Content Include="Content\surveysContent\img\devices_2.png" />
+    <Content Include="Content\surveysContent\img\favicon.ico" />
+    <Content Include="Content\surveysContent\img\info_graphic_1.svg" />
+    <Content Include="Content\surveysContent\img\info_graphic_2.svg" />
+    <Content Include="Content\surveysContent\img\info_graphic_3.svg" />
+    <Content Include="Content\surveysContent\img\info_graphic_4.svg" />
+    <Content Include="Content\surveysContent\img\info_graphic_5.svg" />
+    <Content Include="Content\surveysContent\img\logo.png" />
+    <Content Include="Content\surveysContent\img\stars.svg" />
+    <Content Include="Content\surveysContent\img\sub_header_about.jpg" />
+    <Content Include="Content\surveysContent\img\team\team-1.jpg" />
+    <Content Include="Content\surveysContent\img\team\team-2.jpg" />
+    <Content Include="Content\surveysContent\img\team\team-3.jpg" />
+    <Content Include="Content\surveysContent\img\team\team-4.jpg" />
+    <Content Include="Content\surveysContent\img\upload_icon.svg" />
+    <Content Include="Content\surveysContent\js\bootstrap.js" />
+    <Content Include="Content\surveysContent\js\bootstrap.min.js" />
+    <Content Include="Content\surveysContent\js\common_scripts.js" />
+    <Content Include="Content\surveysContent\js\common_scripts.min.js" />
+    <Content Include="Content\surveysContent\js\file-validator.js" />
+    <Content Include="Content\surveysContent\js\functions.js" />
+    <Content Include="Content\surveysContent\js\hideShowPassword.js" />
+    <Content Include="Content\surveysContent\js\hideShowPassword.min.js" />
+    <Content Include="Content\surveysContent\js\jquery-3.2.1.min.js" />
+    <Content Include="Content\surveysContent\js\jquery-ui-1.8.22.min.js" />
+    <Content Include="Content\surveysContent\js\jquery.nice-select.js" />
+    <Content Include="Content\surveysContent\js\jquery.nice-select.min.js" />
+    <Content Include="Content\surveysContent\js\jquery.validate.js" />
+    <Content Include="Content\surveysContent\js\jquery.wizard.js" />
+    <Content Include="Content\surveysContent\js\modernizr.js" />
+    <Content Include="Content\surveysContent\js\moment.min.js" />
+    <Content Include="Content\surveysContent\js\owl-carousel.js" />
+    <Content Include="Content\surveysContent\js\parallax.js" />
+    <Content Include="Content\surveysContent\js\parallax.min.js" />
+    <Content Include="Content\surveysContent\js\popper.min.js" />
+    <Content Include="Content\surveysContent\js\pw_strenght.js" />
+    <Content Include="Content\surveysContent\js\quotation_func.js" />
+    <Content Include="Content\surveysContent\js\rangeslider.js" />
+    <Content Include="Content\surveysContent\js\rangeslider.min.js" />
+    <Content Include="Content\surveysContent\js\registration_func.js" />
+    <Content Include="Content\surveysContent\js\review_func.js" />
+    <Content Include="Content\surveysContent\js\survey_func.js" />
+    <Content Include="Content\surveysContent\js\velocity.min.js" />
+    <Content Include="Content\videos\gold.jpg" />
+    <Content Include="Content\videos\IGNITE_compress.mp4" />
+    <Content Include="Content\videos\LUGAR.jpg" />
+    <Content Include="Content\videos\PLATINO FINAL COMPRESS.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -3908,6 +4362,29 @@
     <Content Include="Content\landingpage\css\GothamMedium.woff" />
     <Content Include="Content\landingpage\css\GothamMediumItalic.woff" />
     <Content Include="Content\landingpage\css\GothamMedium_1.woff" />
+    <Content Include="Content\surveysContent\css\.DS_Store" />
+    <Content Include="Content\surveysContent\css\icon_fonts\.DS_Store" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\ElegantIcons.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\ElegantIcons.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\ElegantIcons.woff" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\fontello.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\fontello.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\fontello.woff" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Glyphter.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Glyphter.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Glyphter.woff" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\icon_set_1.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\icon_set_1.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\icon_set_1.woff" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Pe-icon-7-stroke.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Pe-icon-7-stroke.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\Pe-icon-7-stroke.woff" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\themify.eot" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\themify.ttf" />
+    <Content Include="Content\surveysContent\css\icon_fonts\font\themify.woff" />
+    <Content Include="Content\surveysContent\js\.DS_Store" />
+    <Content Include="Content\surveysContent\img\.DS_Store" />
+    <Content Include="Content\surveysContent\img\team\.DS_Store" />
     <None Include="Properties\PublishProfiles\comerciamarketing - Web Deploy.pubxml" />
     <Content Include="Models\dbComercia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -4126,6 +4603,12 @@
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Admin\Tasks.cshtml" />
     <Content Include="Views\FormsM\Preview_Task.cshtml" />
+    <Content Include="Views\Shared\TasksScripts.cshtml" />
+    <Content Include="Views\Admin\convertImages.cshtml" />
+    <Content Include="Views\SalesRepresentatives\Tasks.cshtml" />
+    <Content Include="Views\FormsM\Activity_eaAdmin.cshtml" />
+    <Content Include="Views\Surveys\Form1.cshtml" />
+    <Content Include="Views\Surveys\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4155,6 +4638,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemoDailyResume.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptDemos20.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDemos20.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptDemosPreview.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemosPreview.cs</LastGenOutput>
@@ -4162,6 +4649,10 @@
     <EmbeddedResource Include="Reportes\rptDemov1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDemov1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptInventario10.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptInventario10.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\rptMarketingActivity.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -16,7 +16,7 @@
             <form class="input-group m-2 my-lg-0 ">
                 <div class="input-group-prepend">
                     @if (ViewBag.title == "Comercia Marketing - Admin Demos" || ViewBag.title == "Comercia Marketing - Admin Dashboard" || ViewBag.title == "Comercia Marketing - Representative_stats" || ViewBag.title == "Comercia Marketing - Admin Map" || ViewBag.title == "Comercia Marketing - Admin Gallery" || ViewBag.title == "Comercia Marketing - Reports" || ViewBag.title == "Comercia Marketing - Visits Report"
-         || ViewBag.title == "Comercia Marketing - Customers Map" || ViewBag.title == "Comercia Marketing - Customers Dashboard" || ViewBag.title == "Comercia Marketing - Admin Tasks")
+         || ViewBag.title == "Comercia Marketing - Customers Map" || ViewBag.title == "Comercia Marketing - Customers Dashboard" || ViewBag.title == "Comercia Marketing - Admin Tasks" || ViewBag.title == "Comercia Marketing - Images List")
     {
 
                 <span class="mx-2">
@@ -45,7 +45,7 @@
                 </span>
 }
 
-else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
+else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard" || ViewBag.title == "Comercia Marketing - Sales Reps Tasks")
 {
                 <span class="mx-2">
 
@@ -122,6 +122,13 @@ else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
                     <i data-feather="filter"></i>
                 </a>
             </li>
+
+            @if (Session["tipousuario"].ToString() != "8" && Session["tiporol"].ToString() != "9") {
+                <li class="nav-item d-lg-none">
+                <a href="#" class="nav-link px-2" data-toggle="collapse" data-toggle-class data-target="#navbarToggler">
+                    <i data-feather="filter"></i>
+                </a>
+            </li>
             <li class="nav-item d-lg-none">
                 <a class="nav-link px-1" data-toggle="modal" data-target="#aside">
                     <i data-feather="menu"></i>
@@ -148,6 +155,38 @@ else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard")
                     <a class="dropdown-item" href="@Url.Action("Cerrar_sesion", "Home")">Sign out</a>
                 </div>
             </li>
+            } else {
+                    @*<li class="nav-item d-lg-none">
+                <a class="nav-link px-1" >
+                    <i data-feather="menu"></i>
+                </a>
+            </li>*@
+            <li class="nav-item dropdown">
+                <a href="#" data-toggle="modal" data-target="#aside" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                    <span class="w-40 avatar gd-warning">
+                        <i data-feather="menu"></i>
+                        @*<span class="avatar-status on b-white avatar-right"></span>*@
+                    </span>
+                </a>
+
+
+                <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
+                    <a class="dropdown-item" href="#">
+                        <span>@ViewBag.username</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.faq.html">Need help?(comming)</a>*@
+                    <div class="dropdown-divider"></div>
+                    @*<a class="dropdown-item" href="page.setting.html">
+                <span>Account Settings</span>
+            </a>*@
+                    <a class="dropdown-item" href="@Url.Action("Cerrar_sesion", "Home")">Sign out</a>
+                </div>
+            </li>
+            }
+
+
+
 
         </ul>
     </div>

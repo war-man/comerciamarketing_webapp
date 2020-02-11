@@ -7,6 +7,9 @@
 <script type="text/javascript">
     window.onload = function () {
         //PARA RADIO BUTTONS
+
+
+
         $('.parentdiv').on('change', '.rad', function () {
 
             var id = $(this).attr('id');
@@ -43,7 +46,7 @@
 
         //}
 
-
+        $("#brands_list").select2();
     };
 
 
@@ -383,13 +386,17 @@
                 if (result.Result == "Success") {
                     $("#loading").hide();
                     showSuccessToast2();
+                    try {
+                        var x = document.getElementById("finish_activity");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            //x.style.display = "none";
+                        }
+                    } catch{
 
-                    var x = document.getElementById("finish_activity");
-                    if (x.style.display === "none") {
-                        x.style.display = "inline-block";
-                    } else {
-                        //x.style.display = "none";
                     }
+  
 
                     //window.location.reload(true);
                     //window.location.reload(true);
@@ -539,11 +546,15 @@
                     $("#loading").hide();
                     showSuccessToast();
 
-                    var x = document.getElementById("finish_activity");
-                    if (x.style.display === "none") {
-                        x.style.display = "inline-block";
-                    } else {
-                        x.style.display = "none";
+                    try {
+                        var x = document.getElementById("finish_activity");
+                        if (x.style.display === "none") {
+                            x.style.display = "inline-block";
+                        } else {
+                            //x.style.display = "none";
+                        }
+                    } catch{
+
                     }
                     //window.location.reload(true);
 
@@ -895,9 +906,9 @@
             var ID = $(this).attr('id');
 
             $('#loading').show();
-            setTimeout(function () {
-                $('#loading').hide();
-            }, 3000);
+            //setTimeout(function () {
+            //    $('#loading').hide();
+            //}, 3000);
 
             //COPIAMOS LA IMG A UN IMG INPUT
             var url = $(this).val();
@@ -923,7 +934,7 @@
 
             var idvisita = "";
             idvisita = document.getElementById('idvisita').value;
-            //COMPRESIONAR IMAGEN
+            //COMPRESIONAR IMAGEN (se elimino el proceso el 10/01/2019)
             var output_format = "jpg";
 
 
@@ -938,11 +949,11 @@
             //console.log(fileUpload.files[0]);
             //console.log(fileUpload.files[0].type);
 
-            var quality = parseInt(15);
+            var quality = parseInt(30);
             //*****
             var source_image = document.getElementById('img_' + ID);
             var result_image = document.getElementById('resultimg_' + ID);
-            var file = fileUpload.files[0],
+            var file = fileUpload.files[0];
                 reader = new FileReader();
             reader.onload = function (event) {
                 var i = document.getElementById('img_' + ID);
@@ -978,6 +989,7 @@
                         getOrientation(file, function (orientation) {
 
                             var dataurl = result_image.src;
+                            ///var dataurl = file.src;
                             var blob = dataURItoBlob(dataurl);
 
 
@@ -1027,11 +1039,25 @@
                                 data: fileData,
                                 success: function (result) {
                                     //$("#modal_demoform_saving").modal('hide');
+
+                                    if (result == "File Uploaded Successfully!") {
+
+                                    } else if (result == "Error occurred.") {
+                                        alert("Error uploading photo. Try again");
+                                        $('#divprogress_' + ID).width(0 + '%');
+                                        $('#imgprogress_' + ID).html(0 + "%");
+                                    }
+
+
+
                                     $("#loading").hide();
                                 },
                                 error: function (err) {
                                     //$("#modal_demoform_saving").modal('hide');
                                     //alert("An error is reported. Maximum request length exceeded");
+                                    alert("Error uploading photo. Try again");
+                                    $('#divprogress_' + ID).width(0 + '%');
+                                    $('#imgprogress_' + ID).html(0 + "%");
                                     $("#loading").hide();
                                 }
                             });

@@ -120,7 +120,7 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Promotions()
         {
 
-            return View();
+            return RedirectToAction("Home");
         }
         public ActionResult Promotions_Ducal()
         {

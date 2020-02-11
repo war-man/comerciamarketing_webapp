@@ -291,7 +291,7 @@ xfilter
 .cd-filter {
   position: absolute;
   top: 0;
-  left: -196px;
+  left: -9999px;
   width: 280px;
   height: 100%;
   background: #ffffff;

@@ -91,13 +91,36 @@
         <div class="flex scrollable hover">
             <div class="nav-active-text-primary" data-nav>
                 <ul class="nav bg">
+                    <li>
+                        <a href="javascript:void(0);">
+                            <span class="nav-icon text-muted"><i data-feather='user'></i></span>
+                            <span class="nav-text">@ViewBag.username</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Cerrar_sesion", "Home")">
+                            <span class="nav-icon text-muted"><i data-feather='power'></i></span>
+                            <span class="nav-text">Sign out</span>
+                        </a>
+                    </li>
                     <li class="nav-header hidden-folded">
                         <span class="text-muted">Main</span>
                     </li>
+
                     <li>
                         <a href="@Url.Action("Dashboard","SalesRepresentatives")">
                             <span class="nav-icon text-primary"><i data-feather='home'></i></span>
                             <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">General</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Tasks","SalesRepresentatives", new { fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='list'></i></span>
+                            <span class="nav-text">Tasks</span>
+
                         </a>
                     </li>
                 </ul>
@@ -192,6 +215,13 @@
                     </li>
                     <li class="nav-header hidden-folded">
                         <span class="text-muted">Management</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("convertImages", "Admin")">
+                            <span class="nav-icon text-danger"><i data-feather='image'></i></span>
+                            <span class="nav-text">Convert Images</span>
+
+                        </a>
                     </li>
                     <li>
                         <a href="@Url.Action("FormsM", "Home")">

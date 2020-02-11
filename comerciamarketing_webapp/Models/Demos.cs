@@ -26,19 +26,20 @@ namespace comerciamarketing_webapp.Models
         public string zipcode { get; set; }
         public string state { get; set; }
         public System.DateTime visit_date { get; set; }
-        public int ID_userCreate { get; set; }
-        public int ID_userEnd { get; set; }
+        public Nullable<int> ID_userCreate { get; set; }
+        public Nullable<int> ID_userEnd { get; set; }
         public string ID_ExternalUser { get; set; }
-        public int ID_demostate { get; set; }
+        public Nullable<int> ID_demostate { get; set; }
         public string comments { get; set; }
-        public int ID_formM { get; set; }
+        public Nullable<int> ID_formM { get; set; }
         public System.DateTime end_date { get; set; }
         public System.DateTime check_in { get; set; }
         public string geoLong { get; set; }
         public string geoLat { get; set; }
-        public decimal extra_hours { get; set; }
-        public int ID_empresa { get; set; }
+        public Nullable<decimal> extra_hours { get; set; }
+        public Nullable<int> ID_empresa { get; set; }
         public string UserName { get; set; }
+        public Nullable<bool> desnormalizado { get; set; }
     
         public virtual Demo_state Demo_state { get; set; }
     }

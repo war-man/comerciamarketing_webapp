@@ -552,7 +552,7 @@
                         <div class="form-group">
                             <p class="control-label col-md-10"> @objeto.fsource (*)</p>
                             <div class="col-md-12">
-                                <select id="brands_list" class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()'>
+                                <select id="brands_list" multiple class="form-control" name="@objeto.idkey" style="width:100%" onChange='getProductsline()' disabled>
 
 
                                     @if (ViewBag.brands.Count == 1)
@@ -565,14 +565,9 @@
                                         <option value="0">Seleccione una marca</option>
                                         foreach (var itemBrand in ViewBag.brands)
                                         {
-                                            if (objeto.fvalueText == itemBrand.FirmCode.ToString())
-                                            {
+                                           
                                                 <option value="@itemBrand.FirmCode" selected>@itemBrand.FirmName</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@itemBrand.FirmCode">@itemBrand.FirmName</option>
-                                            }
+                                     
 
 
                                         }

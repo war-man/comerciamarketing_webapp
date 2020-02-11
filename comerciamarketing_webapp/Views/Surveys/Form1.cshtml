@@ -1,0 +1,807 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Surveys by Comercia Marketing.">
+    <meta name="author" content="Francisco Velasquez">
+    <title>Comercia Marketing</title>
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="~/Content/images/icon/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="~/Content/surveysContent/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="~/Content/surveysContent/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="~/Content/surveysContent/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="~/Content/surveysContent/img/apple-touch-icon-144x144-precomposed.png">
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" rel="stylesheet">
+    <!-- BASE CSS -->
+    <link href="~/Content/surveysContent/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/surveysContent/css/menu.css" rel="stylesheet">
+    <link href="~/Content/surveysContent/css/style.css" rel="stylesheet">
+    <link href="~/Content/surveysContent/css/vendors.css" rel="stylesheet">
+    <!-- YOUR CUSTOM CSS -->
+    <link href="~/Content/surveysContent/css/custom.css" rel="stylesheet">
+
+    <!-- MODERNIZR MENU -->
+    <script src="~/Content/surveysContent/js/modernizr.js"></script>
+    <style>
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+@@media only screen and (min-width: 1200px) {
+
+        div.submit {
+            margin-top: 1050px;
+        }
+        div.largediv {
+            margin-top: 500px;
+        }
+}
+
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div data-loader="circle-side"></div>
+    </div><!-- /Preload -->
+
+    <div id="loader_form">
+        <div data-loader="circle-side-2"></div>
+    </div><!-- /loader_form -->
+
+    <nav>
+        <ul class="cd-primary-nav">
+            <li><a href="@Url.Action("Home","Home")" class="animated_link">About Us</a></li>
+
+        </ul>
+    </nav>
+    <!-- /menu -->
+
+    <div class="container-fluid full-height">
+        <div class="row row-height">
+            <div class="col-lg-6 content-left">
+                <div class="content-left-wrapper">
+                    <a href="@Url.Action("Home","Home")" id="logo"><img src="~/Content/surveysContent/img/Logo-Comercia-Marketing-p-1600.png" alt="" width="259" height="95"></a>
+                    <div id="social">
+                        <ul>
+                            <li><a target="_blank" href="https://www.facebook.com/ComerciaMarketing/"><i class="icon-facebook"></i></a></li>
+                            <li><a target="_blank" href="https://www.instagram.com/comerciamarketing/"><i class="icon-instagram"></i></a></li>
+
+                        </ul>
+                    </div>
+                    <!-- /social -->
+                    <div>
+                        @*<figure><img src="~/Content/surveysContent/img/milkbeerco.jpg" alt="" class="img-fluid"></figure>*@
+                        <h2>Enter a chance to win a prize</h2>
+                        <p>Please take a few minutes to complete the following survey to evaluate the beer you had the opportunity to taste today and you could win a great prize.</p>
+                        <a href="@Url.Action("Home","Home")" class="btn_1 rounded">Visit our page</a>
+                        <a href="#start" class="btn_1 rounded mobile_btn">Start Now!</a>
+                    </div>
+                    <div class="copy">© 2020 Comercia Marketing</div>
+                </div>
+                <!-- /content-left-wrapper -->
+            </div>
+            <!-- /content-left -->
+            <div class="col-lg-6 content-right" id="start">
+           
+                <div id="wizard_container">
+                    <a href="http://millcreekbrewingco.com/" target="_blank"><img src="~/Content/surveysContent/img/milkbeerco.jpg" alt="" width="259" height="95" class="img-fluid" style="margin-left:55px;"></a>
+                    <div class="row" style="margin-left:80px">
+                        <a href="https://www.facebook.com/MillCreekBrewingCo/" target="_blank" style="font-size:45px;color:#232c55"><i class="icon-facebook"></i></a>
+                        <a href="https://twitter.com/millcreekbrewco" target="_blank" style="font-size:45px;color:#232c55"><i class="icon-twitter"></i></a>
+                        <a href="https://www.instagram.com/millcreekbrewco/" target="_blank" style="font-size:45px;color:#232c55"><i class="icon-instagram"></i></a>
+                    </div>
+
+                    <div id="top-wizard">
+                        <div id="progressbar"></div>
+                    </div>
+
+                    <!-- /top-wizard -->
+                    <form id="wrapped" method="POST">
+                        <input id="website" name="website" type="text" value="">
+                        <!-- Leave for security protection, read docs for details -->
+                        <div id="middle-wizard">
+                            <div class="step">
+                                <h3 class="main_question">Please fill with your details</h3>
+                                @*<div class="form-group">
+                        <input type="text" name="name" id="name" class="form-control required" placeholder="Name">
+                    </div>*@
+
+                                <div class="form-group">
+                                    <div class="styled-select clearfix">
+                                        <select class="wide required" name="age" id="age">
+                                            <option value="">Your Age</option>
+                                            <option value="21-25">21-25</option>
+                                            <option value="26-35">26-35</option>
+                                            <option value="36-45">36-45</option>
+                                            <option value="55-or-more">55 or more</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group radio_input">
+                                            <label class="container_radio">
+                                                Male
+                                                <input type="radio" name="gender" value="Male" class="required">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="container_radio">
+                                                Female
+                                                <input type="radio" name="gender" value="Female" class="required">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /row -->
+                                <div class="form-group terms">
+                                    <label class="container_check">
+                                        Please accept our <a href="#" data-toggle="modal" data-target="#terms-txt">Terms and conditions</a>
+                                        <input type="checkbox" name="terms" value="Yes" class="required">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /step-->
+                            <div class="step">
+                                <h3 class="main_question">
+                                    <strong>1/10</strong>How ofter do you drink beer?
+                                </h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Everyday
+
+                                        <input type="radio" name="question_1" value="Everyday" class="required" onchange="getVals(this, 'question_1');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Once a week
+                                        <input type="radio" name="question_1" value="Once a week" class="required" onchange="getVals(this, 'question_1');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        More than Once a Week
+                                        <input type="radio" name="question_1" value="More than Once a Week" class="required" onchange="getVals(this, 'question_1');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Once a Month
+                                        <input type="radio" name="question_1" value="Once a Month" class="required" onchange="getVals(this, 'question_1');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        I do not drink Beer
+                                        <input type="radio" name="question_1" value="I do not drink Beer" class="required" onchange="getVals(this, 'question_1');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /step-->
+                            <!-- /step-->
+                            <div class="step">
+                                <h3 class="main_question">
+                                    <strong>2/10</strong>Where do you usually drink beer?
+                                </h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Home
+
+                                        <input type="radio" name="question_4" value="Home" class="required" onchange="getVals(this, 'question_4');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Restaurant & Bar
+                                        <input type="radio" name="question_4" value="Restaurant & Bar" class="required" onchange="getVals(this, 'question_4');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Special Occasions/Events
+                                        <input type="radio" name="question_4" value="Special Occasions/Events" class="required" onchange="getVals(this, 'question_4');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        I do not drink Beer
+                                        <input type="radio" name="question_4" value="Once a Month" class="required" onchange="getVals(this, 'question_4');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /step-->
+
+                            <div class="step">
+                                <h3 class="main_question"><strong>3/10</strong>Which one is your favorite beer brand?</h3>
+                                <div class="form-group">
+                                    <input type="text" name="favoritebeerbrand" class="form-control required" placeholder="Favorite Beer Brand" onkeyup="getVals(this, 'favoritebeerbrand');">
+                                </div>
+                                <h3 class="main_question">Why is you favorite brand?</h3>
+                                <div class="form-group add_top_30">
+                                    <textarea name="review_message" class="form-control review_message required" placeholder="Write your answer here..." onkeyup="getVals(this, 'review_message');"></textarea>
+                                </div>
+
+                            </div>
+                            <!-- /step-->
+                            <div class="step">
+                                <h3 class="main_question"><strong>4/10</strong>What is important for you on a beer?</h3>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Price
+                                        <input type="checkbox" name="question_2[]" value="Price" class="required" onchange="getVals(this, 'question_2');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Flavor
+                                        <input type="checkbox" name="question_2[]" value="Flavor" class="required" onchange="getVals(this, 'question_2');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Packaging
+                                        <input type="checkbox" name="question_2[]" value="Packaging" class="required" onchange="getVals(this, 'question_2');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        % of Alcohol
+                                        <input type="checkbox" name="question_2[]" value="% of Alcohol" class="required" onchange="getVals(this, 'question_2');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Origin
+                                        <input type="checkbox" name="question_2[]" value="Origin" class="required" onchange="getVals(this, 'question_2');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /step-->
+
+                            <div class="step largediv">
+                                <h3 class="main_question">
+                                    <strong>5/10</strong>What is your impression on beer MILL CREEK Brewing Company packaging/image?
+                                </h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Excellent
+
+                                        <input type="radio" name="question_5" value="Excellent" class="required" onchange="getVals(this, 'question_5');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Very Good
+                                        <input type="radio" name="question_5" value="Very Good" class="required" onchange="getVals(this, 'question_5');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Good
+                                        <input type="radio" name="question_5" value="Good" class="required" onchange="getVals(this, 'question_5');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Regular
+                                        <input type="radio" name="question_5" value="Once a Month" class="required" onchange="getVals(this, 'question_5');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Bad
+                                        <input type="radio" name="question_5" value="Bad" class="required" onchange="getVals(this, 'question_5');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+
+                                <h3 class="main_question">What could beer MILL CREEK Brewing Company do to improve their image or packaging?</h3>
+                                <div class="form-group add_top_30">
+                                    <textarea name="review_message2" class="form-control review_message required" placeholder="Write your answer here..." onkeyup="getVals(this, 'review_message2');"></textarea>
+                                </div>
+
+                                <h3 class="main_question">Which one is your favorite beer packaging to buy?</h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Can
+
+                                        <input type="radio" name="question_6" value="Excellent" class="required" onchange="getVals(this, 'question_6');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Bottle
+                                        <input type="radio" name="question_6" value="Very Good" class="required" onchange="getVals(this, 'question_6');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Six Pack
+                                        <input type="radio" name="question_6" value="Good" class="required" onchange="getVals(this, 'question_6');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Big bottles
+                                        <input type="radio" name="question_6" value="Once a Month" class="required" onchange="getVals(this, 'question_6');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Beer Kegs
+                                        <input type="radio" name="question_6" value="Bad" class="required" onchange="getVals(this, 'question_6');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="other" class="form-control" placeholder="Other" onkeyup="getVals(this, 'other');">
+
+                                </div>
+
+
+
+                            </div>
+                            <!-- /step-->
+
+                            <div class="step largediv">
+                                <h3 class="main_question"><strong>6/10</strong>Which flavor of beer MILL CREEK Brewing Company did you have the opportunity to try today?</h3>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        615 premium
+                                        <input type="checkbox" name="question_22[]" value="615 premium" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Easy daze
+                                        <input type="checkbox" name="question_22[]" value="Easy daze" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Juicy daze
+                                        <input type="checkbox" name="question_22[]" value="Juicy daze" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Landmark
+                                        <input type="checkbox" name="question_22[]" value="Landmark" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Lil darlin
+                                        <input type="checkbox" name="question_22[]" value="Lil darlin" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_check version_2">
+                                        Neon daze
+                                        <input type="checkbox" name="question_22[]" value="Neon daze" class="required" onchange="getVals(this, 'question_22');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+                                <h3 class="main_question">What is your impression of beer MILL CREEK Brewing Company flavor?</h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Excellent
+
+                                        <input type="radio" name="question_7" value="Excellent" class="required" onchange="getVals(this, 'question_7');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Very Good
+                                        <input type="radio" name="question_7" value="Very Good" class="required" onchange="getVals(this, 'question_7');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Good
+                                        <input type="radio" name="question_7" value="Good" class="required" onchange="getVals(this, 'question_7');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Regular
+                                        <input type="radio" name="question_7" value="Once a Month" class="required" onchange="getVals(this, 'question_7');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Bad
+                                        <input type="radio" name="question_7" value="Bad" class="required" onchange="getVals(this, 'question_7');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+
+                                <h3 class="main_question">What could beer MILL CREEK Brewing Company do to improve its flavor?</h3>
+                                <div class="form-group add_top_30">
+                                    <textarea name="review_message3" class="form-control review_message required" placeholder="Write your answer here..." onkeyup="getVals(this, 'review_message3');"></textarea>
+                                </div>
+
+
+                            </div>
+                            <!-- /step-->
+                            <div class="step">
+                                <h3 class="main_question"><strong>7/10</strong>Which flavor would you like to taste in a beer?</h3>
+
+                                <div class="form-group">
+                                    <input type="text" name="flavortaste" class="form-control required" placeholder="" onkeyup="getVals(this, 'flavortaste');">
+                                </div>
+                                <h3 class="main_question">Do you prefer light or dark beer?</h3>
+
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Light
+                                        <input type="radio" name="question_8" value="Light" class="required" onchange="getVals(this, 'question_8');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Dark
+                                        <input type="radio" name="question_8" value="Dark" class="required" onchange="getVals(this, 'question_8');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+
+                            </div>
+                            <!-- /step-->
+                            <!-- /step-->
+
+
+                            <div class="step">
+                                <h3 class="main_question"><strong>8/10</strong>Would you recommend beer MILL CREEK Brewing Company to other friends/relatives?</h3>
+
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Yes
+                                        <input type="radio" name="question_9" value="Yes" class="required" onchange="getVals(this, 'question_9');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        No
+                                        <input type="radio" name="question_9" value="No" class="required" onchange="getVals(this, 'question_9');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+                                <h3 class="main_question">Why?</h3>
+
+                                <div class="form-group">
+                                    <label>Please describe with few words why</label>
+                                    <textarea name="additional_message" class="form-control" style="height:100px;" placeholder="Type here..." onkeyup="getVals(this, 'additional_message');"></textarea>
+                                </div>
+                            </div>
+                            <!-- /step-->
+
+                            <div class="step">
+                                <h3 class="main_question"><strong>9/10</strong>Would you be interested in a non-alcoholic beer?</h3>
+
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Yes
+                                        <input type="radio" name="question_10" value="Yes" class="required" onchange="getVals(this, 'question_10');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        No
+                                        <input type="radio" name="question_10" value="No" class="required" onchange="getVals(this, 'question_10');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+                                <h3 class="main_question">Where do you prefer to purchase beer?</h3>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Supermarket
+                                        <input type="radio" name="question_11" value="Supermarket" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Gas station
+                                        <input type="radio" name="question_11" value="Gas station" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Restaurant
+                                        <input type="radio" name="question_11" value="Restaurant" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Bar
+                                        <input type="radio" name="question_11" value="Bar" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        C-Stores
+                                        <input type="radio" name="question_11" value="C-Stores" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="container_radio version_2">
+                                        Liquor Store
+                                        <input type="radio" name="question_11" value="Liquor Store" class="required" onchange="getVals(this, 'question_11');">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <!-- /step-->
+
+                            <div class="submit step">
+                                <h3 class="main_question"><strong>10/10</strong>Summary</h3>
+                                <div class="summary">
+                                    <ul>
+                                        <li>
+                                            <strong>1</strong>
+                                            <h5>How ofter do you drink beer?</h5>
+                                            <p id="question_1"></p>
+                                        </li>
+                                        <li>
+                                            <strong>2</strong>
+                                            <h5>Where do you usually drink beer?</h5>
+                                            <p id="question_4"></p>
+                                        </li>
+                                        <li>
+                                            <strong>3</strong>
+                                            <h5>Which one is your favorite beer brand?</h5>
+                                            <p id="favoritebeerbrand"></p>
+                                            <h5>Why is you favorite brand?</h5>
+                                            <p id="review_message"></p>
+                                        </li>
+                                        <li>
+                                            <strong>4</strong>
+                                            <h5>What is important for you on a beer?</h5>
+                                            <p id="question_2"></p>
+
+                                        </li>
+                                        <li>
+                                            <strong>5</strong>
+                                            <h5>What is your impression on beer MILL CREEK Brewing Company packaging/image?</h5>
+                                            <p id="question_5"></p>
+                                            <h5>What could beer MILL CREEK Brewing Company do to improve their image or packaging?</h5>
+                                            <p id="review_message2"></p>
+                                            <h5>Which one is your favorite beer packaging to buy?</h5>
+                                            <p id="question_6"></p>
+                                            <p id="other"></p>
+
+                                        </li>
+                                        <li>
+                                            <strong>6</strong>
+                                            <h5>Which flavor of beer MILL CREEK Brewing Company did you have the opportunity to try today?</h5>
+                                            <p id="question_22"></p>
+                                            <h5>What is your impression of beer MILL CREEK Brewing Company flavor?</h5>
+                                            <p id="question_7"></p>
+                                            <h5>What could beer MILL CREEK Brewing Company do to improve its flavor?</h5>
+                                            <p id="review_message3"></p>
+
+                                        </li>
+                                        <li>
+                                            <strong>7</strong>
+                                            <h5>Which flavor would you like to taste in a beer?</h5>
+                                            <p id="flavortaste"></p>
+                                            <h5>Do you prefer light or dark beer?</h5>
+                                            <p id="question_8"></p>
+                                        </li>
+                                        <li>
+                                            <strong>8</strong>
+                                            <h5>Would you recommend beer MILL CREEK Brewing Company to other friends/relatives?</h5>
+                                            <p id="question_9"></p>
+                                            <h5>Why?</h5>
+                                            <p id="additional_message"></p>
+                                        </li>
+                                        <li>
+                                            <strong>9</strong>
+                                            <h5>Would you be interested in a non-alcoholic beer?</h5>
+                                            <p id="question_10"></p>
+                                            <h5>Where do you prefer to purchase beer?</h5>
+                                            <p id="question_11"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- /step-->
+                        </div>
+                        <!-- /middle-wizard -->
+                        <div id="bottom-wizard">
+                            <button type="button" name="backward" class="backward">Prev</button>
+                            <button type="button" name="forward" class="forward">Next</button>
+                            <button type="submit" id="subbtnenviar" name="process" class="submit">Submit</button>
+                        </div>
+                        <!-- /bottom-wizard -->
+                    </form>
+                </div>
+                <!-- /Wizard container -->
+            </div>
+            <!-- /content-right-->
+        </div>
+        <!-- /row-->
+    </div>
+    <!-- /container-fluid -->
+    <div class="cd-overlay-nav">
+        <span></span>
+    </div>
+    <!-- /cd-overlay-nav -->
+    <div class="cd-overlay-content">
+        <span></span>
+    </div>
+    <!-- /cd-overlay-content -->
+    <a href="#0" class="cd-nav-trigger">Menu<span class="cd-icon"></span></a>
+    <!-- /menu button -->
+    <!-- Modal terms -->
+    <div class="modal fade" id="terms-txt" tabindex="-1" role="dialog" aria-labelledby="termsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="termsLabel">Terms and conditions</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>By clicking "I agree", or by submitting your information on any Comercia Marketing (portal, website, survey etc.), you agree to the terms and conditions of this Agreement and the Comercia Marketing Privacy Policy(collectively referred to as "Terms"). Please note that this Agreement is subject to change without prior notice (unless prior notice is required by law). By completing this online questionnaire, you agree to be legally bound by these terms, which shall take effect immediately on your first use of this website. If you do not agree to be legally bound by all the terms please do not access and/or use the website and/or complete the questionnaire. Comercia Marketing may change the terms at any time by posting changes online.    Please review the terms regularly to ensure you are aware of any changes made by us.</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn_1" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- COMMON SCRIPTS -->
+    <script src="~/Content/surveysContent/js/jquery-3.2.1.min.js"></script>
+    <script src="~/Content/surveysContent/js/common_scripts.min.js"></script>
+    <script src="~/Content/surveysContent/js/velocity.min.js"></script>
+    <script src="~/Content/surveysContent/js/functions.js"></script>
+    <!-- Wizard script -->
+    <script src="~/Content/surveysContent/js/survey_func.js"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            //option A
+            $("#wrapped").submit(function (e) {
+                $("#subbtnenviar").attr("disabled", true);
+                $("#loader_form").show();
+                e.preventDefault(e);
+              
+                var nombre = $("#name").val();
+                var edad = $("#age option:selected").text();
+                var genero = $("input[name='gender']:checked").val();
+
+
+                $.ajax
+                    ({
+                        url: '/Surveys/Save_activity',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            nombre: "",
+                            edad: edad,
+                            genero: genero,
+                            q1: "How ofter do you drink beer?",
+                            q2: "Where do you usually drink beer?",
+                            q3: "Which one is your favorite beer brand?",
+                            q4: "Why is you favorite brand?",
+                            q5: "What is important for you on a beer?",
+                            q6: "What is your impression on beer MILL CREEK Brewing Company packaging/image?",
+                            q7: "What could beer MILL CREEK Brewing Company do to improve their image or packaging?",
+                            q8: "Which one is your favorite beer packaging to buy?",
+                            q9: "Other",
+                            q10: "Which flavor of beer MILL CREEK Brewing Company did you have the opportunity to try today?",
+                            q11: "What is your impression of beer MILL CREEK Brewing Company flavor?",
+                            q12: "What could beer MILL CREEK Brewing Company do to improve its flavor?",
+                            q13: "Which flavor would you like to taste in a beer?",
+                            q14: "Do you prefer light or dark beer?",
+                            q15: "Would you recommend beer MILL CREEK Brewing Company to other friends/relatives?",
+                            q16: "Why?",
+                            q17: "Would you be interested in a non-alcoholic beer?",
+                            q18: "Where do you prefer to purchase beer?",
+                            a1: $("#question_1").text(),
+                            a2: $("#question_4").text(),
+                            a3: $("#favoritebeerbrand").text(),
+                            a4: $("#review_message").text(),
+                            a5: $("#question_2").text(),
+                            a6: $("#question_5").text(),
+                            a7: $("#review_message2").text(),
+                            a8: $("#question_6").text(),
+                            a9: $("#other").text(),
+                            a10: $("#question_22").text(),
+                            a11: $("#question_7").text(),
+                            a12: $("#review_message3").text(),
+                            a13: $("#flavortaste").text(),
+                            a14: $("#question_8").text(),
+                            a15: $("#question_9").text(),
+                            a16: $("#additional_message").text(),
+                            a17: $("#question_10").text(),
+                            a18: $("#question_11").text()
+                        }),
+                        success: function (result) {
+                       
+                            if (result.Result == "Success") {
+                               
+                                window.location.href = "@Url.Action("Success", "Surveys")";
+                                $("#loader_form").hide();
+                                $("#subbtnenviar").attr("disabled", false);
+                            } else {
+                                $("#loader_form").hide();
+                                $("#subbtnenviar").attr("disabled", false);
+                                alert("Whooaaa! Something went wrong..");
+                                window.location.reload(true);
+                            }
+                         
+
+                        },
+                        error: function () {
+                            $("#loader_form").hide();
+                            $("#subbtnenviar").attr("disabled", false);
+                            alert("Whooaaa! Something went wrong..")
+                        },
+                    });
+
+
+            });
+        });
+    </script>
+</body>
+</html>

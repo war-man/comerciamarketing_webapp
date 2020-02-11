@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9 d-flex">
+            <div class="col-md-12 d-flex">
                 <div class="flex">
                     <div class="card-body">
 
@@ -129,7 +129,7 @@
                                                 }
                                                 else if (item.ID_taskstatus == 3)
                                                 {
-                                                    <span style="font-size:9px;" class="badge badge-warning text-uppercase">On Hold</span>
+                                                    <span style="font-size:9px;" class="badge badge-warning text-uppercase">Not Finished</span>
                                                 }
                                                 else if (item.ID_taskstatus == 4)
                                                 {
@@ -150,54 +150,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="modal-dialog d-flex flex-column w-md bg-body" id="mail-nav">
 
-                    <div class="scrollable hover">
-                        <div class="p-2 px-3">
-                            <span class=" box-shadows btn-rounded gd-danger" id="btn-new-mail">
-                                Hint:
-                            </span>
-                        </div>
-                        <div class="sidenav my-3">
-                            <blockquote class="bg-white bg-primary--lt p-3 r">
-                                <em>Select at least one activity to show information.</em>
-                            </blockquote>
-                            @*<div class="card" id="feed-2">
-                                    <div class="card-header d-flex">
-
-                                        <div class="mx-3">
-                                            <a href="#">Jacqueline Reid</a>
-
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div class="row row-xs">
-                                            <div class="col-4">
-                                                <div class="media media-4x3 r ">
-                                                    <a class="media-content" style="background-image: url(../assets/img/b4.jpg);"></a>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="media media-4x3 r ">
-                                                    <a class="media-content" style="background-image: url(../assets/img/b8.jpg);"></a>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="media media-4x3 r ">
-                                                    <a class="media-content" style="background-image: url(../assets/img/b14.jpg);"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>*@
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <!-- ############ Main START-->
@@ -309,7 +262,7 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Demo Data</h5>
+                    <h5 class="modal-title" id="exampleModalLabel-4"><i class="mdi mdi-delete"></i> Delete Task Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span style="font-size: 40px" aria-hidden="true">&times;</span>
                     </button>
@@ -317,7 +270,7 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label class="col-form-label">Are you sure you want to delete this Demo?</label><br />
+                        <label class="col-form-label">Are you sure you want to delete this Task?</label><br />
                         <strong><label id="descriptionD" class="col-form-label"></label></strong>
                         <input type="text" id="ID_activityD" name="ID_activityD" hidden />
 
@@ -356,9 +309,11 @@
 
         $('#chk_all').change(function () {
             if (this.checked) {
-                table.$("input.selectchk").prop("checked", true);
+                //table.$("input.selectchk").prop("checked", true);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", true);
             } else {
-                table.$("input.selectchk").prop("checked", false);
+                //table.$("input.selectchk").prop("checked", false);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", false);
             }
 
         });
@@ -385,7 +340,7 @@
 
                 if (objects.length > 0) {
                     $.ajax({
-                        url: '/Customers/Export_QuickVisit',
+                        url: '/Customers/Export_Inventario',
                         type: 'POST',
                         data: { 'id': customer, 'objects': objects },
                         cache: false,
@@ -441,7 +396,7 @@
 
                 if (objects.length > 0) {
                     $.ajax({
-                        url: '/Customers/Print_QuickVisit',
+                        url: '/Customers/Print_Inventario',
                         type: 'POST',
                         data: { 'id': customer, 'objects': objects },
                         cache: false,
@@ -449,7 +404,8 @@
                         success: function (result) {
                             $("#loading").hide();
                                    if (result == "Success") {
-            location.href = '@Url.Action("DownloadPDF", "Customers",new { activityname = "QUICK_VISIT"})';
+            //location.href = 'Url.Action("DownloadPDF", "Customers",new { activityname = "QUICK_VISIT"})';
+                                       window.open('@Url.Action("ShowPDF", "Customers",new { activityname = "Inventario" })', '_blank');
         }
                             //var link = document.createElement('a');
 
@@ -482,60 +438,6 @@
 
         });
 
-
-            $("#btn-images").click(function () {
-                var objects = [];
-                var customer = '@ViewBag.id_customer';
-
-                $.each(table.$("input.selectchk"), function () {
-
-                    if ($(this).prop('checked')) {
-                        objects.push({
-                            id: $(this).attr('id'),
-                            value: $(this).prop('checked'),
-                            text: ""
-                        });
-                    }
-
-
-                });
-
-                if (objects.length > 0) {
-                    $.ajax({
-                        url: '/Customers/DownloadZip',
-                        type: 'POST',
-                        data: { 'id': customer, 'objects': objects },
-                        cache: false,
-                        global: false,
-                        success: function (data) {
-                         //get the file name for download
-
-                            if (data != "") {
-                                //use window.location.href for redirect to download action for download the file
-                                window.location.href = "@Url.RouteUrl(new
-                                { Controller = "Customers", Action = "Download"})/?file=" + data;
-                            }
-                        },
-                        error: function (request, status, error) {
-                            $("#loading").hide();
-                            alert(request.responseText);
-
-                        }
-                    });
-                } else {
-
-                    $.toast({
-                        heading: 'Warning',
-                        text: 'Select at least one activity',
-                        showHideTransition: 'slide',
-                        icon: 'warning',
-                        loader: false,
-                        loaderBg: '#ff9900',
-                        position: 'top-right'
-                    });
-                }
-
-            });
 
     };
 </script>

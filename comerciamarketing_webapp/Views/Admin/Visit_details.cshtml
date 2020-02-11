@@ -88,157 +88,161 @@ else if (ViewBag.estadovisita == 2)
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_3">Location</a>
+                                </li>               
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_4">Gallery</a>
                                 </li>
             
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-sm-12 col-lg-12">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="tab_1">
-                                                @if (Model.Count == 0)
-                                                {
-                                                        <label>No activities to show</label>
-                                                        <hr />
-                                                }
-                                                else
-                                                {
-                                                    foreach (var activity in Model)
-                                                    {
-
-                                                                                    
-                                                        <div class="card" id="feed-@activity.ID_activity">
-                                                            <div class="p-3 b-t collapse show card-header" id="feed-form-1">
-
-
-                                                                <div class="d-flex pt-2">
-                                                                    <div class="toolbar my-1">
-                                                                        <div class="status-wrapper d-flex align-items-start pr-3">
-                                                                            @if (activity.isfinished == true && activity.query1 != "cancel")
+                                @if (Model.Count == 0)
         {
-                                                                    <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
-}
-else if (activity.isfinished == true && activity.query1 == "cancel")
-{
-                                                                    <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
+                        <label>No activities to show</label>
+                        <hr />
 }
 else
 {
-                                                                    <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
+foreach (var activity in Model)
+{
+
+
+                        <div class="card" id="feed-@activity.ID_activity">
+                            <div class="p-3 b-t collapse show card-header" id="feed-form-1">
+
+
+                                <div class="d-flex pt-2">
+                                    <div class="toolbar my-1">
+                                        <div class="status-wrapper d-flex align-items-start pr-3">
+                                            @if (activity.isfinished == true && activity.query1 != "cancel")
+                    {
+                        <span class="bg-primary rounded-circle p-1 mt-2 mx-auto"></span>
 }
-                                                                        </div>
-                                                                        <small class="d-block">@activity.description</small>
-                                                                    </div>
-                                                                    <span class="flex"></span>
-                                                                   @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
-                                                                    {
-                                                                        if (activity.isfinished == true)
-                                                                        {
-                                                                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           if (ViewBag.estadovisita == 2)
-                                                                           {
-                                                                            <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
-                                                                           }
-                                                                            
-                                                                        }
+else if (activity.isfinished == true && activity.query1 == "cancel")
+{
+                        <span class="bg-danger rounded-circle p-1 mt-2 mx-auto"></span>
+}
+else
+{
+                        <span class="bg-warning rounded-circle p-1 mt-2 mx-auto"></span>
+}
+                                        </div>
+                                        <small class="d-block">@activity.description</small>
+                                    </div>
+                                    <span class="flex"></span>
+                                    @if (activity.ID_activitytype == 1 || activity.ID_activitytype == 4)
+            {
+                if (activity.isfinished == true)
+                {
+                        <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
+}
+else
+{
+if (ViewBag.estadovisita == 2)
+{
+                        <a href="@Url.Action("Activityresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
+}
+
+}
 
 
-                                                                    }
-                                                                    else if (activity.ID_activitytype == 2)
-                                                                    {
-                                                                        if (activity.isfinished == true)
-                                                                        {
-                                                                            <a href="@Url.Action("Activityraonresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            @*<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
-                                                                   if (ViewBag.estadovisita == 2)
-                                                                   {
-                                                                               <a href="@Url.Action("Activityraon", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
-                                                                           }
+}
+else if (activity.ID_activitytype == 2)
+{
+if (activity.isfinished == true)
+{
+                        <a href="@Url.Action("Activityraonresume", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Preview</a>
+}
+else
+{
+                        @*<a href="#" data-toggle="modal" data-target="#infoRetailModal" data-idform="@activity.ID_activity" data-name="@activity.description" class="text-black"><h6 class="d-block mb-1"> @activity.description</h6></a>*@
+if (ViewBag.estadovisita == 2)
+{
+                        <a href="@Url.Action("Activityraon", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
+}
 
-                                                                       }
+}
 
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       if (ViewBag.estadovisita == 2)
-                                                                       {
-                                                                           <a href="@Url.Action("Activitysoon", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
-                                                                       }
-                                                                        
-                                                                    }
+}
+else
+{
+if (ViewBag.estadovisita == 2)
+{
+                        <a href="@Url.Action("Activitysoon", "FormsM", new { id = activity.ID_activity })" class="btn btn-sm btn-success">Open</a>
+}
 
-                                                          
-                                                                </div>
-
-                                                            </div>
-              
-                                                            <div class="card-body">
-                                                                <div class="card-text">
-                                                                    <small class="d-block">Customer: @activity.Customer</small>
-                                                                    <small class="d-block">Brand: @activity.query1</small>
-
-                                                                    @*<small class="d-block">Assigned rep : @activity.ID_customer</small>*@
-
-                                                                    @if (activity.isfinished == true)
-                                                                    {
-                                                                        if (activity.query1 == "cancel")
-                                                                        {
-
-                                                                <span class="badge badge-danger">Canceled</span>
-                                                                <small class="text-gray d-block">Reason: @activity.comments</small>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                <span class="badge badge-info">Finished</span>
-                                                                        }
-                                                                    }
+}
 
 
-                                                                </div>
-                                                            </div>
-                                                            <div class="p-3 b-t collapse show" id="feed-form-1">
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <small class="d-block">Customer: @activity.Customer</small>
+                                    <small class="d-block">Brand: @activity.query1</small>
+
+                                    @*<small class="d-block">Assigned rep : @activity.ID_customer</small>*@
+
+                                    @if (activity.isfinished == true)
+            {
+                if (activity.query1 == "cancel")
+                {
+
+                        <span class="badge badge-danger">Canceled</span>
+                        <small class="text-gray d-block">Reason: @activity.comments</small>
+}
+else
+{
+                        <span class="badge badge-info">Finished</span>
+}
+}
 
 
-                                                                <div class="d-flex pt-2">
-                                                                    <div class="toolbar my-1">
+                                </div>
+                            </div>
+                            <div class="p-3 b-t collapse show" id="feed-form-1">
 
 
-                                                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-        {
-                                                                <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                                                                    Delete
+                                <div class="d-flex pt-2">
+                                    <div class="toolbar my-1">
 
-                                                                </a>
+
+                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                {
+                        <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                            Delete
+
+                        </a>
 if (activity.ID_activitytype == 3)
 {
     if (activity.isfinished == true && activity.query1 != "cancel")
     {
-                                                                <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
-                                                                    Download
+                        <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
+                            Download
 
-                                                                </a>
+                        </a>
 }
 }
 else if (activity.ID_activitytype == 4)
 {
 if (activity.isfinished == true && activity.query1 != "cancel")
 {
-                                                                <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
-                                                                    Download
+                        <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
+                            Download
 
-                                                                </a>
-                                                                <a href="@Url.Action("SendDemoResume", "VisitsMs", new { id = activity.ID_activity })" class="btn btn-sm btn-info">
-                                                                    Send
+                        </a>
+                        <a href="@Url.Action("SendDemoResume", "VisitsMs", new { id = activity.ID_activity })" class="btn btn-sm btn-info">
+                            Send
 
-                                                                </a>
+                        </a>
 }
 }
 }
@@ -250,9 +254,9 @@ if (activity.isfinished != true && activity.query1 != "cancel")
 {
 if (ViewBag.estadovisita == 2)
 {
-                                                                <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
-                                                                    Cancel
-                                                                </a>
+                        <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#cancelModal" data-ID="@activity.ID_activity" data-description="@activity.description">
+                            Cancel
+                        </a>
 }
 
 
@@ -261,10 +265,10 @@ if (activity.ID_activitytype == 4)
 {
 if (activity.isfinished == true && activity.query1 != "cancel")
 {
-                                                                <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
-                                                                    Download
+                        <a href="@Url.Action("PreviewSendDemoResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
+                            Download
 
-                                                                </a>
+                        </a>
 }
 }
 else
@@ -275,10 +279,10 @@ if (activity.description == "STOCK INVENTORY CONTROL")
 {
     if (activity.isfinished == true && activity.query1 != "cancel")
     {
-                                                                <a href="@Url.Action("PreviewFormStockResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
-                                                                    Download
+                        <a href="@Url.Action("PreviewFormStockResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
+                            Download
 
-                                                                </a>
+                        </a>
 }
 }
 }
@@ -286,18 +290,18 @@ if (activity.ID_activitytype == 3)
 {
 if (activity.isfinished == true && activity.query1 != "cancel")
 {
-                                                                <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
-                                                                    Download
+                        <a href="@Url.Action("PreviewSalesOrderResume", "VisitsMs", new { id = activity.ID_activity })" target="_blank" class="btn btn-sm btn-info">
+                            Download
 
-                                                                </a>
+                        </a>
 }
 }
 if (ViewBag.estadovisita == 2)
 {
-                                                                <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
-                                                                    Copy
+                        <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#copyModal" data-activity="@activity.ID_activity" data-description="@activity.description">
+                            Copy
 
-                                                                </a>
+                        </a>
 }
 
 }
@@ -306,76 +310,79 @@ if (ViewBag.estadovisita == 2)
 }
 
 }
-                                                                    </div>
-                                                                    <span class="flex"></span>
-                                                                    @if (ViewBag.estadovisita == 4)
-                                                                    {
-                                                                    <a href="#" class="text-muted">
-                                                                        <i data-feather="share-2" width="12" height="12"></i>
-                                                                        Share
-                                                                    </a>
-                                                                    }
+                                    </div>
+                                    <span class="flex"></span>
+                                    @if (ViewBag.estadovisita == 4)
+            {
+                        <a href="#" class="text-muted">
+                            <i data-feather="share-2" width="12" height="12"></i>
+                            Share
+                        </a>
+}
 
-                                                                </div>
+                                </div>
 
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
+                            </div>
+                        </div>
+}
+}
 
 
 
                             </div>
+
+
                             <div class="tab-pane fade" id="tab_2">
                                 <div class="card p-4">
                                     <div class="list list-row row">
-                                                                @if (ViewBag.repslist.Count == 0)
-                                            {
-                                                <div class="list">
-                                                    <div class="col-12">
-                                                        <small class="d-block mb-2">No representatives assigned</small>
+                                        @if (ViewBag.repslist.Count == 0)
+                {
+                        <div class="list">
+                            <div class="col-12">
+                                <small class="d-block mb-2">No representatives assigned</small>
 
-                                                    </div>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                foreach (var rep in ViewBag.repslist)
-                                                {
-                                               <div class="list-item col-sm-6 no-border">
-                                            <div>
-                                                <a href="#">
-                                                    <span class="w-40 avatar gd-success">
-                                                        @*<span class="avatar-status on b-white avatar-right"></span>*@
-                                                        @Convert.ToString(rep.name).Substring(0,1)
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div class="flex">
-                                                <a href="#" class="item-author text-color ">@rep.name</a>
-                                                <a href="#" class="item-company text-muted h-1x">
-                                                    @rep.email
-                                                </a>
-
-                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
-                                            <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
-                                                Delete
-                                            </a>
+                            </div>
+                        </div>
 }
 else
 {
-                                      
-}
-                                            </div>
-                                        </div>
-                                                }
-                                            }
+foreach (var rep in ViewBag.repslist)
+{
+                        <div class="list-item col-sm-6 no-border">
+                            <div>
+                                <a href="#">
+                                    <span class="w-40 avatar gd-success">
+                                        @*<span class="avatar-status on b-white avatar-right"></span>*@
+                                        @Convert.ToString(rep.name).Substring(0, 1)
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="flex">
+                                <a href="#" class="item-author text-color ">@rep.name</a>
+                                <a href="#" class="item-company text-muted h-1x">
+                                    @rep.email
+                                </a>
 
-                                        
+                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+        {
+                        <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#deleteRepModal" data-id="@rep.ID" data-description="@rep.name - @rep.email">
+                            Delete
+                        </a>
+}
+else
+{
+
+}
+                            </div>
+                        </div>
+}
+}
+
+
                                     </div>
                                 </div>
                             </div>
+
                             <div class="tab-pane fade" id="tab_3">
                                 <div class="card">
                                     <div class="wrapper d-flex align-items-center py-2 border-bottom map-responsive">
@@ -384,7 +391,135 @@ else
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="tab-pane fade active" id="tab_4">
+                               <div>
+                                        <div class="row row-sm sr">
+                                            <div class="col-md-12 col-lg-12">
+                                                @*<header class="cd-header">
+                            <h1>Content Filters</h1>
+                        </header>*@
+                                                <main class="cd-main-content">
+                                                    <div class="cd-tab-filter-wrapper">
+                                                        <div class="cd-tab-filter">
+                                                            <ul class="cd-filters">
+                                                                <li class="placeholder">
+                                                                    <a data-type="all" href="#0">All</a> <!-- selected option on mobile -->
+                                                                </li>
+                                                                <li class="filter"><a class="selected" href="#0" data-type="all">All Brands</a></li>
+                                                                @foreach (var brand in ViewBag.brandslst)
+                                    {
+                                        <li class="filter" data-filter=".@Convert.ToString(brand).Replace(" ", "")"><a href="#0" data-type="@brand">@brand</a></li>
+        }
+                                                            </ul> <!-- cd-filters -->
+                                                        </div> <!-- cd-tab-filter -->
+                                                    </div> <!-- cd-tab-filter-wrapper -->
+                                                    <section class="cd-gallery">
+                                                        <ul>
+                                                            @foreach (var img in ViewBag.gallery)
+                                {
+                                    if (img.Url == null || img.Url == "")
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <li class="mix @img.Brand.Replace(" ", "") @img.Section @img.Rep.Replace(" ", "") @img.Activity.Replace(" ", "").Replace(".", "")  @Convert.ToString(img.Store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")"><img src="@Url.Content(img.Url)" alt="Image @img.idImg"></li>
+        }
+
+
+    }
+                                                            <li class="gap"></li>
+                                                            <li class="gap"></li>
+                                                            <li class="gap"></li>
+                                                        </ul>
+                                                        <div class="cd-fail-message">No results found</div>
+                                                    </section> <!-- cd-gallery -->
+                                                    <div class="cd-filter">
+                                                        <form>
+                                                            @*<div class="cd-filter-block">
+                                        <h4>Search</h4>
+
+                                        <div class="cd-filter-content">
+                                            <input type="search" placeholder="...">
+                                        </div> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->*@
+                                                            <div class="cd-filter-block">
+                                                                <h4>By Merchandiser</h4>
+                                                                <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                                                    @foreach (var rep in ViewBag.replst)
+                                        {
+                                            <li>
+                                                <input class="filter" data-filter=".@Convert.ToString(rep).Replace(" ", "")" type="checkbox" id="checkbox_@Convert.ToString(rep).Replace(" ", "")">
+                                                <label class="checkbox-label" for="checkbox_@Convert.ToString(rep).Replace(" ", "")">@rep</label>
+                                            </li>
+            }
+                                                                </ul> <!-- cd-filter-content -->
+                                                            </div> <!-- cd-filter-block -->
+
+                                                            <div class="cd-filter-block">
+                                                                <h4>By activity</h4>
+
+                                                                <div class="cd-filter-content">
+                                                                    <div class="cd-select cd-filters">
+                                                                        <select class="filter" name="selectThis" id="selectThis">
+                                                                            <option value="">Choose an option</option>
+                                                                            @foreach (var activity in ViewBag.activitylst)
+                                                {
+
+                                                    <option value=".@Convert.ToString(activity).Replace(" ", "").Replace(".", "")">@activity</option>
+
+                    }
+                                                                        </select>
+                                                                    </div> <!-- cd-select -->
+                                                                </div> <!-- cd-filter-content -->
+                                                            </div> <!-- cd-filter-block -->
+                                                            <div class="cd-filter-block">
+                                                                <h4>By Store</h4>
+                                                                <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                                                    @foreach (var store in ViewBag.storelst)
+                                        {
+                                            <li>
+                                                <input class="filter" data-filter=".@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")" type="checkbox" id="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")">
+                                                <label class="checkbox-label" for="checkbox_@Convert.ToString(store).Replace(" ", "").Replace(".", "").Replace("'", "").Replace("#", "").Replace("&", "").Replace("(", "").Replace(")", "")">@store</label>
+                                            </li>
+            }
+                                                                </ul> <!-- cd-filter-content -->
+                                                            </div> <!-- cd-filter-block -->
+                                                            <div class="cd-filter-block">
+                                                                <h4>By sections</h4>
+                                                                <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+                                                                    <li>
+                                                                        <input class="filter" data-filter="" type="radio" name="radioButton" id="radio1" checked>
+                                                                        <label class="radio-label" for="radio1">All</label>
+                                                                    </li>
+                                                                    @foreach (var sectionlst in ViewBag.sectionlst)
+                                        {
+                                            <li>
+                                                <input class="filter" data-filter=".@sectionlst" type="radio" name="radioButton" id="rad_@sectionlst">
+                                                <label class="radio-label" for="rad_@sectionlst">@sectionlst</label>
+                                            </li>
+            }
+                                                                </ul> <!-- cd-filter-content -->
+                                                            </div> <!-- cd-filter-block -->
+                                                            @*<div class="cd-filter-block">
+                                        <h4>By Activity</h4>
+                                        <ul class="cd-filter-content cd-filters list" style="list-style: none;">
+
+                                        </ul> <!-- cd-filter-content -->
+                                    </div> <!-- cd-filter-block -->*@
+
+                                                        </form>
+                                                        <a href="#0" class="cd-close">Close</a>
+                                                    </div> <!-- cd-filter -->
+                                                    <a href="#0" class="cd-filter-trigger">Filters</a>
+                                                </main> <!-- cd-main-content -->
+                                            </div>
+
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div>

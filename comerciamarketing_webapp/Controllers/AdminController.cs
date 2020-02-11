@@ -988,7 +988,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                         List<FormsM> activeForms = new List<FormsM>();
-                        activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                        activeForms = (from at in db.FormsM where (at.ID_empresa == 2 && at.ID_form==41) select at).ToList();
                         ViewBag.activeForms = activeForms;
                     }
                     else {
@@ -1006,14 +1006,14 @@ namespace comerciamarketing_webapp.Controllers
 
 
                             List<FormsM> activeForms = new List<FormsM>();
-                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2 && at.ID_form==41) select at).ToList();
                             ViewBag.activeForms = activeForms;
                         }
                         else {
 
                             var brandstring = brandsel.ToString();
                             demos = (from a in db.Demos
-                                     where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Vendor == customersel && a.ID_brands == brandstring)
+                                     where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Vendor == customersel && a.ID_brands.Contains(brandstring))
                                      select a
                              ).ToList();
 
@@ -1023,7 +1023,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                             List<FormsM> activeForms = new List<FormsM>();
-                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2) select at).ToList();
+                            activeForms = (from at in db.FormsM where (at.ID_empresa == 2 && at.ID_form==41) select at).ToList();
                             ViewBag.activeForms = activeForms;
                         }
 
@@ -1187,11 +1187,11 @@ namespace comerciamarketing_webapp.Controllers
                 {
                     if (customersel == null || customersel == "" || customersel == "0")
                     {
-                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate)) select a).ToList();
+                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate && a.ID_empresa==2)) select a).ToList();
                     }
                     else
                     {
-                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Customer == customersel) select a).ToList();
+                        tasks = (from a in db.Tasks where ((a.visit_date >= filtrostartdate && a.end_date <= filtroenddate) && a.ID_Customer == customersel && a.ID_empresa == 2) select a).ToList();
                         if (brandsel == null || brandsel == 0)
                         {
 
@@ -1295,7 +1295,150 @@ namespace comerciamarketing_webapp.Controllers
 
             }
         }
+        public ActionResult convertImages(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
+        {
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            if (activeuser != null)
+            {
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Admin";
+                ViewData["Page"] = "Tasks";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
+                DateTime filtrostartdate;
+                DateTime filtroenddate;
+
+                var sunday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                var saturday = sunday.AddDays(6).AddHours(23);
+
+                if (fstartd == null || fstartd == "") { filtrostartdate = sunday; } else { filtrostartdate = Convert.ToDateTime(fstartd); }
+                if (fendd == null || fendd == "") { filtroenddate = saturday; } else { filtroenddate = Convert.ToDateTime(fendd).AddHours(23).AddMinutes(59); }
+                //
+                ViewBag.filtrofechastart = filtrostartdate.ToShortDateString();
+                ViewBag.filtrofechaend = filtroenddate.ToShortDateString();
+
+                List<imagesInfo> imageslist = new List<imagesInfo>();
+       
+                using (var db = new dbComerciaEntities())
+                {
+                    if (customersel == null || customersel == "" || customersel == "0")
+                    {
+                        imageslist = (from form in db.FormsM_details
+                                      join activities in db.ActivitiesM on form.ID_visit equals activities.ID_activity into temp
+                                      from last in temp.DefaultIfEmpty()
+                                      where ((last.date >= filtrostartdate && last.date <= filtroenddate) && form.ID_formresourcetype == 5 && form.fsource.Contains("~"))
+                                      select new imagesInfo
+                                      {
+                                          ID_image = form.ID_details,
+                                          Activity = last.description,
+                                          visitDate = last.date,
+                                          ID_customer = last.ID_customer,
+                                          Customer = last.Customer,
+                                          url = form.fsource
+                                      }).ToList();
+                    }
+                    else
+                    {
+                        imageslist = (from form in db.FormsM_details
+                                      join activities in db.ActivitiesM on form.ID_visit equals activities.ID_activity into temp
+                                      from last in temp.DefaultIfEmpty()
+                                      where ((last.date >= filtrostartdate && last.date <= filtroenddate) && form.ID_formresourcetype == 5 && form.fsource.Contains("~") && last.ID_customer == customersel)
+                                      select new imagesInfo
+                                      {
+                                          ID_image = form.ID_details,
+                                          Activity = last.description,
+                                          visitDate = last.date,
+                                          ID_customer = last.ID_customer,
+                                          Customer = last.Customer,
+                                          url = form.fsource
+                                      }).ToList();
+                        if (brandsel == null || brandsel == 0)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+              
+
+                }
+
+                Session["imageslist"] = imageslist;
+                try
+                {
+
+                    using (var CMKdb = new COM_MKEntities())
+                    {
+                        //LISTADO DE CLIENTES
+                        var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
+                        ViewBag.customerssel = customers.ToList();
+
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            ViewBag.CustomersLabel = "All Customers";
+                            ViewBag.CustomerSelCode = "0";
+                        }
+                        else
+                        {
+                            var nameC = customers.Where(a => a.CardCode == customersel).FirstOrDefault();
+
+                            if (nameC == null)
+                            {
+                                var nameDLI = customers.Where(a => a.U_CardCodeDLI == customersel).FirstOrDefault();
+                                ViewBag.CustomersLabel = nameDLI.CardName;
+                                ViewBag.CustomerSelCode = nameDLI.U_CardCodeDLI;
+                            }
+                            else
+                            {
+                                ViewBag.CustomersLabel = nameC.CardName;
+                                ViewBag.CustomerSelCode = nameC.CardCode;
+                            }
+                        }
+
+                        var brandcmk = CMKdb.view_CMKEditorB.Where(i => i.FirmCode == brandsel).FirstOrDefault();
+
+                        if (brandsel == null || brandsel == 0)
+                        {
+                            ViewBag.BrandLabel = "All Brands";
+                            ViewBag.BrandSelCode = "0";
+                        }
+                        else
+                        {
+                            ViewBag.BrandLabel = brandcmk.FirmName;
+                            ViewBag.BrandSelCode = brandcmk.FirmCode;
+                        }
+
+
+                    }
+
+                }
+
+                catch
+                {
+
+                    ViewBag.CustomersLabel = "All Customers";
+                    ViewBag.customerssel = new List<OCRD>();
+                    ViewBag.CustomerSelCode = "0";
+                    ViewBag.BrandLabel = "All Brands";
+                    ViewBag.BrandSelCode = "0";
+                }
+
+
+                return View(imageslist);
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "Home", new { access = false });
+
+            }
+        }
 
 
         public class representativesVisit
@@ -1389,8 +1532,53 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         ViewBag.estadovisita = visitsM.ID_visitstate;
                     }
+                    List<ImgGallery> detalles;
+                    IQueryable<ActivitiesM> actividadesList;
 
 
+
+               
+                   actividadesList = (from ed in db.ActivitiesM where (ed.ID_visit ==id && ed.isfinished == true && ed.ID_activitytype==1) select ed);
+        
+
+                    var actividades = actividadesList.Select(a => a.ID_activity).ToArray();
+
+
+                    detalles = (from a in db.FormsM_details
+                                join b in actividadesList on a.ID_visit equals b.ID_activity
+                                join c in db.VisitsM on b.ID_visit equals c.ID_visit
+                                where (c.ID_visit==id && a.ID_formresourcetype == 5)
+                                select new ImgGallery
+                                {
+                                    idImg = a.ID_details,
+                                    Customer = b.Customer,
+                                    Activity = b.description,
+                                    Url = a.fsource,
+                                    IDStore = c.ID_store,
+                                    Store = c.ID_store + " - " + c.store,
+                                    Section = a.fdescription == "PICTURE 1" ? "BEFORE" : a.fdescription == "PICTURE 2" ? "AFTER" : a.fdescription == "CONDICION FINAL DE LA TIENDA (DESPUES)" ? "AFTER" : a.fdescription == "Tomar fotografia inicial" ? "BEFORE" : a.fdescription == "Foto de herramientas" ? "TOOLS" : a.fdescription == "Foto de la competencia" ? "TOOLS" : "OTHER",
+                                    Rep = (from usu in db.Usuarios where (usu.ID_usuario == b.ID_usuarioEnd) select usu.nombre + " " + usu.apellido).FirstOrDefault() == null ? "" : (from usu in db.Usuarios where (usu.ID_usuario == b.ID_usuarioEnd) select usu.nombre + " " + usu.apellido).FirstOrDefault(),
+                                    IDBrand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == b.ID_activity) select detalle.fvalueText).FirstOrDefault(),
+                                    Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == b.ID_activity) select detalle.fdescription).FirstOrDefault(),
+
+                                }).ToList();
+
+                    detalles = detalles.Where(c => c.Url != null && !c.Url.Equals(string.Empty) && c.Brand != null).ToList();
+
+
+                    var brandslst = (from a in detalles select a.Brand).Distinct().OrderBy(a => a).ToList();
+                    var sectionlst = (from a in detalles select a.Section).Distinct().OrderBy(a => a).ToList();
+                    var replst = (from a in detalles select a.Rep).Distinct().ToList();
+                    var activitylst = (from a in detalles select a.Activity).Distinct().ToList();
+                    var storeslst = (from a in detalles select a.Store).Distinct().ToList();
+
+                    ViewBag.brandslst = brandslst;
+                    ViewBag.sectionlst = sectionlst;
+                    ViewBag.replst = replst;
+                    ViewBag.activitylst = activitylst;
+                    ViewBag.storelst = storeslst;
+
+                    ViewBag.gallery = detalles;
 
 
                     //FIN ACTIVITIES

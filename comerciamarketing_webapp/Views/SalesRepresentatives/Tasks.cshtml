@@ -1,0 +1,378 @@
+﻿@model List<comerciamarketing_webapp.Models.Tasks>
+@{
+    ViewBag.title = "Comercia Marketing - Sales Reps Tasks";
+}
+
+<!-- ############ Content START-->
+<div id="content" class="flex ">
+    <div class="page-hero page-container " id="page-hero">
+        <div class="padding d-flex">
+            <div class="page-title">
+                <h2 class="text-md text-highlight">Tasks</h2>
+                <small class="text-muted">
+                    Tasks assigned to
+                    <strong> You</strong>
+                </small>
+            </div>
+            <div class="flex"></div>
+            <div>
+            </div>
+        </div>
+  
+            <div class="col-md-12 d-flex">
+                <div class="card flex">
+                    <div class="card-body">
+
+                        <div class="p-3">
+                            <div class="toolbar ">
+                                <div class="btn-group">
+
+
+                                </div>
+                                <label class="ui-check m-0 ">
+                                    <input type="checkbox" class="selectchkAll" id="chk_all" value="0">
+                                    <i></i>
+                                </label>
+
+                                <div class="input-group">
+                                    <input id="inputsearch" type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search">
+                                    <span class="input-group-append">
+                                        <span class="btn btn-white no-border btn-sm">
+                                            <span class="d-flex text-muted"><i data-feather="search"></i></span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print .pdf" id="btn-print">
+                                        <i data-feather="printer"></i>
+                                    </button>
+                                </div>
+               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table id="datatable2" class="table table-theme table-row v-middle">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><span class="text-muted">ID</span></th>
+                                            <th><span class="text-muted">TASK</span></th>
+                                            <th><span class="text-muted">CUSTOMER</span></th>
+
+                                 
+                                            <th><span class="text-muted">DATE</span></th>
+                                            <th><span class="text-muted">STATUS</span></th>
+                                            <th><span class="text-muted">ACTIONS</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>
+                                <div>
+                                    <label class="ui-check m-0 ">
+                                        <input type="checkbox" class="selectchk" id="chk_@item.ID_task" value="0">
+                                        <i></i>
+                                    </label>
+                                </div>
+
+
+                            </td>
+                            <td>@item.ID_task</td>
+                            <td>
+                                <div class="flex">
+                                    <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.TaskType</a>
+                                    <div class="item-except text-muted text-sm h-1x">
+                                        @item.Task_description
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td>
+                                @item.Customer
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.visit_date).ToShortDateString()
+                            </td>
+             
+                            <td>
+                                @if (item.ID_taskstatus == 1)
+        {
+                        <span style="font-size:9px;" class="badge badge-danger text-uppercase">Canceled</span>
+}
+else if (item.ID_taskstatus == 2)
+{
+                        <span style="font-size:9px;" class="badge badge-success text-uppercase">In progress</span>
+}
+else if (item.ID_taskstatus == 3)
+{
+                        <span style="font-size:9px;" class="badge badge-warning text-uppercase">Not Finished</span>
+}
+else if (item.ID_taskstatus == 4)
+{
+                        <span style="font-size:9px;" class="badge badge-info text-uppercase">Finished</span>
+}
+                            </td>
+
+                            <td>
+                                <a class="btn btn-icons btn-rounded btn-outline-success" href="@Url.Action("Preview_Task","FormsM", new { id=item.ID_task})" target="_blank"><i class="" data-feather="eye"></i></a>
+
+                            </td>
+                        </tr>
+}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+
+                        </div>
+                </div>
+            </div>
+            
+       
+    </div>
+    <!-- ############ Main START-->
+    <!-- ############ Main END-->
+</div>
+
+
+
+<!-- .modal -->
+<div id="modal-right_filter" class="modal fade" data-backdrop="true">
+    <div class="modal-dialog modal-right w-xl">
+        <div class="modal-content h-100 no-radius">
+            <div class="modal-header ">
+                <div class="modal-title text-md">
+                    <span class="badge badge-light text-uppercase">
+                        General filters
+                    </span>
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label">By Date</label>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="mdi mdi-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-calendar"></i>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="click_filter" class="btn btn-info">Apply</button>
+
+                @*<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- / .modal -->
+
+<script>
+    window.onload = function () {
+
+        table = $('#datatable2').DataTable({
+            searching: true,
+            dom: 'rtip',
+             "bLengthChange": false,
+        });
+
+        // #myInput is a <input type="text"> element
+        $('#inputsearch').on('keyup change', function () {
+            table.search(this.value).draw();
+        });
+
+
+        $('#chk_all').change(function () {
+            if (this.checked) {
+                table.$("input.selectchk").prop("checked", true);
+            } else {
+                table.$("input.selectchk").prop("checked", false);
+            }
+
+        });
+
+                    //EXPORT
+
+        $("#btn-export").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Export_QuickVisit',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+                            $("#loading").hide();
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+
+                        },
+                        error: function (request, status, error) {
+                            $("#loading").hide();
+                            alert(request.responseText);
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+                    //Print pdf
+        $("#btn-print").click(function () {
+            $("#loading").show();
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                            $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/Print_QuickVisit',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (result) {
+                            $("#loading").hide();
+                                   if (result == "Success") {
+            location.href = '@Url.Action("DownloadPDF", "Customers",new { activityname = "QUICK_VISIT"})';
+        }
+                            //var link = document.createElement('a');
+
+                            //console.log(result);
+
+                            //link.href = result;
+                            //link.download = "QuickVisit.pdf";
+                            //link.click();
+
+                        },
+                        error: function (request) {
+                            $("#loading").hide();
+
+
+
+                        }
+                    });
+                } else {
+                    $("#loading").hide();
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+        });
+
+
+            $("#btn-images").click(function () {
+                var objects = [];
+                var customer = '@ViewBag.id_customer';
+
+                $.each(table.$("input.selectchk"), function () {
+
+                    if ($(this).prop('checked')) {
+                        objects.push({
+                            id: $(this).attr('id'),
+                            value: $(this).prop('checked'),
+                            text: ""
+                        });
+                    }
+
+
+                });
+
+                if (objects.length > 0) {
+                    $.ajax({
+                        url: '/Customers/DownloadZip',
+                        type: 'POST',
+                        data: { 'id': customer, 'objects': objects },
+                        cache: false,
+                        global: false,
+                        success: function (data) {
+                         //get the file name for download
+
+                            if (data != "") {
+                                //use window.location.href for redirect to download action for download the file
+                                window.location.href = "@Url.RouteUrl(new
+                                { Controller = "Customers", Action = "Download"})/?file=" + data;
+                            }
+                        },
+                        error: function (request, status, error) {
+                            $("#loading").hide();
+                            alert(request.responseText);
+
+                        }
+                    });
+                } else {
+
+                    $.toast({
+                        heading: 'Warning',
+                        text: 'Select at least one activity',
+                        showHideTransition: 'slide',
+                        icon: 'warning',
+                        loader: false,
+                        loaderBg: '#ff9900',
+                        position: 'top-right'
+                    });
+                }
+
+            });
+
+    };
+</script>

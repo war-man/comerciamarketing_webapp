@@ -1857,7 +1857,7 @@ namespace comerciamarketing_webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor,string ID_brand, string ID_rep, DateTime time, string products_listSel)
+        public ActionResult CreateActivityDemo(string ID_form, string ID_customer, string ID_Vendor,string ID_brandSel, string ID_rep, DateTime time, string products_listSel)
         {
             try
             {
@@ -1875,15 +1875,13 @@ namespace comerciamarketing_webapp.Controllers
                 nuevaActividad.vendor = "";
                 nuevaActividad.ID_Store = "";
                 nuevaActividad.store = "";
-                nuevaActividad.ID_brands = ID_brand;
+                nuevaActividad.ID_brands = ID_brandSel.ToString();
                 nuevaActividad.Brands = "";
 
-                Int16 idbrand = 0;
+                List<Int16?> idbrand = new List<Int16?>();
 
-                if (ID_brand != "" && ID_brand != null)
-                {
-                    idbrand = Convert.ToInt16(ID_brand);
-                }
+                idbrand = ID_brandSel.Split(',').Select(Int16.Parse).Cast<Int16?>().ToList();
+                
 
                 var vendor = (from c in CMKdb.OCRD where (c.CardCode == ID_Vendor) select c).FirstOrDefault();
                 if (vendor != null)
@@ -1891,10 +1889,10 @@ namespace comerciamarketing_webapp.Controllers
                     nuevaActividad.vendor = vendor.CardName;
                 }
         
-                var brand = (from c in CMKdb.view_CMKEditorB where (c.FirmCode == idbrand) select c).FirstOrDefault();
-                if (brand != null)
+                var brand = (from c in CMKdb.view_CMKEditorB where (idbrand.Contains(c.FirmCode)) select c.FirmName).Distinct().ToList();
+                if (brand.Count>0)
                 {
-                    nuevaActividad.Brands = brand.FirmName;
+                    nuevaActividad.Brands = string.Join(",", brand);
                 }
 
 
@@ -1950,11 +1948,22 @@ namespace comerciamarketing_webapp.Controllers
                 //FIN
                 nuevaActividad.ID_demostate = 3;
                 nuevaActividad.comments = "";
-                nuevaActividad.check_in = DateTime.Today.Date;
-                nuevaActividad.end_date = DateTime.Today.Date;
+                try
+                {
+                    nuevaActividad.check_in = time;
+                    nuevaActividad.end_date = time;
+                    nuevaActividad.visit_date = time;
+                }
+                catch {
+                    nuevaActividad.check_in = DateTime.Today.Date;
+                    nuevaActividad.end_date = DateTime.Today.Date;
+                    nuevaActividad.visit_date = DateTime.Today.Date;
+                }
+
+               
                 nuevaActividad.ID_empresa = 2;
                 nuevaActividad.ID_userCreate = 0;
-                nuevaActividad.visit_date = DateTime.Today.Date;
+               
                 nuevaActividad.ID_formM = Convert.ToInt32(ID_form);
                 nuevaActividad.ID_userEnd = 0;
                 nuevaActividad.ID_ExternalUser = ID_rep;
@@ -1986,7 +1995,7 @@ namespace comerciamarketing_webapp.Controllers
                     List<string> TagIds = products_listSel.Split(',').ToList();
 
                     //Recuperamos lista de items
-                    //Tomamos el detalle saltando los primeros 6 registros y tomando los ultimos 39 (la firma es el 40)
+                    //Tomamos el detalle saltando los primeros 6 registros y tomando los ultimos 34 (las fotos seran aparte y la firma es el 40)
                    var listadetalle = (from a in db.FormsM_details where (a.ID_formM == 41 && a.original == true) select new demosDetails
                    {
                        ID_details = a.ID_details,
@@ -2006,7 +2015,7 @@ namespace comerciamarketing_webapp.Controllers
                        query1 = a.query1,
                        query2 = a.query2,
                        ID_empresa = a.ID_empresa
-                   }).OrderBy(c=>c.idkey).Skip(6).Take(39).ToList();
+                   }).OrderBy(c=>c.idkey).Skip(6).Take(34).ToList();
 
                     //AGREGAMOS LOS PRODUCTOS
                     List<FormsM_detailsDemos> listaIngreso = new List<FormsM_detailsDemos>();
@@ -2087,9 +2096,55 @@ namespace comerciamarketing_webapp.Controllers
                         
 
                     }
+                    //Fotos primero
+
+                    var listadetalleFotos = (from a in db.FormsM_details
+                                             where (a.ID_formM == 41 && a.original == true)
+                                             select new demosDetails
+                                             {
+                                                 ID_details = a.ID_details,
+                                                 ID_formresourcetype = a.ID_formresourcetype,
+                                                 fsource = a.fsource,
+                                                 fdescription = a.fdescription,
+                                                 fvalue = a.fvalue,
+                                                 fvalueDecimal = a.fvalueDecimal,
+                                                 fvalueText = a.fvalueText,
+                                                 ID_formM = a.ID_formM,
+                                                 ID_visit = a.ID_visit,
+                                                 original = a.original,
+                                                 obj_order = a.obj_order,
+                                                 obj_group = a.obj_group,
+                                                 idkey = a.idkey,
+                                                 parent = a.parent,
+                                                 query1 = a.query1,
+                                                 query2 = a.query2,
+                                                 ID_empresa = a.ID_empresa
+                                             }).OrderBy(c => c.idkey).Skip(40).Take(5).ToList();
+
+                    foreach (var detfoto in listadetalleFotos)
+                    {
+                        FormsM_detailsDemos detalle_productofoto = new FormsM_detailsDemos();
+
+                        detalle_productofoto = JsonConvert.DeserializeObject<FormsM_detailsDemos>(JsonConvert.SerializeObject(detfoto));
+
+
+                        detalle_productofoto.fvalueText = "";
+                        detalle_productofoto.obj_order = nuevacuenta + 1;
+                        detalle_productofoto.idkey = nuevacuenta + 1;
+                        detalle_productofoto.original = false;
+                        detalle_productofoto.ID_visit = nuevaActividad.ID_demo;
+                        detalle_productofoto.parent = 0;
+
+                        listaIngreso.Add(detalle_productofoto);
+
+                        nuevacuenta+=1;
+                    }
+
                     db.BulkInsert(listaIngreso);
 
                     //AGREGAMOS FOOTER
+
+
 
                     try
                     {
@@ -2108,11 +2163,11 @@ namespace comerciamarketing_webapp.Controllers
                         detalle_nuevoFooter.ID_visit = nuevaActividad.ID_demo;
                         detalle_nuevoFooter.original = false;
                         //Colocamos numero de orden
-                        detalle_nuevoFooter.obj_order = nuevacuenta +2;
+                        detalle_nuevoFooter.obj_order = nuevacuenta +7;
                         //Colocamos grupo si tiene
                         detalle_nuevoFooter.obj_group = 0;
                         //Colocamos ID generado por editor
-                        detalle_nuevoFooter.idkey = nuevacuenta + 2;
+                        detalle_nuevoFooter.idkey = nuevacuenta + 7;
                         detalle_nuevoFooter.query1 = "";
                         detalle_nuevoFooter.query2 = "";
                         detalle_nuevoFooter.parent = 0;
@@ -2320,7 +2375,7 @@ namespace comerciamarketing_webapp.Controllers
                 nuevaActivida.isfinished = false;
                 nuevaActivida.description = "";
                 nuevaActivida.ID_activitytype = 0;
-
+                nuevaActivida.desnormalizado = false;
                 nuevaActivida.date = DateTime.Today.Date;
                 var form = (from c in db.FormsM where (c.ID_form == IDForm) select c).FirstOrDefault();
                 if (form != null)
@@ -2886,17 +2941,17 @@ namespace comerciamarketing_webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteTask(int id)
+        public ActionResult DeleteTask(int ID_activityD)
         {
             try
             {
 
                 //Eliminamos detalle
                 var sql = @"usp_DeleteFormDetailTasks @IDVisit";
-                db.Database.ExecuteSqlCommand(sql, new SqlParameter("@IDVisit", id));
+                db.Database.ExecuteSqlCommand(sql, new SqlParameter("@IDVisit", ID_activityD));
 
 
-                Tasks activity = db.Tasks.Find(id);
+                Tasks activity = db.Tasks.Find(ID_activityD);
                 db.Tasks.Remove(activity);
                 db.SaveChanges();
 
@@ -5032,7 +5087,7 @@ namespace comerciamarketing_webapp.Controllers
 
 
                 //Verificams si existe firma electronica
-                var firma = (from d in db.FormsM_details where (d.ID_visit == id && d.ID_formresourcetype == 9) select d).ToList();
+                var firma = (from d in db.FormsM_detailsDemos where (d.ID_visit == id && d.ID_formresourcetype == 9) select d).ToList();
 
                 int firmaC = firma.Count();
 

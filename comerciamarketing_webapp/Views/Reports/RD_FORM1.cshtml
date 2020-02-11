@@ -214,9 +214,11 @@
 
         $('#chk_all').change(function () {
             if (this.checked) {
-                table.$("input.selectchk").prop("checked", true);
+                //table.$("input.selectchk").prop("checked", true);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", true);
             } else {
-                table.$("input.selectchk").prop("checked", false);
+                //table.$("input.selectchk").prop("checked", false);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", false);
             }
 
         });
@@ -307,7 +309,8 @@
                         success: function (result) {
                             $("#loading").hide();
                                    if (result == "Success") {
-            location.href = '@Url.Action("DownloadPDF", "Customers",new { activityname = "QUICK_VISIT"})';
+                                       //location.href = 'Url.Action("DownloadPDF", "Customers",new { activityname = "QUICK_VISIT"})';
+                                        window.open('@Url.Action("ShowPDF", "Customers",new { activityname = "QUICK_VISIT" })', '_blank');
         }
                             //var link = document.createElement('a');
 

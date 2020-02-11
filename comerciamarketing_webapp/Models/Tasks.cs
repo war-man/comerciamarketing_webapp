@@ -42,5 +42,6 @@ namespace comerciamarketing_webapp.Models
         public string TaskType { get; set; }
         public string Task_description { get; set; }
         public string UserName { get; set; }
+        public Nullable<bool> desnormalizado { get; set; }
     }
 }

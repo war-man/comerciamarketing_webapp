@@ -71,7 +71,14 @@
                             </button>
 
                         </div>
+                        @if (ViewBag.BrandLabel == "DEL FRUTAL") {
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Export DEl FRUTAL Report" id="btn-printDelFrutal">
+                                <i data-feather="slack" class="text-muted"></i>
+                            </button>
 
+                        </div>
+                        }
                         <div class="input-group">
                             <input id="inputsearch" type="text" class="form-control form-control-theme form-control-sm search" placeholder="Search">
                             <span class="input-group-append">
@@ -80,19 +87,19 @@
                                 </span>
                             </span>
                         </div>
-                        @if (ViewBag.escliente == 1)
+                        @*if (ViewBag.escliente == 1)
     {
 
     }
     else
-    {
+    {*@
                     <div class="btn-group">
                         <button class="btn btn-sm btn-icon btn-white" data-toggle="tooltip" title="Print Summary with Images" id="btn-printImg">
                             <i data-feather="printer" class="text-muted"></i>
                         </button>
 
                     </div>
-}
+@*}*@
 
 
                         <button data-toggle="modal" data-target="#content-aside" data-modal class="btn btn-sm btn-icon btn-white d-md-none">
@@ -116,42 +123,42 @@
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <div>
-                                            <label class="ui-check m-0 ">
-                                                <input type="checkbox" class="selectchk" id="chk_@item.ID_visit" value="0">
-                                                <i></i>
-                                            </label>
-                                        </div>
+            {
+                <tr>
+                    <td>
+                        <div>
+                            <label class="ui-check m-0 ">
+                                <input type="checkbox" class="selectchk" id="chk_@item.ID_visit" value="0">
+                                <i></i>
+                            </label>
+                        </div>
 
 
-                                    </td>
-                                    <td>@item.ID_visit</td>
-                                    <td>
-                                        <div class="flex">
-                                            <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.store</a>
-                                            <div class="item-except text-muted text-sm h-1x">
-                                                @item.addresss
-                                            </div>
+                    </td>
+                    <td>@item.ID_visit</td>
+                    <td>
+                        <div class="flex">
+                            <a target="_blank" href="javascript:void(0);" class="item-title text-color h-1x">@item.store</a>
+                            <div class="item-except text-muted text-sm h-1x">
+                                @item.addresss
+                            </div>
 
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @item.Brand
-                                    </td>
-                                    <td>
-                                        @item.usuario_name
-                                    </td>
-                                    <td>
-                                        <div class="no-wrap">
-                                            <div class="item-date text-muted text-sm d-none d-md-block">@Convert.ToDateTime(item.visitDate).ToShortDateString()</div>
-                                        </div>
-                                    </td>
+                        </div>
+                    </td>
+                    <td>
+                        @item.Brand
+                    </td>
+                    <td>
+                        @item.usuario_name
+                    </td>
+                    <td>
+                        <div class="no-wrap">
+                            <div class="item-date text-muted text-sm d-none d-md-block">@Convert.ToDateTime(item.visitDate).ToString("MM/dd/yyyy")</div>
+                        </div>
+                    </td>
 
-                                </tr>
-                            }
+                </tr>
+}
                         </tbody>
                     </table>
                     <div class="no-result hide">

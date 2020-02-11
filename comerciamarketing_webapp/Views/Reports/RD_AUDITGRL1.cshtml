@@ -213,9 +213,11 @@
 
         $('#chk_all').change(function () {
             if (this.checked) {
-                table.$("input.selectchk").prop("checked", true);
+                //table.$("input.selectchk").prop("checked", true);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", true);
             } else {
-                table.$("input.selectchk").prop("checked", false);
+                //table.$("input.selectchk").prop("checked", false);
+                $('input.selectchk', table.rows({ filter: 'applied' }).nodes()).prop("checked", false);
             }
 
         });
