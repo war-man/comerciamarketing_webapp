@@ -123,7 +123,7 @@ else if (ViewBag.title == "Comercia Marketing - Sales Rep Dashboard" || ViewBag.
                 </a>
             </li>
 
-            @if (Session["tipousuario"].ToString() != "8" && Session["tiporol"].ToString() != "9") {
+            @if (ViewBag.rol.ToString() != "9") {
                 <li class="nav-item d-lg-none">
                 <a href="#" class="nav-link px-2" data-toggle="collapse" data-toggle-class data-target="#navbarToggler">
                     <i data-feather="filter"></i>

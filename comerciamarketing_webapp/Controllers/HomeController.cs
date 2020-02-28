@@ -26,6 +26,8 @@ namespace comerciamarketing_webapp.Controllers
 
     public class HomeController : Controller
     {
+        //CLASS GENERAL
+        private clsGeneral generalClass = new clsGeneral();
         private dbComerciaEntities db = new dbComerciaEntities();
         private dbLimenaEntities dbLimena = new dbLimenaEntities();
         private COM_MKEntities CMKdb = new COM_MKEntities();
@@ -2345,13 +2347,34 @@ var reps = (from k in db.VisitsM_representatives
 
         public ActionResult Users()
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                //GENERAL
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+
+                //ViewBag.id_customer = customersel;
+                //ViewBag.id_brand = brandsel;
                 //GENERAL END
                 //2 es la empresa DEFAULT
 
@@ -2380,16 +2403,36 @@ var reps = (from k in db.VisitsM_representatives
         }
         public ActionResult Representatives()
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                //GENERAL
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
-                //GENERAL END
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+
+                //ViewBag.id_customer = customersel;
+                //ViewBag.id_brand = brandsel;
                 //2 es la empresa DEFAULT
-                var usuarios = db.Usuarios.Where(c => c.ID_empresa == 2 && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
+                var usuarios = db.Usuarios.Where(c => c.ID_empresa == activeuser.ID_empresa && c.ID_tipomembresia == 8 && c.ID_rol == 9).Include(u => u.Tipo_membresia).Include(u => u.Roles);
 
                 var lstCustomer = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select new { ID = b.CardCode, Name = b.CardName.Replace("\"", "\\\"") }).OrderBy(b => b.Name).ToList();
 
@@ -2414,13 +2457,34 @@ var reps = (from k in db.VisitsM_representatives
 
         public ActionResult CustomersM()
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                //GENERAL
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+
+                //ViewBag.id_customer = customersel;
+                //ViewBag.id_brand = brandsel;
                 //GENERAL END
                 //2 es la empresa DEFAULT
                 var customers = (from b in CMKdb.OCRD where (b.Series == 61 && b.CardName != null && b.CardName != "") select b).OrderBy(b => b.CardName).ToList();
@@ -2440,13 +2504,34 @@ var reps = (from k in db.VisitsM_representatives
         }
         public ActionResult StoresM()
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                //GENERAL
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+
+                //ViewBag.id_customer = customersel;
+                //ViewBag.id_brand = brandsel;
                 //GENERAL END
                 //2 es la empresa DEFAULT
                 var stores = (from b in CMKdb.OCRD where (b.Series == 68 && b.CardName != null && b.CardName != "" && b.QryGroup30 == "Y" && b.validFor == "Y") select b).OrderBy(b => b.CardName).ToList();
@@ -3737,12 +3822,34 @@ var reps = (from k in db.VisitsM_representatives
         }
         public ActionResult FormsM()
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
+                //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
+                //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+
+                //ViewData["nameUser"] = 
+                ////NOTIFICATIONS
+                //DateTime now = DateTime.Today;
+                //List<Tb_Alerts> lstAlerts = (from a in dblim.Tb_Alerts where (a.ID_user == activeuser.ID_User && a.Active == true && a.Date == now) select a).OrderByDescending(x => x.Date).Take(5).ToList();
+                //ViewBag.lstAlerts = lstAlerts;
+
+                //FIN HEADER
+                ViewBag.username = activeuser.nombre + " " + activeuser.apellido;
+
+                //ViewBag.id_customer = customersel;
+                //ViewBag.id_brand = brandsel;
 
                 var forms = (from a in db.FormsM select a
 
@@ -3750,7 +3857,7 @@ var reps = (from k in db.VisitsM_representatives
                              );
 
                 foreach (var item in forms) {
-                    var tp = (from b in db.ActivitiesM_types where (b.ID_activity == item.ID_activity) select b).FirstOrDefault();
+                    var tp = (from b in db.ActivitiesM_types where (b.ID_activity == item.ID_activity && b.ID_empresa==activeuser.ID_empresa) select b).FirstOrDefault();
                     if (tp == null) { item.query1 = ""; } else {
                         item.query1 = tp.description;
                     }

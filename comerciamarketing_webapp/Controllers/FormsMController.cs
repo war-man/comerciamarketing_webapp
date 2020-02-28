@@ -21,6 +21,8 @@ namespace comerciamarketing_webapp.Controllers
 {
     public class FormsMController : Controller
     {
+        //CLASS GENERAL
+        private clsGeneral generalClass = new clsGeneral();
         private dbComerciaEntities db = new dbComerciaEntities();
         private COM_MKEntities COM_MKdb = new COM_MKEntities();
   
@@ -1433,12 +1435,19 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Template_preview(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
 
 
                     FormsM formsM = db.FormsM.Find(id);
@@ -1571,15 +1580,22 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Template_preview2(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
 
 
-                    FormsM formsM = db.FormsM.Find(id);
+                FormsM formsM = db.FormsM.Find(id);
 
                 //LISTADO DE CLIENTES
                 //VERIFICAMOS SI SELECCIONARON CLIENTE PREDEFINIDO
@@ -1715,12 +1731,19 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Template_preview4(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
 
                 //var FormsM_details = db.FormsM_details.Where(c => c.ID_formM == id && c.original == true).OrderBy(c => c.obj_group).ThenBy(c => c.obj_order);
 
@@ -1754,8 +1777,7 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult ActivityresumeC(int? id,string id_customer, string modulo, string ID_Customer, string brand, string fstartd, string fendd)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
             }
             else
@@ -1763,7 +1785,16 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -1915,8 +1946,7 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult ActivityresumeR(int? id, string modulo, string ID_Customer, string brand)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
             }
             else
@@ -1924,7 +1954,16 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -2060,8 +2099,7 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Activityresume(int? id, string modulo, string ID_Customer, string brand)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
             }
             else
@@ -2069,7 +2107,16 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -2615,12 +2662,20 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Activity(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
                 var iscopy="";
                 if (id == null) {
                     //Asignamos el id a 
@@ -5759,8 +5814,7 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Activitysoon(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
             }
             else
@@ -5768,7 +5822,15 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
             int ID = Convert.ToInt32(Session["IDusuario"]);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -5917,12 +5979,19 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult ActivityonDF(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
 
                 var activity = (from v in db.ActivitiesM where (v.ID_activity == id) select v).FirstOrDefault();
 
@@ -5954,16 +6023,25 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Activityon(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+
             }
             else
             {
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -6170,8 +6248,7 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Preview_Task(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
             }
             else
@@ -6179,7 +6256,19 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
-            int ID = Convert.ToInt32(Session["IDusuario"]);
+
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
+                int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
             ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
@@ -6390,15 +6479,25 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Activityraon(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+
             }
             else
             {
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
+
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -6641,15 +6740,25 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Activityraonresume(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+
             }
             else
             {
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
+
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -6893,8 +7002,8 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult ActivityraonresumeR(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+
+            if (generalClass.checkSession())
             {
             }
             else
@@ -6902,6 +7011,17 @@ namespace comerciamarketing_webapp.Controllers
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
+
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
+
             int ID = Convert.ToInt32(Session["IDusuario"]);
             var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
@@ -7435,7 +7555,7 @@ namespace comerciamarketing_webapp.Controllers
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 string result = "Error";
                 return Json(result, JsonRequestBehavior.AllowGet);

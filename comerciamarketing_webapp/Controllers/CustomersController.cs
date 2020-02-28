@@ -24,7 +24,8 @@ namespace comerciamarketing_webapp.Controllers
     {
         //private dbComerciaEntities db = new dbComerciaEntities();
         //private COM_MKEntities CMKdb = new COM_MKEntities();
-
+        //CLASS GENERAL
+        private clsGeneral generalClass = new clsGeneral();
 
         //using (var db = new dbComerciaEntities())
         //{
@@ -668,6 +669,12 @@ namespace comerciamarketing_webapp.Controllers
         {
             try
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+
+                if (generalClass.checkSession())
+                {
+                    activeuser = Session["activeUser"] as Usuarios;
+                }
 
                 var rutas = new List<CustomRoutes>();
 
@@ -683,7 +690,7 @@ namespace comerciamarketing_webapp.Controllers
                         lstVisitas = (from a in db.VisitsM
                                       join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
                                       from p in ps.DefaultIfEmpty()
-                                      where ((a.visit_date >= startf && a.end_date <= endf))
+                                      where ((a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa==activeuser.ID_empresa)
                                       //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                       select new VisitsInfoCalendar
                                       {
@@ -702,7 +709,7 @@ namespace comerciamarketing_webapp.Controllers
                         lstVisitas = (from a in db.VisitsM
                                       join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
                                       from p in ps.DefaultIfEmpty()
-                                      where (p.ID_customer == id &&  (a.visit_date >= startf && a.end_date <= endf))
+                                      where (p.ID_customer == id &&  (a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa == activeuser.ID_empresa)
                                       //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                       select new VisitsInfoCalendar
                                       {

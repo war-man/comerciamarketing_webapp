@@ -11,66 +11,20 @@ using System.Web.Script.Serialization;
 namespace comerciamarketing_webapp.Controllers
 {
     public class SalesRepresentativesController : Controller
-    {
+    {        
+        //CLASS GENERAL
+        private clsGeneral generalClass = new clsGeneral();
         // GET: SalesRepresentatives
         public ActionResult Dashboard(string id, string fstartd, string fendd, string stores, string brands, string spartners)
         {
 
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home", new { access = false });
-                //try
-                //{
-                //    if (Request.Cookies["correo"] != null)
-                //    {
-                //        HttpCookie aCookieCorreo = Request.Cookies["correo"];
-                //        HttpCookie aCookiePassword = Request.Cookies["pass"];
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
 
-                //        var correo = Server.HtmlEncode(aCookieCorreo.Value).ToString();
-                //        var pass = Server.HtmlEncode(aCookiePassword.Value).ToString();
-
-                //        using (var db = new dbComerciaEntities())
-                //        {
-                //            Session["activeUser"] = (from c in db.Usuarios where (c.correo == correo && c.contrasena == pass) select c).FirstOrDefault();
-                //        }
-
-                //        activeuser = Session["activeUser"] as Usuarios;
-
-                //        if (activeuser != null)
-                //        {
-                //            Session["IDusuario"] = activeuser.ID_usuario.ToString();
-                //            Session["tipousuario"] = activeuser.ID_tipomembresia.ToString();
-                //            Session["tiporol"] = activeuser.ID_rol.ToString();
-                //            Session["ultimaconexion"] = "";
-                //            GlobalVariables.ID_EMPRESA_USUARIO = Convert.ToInt32(activeuser.ID_empresa);
-
-                //            return RedirectToAction("Iniciar_sesion", "Home", new { usuariocorreo = correo, password = pass, rememberme = true });
-                //        }
-                //        else
-                //        {
-                //            return RedirectToAction("Index", "Home", new { access = false });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        return RedirectToAction("Index", "Home", new { access = false });
-
-                //    }
-
-
-                //}
-                //catch
-                //{
-                //    return RedirectToAction("Index", "Home", new { access = false });
-                //}
-            }
-            //HEADER
-            //PAGINAS ACTIVAS
-            ViewData["Menu"] = "Sales Representatives";
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
                 ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
@@ -78,6 +32,8 @@ namespace comerciamarketing_webapp.Controllers
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstRoles = JsonConvert.SerializeObject(r);
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
 
                 //ViewData["nameUser"] = 
                 ////NOTIFICATIONS
@@ -123,7 +79,7 @@ namespace comerciamarketing_webapp.Controllers
                     {
                         var visitrep = (from gg in db.VisitsM_representatives where (gg.ID_usuario == activeuser.ID_usuario) select gg.ID_visit).ToArray();
 
-                       // rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_empresa == activeuser.ID_empresa) select r).ToList();
+                        // rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_empresa == activeuser.ID_empresa) select r).ToList();
                         //rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && (r.visit_date == filtrostartdate && r.end_date == filtroenddate) && r.ID_empresa == activeuser.ID_empresa) select r).ToList();
                         rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && (r.visit_date >= filtrostartdate && r.end_date <= filtroenddate) && r.ID_empresa == activeuser.ID_empresa) select r).ToList();
 
@@ -147,28 +103,38 @@ namespace comerciamarketing_webapp.Controllers
                         }
 
                         lstVendors.Add(newitem);
-                        
+
                     }
                 }
 
-                ViewBag.lstVendors = lstVendors.OrderBy(c=>c.name);
+                ViewBag.lstVendors = lstVendors.OrderBy(c => c.name);
                 ViewBag.lstVendorsCount = lstVendors.Count();
                 return View(rutas);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { access = false });
+               
+            }
+            
 
         }
 
 
         public ActionResult Tasks(string fstartd, string fendd)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
                 ViewData["Menu"] = "Sales Representatives";
-                ViewData["Page"] = "Tasks";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -229,16 +195,25 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Visit_details(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+
             }
             else
             {
                 return RedirectToAction("Index", "Home", new { access = false });
 
             }
+            Usuarios activeuser = Session["activeUser"] as Usuarios;
+            //HEADER
+            //PAGINAS ACTIVAS
+            ViewData["Menu"] = "Sales Representatives";
+            ViewData["Page"] = "Dashboard";
+            ViewBag.menunameid = "marketing_menu";
+            ViewBag.submenunameid = "";
 
+            ViewBag.idmembresia = activeuser.ID_tipomembresia;
+            ViewBag.rol = activeuser.ID_rol;
             using (var db = new dbComerciaEntities())
                 {
                     VisitsM visitsM = db.VisitsM.Find(id);

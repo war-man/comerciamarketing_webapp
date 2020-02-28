@@ -11,6 +11,8 @@ namespace comerciamarketing_webapp.Controllers
 {
     public class ReportsController : Controller
     {
+        //CLASS GENERAL
+        private clsGeneral generalClass = new clsGeneral();
         public class activitiesTypes
         {
             public int id { get; set; }
@@ -28,15 +30,18 @@ namespace comerciamarketing_webapp.Controllers
         // GET: Reports
         public ActionResult Reports(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Admin";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -91,7 +96,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                         lstActivities = (from a in db.ActivitiesM
                                          join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                         where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
+                                         where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                          select new activitiesVisitsBrands
                                          {
@@ -121,7 +126,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             lstActivities = (from a in db.ActivitiesM
                                              join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true))
+                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa==activeuser.ID_empresa)
                                              select new activitiesVisitsBrands
                                              {
                                                  ID_activity = a.ID_activity,
@@ -147,7 +152,7 @@ namespace comerciamarketing_webapp.Controllers
                         else {
                             lstActivities = (from a in db.ActivitiesM
                                              join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true))
+                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa==activeuser.ID_empresa)
                                              select new activitiesVisitsBrands
                                              {
                                                  ID_activity = a.ID_activity,
@@ -290,15 +295,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Visits(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Admin";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -357,7 +365,7 @@ namespace comerciamarketing_webapp.Controllers
                             lstVisitas = (from a in db.ActivitiesM
                                           join b in db.VisitsM on a.ID_visit equals b.ID_visit
                                           
-                                          where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
+                                          where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
                                           //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                           select new VisitsInfo
                                           {
@@ -383,7 +391,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             lstVisitas = (from a in db.ActivitiesM
                                           join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                          where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true)
+                                          where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
                                           //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                           select new VisitsInfo
                                           {

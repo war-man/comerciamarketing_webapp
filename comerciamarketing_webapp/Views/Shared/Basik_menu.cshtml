@@ -15,7 +15,7 @@
             <!-- / brand -->
         </div>
 
-        @if ((Session["tipousuario"].ToString() == "2"))
+        @if ((ViewBag.idmembresia.ToString() == "2"))
     {
         <!-- Flex nav content -->
         <div class="flex scrollable hover">
@@ -57,11 +57,11 @@
                     </li>
 
                     @*<li>
-            <a href="Url.Action("Sales_representatives","Customers", new { id=ViewBag.id_customer, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
-                <span class="nav-icon text-success"><i data-feather='users'></i></span>
-                <span class="nav-text">Merchandisers</span>
-            </a>
-        </li>*@
+                        <a href="Url.Action("Sales_representatives","Customers", new { id=ViewBag.id_customer, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-success"><i data-feather='users'></i></span>
+                            <span class="nav-text">Merchandisers</span>
+                        </a>
+                    </li>*@
                     <li class="nav-header hidden-folded">
                         <span class="text-muted">Reports</span>
                     </li>
@@ -85,8 +85,8 @@
         </div>
 
 }
-        @if (Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "9")
-    {
+        @if (ViewBag.idmembresia.ToString() == "8" && ViewBag.rol.ToString() == "9")
+        {
         <!-- Flex nav content -->
         <div class="flex scrollable hover">
             <div class="nav-active-text-primary" data-nav>
@@ -139,8 +139,116 @@
             </div>
         </div>*@
 }
-        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
-    {
+        @if (ViewBag.idmembresia.ToString() == "8" && ViewBag.rol.ToString() == "8")
+        {
+        <!-- Flex nav content -->
+        <div class="flex scrollable hover">
+            <div class="nav-active-text-primary" data-nav>
+                <ul class="nav bg">
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Main</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Dashboard","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-primary"><i data-feather='home'></i></span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">General</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Demos", "Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-success"><i data-feather='rss'></i></span>
+                            <span class="nav-text">Demos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Gallery", "Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-info"><i data-feather='image'></i></span>
+                            <span class="nav-text">Gallery</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Map","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-info"><i data-feather='map'></i></span>
+                            <span class="nav-text">Map</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Calendar","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='truck'></i></span>
+                            <span class="nav-text">Routes</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Tasks","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='list'></i></span>
+                            <span class="nav-text">Tasks</span>
+
+                        </a>
+                    </li>
+
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Reports</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Reports","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Activities</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Visits","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Visits</span>
+
+                        </a>
+                    </li>
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Management</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Representatives", "Home")">
+                            <span class="nav-icon text-success"><i data-feather='users'></i></span>
+                            <span class="nav-text">Merchandisers</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("StoresM", "Home")">
+                            <span class="nav-icon text-info"><i data-feather='airplay'></i></span>
+                            <span class="nav-text">Stores</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CustomersM", "Home")">
+                            <span class="nav-icon text-danger"><i data-feather='user-check'></i></span>
+                            <span class="nav-text">Customers</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Users", "Home")">
+                            <span class="nav-icon text-warning"><i data-feather='user'></i></span>
+                            <span class="nav-text">External Users</span>
+
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+}
+
+
+        @if (ViewBag.idmembresia.ToString() == "1" && ViewBag.rol.ToString() == "1")
+        {
         <!-- Flex nav content -->
         <div class="flex scrollable hover">
             <div class="nav-active-text-primary" data-nav>
@@ -191,11 +299,11 @@
                         </a>
                     </li>
                     @*<li>
-            <a href="@Url.Action("Map_customers","Customers")">
-                <span class="nav-icon text-info"><i data-feather='map'></i></span>
-                <span class="nav-text">Map</span>
-            </a>
-        </li>*@
+                        <a href="@Url.Action("Map_customers","Customers")">
+                            <span class="nav-icon text-info"><i data-feather='map'></i></span>
+                            <span class="nav-text">Map</span>
+                        </a>
+                    </li>*@
                     <li class="nav-header hidden-folded">
                         <span class="text-muted">Reports</span>
                     </li>
@@ -264,6 +372,99 @@
             </div>
         </div>
 }
+        @if (ViewBag.idmembresia.ToString() == "1" && ViewBag.rol.ToString()== "10")
+    {
+        <!-- Flex nav content -->
+        <div class="flex scrollable hover">
+            <div class="nav-active-text-primary" data-nav>
+                <ul class="nav bg">
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Main</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Dashboard","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-primary"><i data-feather='home'></i></span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">General</span>
+                    </li>
 
+                    <li>
+                        <a href="@Url.Action("Gallery", "Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-info"><i data-feather='image'></i></span>
+                            <span class="nav-text">Gallery</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Map","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-info"><i data-feather='map'></i></span>
+                            <span class="nav-text">Map</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Calendar","Admin", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='truck'></i></span>
+                            <span class="nav-text">Routes</span>
+
+                        </a>
+                    </li>
+
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Reports</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Reports","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Activities</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Visits","Reports", new { customersel=ViewBag.CustomerSelCode, brandsel=ViewBag.BrandSelCode, fstartd = ViewBag.filtrofechastart, fendd =ViewBag.filtrofechaend})">
+                            <span class="nav-icon text-danger"><i data-feather='file-text'></i></span>
+                            <span class="nav-text">Visits</span>
+
+                        </a>
+                    </li>
+                    <li class="nav-header hidden-folded">
+                        <span class="text-muted">Management</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("FormsM", "Home")">
+                            <span class="nav-icon text-info"><i data-feather='codepen'></i></span>
+                            <span class="nav-text">Forms Builder</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Representatives", "Home")">
+                            <span class="nav-icon text-success"><i data-feather='users'></i></span>
+                            <span class="nav-text">Merchandisers</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("StoresM", "Home")">
+                            <span class="nav-icon text-info"><i data-feather='airplay'></i></span>
+                            <span class="nav-text">Stores</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CustomersM", "Home")">
+                            <span class="nav-icon text-danger"><i data-feather='user-check'></i></span>
+                            <span class="nav-text">Customers</span>
+
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+}
     </div>
 </div>
