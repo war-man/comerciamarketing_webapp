@@ -107,15 +107,18 @@ namespace comerciamarketing_webapp.Controllers
         public ActionResult Dashboard(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
 
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
+                ViewData["Menu"] = "Sales Representatives";
                 ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -416,15 +419,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Sales_Representatives(string id, string fstartd, string fendd, string stores, string brands, string spartners)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Sales Representatives";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -678,6 +684,19 @@ namespace comerciamarketing_webapp.Controllers
 
                 var rutas = new List<CustomRoutes>();
 
+                //Verificamos si es marca cliente
+                var escliente = false;
+                if (activeuser.ID_tipomembresia == 2 || activeuser.ID_tipomembresia == 3 || activeuser.ID_tipomembresia == 4)
+                {
+                    escliente = true;
+                    ViewBag.escliente = 1;
+                }
+                else
+                {
+                    ViewBag.escliente = 0;
+                }
+
+
                 using (var db = new dbComerciaEntities())
                 {
 
@@ -685,53 +704,109 @@ namespace comerciamarketing_webapp.Controllers
                     List<VisitsInfoCalendar> lstVisitas;
                     //FIN FILTROS*******************
 
-                    if (id == null || id == "" || id == "0")
+                    if (escliente == true)
                     {
-                        lstVisitas = (from a in db.VisitsM
-                                      join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
-                                      from p in ps.DefaultIfEmpty()
-                                      where ((a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa==activeuser.ID_empresa)
-                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
-                                      select new VisitsInfoCalendar
-                                      {
-                                          ID_visit = a.ID_visit,
-                                          ID_store = a.ID_store,
-                                          idroute = a.ID_route,
-                                          visitDate = a.visit_date,
-                                          ID_customer = p == null ? "Not Assigned" : p.ID_customer,
-                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
-                                          Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
-                                      }).ToList();
-
-                    }
-                    else
-                    {
-                        lstVisitas = (from a in db.VisitsM
-                                      join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
-                                      from p in ps.DefaultIfEmpty()
-                                      where (p.ID_customer == id &&  (a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa == activeuser.ID_empresa)
-                                      //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
-                                      select new VisitsInfoCalendar
-                                      {
-                                          ID_visit = a.ID_visit,
-                                          ID_store = a.ID_store,
-                                          idroute = a.ID_route,
-                                          visitDate = a.visit_date,
-                                          ID_customer = p == null ? "Not Assigned" : p.ID_customer,
-                                          ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
-                                          Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
-                                      }).ToList();
-                        if (id_brand == null || id_brand == 0)
+                        if (id == null || id == "" || id == "0")
                         {
+                            lstVisitas = (from a in db.VisitsM
+                                          join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                          from p in ps.DefaultIfEmpty()
+                                          where ((a.visit_date >= startf && a.end_date <= endf))
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfoCalendar
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = a.ID_store,
+                                              idroute = a.ID_route,
+                                              visitDate = a.visit_date,
+                                              ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                          }).ToList();
 
                         }
                         else
                         {
-                            var brandstring = id_brand.ToString();
-                            lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                            lstVisitas = (from a in db.VisitsM
+                                          join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                          from p in ps.DefaultIfEmpty()
+                                          where (p.ID_customer == id && (a.visit_date >= startf && a.end_date <= endf))
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfoCalendar
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = a.ID_store,
+                                              idroute = a.ID_route,
+                                              visitDate = a.visit_date,
+                                              ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                          }).ToList();
+                            if (id_brand == null || id_brand == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                var brandstring = id_brand.ToString();
+                                lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                            }
+
                         }
 
                     }
+                    else {
+                        if (id == null || id == "" || id == "0")
+                        {
+                            lstVisitas = (from a in db.VisitsM
+                                          join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                          from p in ps.DefaultIfEmpty()
+                                          where ((a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa == activeuser.ID_empresa)
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfoCalendar
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = a.ID_store,
+                                              idroute = a.ID_route,
+                                              visitDate = a.visit_date,
+                                              ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                          }).ToList();
+
+                        }
+                        else
+                        {
+                            lstVisitas = (from a in db.VisitsM
+                                          join b in db.ActivitiesM on a.ID_visit equals b.ID_visit into ps
+                                          from p in ps.DefaultIfEmpty()
+                                          where (p.ID_customer == id && (a.visit_date >= startf && a.end_date <= endf) && a.ID_empresa == activeuser.ID_empresa)
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfoCalendar
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = a.ID_store,
+                                              idroute = a.ID_route,
+                                              visitDate = a.visit_date,
+                                              ID_customer = p == null ? "Not Assigned" : p.ID_customer,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity).Select(c => c.fvalueText).FirstOrDefault() ?? "Not Assigned",
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == p.ID_activity) select detalle.fdescription).FirstOrDefault() ?? "Not Assigned"
+                                          }).ToList();
+                            if (id_brand == null || id_brand == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                var brandstring = id_brand.ToString();
+                                lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                            }
+
+                        }
+
+                    }
+
+
 
 
 
@@ -882,15 +957,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Gallery(string id, string fstartd, string fendd, string stores, string brands, string spartners, int? idvisit, int? idroute)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Gallery";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1001,15 +1079,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Calendar(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Calendar";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1403,15 +1484,18 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Map_customers(string id, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Map";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1634,15 +1718,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Reports_customers(string id, string fstartd, string fendd, string stores, string brands, string spartners)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1751,15 +1838,18 @@ namespace comerciamarketing_webapp.Controllers
         }
         public ActionResult Reports_details(string id, int report, string fstartd, string fendd, string stores, string brands, string spartners)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Customers";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));

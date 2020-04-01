@@ -580,7 +580,7 @@
     </script>
     if (ViewBag.estadovisita == 3)
     {
-        if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+        if ((ViewBag.idmembresia.ToString() == "8" && ViewBag.rol.ToString() == "8") || ViewBag.idmembresia.ToString() == "1")
         { }
         else
         {

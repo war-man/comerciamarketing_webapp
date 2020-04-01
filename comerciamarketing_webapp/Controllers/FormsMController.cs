@@ -5831,8 +5831,10 @@ namespace comerciamarketing_webapp.Controllers
             ViewBag.submenunameid = "";
 
             ViewBag.idmembresia = activeuser.ID_tipomembresia;
-            int ID = Convert.ToInt32(Session["IDusuario"]);
-                var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
+            ViewBag.rol = activeuser.ID_rol;
+
+            int ID = activeuser.ID_usuario;
+            var datosUsuario = activeuser;
 
                 ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
 

@@ -91,42 +91,105 @@ namespace comerciamarketing_webapp.Controllers
 
                     IQueryable<activitiesVisitsBrands> lstActivities;
 
-
-                    if (customersel == null || customersel == "" || customersel == "0")
+                    if (escliente == true)
+                    {
+                        if (customersel == null || customersel == "" || customersel == "0")
                         {
-                        lstActivities = (from a in db.ActivitiesM
-                                         join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                         where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
-                                         //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
-                                         select new activitiesVisitsBrands
-                                         {
-                                             ID_activity = a.ID_activity,
-                                             ID_visit = a.ID_visit,
-                                             ID_form = a.ID_form,
-                                             formName = a.description,
-                                             ID_store = b.ID_store,
-                                             store = b.store,
-                                             visitDate = b.visit_date,
-                                             ID_customer = a.ID_customer,
-                                             Customer = a.Customer,
-                                             isfinished = a.isfinished,
-                                             id_usuarioend = a.ID_usuarioEnd,
-                                             id_usuarioendexternal = a.ID_usuarioEndString,
-                                             id_activitytype = a.ID_activitytype,
-                                             ActivityName = "",
-                                             Comments = a.comments,
-                                             ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
-                                             Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                             count = 0
-                                         });
+                            lstActivities = (from a in db.ActivitiesM
+                                             join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                             where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                             //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                             select new activitiesVisitsBrands
+                                             {
+                                                 ID_activity = a.ID_activity,
+                                                 ID_visit = a.ID_visit,
+                                                 ID_form = a.ID_form,
+                                                 formName = a.description,
+                                                 ID_store = b.ID_store,
+                                                 store = b.store,
+                                                 visitDate = b.visit_date,
+                                                 ID_customer = a.ID_customer,
+                                                 Customer = a.Customer,
+                                                 isfinished = a.isfinished,
+                                                 id_usuarioend = a.ID_usuarioEnd,
+                                                 id_usuarioendexternal = a.ID_usuarioEndString,
+                                                 id_activitytype = a.ID_activitytype,
+                                                 ActivityName = "",
+                                                 Comments = a.comments,
+                                                 ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                 Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                 count = 0
+                                             });
 
+                        }
+                        else
+                        {
+                            if (brandsel == null || brandsel == 0)
+                            {
+                                lstActivities = (from a in db.ActivitiesM
+                                                 join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                                 where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true))
+                                                 select new activitiesVisitsBrands
+                                                 {
+                                                     ID_activity = a.ID_activity,
+                                                     ID_visit = a.ID_visit,
+                                                     ID_form = a.ID_form,
+                                                     formName = a.description,
+                                                     ID_store = b.ID_store,
+                                                     store = b.store,
+                                                     visitDate = b.visit_date,
+                                                     ID_customer = a.ID_customer,
+                                                     Customer = a.Customer,
+                                                     isfinished = a.isfinished,
+                                                     id_usuarioend = a.ID_usuarioEnd,
+                                                     id_usuarioendexternal = a.ID_usuarioEndString,
+                                                     id_activitytype = a.ID_activitytype,
+                                                     ActivityName = "",
+                                                     Comments = a.comments,
+                                                     ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                     Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                     count = 0
+                                                 });
+                            }
+                            else
+                            {
+                                lstActivities = (from a in db.ActivitiesM
+                                                 join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                                 where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true))
+                                                 select new activitiesVisitsBrands
+                                                 {
+                                                     ID_activity = a.ID_activity,
+                                                     ID_visit = a.ID_visit,
+                                                     ID_form = a.ID_form,
+                                                     formName = a.description,
+                                                     ID_store = b.ID_store,
+                                                     store = b.store,
+                                                     visitDate = b.visit_date,
+                                                     ID_customer = a.ID_customer,
+                                                     Customer = a.Customer,
+                                                     isfinished = a.isfinished,
+                                                     id_usuarioend = a.ID_usuarioEnd,
+                                                     id_usuarioendexternal = a.ID_usuarioEndString,
+                                                     id_activitytype = a.ID_activitytype,
+                                                     ActivityName = "",
+                                                     Comments = a.comments,
+                                                     ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                     Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                     count = 0
+                                                 });
+                                var brandstring = brandsel.ToString();
+                                lstActivities = lstActivities.Where(c => c.ID_brand == brandstring);
+                            }
+
+                        }
                     }
                     else {
-                        if (brandsel == null || brandsel == 0)
+                        if (customersel == null || customersel == "" || customersel == "0")
                         {
                             lstActivities = (from a in db.ActivitiesM
                                              join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa==activeuser.ID_empresa)
+                                             where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                             //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                              select new activitiesVisitsBrands
                                              {
                                                  ID_activity = a.ID_activity,
@@ -148,37 +211,72 @@ namespace comerciamarketing_webapp.Controllers
                                                  Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
                                                  count = 0
                                              });
+
                         }
-                        else {
-                            lstActivities = (from a in db.ActivitiesM
-                                             join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                             where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa==activeuser.ID_empresa)
-                                             select new activitiesVisitsBrands
-                                             {
-                                                 ID_activity = a.ID_activity,
-                                                 ID_visit = a.ID_visit,
-                                                 ID_form = a.ID_form,
-                                                 formName = a.description,
-                                                 ID_store = b.ID_store,
-                                                 store = b.store,
-                                                 visitDate = b.visit_date,
-                                                 ID_customer = a.ID_customer,
-                                                 Customer = a.Customer,
-                                                 isfinished = a.isfinished,
-                                                 id_usuarioend = a.ID_usuarioEnd,
-                                                 id_usuarioendexternal = a.ID_usuarioEndString,
-                                                 id_activitytype = a.ID_activitytype,
-                                                 ActivityName = "",
-                                                 Comments = a.comments,
-                                                 ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
-                                                 Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                                 count = 0
-                                             });
-                            var brandstring = brandsel.ToString();
-                            lstActivities = lstActivities.Where(c => c.ID_brand == brandstring);
+                        else
+                        {
+                            if (brandsel == null || brandsel == 0)
+                            {
+                                lstActivities = (from a in db.ActivitiesM
+                                                 join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                                 where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa == activeuser.ID_empresa)
+                                                 select new activitiesVisitsBrands
+                                                 {
+                                                     ID_activity = a.ID_activity,
+                                                     ID_visit = a.ID_visit,
+                                                     ID_form = a.ID_form,
+                                                     formName = a.description,
+                                                     ID_store = b.ID_store,
+                                                     store = b.store,
+                                                     visitDate = b.visit_date,
+                                                     ID_customer = a.ID_customer,
+                                                     Customer = a.Customer,
+                                                     isfinished = a.isfinished,
+                                                     id_usuarioend = a.ID_usuarioEnd,
+                                                     id_usuarioendexternal = a.ID_usuarioEndString,
+                                                     id_activitytype = a.ID_activitytype,
+                                                     ActivityName = "",
+                                                     Comments = a.comments,
+                                                     ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                     Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                     count = 0
+                                                 });
+                            }
+                            else
+                            {
+                                lstActivities = (from a in db.ActivitiesM
+                                                 join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                                 where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true) && a.ID_empresa == activeuser.ID_empresa)
+                                                 select new activitiesVisitsBrands
+                                                 {
+                                                     ID_activity = a.ID_activity,
+                                                     ID_visit = a.ID_visit,
+                                                     ID_form = a.ID_form,
+                                                     formName = a.description,
+                                                     ID_store = b.ID_store,
+                                                     store = b.store,
+                                                     visitDate = b.visit_date,
+                                                     ID_customer = a.ID_customer,
+                                                     Customer = a.Customer,
+                                                     isfinished = a.isfinished,
+                                                     id_usuarioend = a.ID_usuarioEnd,
+                                                     id_usuarioendexternal = a.ID_usuarioEndString,
+                                                     id_activitytype = a.ID_activitytype,
+                                                     ActivityName = "",
+                                                     Comments = a.comments,
+                                                     ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                                     Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                                     count = 0
+                                                 });
+                                var brandstring = brandsel.ToString();
+                                lstActivities = lstActivities.Where(c => c.ID_brand == brandstring);
+                            }
+
                         }
-   
                     }
+
+
+  
 
                     contf = lstActivities.Count();
 
@@ -355,17 +453,15 @@ namespace comerciamarketing_webapp.Controllers
 
                 using (var db = new dbComerciaEntities())
                 {
-                  
 
-
-
-
+                    if (escliente == true)
+                    {
                         if (customersel == null || customersel == "" || customersel == "0")
                         {
                             lstVisitas = (from a in db.ActivitiesM
                                           join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                          
-                                          where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
+
+                                          where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true)
                                           //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                           select new VisitsInfo
                                           {
@@ -391,7 +487,7 @@ namespace comerciamarketing_webapp.Controllers
                         {
                             lstVisitas = (from a in db.ActivitiesM
                                           join b in db.VisitsM on a.ID_visit equals b.ID_visit
-                                          where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true && a.ID_empresa==activeuser.ID_empresa)
+                                          where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true)
                                           //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
                                           select new VisitsInfo
                                           {
@@ -408,7 +504,7 @@ namespace comerciamarketing_webapp.Controllers
                                               Comments = a.comments,
                                               ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
                                               Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
-                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit==a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
+                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
                                               pictureAfter = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault()
                                           }).ToList();
                             if (brandsel == null || brandsel == 0)
@@ -422,6 +518,75 @@ namespace comerciamarketing_webapp.Controllers
                             }
 
                         }
+                    }
+                    else {
+                        if (customersel == null || customersel == "" || customersel == "0")
+                        {
+                            lstVisitas = (from a in db.ActivitiesM
+                                          join b in db.VisitsM on a.ID_visit equals b.ID_visit
+
+                                          where (a.date >= filtrostartdate && a.date <= filtroenddate && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfo
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = b.ID_store,
+                                              store = b.store,
+                                              addresss = b.address + ", " + b.city + ", " + b.state + ", " + b.zipcode,
+                                              visitDate = b.visit_date,
+                                              ID_customer = a.ID_customer,
+                                              Customer = a.Customer,
+                                              id_usuarioend = a.ID_usuarioEnd,
+                                              id_usuarioendexternal = a.ID_usuarioEndString,
+                                              usuario_name = db.Usuarios.Where(user => user.ID_usuario == a.ID_usuarioEnd).Select(c => c.nombre + " " + c.apellido).FirstOrDefault() != null ? db.Usuarios.Where(user => user.ID_usuario == a.ID_usuarioEnd).Select(c => c.nombre + " " + c.apellido).FirstOrDefault() : "External user",
+                                              Comments = a.comments,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
+                                              pictureAfter = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault()
+                                          }).ToList();
+
+                        }
+                        else
+                        {
+                            lstVisitas = (from a in db.ActivitiesM
+                                          join b in db.VisitsM on a.ID_visit equals b.ID_visit
+                                          where (a.ID_customer == customersel && (a.date >= filtrostartdate && a.date <= filtroenddate) && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                          //where (a.ID_customer == id && (a.date >= filtrostartdate && a.date <= filtroenddate))
+                                          select new VisitsInfo
+                                          {
+                                              ID_visit = a.ID_visit,
+                                              ID_store = b.ID_store,
+                                              store = b.store,
+                                              addresss = b.address + ", " + b.city + ", " + b.state + ", " + b.zipcode,
+                                              visitDate = b.visit_date,
+                                              ID_customer = a.ID_customer,
+                                              Customer = a.Customer,
+                                              id_usuarioend = a.ID_usuarioEnd,
+                                              id_usuarioendexternal = a.ID_usuarioEndString,
+                                              usuario_name = db.Usuarios.Where(user => user.ID_usuario == a.ID_usuarioEnd).Select(c => c.nombre + " " + c.apellido).FirstOrDefault() != null ? db.Usuarios.Where(user => user.ID_usuario == a.ID_usuarioEnd).Select(c => c.nombre + " " + c.apellido).FirstOrDefault() : "External User",
+                                              Comments = a.comments,
+                                              ID_brand = db.FormsM_details.Where(detalle => detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity).Select(c => c.fvalueText).FirstOrDefault(),
+                                              Brand = (from detalle in db.FormsM_details where (detalle.ID_formresourcetype == 13 && detalle.ID_visit == a.ID_activity) select detalle.fdescription).FirstOrDefault(),
+                                              pictureBefore = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("Tomar fotografia inicial") || c.fdescription.Contains("PICTURE 1") || c.fdescription.Contains("Fotografia inicial"))).Select(c => c.fsource).FirstOrDefault(),
+                                              pictureAfter = db.FormsM_details.Where(c => c.ID_visit == a.ID_activity && c.ID_formresourcetype == 5 && c.fsource.Contains("~") && (c.fdescription.Contains("CONDICION FINAL DE LA TIENDA (DESPUES)") || c.fdescription.Contains("PICTURE 2") || c.fdescription.Contains("Foto final 1"))).Select(c => c.fsource).FirstOrDefault()
+                                          }).ToList();
+                            if (brandsel == null || brandsel == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                var brandstring = brandsel.ToString();
+                                lstVisitas = lstVisitas.Where(c => c.ID_brand == brandstring).ToList();
+                            }
+
+                        }
+                    }
+
+
+
+    
 
                     lstVisitas = (from p in lstVisitas
                                   group p by new
@@ -579,15 +744,18 @@ namespace comerciamarketing_webapp.Controllers
         //QUICK VISIT
         public ActionResult RD_FORM1(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Admin";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -781,15 +949,18 @@ namespace comerciamarketing_webapp.Controllers
         //QUICK VISIT
         public ActionResult RD_FORM32(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Reports";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -986,15 +1157,18 @@ namespace comerciamarketing_webapp.Controllers
         //VISITA 1.1
         public ActionResult RD_FORM3(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Reports";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1186,15 +1360,18 @@ namespace comerciamarketing_webapp.Controllers
         //VISITA 2.0
         public ActionResult RD_FORM42(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Reports";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1388,15 +1565,18 @@ namespace comerciamarketing_webapp.Controllers
         //AUDIT REPORT 1
         public ActionResult RD_AUDITGRL1(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Reports";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));
@@ -1601,15 +1781,18 @@ namespace comerciamarketing_webapp.Controllers
         //AUDIT REPORT 2.0
         public ActionResult RD_AUDITGRL2(string id, int report, string fstartd, string fendd, string stores, int? brandsel, string spartners, string customersel)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
                 //HEADER
                 //PAGINAS ACTIVAS
-                ViewData["Menu"] = "Reports";
-                ViewData["Page"] = "Reports";
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
                 ViewBag.menunameid = "marketing_menu";
                 ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 //List<string> d = new List<string>(activeuser.Departments.Split(new string[] { "," }, StringSplitOptions.None));
                 //ViewBag.lstDepartments = JsonConvert.SerializeObject(d);
                 //List<string> r = new List<string>(activeuser.Roles.Split(new string[] { "," }, StringSplitOptions.None));

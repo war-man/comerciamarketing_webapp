@@ -20,8 +20,9 @@ namespace comerciamarketing_webapp.Models
         public string BrandName { get; set; }
         public Nullable<short> Id_Group { get; set; }
         public string GroupName { get; set; }
+        public Nullable<short> Id_Category { get; set; }
         public string Category { get; set; }
-        public string Id_SubCategory { get; set; }
+        public Nullable<short> Id_SubCategory { get; set; }
         public string SubCatName { get; set; }
         public string Id_Customer { get; set; }
         public string CodeBars { get; set; }
@@ -29,5 +30,6 @@ namespace comerciamarketing_webapp.Models
         public string VendorName { get; set; }
         public string BuyUnitMsr { get; set; }
         public Nullable<decimal> NumInBuy { get; set; }
+        public Nullable<short> ID_Company { get; set; }
     }
 }

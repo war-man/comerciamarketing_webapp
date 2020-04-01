@@ -392,23 +392,47 @@ namespace comerciamarketing_webapp.Controllers
 
                 List<ImgGallery> detalles;
                 IQueryable<ActivitiesM> actividadesList;
+                int[] visitsRoute;
                 try
                 {
                     using (var db = new dbComerciaEntities())
                     {
-                        var visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute && f.ID_empresa== activeuser.ID_empresa) select f.ID_visit).ToArray();
-
-                        if (visitsRoute.Length==0) {
-                            visitsRoute = (from f in db.VisitsM where ((f.visit_date >= filtrostartdate && f.end_date <= filtroenddate && f.ID_empresa == activeuser.ID_empresa)) select f.ID_visit).ToArray();
-                        }
-
-                        if (customersel == null || customersel == "" || customersel =="0")
+                        if (escliente == true)
                         {
-                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.isfinished==true) select e);
+                            visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute) select f.ID_visit).ToArray();
+
+                            if (visitsRoute.Length == 0)
+                            {
+                                visitsRoute = (from f in db.VisitsM where ((f.visit_date >= filtrostartdate && f.end_date <= filtroenddate)) select f.ID_visit).ToArray();
+                            }
+
+                            if (customersel == null || customersel == "" || customersel == "0")
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.isfinished == true) select e);
+                            }
+                            else
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_customer == customersel && e.isfinished == true) select e);
+                            }
                         }
                         else {
-                            actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_customer==customersel && e.isfinished==true) select e);
+                            visitsRoute = (from f in db.VisitsM where (f.ID_route == idroute && f.ID_empresa == activeuser.ID_empresa) select f.ID_visit).ToArray();
+
+                            if (visitsRoute.Length == 0)
+                            {
+                                visitsRoute = (from f in db.VisitsM where ((f.visit_date >= filtrostartdate && f.end_date <= filtroenddate && f.ID_empresa == activeuser.ID_empresa)) select f.ID_visit).ToArray();
+                            }
+
+                            if (customersel == null || customersel == "" || customersel == "0")
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.isfinished == true) select e);
+                            }
+                            else
+                            {
+                                actividadesList = (from e in db.ActivitiesM where (visitsRoute.Contains(e.ID_visit) && e.ID_customer == customersel && e.isfinished == true) select e);
+                            }
                         }
+
                             
                         var actividades = actividadesList.Select(a => a.ID_activity).ToArray();
 
@@ -460,22 +484,48 @@ namespace comerciamarketing_webapp.Controllers
 
                         int[] visitsarr;
 
-                        if (customersel == null || customersel == "" || customersel == "0")
+                        if (escliente == true)
                         {
-                            visitsarr = (from a in db.ActivitiesM
-                                         join b in db.VisitsM
-                                         on a.ID_visit equals b.ID_visit
-                                         where ((b.visit_date >= filtrostartdate && b.end_date <= filtroenddate) && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa) select b.ID_route).Distinct().ToArray();
+                            if (customersel == null || customersel == "" || customersel == "0")
+                            {
+                                visitsarr = (from a in db.ActivitiesM
+                                             join b in db.VisitsM
+                                             on a.ID_visit equals b.ID_visit
+                                             where ((b.visit_date >= filtrostartdate && b.end_date <= filtroenddate) && a.isfinished == true)
+                                             select b.ID_route).Distinct().ToArray();
+                            }
+                            else
+                            {
+
+                                visitsarr = (from a in db.ActivitiesM
+                                             join b in db.VisitsM
+                                             on a.ID_visit equals b.ID_visit
+                                             where (a.ID_customer == customersel && (b.visit_date >= filtrostartdate && b.end_date <= filtroenddate) && a.isfinished == true)
+                                             select b.ID_route).Distinct().ToArray();
+
+                            }
                         }
                         else {
+                            if (customersel == null || customersel == "" || customersel == "0")
+                            {
+                                visitsarr = (from a in db.ActivitiesM
+                                             join b in db.VisitsM
+                                             on a.ID_visit equals b.ID_visit
+                                             where ((b.visit_date >= filtrostartdate && b.end_date <= filtroenddate) && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                             select b.ID_route).Distinct().ToArray();
+                            }
+                            else
+                            {
 
-                            visitsarr = (from a in db.ActivitiesM
-                                         join b in db.VisitsM
-                                         on a.ID_visit equals b.ID_visit
-                                         where (a.ID_customer == customersel && (b.visit_date >= filtrostartdate && b.end_date <= filtroenddate ) && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
-                                         select b.ID_route).Distinct().ToArray();
-                     
+                                visitsarr = (from a in db.ActivitiesM
+                                             join b in db.VisitsM
+                                             on a.ID_visit equals b.ID_visit
+                                             where (a.ID_customer == customersel && (b.visit_date >= filtrostartdate && b.end_date <= filtroenddate) && a.isfinished == true && a.ID_empresa == activeuser.ID_empresa)
+                                             select b.ID_route).Distinct().ToArray();
+
+                            }
                         }
+
 
                   
                         // Convertimos la lista a array
@@ -1420,9 +1470,18 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult Visit_details(int? id)
         {
-            Usuarios activeuser = Session["activeUser"] as Usuarios;
-            if (activeuser != null)
+            if (generalClass.checkSession())
             {
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
                 using (var db = new dbComerciaEntities())
                 {
                     VisitsM visitsM = db.VisitsM.Find(id);

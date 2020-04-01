@@ -49,7 +49,7 @@
                                 <div class="align-items-center d-flex p-4">
                                     <div class="toolbar">
 
-                                        @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                        @if ((ViewBag.idmembresia.ToString() == "8" && ViewBag.rol.ToString() == "8") || ViewBag.idmembresia.ToString() == "1")
                                         {
                                             <a href="#" style="padding: 20px 12px;margin-left:0%; margin-top:2px;" class="btn  btn-success" data-toggle="modal" data-target="#createModal">Add visit<i class="mdi mdi-plus"></i></a>
 
@@ -95,7 +95,7 @@
                                                 <th scope="col">Store</th>
                                                 <th scope="col">Representatives</th>
                                                 <th scope="col">Status</th>
-                                                @if ((Session["tipousuario"].ToString() == "8" && Session["tiporol"].ToString() == "8") || Session["tipousuario"].ToString() == "1")
+                                                @if ((ViewBag.idmembresia.ToString() == "8" && ViewBag.rol.ToString() == "8") || ViewBag.idmembresia.ToString() == "1")
                                                 {
                                                     <th scope="col">Actions</th>
                                                 }

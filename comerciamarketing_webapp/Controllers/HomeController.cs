@@ -1056,17 +1056,28 @@ namespace comerciamarketing_webapp.Controllers
 
         public ActionResult RoutesM_details(int? id)
         {
-            if (Session["IDusuario"] != null)
+            if (generalClass.checkSession())
             {
-                int ID = Convert.ToInt32(Session["IDusuario"]);
+                Usuarios activeuser = Session["activeUser"] as Usuarios;
+                //HEADER
+                //PAGINAS ACTIVAS
+                ViewData["Menu"] = "Sales Representatives";
+                ViewData["Page"] = "Dashboard";
+                ViewBag.menunameid = "marketing_menu";
+                ViewBag.submenunameid = "";
+
+                ViewBag.idmembresia = activeuser.ID_tipomembresia;
+                ViewBag.rol = activeuser.ID_rol;
+
+                int ID = activeuser.ID_usuario;
                 var datosUsuario = (from c in db.Usuarios where (c.ID_usuario == ID) select c).FirstOrDefault();
 
-                ViewBag.usuario = datosUsuario.nombre + " " + datosUsuario.apellido;
+                ViewBag.usuario = activeuser.nombre + " " + activeuser.apellido;
                 //VISITAS
                 //SELECCIONAMOS RUTAS
                 var rutas = new List<VisitsM>();
 
-                if ((datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 8) || datosUsuario.ID_tipomembresia == 1)
+                if ((activeuser.ID_tipomembresia == 8 && activeuser.ID_rol == 8) || activeuser.ID_tipomembresia == 1)
                 {
                     rutas = db.VisitsM.Where(c => c.ID_route == id).ToList();
                 }
@@ -1078,13 +1089,13 @@ namespace comerciamarketing_webapp.Controllers
                     rutas = (from r in db.VisitsM where (visitrep.Contains(r.ID_visit) && r.ID_route == id) select r).ToList();
                 }
                 //Agregamos los representantes y tambien el estado de cada visita por REP filtro
-                if (datosUsuario.ID_tipomembresia == 8 && datosUsuario.ID_rol == 9)
+                if (activeuser.ID_tipomembresia == 8 && activeuser.ID_rol == 9)
                 {
 
 
                     foreach (var itemVisita in rutas)
                     {
-                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == datosUsuario.ID_usuario) select a).FirstOrDefault();
+                        var repvisit = (from a in db.VisitsM_representatives where (a.ID_visit == itemVisita.ID_visit && a.ID_usuario == activeuser.ID_usuario) select a).FirstOrDefault();
 
                         itemVisita.ID_visitstate = Convert.ToInt32(repvisit.query1);
                     }
